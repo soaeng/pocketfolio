@@ -9,7 +9,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -28,27 +27,39 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 @Entity
-@Table(
-name="follow",
-uniqueConstraints = {
-		@UniqueConstraint(name="UK_FOLLOW", columnNames={"follow_from", "follow_to"})
-}
-)
-public class Follow {
+@Table(name="portfolio_url")
+public class PortfolioUrl {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="follow_no", nullable=false, updatable=false)
-	private long followNo;
+	@Column(name="port_url_no", nullable=false, updatable=false)
+	private long portUrlNo;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="follow_from", nullable=false, updatable=false)
+	@JoinColumn(name="port_no", nullable=false, updatable=false)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	@NotNull
-	private User followFrom;
+	private Portfolio portfolio;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="follow_to", nullable=false, updatable=false)
-	@OnDelete(action = OnDeleteAction.CASCADE)
+	@Column(name="port_url", length=255, nullable=false)
 	@NotNull
-	private User followTo;
+	private String portUrl;
+
+	@Column(name="port_url_name", length=50) // remove if not needed
+	private String portUrlName;
+	
+	@Column(name="port_url_type", nullable=false)
+	@NotNull
+	private int portUrlType;
+	
+	public void updateUrl(String portUrl) { // update URL only
+		this.portUrl = portUrl;
+	}
+	
+	public void updateUrlName(String portUrlName) { // can take null
+		this.portUrlName = portUrlName;
+	}
+	
+	public void updateUrlType(int portUrlType) {
+		this.portUrlType = portUrlType;
+	}
 }

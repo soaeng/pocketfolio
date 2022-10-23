@@ -44,7 +44,7 @@ public class GuestbookComment {
 	@NotNull
 	private String commentContent;
 	
-	@Column(name="comment_is_public", nullable=false,
+	@Column(name="comment_is_public", length=1, nullable=false,
 			columnDefinition = "char(1) CHECK (comment_is_public in ('T', 'F')) DEFAULT 'T'")
 	@ColumnDefault("'T'")
 	@NotNull
@@ -55,14 +55,14 @@ public class GuestbookComment {
 	private LocalDateTime commentCreated;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="user_no")
-	private User user;
-	
-	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="guestbook_no", nullable=false, updatable=false)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	@NotNull
 	private Guestbook guestbook;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="user_no")
+	private User user;
 	
 //	public void updateCommentContent(String commentContent) { // update content only
 //		this.commentContent = commentContent;
