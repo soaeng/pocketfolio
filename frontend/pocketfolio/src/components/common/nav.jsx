@@ -4,10 +4,11 @@ import {useNavigate} from 'react-router-dom';
 import {
   NavContainer,
   NavLogoImg,
-  NavSearch,
-  LoginBotton,
-  SearchImg,
+  NavBotton,
+  NavSearchInput
 } from './nav.style';
+
+import Avatar from './avatar';
 
 /** 네비게이션 페이지 */
 function Nav() {
@@ -16,6 +17,9 @@ function Nav() {
   // 검색어
   const [word, setWord] = useState('');
 
+  // 로그인 표시 => 수정 필요
+  const [loginFlag, setLoginFlag] = useState(() => sessionStorage.getItem('Id'));
+
   const logoClickHandler = () => {
     navigate('/');
   };
@@ -23,6 +27,10 @@ function Nav() {
   const loginClickHandler = () => {
     navigate('/login');
   };
+
+  const roomClickHandler = () => {
+    navigate('/room');
+  }
 
   // 검색어 창 입력
   const onSubmit = async e => {
@@ -46,12 +54,12 @@ function Nav() {
   return (
     <NavContainer>
       <NavLogoImg onClick={logoClickHandler} src="./assets/images/logo.png" />
-      <NavSearch
+      {window.location.pathname === '/search' ? null : <NavSearchInput
         placeholder="검색어를 입력해주세요"
         onKeyDown={keyDownHandler}
-      />
-      <SearchImg src="./assets/images/search.png" />
-      <LoginBotton onClick={loginClickHandler}>로그인/회원가입</LoginBotton>
+      />}
+      {loginFlag === null ? <NavBotton onClick={loginClickHandler}>로그인/회원가입</NavBotton> : <NavBotton onClick={roomClickHandler}>마이룸</NavBotton>}
+      <Avatar/>
     </NavContainer>
   );
 }
