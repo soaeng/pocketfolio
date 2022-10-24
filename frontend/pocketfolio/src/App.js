@@ -7,6 +7,7 @@ import Portfolio from './components/portfolio/portfolio';
 import Room from './components/room/room';
 import Search from './components/search/search';
 import Login from './components/user/login';
+import Profile from './components/user/profile';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path="/room" element={<Room/>}/>
         <Route path="/search" element={<Search/>}/>
         <Route path="/login" element={<Login/>}/>
+        <Route path="/profile" element={<Profile/>}/>
       </Routes>
     </BrowserRouter>
   );
