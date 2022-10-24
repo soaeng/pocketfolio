@@ -39,12 +39,13 @@ public class Guestbook {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="guestbook_no", nullable=false, updatable=false)
 	private long guestbookNo;
-	
-	@Column(name="guestbook_content", length=1000, nullable=false)
+
+//	@Column(name="guestbook_content", length=1000, nullable=false) // if update possible
+	@Column(name="guestbook_content", length=1000, nullable=false, updatable=false)
 	@NotNull
 	private String guestbookContent;
 	
-	@Column(name="guestbook_is_public", length=1, nullable=false,
+	@Column(name="guestbook_is_public", length=1, nullable=false, updatable=false,
 			columnDefinition = "char(1) CHECK (guestbook_is_public in ('T', 'F')) DEFAULT 'T'")
 	@ColumnDefault("'T'")
 	@NotNull

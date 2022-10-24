@@ -56,13 +56,4 @@ public class RoomLike {
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	@NotNull
 	private User user;
-	
-	@Column(name="room_like_created", nullable=false, updatable=false, columnDefinition = "datetime DEFAULT (current_time)")
-	@NotNull
-	private LocalDateTime roomLikeCreated;
-	
-	@PrePersist
-	public void createdAt() {
-		this.roomLikeCreated = ZonedDateTime.now(ZoneId.of("Asia/Seoul")).toLocalDateTime();
-	}
 }
