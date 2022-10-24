@@ -12,8 +12,8 @@ export const Background = styled.div`
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
-  width: 70%;
+  justify-content: space-around; 
+  width: 50%;
   height: 80%;
   margin: auto;
 `
@@ -34,8 +34,9 @@ export const CardWrapper = styled.div`
 `
 
 export const Text = styled.div`
-
+  margin-bottom: 1rem;
 `
+
 
 export const CardList = styled.div`
   display: flex;

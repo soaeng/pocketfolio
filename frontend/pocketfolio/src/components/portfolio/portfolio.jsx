@@ -17,7 +17,7 @@ const portfolio = () => {
 
         <CardWrapper>
           <Text>
-            <p>나의 소중한 포트폴리오들</p>
+            나의 소중한 포트폴리오들
           </Text>
           <CardList>
             <Card></Card>
