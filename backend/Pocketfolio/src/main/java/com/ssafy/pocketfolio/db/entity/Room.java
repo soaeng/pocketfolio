@@ -16,6 +16,7 @@ import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -58,7 +59,13 @@ public class Room {
 	
 	@Column(name="room_thumbnail", length=255)
 	private String roomThumbnail;
-	
+
+	@Column(name="room_public", length=1, nullable=false,
+			columnDefinition = "char(1) CHECK (room_public in ('O', 'S', 'C')) DEFAULT 'O'")
+	@ColumnDefault("'O'")
+	@NotNull
+	private String roomPublic; // "O"는 Open(공개), "S"는 Shared(링크 공개), "C"는 Closed(비공개)
+
 	@Column(name="room_created", nullable=false, updatable=false, columnDefinition = "datetime DEFAULT (current_time)")
 	@NotNull
 	private LocalDateTime roomCreated;
@@ -74,6 +81,10 @@ public class Room {
 	
 	public void updateRoomTheme(int roomTheme) { // update room theme only
 		this.roomTheme = roomTheme;
+	}
+
+	public void changePublic(String roomPublic) {
+		this.roomPublic = roomPublic;
 	}
 	
 	@PrePersist
