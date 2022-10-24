@@ -13,29 +13,56 @@ export const Title = styled.p`
   font-weight: bold;
 `;
 
-export const Form = styled.form``;
+export const Form = styled.form`
+  max-width: 40rem;
+`;
 
 export const Div = styled.div`
+  width: 100%;
   display: flex;
   align-items: center;
+  margin-bottom: 1.3rem;
+`;
+
+export const ImgContainer = styled.div`
+  display: flex;
+  flex-direction: column;
 `;
 
 export const ImgDiv = styled.div`
-  background-color: yellow;
   border-radius: 50%;
-  height: 12.5rem;
+  border: 1px solid white;
+  height: 12rem;
   aspect-ratio: 1/1;
   margin-right: 1rem;
   overflow: hidden;
 `;
 
-export const Img = styled.input`
+export const Img = styled.img`
   width: 100%;
   height: 100%;
   object-fit: cover;
 `;
 
+export const ImgInput = styled.input`
+  margin-top: 0.5rem;
+  margin-left: 2rem;
+
+  &::file-selector-button {
+    display: inline-block;
+    background-color: white;
+    border: 1px solid #333;
+    padding: 0.3rem 0.5rem;
+    border-radius: 2rem;
+
+    &:hover {
+      background-color: #dddddd;
+    }
+  }
+`;
+
 export const NickBirth = styled.div`
+  width: 100%;
   display: flex;
   flex-direction: column;
 `;
@@ -45,25 +72,105 @@ export const NBBox = styled.div`
   flex-direction: column;
 
   & + & {
-    margin-top: 0.5rem;
+    margin-top: 1.3rem;
   }
 `;
 
-export const NBLabel = styled.label`
+export const Label = styled.label`
   font-size: 1.3rem;
   font-weight: bold;
   margin-bottom: 0.5rem;
-  margin-left: 0.7rem;
+  margin-left: 0.3rem;
 `;
 
-export const NBInput = styled.input`
-  font-size: 1.4rem;
-  padding: 1rem;
-  border-radius: 1rem;
-  border: 1.4px solid #333333;
+export const Input = styled.input`
+  font-size: 1.2rem;
+  padding: 0.8rem 1rem;
+  border-radius: 0.5rem;
+  border: 1.4px solid #a5a5a5;
+
+  &.blog {
+    width: 100%;
+  }
+
+  &:hover {
+    outline: none;
+    border: 1.5px solid #333333;
+  }
 
   &:focus {
     outline: none;
-    outline: 1.5px solid #333333;
+    border: 1.5px solid #333333;
+  }
+`;
+
+export const BlogIntroDiv = styled.div`
+  width: 100%;
+`;
+
+export const BIBox = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  & + & {
+    margin-top: 1.3rem;
+  }
+`;
+
+export const TextArea = styled.textarea`
+  font-size: 1.2rem;
+  padding: 0.8rem 1rem;
+  border-radius: 0.5rem;
+  border: 1.4px solid #a5a5a5;
+  height: 6rem;
+  resize: none;
+
+  &:hover {
+    outline: none;
+    border: 1.5px solid #333333;
+  }
+
+  &:focus {
+    outline: none;
+    border: 1.5px solid #333333;
+  }
+`;
+
+export const Btnbox = styled.div`
+  margin: 3rem 0;
+  width: 100%;
+`;
+
+export const Btn = styled.button`
+  font-size: 1.4rem;
+  font-weight: bold;
+  width: calc(50% - 0.5rem);
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.5rem 0;
+
+  & + & {
+    margin-left: 1rem;
+  }
+
+  &.cancel {
+    background-color: white;
+    color: #3c2e9b;
+    border: 0.5px solid #a5a5a5;
+
+    &:hover {
+      background-color: #eeeeee;
+      color: #312582;
+    }
+  }
+
+  &.save {
+    background-color: #3c2e9b;
+    color: white;
+
+    &:hover {
+      background-color: #312582;
+      color: #dcdcdc;
+    }
   }
 `;

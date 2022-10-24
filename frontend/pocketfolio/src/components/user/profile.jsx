@@ -3,12 +3,19 @@ import {
   Title,
   Form,
   Div,
+  ImgContainer,
   ImgDiv,
   Img,
+  ImgInput,
   NickBirth,
-  NBLabel,
-  NBInput,
+  Label,
+  Input,
   NBBox,
+  BlogIntroDiv,
+  BIBox,
+  TextArea,
+  Btnbox,
+  Btn,
 } from './profile.style';
 
 const Profile = () => {
@@ -17,24 +24,51 @@ const Profile = () => {
       <Title>회원 정보 수정</Title>
       <Form>
         <Div>
-          <ImgDiv>
-            <Img
-              type="image"
-              src={process.env.PUBLIC_URL + '/assets/images/logo.png'}
-            />
-          </ImgDiv>
+          <ImgContainer>
+            <ImgDiv>
+              <Img
+                id="preview-image"
+                src={process.env.PUBLIC_URL + '/assets/images/logo.png'}
+              />
+            </ImgDiv>
+
+            <ImgInput type="file" />
+          </ImgContainer>
 
           <NickBirth>
             <NBBox>
-              <NBLabel>닉네임</NBLabel>
-              <NBInput type="text" placeholder="닉네임" />
+              <Label>닉네임</Label>
+              <Input type="text" placeholder="닉네임" />
             </NBBox>
             <NBBox>
-              <NBLabel>생년월일</NBLabel>
-              <NBInput type="date" placeholder="2022-10-24" />
+              <Label>생년월일</Label>
+              <Input type="date" value="2022-01-01" />
             </NBBox>
           </NickBirth>
         </Div>
+
+        <BlogIntroDiv>
+          <BIBox>
+            <Label>블로그 주소</Label>
+            <Input
+              type="text"
+              placeholder="개인 블로그나 github주소를 입력해주세요"
+            />
+          </BIBox>
+          <BIBox>
+            <Label>자기소개</Label>
+            <TextArea placeholder="소개를 입력해주세요" />
+          </BIBox>
+        </BlogIntroDiv>
+
+        <Btnbox>
+          <Btn type="reset" className="cancel">
+            취소
+          </Btn>
+          <Btn type="submit" className="save">
+            저장
+          </Btn>
+        </Btnbox>
       </Form>
     </Container>
   );
