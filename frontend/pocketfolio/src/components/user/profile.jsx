@@ -33,7 +33,7 @@ const Profile = () => {
               />
             </ImgDiv>
             <ImgInputDiv>
-              <ImgInput type="file" />  
+              <ImgInput type="file" />
             </ImgInputDiv>
           </ImgContainer>
 

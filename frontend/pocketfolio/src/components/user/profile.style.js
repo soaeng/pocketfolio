@@ -15,7 +15,7 @@ export const Container = styled.div`
   }
 `;
 
-export const Title = styled.p`
+export const Title = styled.h1`
   margin: 1rem 0;
   font-size: 2.4rem;
   font-weight: bold;
