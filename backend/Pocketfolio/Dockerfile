@@ -9,6 +9,7 @@ COPY src src
 RUN chmod +x ./gradlew
 RUN ./gradlew bootJar
 
+FROM openjdk:11-jdk
 #COPY --from=builder build/libs/*.jar app.jar
 #VOLUME /tmp
 ARG JAR_FILE=build/libs/Pocketfolio-0.0.1-SNAPSHOT.jar
