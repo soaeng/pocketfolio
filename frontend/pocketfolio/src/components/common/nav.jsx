@@ -63,7 +63,7 @@ function Nav() {
           onKeyDown={keyDownHandler}
         />
       )}
-      {loginFlag !== null ? (
+      {loginFlag === null ? (
         <NavBotton onClick={loginClickHandler}>로그인/회원가입</NavBotton>
       ) : (
         <LoginDiv>
