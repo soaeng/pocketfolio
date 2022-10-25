@@ -1,4 +1,4 @@
-FROM openjdk:11-jdk
+FROM openjdk:11-jdk as builder
 #FROM openjdk:8-jdk-slim as builder
 
 COPY gradlew .
@@ -12,6 +12,6 @@ RUN ./gradlew bootJar
 #COPY --from=builder build/libs/*.jar app.jar
 #VOLUME /tmp
 ARG JAR_FILE=build/libs/Pocketfolio-0.0.1-SNAPSHOT.jar
-COPY ${JAR_FILE} app.jar
+COPY --from=builder build/libs/*.jar app.jar
 ENTRYPOINT ["java", "-jar","-Dspring.profiles.active=gcp", "/app.jar"]
-EXPOSE 8081
+EXPOSE 8080
