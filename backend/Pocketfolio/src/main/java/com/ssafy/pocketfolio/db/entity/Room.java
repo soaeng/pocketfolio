@@ -60,6 +60,11 @@ public class Room {
 	@Column(name="room_thumbnail", length=255)
 	private String roomThumbnail;
 
+	@Column(name="room_is_main", length=1, nullable=false,
+			columnDefinition = "char(1) CHECK (room_is_main in ('T', 'F'))")
+	@NotNull
+	private String roomIsMain; // "T" or "F"
+
 	@Column(name="room_public", length=1, nullable=false,
 			columnDefinition = "char(1) CHECK (room_public in ('O', 'S', 'C')) DEFAULT 'O'")
 	@ColumnDefault("'O'")
@@ -81,6 +86,10 @@ public class Room {
 	
 	public void updateRoomTheme(int roomTheme) { // update room theme only
 		this.roomTheme = roomTheme;
+	}
+
+	public void changeMain(String roomIsMain) {
+		this.roomIsMain = roomIsMain;
 	}
 
 	public void changePublic(String roomPublic) {
