@@ -16,6 +16,7 @@ import {
   TextArea,
   Btnbox,
   Btn,
+  ImgInputDiv,
 } from './profile.style';
 
 const Profile = () => {
@@ -31,8 +32,9 @@ const Profile = () => {
                 src={process.env.PUBLIC_URL + '/assets/images/logo.png'}
               />
             </ImgDiv>
-
-            <ImgInput type="file" />
+            <ImgInputDiv>
+              <ImgInput type="file" />
+            </ImgInputDiv>
           </ImgContainer>
 
           <NickBirth>

@@ -1,20 +1,32 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
-  padding-top: 5rem;
+  height: 100vh;
   width: 100vw;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
+
+  @media screen and (max-width: 660px) {
+    justify-content: flex-start;
+    padding: 3rem 0;
+    height: auto;
+  }
 `;
 
-export const Title = styled.p`
-  font-size: 3rem;
+export const Title = styled.h1`
+  margin: 1rem 0;
+  font-size: 2.4rem;
   font-weight: bold;
 `;
 
 export const Form = styled.form`
-  max-width: 40rem;
+  width: 35rem;
+
+  @media screen and (max-width: 660px) {
+    width: 90%;
+  }
 `;
 
 export const Div = styled.div`
@@ -22,31 +34,45 @@ export const Div = styled.div`
   display: flex;
   align-items: center;
   margin-bottom: 1.3rem;
+
+  @media screen and (max-width: 660px) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 `;
 
 export const ImgContainer = styled.div`
   display: flex;
   flex-direction: column;
+  align-items: center;
+  margin-right: 1rem;
+
+  @media screen and (max-width: 660px) {
+    margin: 1rem 0;
+  }
 `;
 
 export const ImgDiv = styled.div`
   border-radius: 50%;
   border: 1px solid white;
-  height: 12rem;
-  aspect-ratio: 1/1;
-  margin-right: 1rem;
+  height: 10rem;
+  width: 10rem;
   overflow: hidden;
 `;
 
 export const Img = styled.img`
-  width: 100%;
   height: 100%;
   object-fit: cover;
 `;
 
+export const ImgInputDiv = styled.div`
+  width: fit-content;
+`;
+
 export const ImgInput = styled.input`
   margin-top: 0.5rem;
-  margin-left: 2rem;
+  margin-left: 1rem;
 
   &::file-selector-button {
     display: inline-block;
@@ -77,14 +103,14 @@ export const NBBox = styled.div`
 `;
 
 export const Label = styled.label`
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   font-weight: bold;
   margin-bottom: 0.5rem;
   margin-left: 0.3rem;
 `;
 
 export const Input = styled.input`
-  font-size: 1.2rem;
+  font-size: 1rem;
   padding: 0.8rem 1rem;
   border-radius: 0.5rem;
   border: 1.4px solid #a5a5a5;
@@ -137,7 +163,7 @@ export const TextArea = styled.textarea`
 `;
 
 export const Btnbox = styled.div`
-  margin: 3rem 0;
+  margin-top: 3rem;
   width: 100%;
 `;
 
