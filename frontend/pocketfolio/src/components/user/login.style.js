@@ -13,22 +13,28 @@ export const SelfContainer = styled.div`
   width: 50vw;
   height: 100vh;
   background-color: #271e6a;
-
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  text-align: center;
+
+  @media screen and (max-width: 1024px) {
+    display: none;
+  }
 `;
 
-export const IntroText = styled.p`
+export const IntroText = styled.h2`
   color: white;
-  font-size: 2.8rem;
+  font-size: 2.5rem;
   font-weight: bold;
   text-shadow: 1.5px 1.5px 1.5px gray;
+  margin: 0;
 `;
 
 export const RoomImgDiv = styled.div`
   height: 65%;
+  aspect-ratio: 1/1;
 `;
 
 export const RoomImg = styled.img`
@@ -44,6 +50,10 @@ export const LoginContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+
+  @media screen and (max-width: 1024px) {
+    width: 100vw;
+  }
 `;
 
 export const LogoDiv = styled.div`
@@ -57,8 +67,8 @@ export const LogoImg = styled.img`
 `;
 
 export const LoginDiv = styled.div`
-  width: 26rem;
-  height: 3.5rem;
+  width: 23rem;
+  height: 3rem;
   margin-bottom: 1.2rem;
   padding: 0.6rem 1rem;
   border-radius: 1rem;
@@ -83,6 +93,15 @@ export const LoginDiv = styled.div`
     background-color: #000000;
     color: #ffffff;
   }
+
+  @media screen and (max-width: 450px) {
+    width: fit-content;
+    min-width: 344px;
+  }
+
+  @media screen and (max-width: 320px) {
+    width: fit-content;
+  }
 `;
 
 export const LoginIconDiv = styled.div`
@@ -97,10 +116,23 @@ export const LoginIcon = styled.img`
 `;
 
 export const LoginText = styled.p`
-  font-size: 2rem;
+  font-size: 1.7rem;
   font-weight: bold;
+
+  @media screen and (max-width: 420px) {
+    font-size: 1.5rem;
+  }
+
+  @media screen and (max-width: 320px) {
+    font-size: 1.2rem;
+  }
 `;
 
 export const CommentText = styled.p`
   font-size: 1.3rem;
+  min-width: 350px;
+
+  @media screen and (max-width: 400px) {
+    display: none;
+  }
 `;
