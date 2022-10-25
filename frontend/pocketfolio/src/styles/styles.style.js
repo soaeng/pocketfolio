@@ -14,12 +14,12 @@ const H1 = styled.h1`
     font-size: 3rem;
   }
 
-  // sm(모바일, <900px)
+  // sm(태블릿, <900px)
   @media screen and (max-width: 900px) {
     font-size: 2rem;
   }
 
-  // sm(모바일, <600px)
+  // xs(모바일, <600px)
   @media screen and (max-width: 600px) {
     font-size: 1.5rem;
   }
@@ -39,12 +39,12 @@ const H2 = styled.h2`
     font-size: 2.5rem;
   }
 
-  // sm(모바일, <900px)
+  // sm(태블릿, <900px)
   @media screen and (max-width: 900px) {
     font-size: 1.5rem;
   }
 
-  // sm(모바일, <600px)
+  // xs(모바일, <600px)
   @media screen and (max-width: 600px) {
     font-size: 1.25rem;
   }
@@ -64,12 +64,12 @@ const H3 = styled.h3`
     font-size: 2rem;
   }
 
-  // sm(모바일, <900px)
+  // sm(태블릿, <900px)
   @media screen and (max-width: 900px) {
     font-size: 1.25rem;
   }
 
-  // sm(모바일, <600px)
+  // xs(모바일, <600px)
   @media screen and (max-width: 600px) {
     font-size: 1rem;
   }
@@ -89,12 +89,12 @@ const Body1 = styled.body`
     font-size: 1.5rem;
   }
 
-  // sm(모바일, <900px)
+  // sm(태블릿, <900px)
   @media screen and (max-width: 900px) {
     font-size: 1rem;
   }
 
-  // sm(모바일, <600px)
+  // xs(모바일, <600px)
   @media screen and (max-width: 600px) {
     font-size: 0.75em;
   }
@@ -114,12 +114,12 @@ const Body2 = styled.p`
     font-size: 1rem;
   }
 
-  // sm(모바일, <900px)
+  // sm(태블릿, <900px)
   @media screen and (max-width: 900px) {
     font-size: 0.75rem;
   }
 
-  // sm(모바일, <600px)
+  // xs(모바일, <600px)
   @media screen and (max-width: 600px) {
     font-size: 0.5rem;
   }
