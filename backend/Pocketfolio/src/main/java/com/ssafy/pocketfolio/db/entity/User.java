@@ -4,13 +4,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.PrePersist;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import com.sun.istack.NotNull;
 
@@ -26,12 +20,21 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 @Entity
-@Table(name="user")
+@Table(
+name="user",
+uniqueConstraints = {
+		@UniqueConstraint(name="UK_USER_EMAIL", columnNames="user_email")
+}
+)
 public class User {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="user_no", nullable=false, updatable=false)
 	private long userNo;
+
+	@Column(name="user_email", length=50, nullable=false)
+	@NotNull
+	private String userEmail;
 	
 	@Column(name="user_name", length=12, nullable=false)
 	@NotNull
@@ -46,18 +49,26 @@ public class User {
 	@Column(name="user_created", nullable=false, updatable=false, columnDefinition = "datetime DEFAULT (current_time)")
 	@NotNull
 	private LocalDateTime userCreated;
+
+	@Column(name="user_token", length=1000)
+	private String userToken;
 	
 //	@Column(name="user_point", nullable=false, columnDefinition = "int CHECK (user_point >= 0)")
 //	@ColumnDefault("0")
 //	private int userPoint;
-	
-//	@OneToMany(orphanRemoval=true, cascade=CascadeType.REMOVE, mappedBy="user")
-//	private List<Hashtag> hashtags;
-	
+
 	public void updateUser(String userName, String userProfile, String userDesc) {
 		this.userName = userName;
 		this.userProfile = userProfile;
 		this.userDesc = userDesc;
+	}
+
+	public void updateUserToken(String userToken) {
+		this.userToken = userToken;
+	}
+
+	public void updateUserEmail(String userEmail) { // need duplicate check
+		this.userEmail = userEmail;
 	}
 	
 	@PrePersist
