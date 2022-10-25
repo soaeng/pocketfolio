@@ -13,22 +13,18 @@ const DeleteModal = ({onClose}) => {
     onClose();
   };
 
-  const nothing = () => {};
+  
   return (
     <Overlay>
-      <ModalWrap onClick={nothing}>
+      <ModalWrap>
         <Contents>
           <H3>이 포트폴리오를 지우시겠습니까?</H3>
           <BtnDiv>
             <StyledBtn className="cancel" onClick={handleClose}>
-              <Body1>
-              취소
-                </Body1>
+              <Body1>취소</Body1>
             </StyledBtn>
             <StyledBtn className="delete" onClick={handleClose}>
-              <Body1>
-              삭제
-                </Body1>
+              <Body1>삭제</Body1>
             </StyledBtn>
           </BtnDiv>
         </Contents>
