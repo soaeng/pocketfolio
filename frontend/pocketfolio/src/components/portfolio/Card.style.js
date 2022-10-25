@@ -7,16 +7,24 @@ export const Wrapper = styled.div`
 `;
 
 export const Item = styled.div`
-  height: 100%;
-  width: 200px;
-  outline: 1px solid;
+  height: 15rem;
+  width: 13rem;
   margin-right: 1rem;
   border-radius: 1.5rem;
+  background-color: white;
+
+  &.Add {
+    display: flex;
+    height: 15rem;
+    width: 13rem;
+    border-radius: 1.5rem;
+    background-color: #d9d9d9;
+    outline: 0;
+  }
 `;
 
 export const ImgDiv = styled.div`
   height: 70%;
-  border-top: 1.5rem;
   border-radius: 1.5rem 1.5rem 0 0;
 `;
 
@@ -30,6 +38,7 @@ export const TitleDiv = styled.div`
   align-items: center;
   height: 20%;
   margin-left: 0.5rem;
+  font-family: bold;
 `;
 
 export const LikeDiv = styled.div`
@@ -41,6 +50,6 @@ export const LikeDiv = styled.div`
 export const LikeContent = styled.div``;
 
 export const DeleteBtn = styled.img`
-  margin-right: 1rem;
-  width: 20px;
+  margin: 1rem 1rem 0 0;
+  width: 30px;
 `;

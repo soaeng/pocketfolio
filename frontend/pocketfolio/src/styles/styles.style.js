@@ -56,12 +56,12 @@ const H3 = styled.h3`
 
   // lg(FHD <2100px)
   @media screen and (max-width: 2100px) {
-    font-size: 3rem;
+    font-size: 1.8rem;
   }
 
   // md(HD, <1500px)
   @media screen and (max-width: 1500px) {
-    font-size: 2rem;
+    font-size: 1.5rem;
   }
 
   // sm(태블릿, <900px)
@@ -81,12 +81,12 @@ const Body1 = styled.body`
 
   // lg(FHD <2100px)
   @media screen and (max-width: 2100px) {
-    font-size: 2rem;
+    font-size: 1.5rem;
   }
 
   // md(HD, <1500px)
   @media screen and (max-width: 1500px) {
-    font-size: 1.5rem;
+    font-size: 1.3rem;
   }
 
   // sm(태블릿, <900px)
@@ -106,22 +106,22 @@ const Body2 = styled.p`
 
   // lg(FHD <2100px)
   @media screen and (max-width: 2100px) {
-    font-size: 1.5rem;
+    font-size: 1rem;
   }
 
   // md(HD, <1500px)
   @media screen and (max-width: 1500px) {
-    font-size: 1rem;
+    font-size: 0.75rem;
   }
 
   // sm(태블릿, <900px)
   @media screen and (max-width: 900px) {
-    font-size: 0.75rem;
+    font-size: 0.5rem;
   }
 
   // xs(모바일, <600px)
   @media screen and (max-width: 600px) {
-    font-size: 0.5rem;
+    font-size: 0.25rem;
   }
 `;
 export {H1, H2, H3, Body1, Body2};

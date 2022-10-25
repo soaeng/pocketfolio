@@ -1,4 +1,4 @@
-import React from 'react';
+import {React, useState} from 'react';
 import {
   Wrapper,
   Item,
@@ -9,15 +9,20 @@ import {
   Thumbnail,
   DeleteBtn,
 } from './Card.style';
+import DeleteModal from './DeleteModal';
 
 const Card = () => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const openModal = () => {
+    setIsOpen(true)
+  }
+
   return (
     <Wrapper>
       <Item>
         <ImgDiv>
-          <Thumbnail
-            src={process.env.PUBLIC_URL + '/assets/images/room.png'}
-          ></Thumbnail>
+          <Thumbnail src={process.env.PUBLIC_URL + '/assets/images/room.png'} />
         </ImgDiv>
         <TitleDiv>아이링크</TitleDiv>
         <LikeDiv>
@@ -26,8 +31,16 @@ const Card = () => {
         </LikeDiv>
       </Item>
       <DeleteBtn
-        src={process.env.PUBLIC_URL + '/assets/images/trashcan.png'}
-      ></DeleteBtn>
+      onClick={openModal} 
+      src={process.env.PUBLIC_URL + '/assets/images/trashcan.png'} />
+
+      {isOpen && (
+        <DeleteModal
+        onClose={() => {
+          setIsOpen(false);
+        }}/>
+      )}
+
     </Wrapper>
   );
 };
