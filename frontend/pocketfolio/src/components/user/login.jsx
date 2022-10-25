@@ -25,7 +25,8 @@ const Login = () => {
   return (
     <Container>
       <SelfContainer>
-        <IntroText>손쉽게 만드는 나만의 포트폴리오 전시장</IntroText>
+        <IntroText>손쉽게 만드는</IntroText>
+        <IntroText>나만의 포트폴리오 전시장</IntroText>
         <RoomImgDiv>
           <RoomImg src={process.env.PUBLIC_URL + '/assets/images/room.png'} />
         </RoomImgDiv>
