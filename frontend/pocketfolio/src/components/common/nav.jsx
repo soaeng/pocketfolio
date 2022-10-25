@@ -5,7 +5,8 @@ import {
   NavContainer,
   NavLogoImg,
   NavBotton,
-  NavSearchInput
+  NavSearchInput,
+  LoginDiv,
 } from './nav.style';
 
 import Avatar from './avatar';
@@ -18,7 +19,9 @@ function Nav() {
   const [word, setWord] = useState('');
 
   // 로그인 표시 => 수정 필요
-  const [loginFlag, setLoginFlag] = useState(() => sessionStorage.getItem('Id'));
+  const [loginFlag, setLoginFlag] = useState(() =>
+    sessionStorage.getItem('Id'),
+  );
 
   const logoClickHandler = () => {
     navigate('/');
@@ -30,7 +33,7 @@ function Nav() {
 
   const roomClickHandler = () => {
     navigate('/room');
-  }
+  };
 
   // 검색어 창 입력
   const onSubmit = async e => {
@@ -54,12 +57,20 @@ function Nav() {
   return (
     <NavContainer>
       <NavLogoImg onClick={logoClickHandler} src="./assets/images/logo.png" />
-      {window.location.pathname === '/search' ? null : <NavSearchInput
-        placeholder="검색어를 입력해주세요"
-        onKeyDown={keyDownHandler}
-      />}
-      {loginFlag === null ? <NavBotton onClick={loginClickHandler}>로그인/회원가입</NavBotton> : <NavBotton onClick={roomClickHandler}>마이룸</NavBotton>}
-      <Avatar/>
+      {window.location.pathname === '/search' ? null : (
+        <NavSearchInput
+          placeholder="검색어를 입력해주세요"
+          onKeyDown={keyDownHandler}
+        />
+      )}
+      {loginFlag !== null ? (
+        <NavBotton onClick={loginClickHandler}>로그인/회원가입</NavBotton>
+      ) : (
+        <LoginDiv>
+          <NavBotton onClick={roomClickHandler}>마이룸</NavBotton>
+          <Avatar />
+        </LoginDiv>
+      )}
     </NavContainer>
   );
 }

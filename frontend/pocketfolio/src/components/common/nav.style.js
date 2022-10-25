@@ -19,7 +19,6 @@ export const NavLogoImg = styled.img`
   cursor: pointer;
 `;
 
-
 // Nav Search
 export const NavSearchInput = styled.input`
   width: 30%;
@@ -61,4 +60,10 @@ export const NavBotton = styled.button`
     background-color: #35297e;
     box-shadow: 0.5px 0.5px 0.5px #333;
   }
+`;
+
+// LoginDiv
+export const LoginDiv = styled.div`
+  display: flex;
+  align-items: center;
 `;
