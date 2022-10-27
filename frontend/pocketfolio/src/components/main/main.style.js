@@ -14,6 +14,32 @@ export const Slider = styled.div`
 `;
 
 export const Content = styled.div`
+  position: relative;
   width: 100%;
 `;
-export const CarouselNav = styled.div``;
+export const CarouselNav = styled.div`
+  position: absolute;
+  top: 110px;
+`;
+
+// CarouselNavButton 색 변경
+export const CarouselNavButton = styled.button`
+  margin-left: 10px;
+  width: 5%;
+  padding-bottom: 50%;
+  border-radius: 50%;
+  border: none;
+  box-shadow: 0 0 2px gray;
+  background-color: white;
+  opacity: 80%;
+`;
+
+export const CarouselNavButtonNone = styled.button`
+  margin-left: 10px;
+  width: 5%;
+  padding-bottom: 50%;
+  border-radius: 50%;
+  border: none;
+  background-color: white;
+  opacity: 50%;
+`;

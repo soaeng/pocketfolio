@@ -1,7 +1,14 @@
 import React, {useState, useEffect, useRef} from 'react';
 
 import Nav from '../common/nav';
-import {Container, Slider, Content, CarouselNav} from './main.style';
+import {
+  Container,
+  Slider,
+  Content,
+  CarouselNav,
+  CarouselNavButton,
+  CarouselNavButtonNone,
+} from './main.style';
 import Page1 from './carouselPage/page1';
 import Page2 from './carouselPage/page2';
 
@@ -73,7 +80,15 @@ function Main() {
             })}
             <CarouselNav>
               {Array.from({length: 2}).map((item, index) => (
-                <button key={index} onClick={() => slideNav(index + 1)} />
+                <div>
+                  {slideIndex === index + 1 ? (
+                    <CarouselNavButton onClick={() => slideNav(index + 1)} />
+                  ) : (
+                    <CarouselNavButtonNone
+                      onClick={() => slideNav(index + 1)}
+                    />
+                  )}
+                </div>
               ))}
             </CarouselNav>
           </Content>

@@ -12,12 +12,24 @@ const columnDiv = styled(Flex)`
   width: 100%;
 `;
 
+export const MainContainer = styled.div`
+  position: relative;
+`;
+
 export const Page1Container = styled(rowDiv)`
+  position: absolute;
   background-color: #b94d4d;
+  width: 70%;
+  margin-top: 50px;
+  border-radius: 0 0 15% 0;
 `;
 
 export const Page2Container = styled(rowDiv)`
+  position: absolute;
   background-color: #10468e;
+  margin-top: 50px;
+  width: 70%;
+  border-radius: 0 0 15% 0;
 `;
 
 export const TextContainer = styled(columnDiv)`
@@ -26,41 +38,15 @@ export const TextContainer = styled(columnDiv)`
 `;
 
 export const ImageContainer = styled.img`
-  width: 10%;
+  position: absolute;
+  /* top: 20px; */
+  padding-left: 60%;
+  /* width: 25%; */
 `;
 
 export const Text = styled.p`
   width: 100%;
   height: fit-content;
-  &.concept {
-    display: flex;
-    align-items: center;
-    margin-top: 20%;
-    font-size: 1.1em;
-    font-family: Pretendard SemiBold;
-  }
-  &.bold {
-    margin-top: 0;
-    margin-bottom: 8%;
-    font-size: 4em;
-    font-family: Strawberry Muffins;
-  }
-  &.thin {
-    font-size: 1.05em;
-    font-family: Pretendard Medium;
-    line-height: 25px;
-    color: rgba(0, 0, 0, 0.65);
-  }
-  &.light {
-    font-size: 0.9em;
-    font-family: Pretendard Medium;
-    color: rgba(0, 0, 0, 0.6);
-  }
-  &.light span {
-    font-size: 0.88em;
-    font-family: Pretendard Light;
-    color: rgba(0, 0, 0, 0.5);
-  }
 `;
 
 // Move to Room Button
@@ -74,11 +60,12 @@ export const RoomBotton = styled.button`
   cursor: pointer;
 
   &:hover {
-    background-color: #35297e;
+    box-shadow: 0.5px 0.5px 0.5px #333;
+    color: #000;
   }
 
   &:active {
-    background-color: #35297e;
+    top: 2px;
     box-shadow: 0.5px 0.5px 0.5px #333;
   }
 `;

@@ -2,6 +2,7 @@ import React from 'react';
 import {useNavigate} from 'react-router-dom';
 
 import {
+  MainContainer,
   Page2Container,
   TextContainer,
   ImageContainer,
@@ -17,7 +18,7 @@ const Page2 = () => {
   };
 
   return (
-    <div>
+    <MainContainer>
       <Page2Container>
         <TextContainer>
           <Text>
@@ -34,7 +35,7 @@ const Page2 = () => {
         </TextContainer>
       </Page2Container>
       <ImageContainer src="./assets/images/logo.png" />
-    </div>
+    </MainContainer>
   );
 };
 
