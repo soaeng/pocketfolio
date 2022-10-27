@@ -8,6 +8,7 @@ import Room from './components/room/room';
 import Search from './components/search/search';
 import Login from './components/user/login';
 import Profile from './components/user/profile';
+import PortfolioEdit from './components/portfolio/PortfolioEdit';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Route path="/" element={<Landing/>}/>
         <Route path="/main" element={<Main/>}/>
         <Route path="/port" element={<Portfolio/>}/>
+        <Route path="/port-edit" element={<PortfolioEdit/>}/>
         <Route path="/room" element={<Room/>}/>
         <Route path="/search" element={<Search/>}/>
         <Route path="/login" element={<Login/>}/>
