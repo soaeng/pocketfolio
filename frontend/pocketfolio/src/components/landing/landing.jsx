@@ -64,38 +64,30 @@ const Landing = () => {
       // 스크롤 내릴 때
       if (scrollTop >= 0 && scrollTop < pageHeight) {
         //현재 1페이지
-        console.log('현재 1페이지, down');
         scrollPage(2);
       } else if (scrollTop >= pageHeight && scrollTop < pageHeight * 2) {
         //현재 2페이지
-        console.log('현재 2페이지, down');
         scrollPage(3);
       } else if (scrollTop >= pageHeight && scrollTop < pageHeight * 3) {
         //현재 3페이지
-        console.log('현재 3페이지, down');
         scrollPage(4);
       } else {
         // 현재 4페이지
-        console.log('현재 4페이지, down');
         scrollPage(4);
       }
     } else {
       // 스크롤 올릴 때
       if (scrollTop >= 0 && scrollTop < pageHeight) {
         //현재 1페이지
-        console.log('현재 1페이지, up');
         scrollPage(1);
       } else if (scrollTop >= pageHeight && scrollTop < pageHeight * 2) {
         //현재 2페이지
-        console.log('현재 2페이지, up');
         scrollPage(1);
       } else if (scrollTop >= pageHeight && scrollTop < pageHeight * 3) {
         //현재 3페이지
-        console.log('현재 3페이지, up');
         scrollPage(2);
       } else {
         // 현재 4페이지
-        console.log('현재 4페이지, up');
         scrollPage(3);
       }
     }
