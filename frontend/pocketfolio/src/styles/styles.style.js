@@ -75,7 +75,7 @@ const H3 = styled.h3`
   }
 `;
 
-const Body1 = styled.body`
+const Body1 = styled.p`
   // xl(4k, ≥2100px)
   font-size: 3rem;
 
