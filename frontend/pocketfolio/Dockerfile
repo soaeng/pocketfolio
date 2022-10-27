@@ -9,6 +9,7 @@ RUN npm run build
 # production stage
 FROM nginx:stable-alpine as production-stage
 COPY --from=build-stage /var/jenkins_home/workspace/k7e101/frontend/pocketfolio/build /usr/share/nginx/html
-COPY --from=build-stage /var/jenkins_home/workspace/k7e101/frontend/pocketfolio/deploy_conf/nginx.conf /etc/nginx/conf.d/default.conf
+COPY ./default.conf /etc/nginx/conf.d
 EXPOSE 80
 CMD ["nginx", "-g","daemon off;"]
+
