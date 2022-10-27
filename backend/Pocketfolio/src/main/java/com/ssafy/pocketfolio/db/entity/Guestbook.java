@@ -37,8 +37,8 @@ import lombok.ToString;
 public class Guestbook {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="guestbook_no", nullable=false, updatable=false)
-	private long guestbookNo;
+	@Column(name="guestbook_seq", nullable=false, updatable=false)
+	private long guestbookSeq;
 
 //	@Column(name="guestbook_content", length=1000, nullable=false) // if update possible
 	@Column(name="guestbook_content", length=1000, nullable=false, updatable=false)
@@ -56,13 +56,13 @@ public class Guestbook {
 	private LocalDateTime guestbookCreated;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="room_no", nullable=false, updatable=false)
+	@JoinColumn(name="room_seq", nullable=false, updatable=false)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	@NotNull
 	private Room room;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="user_no")
+	@JoinColumn(name="user_seq")
 	private User user;
 	
 //	public void updateGuestbookContent(String guestbookContent) { // update content only

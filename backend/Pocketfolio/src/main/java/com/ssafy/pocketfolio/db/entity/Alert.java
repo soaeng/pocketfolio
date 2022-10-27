@@ -21,8 +21,8 @@ import java.time.ZonedDateTime;
 public class Alert {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="alert_no", nullable=false, updatable=false)
-	private long alertNo;
+	@Column(name="alert_seq", nullable=false, updatable=false)
+	private long alertSeq;
 
 	@Column(name="alert_text", length=255, nullable=false)
 	@NotNull
@@ -42,7 +42,7 @@ public class Alert {
 	private LocalDateTime alertCreated;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="user_no", nullable=false, updatable=false)
+	@JoinColumn(name="user_seq", nullable=false, updatable=false)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	@NotNull
 	private User user;

@@ -31,11 +31,11 @@ import lombok.ToString;
 public class PortfolioUrl {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="port_url_no", nullable=false, updatable=false)
-	private long portUrlNo;
+	@Column(name="port_url_seq", nullable=false, updatable=false)
+	private long portUrlSeq;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="port_no", nullable=false, updatable=false)
+	@JoinColumn(name="port_seq", nullable=false, updatable=false)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	@NotNull
 	private Portfolio portfolio;

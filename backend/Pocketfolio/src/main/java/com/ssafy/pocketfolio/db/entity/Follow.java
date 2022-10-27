@@ -37,8 +37,8 @@ uniqueConstraints = {
 public class Follow {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="follow_no", nullable=false, updatable=false)
-	private long followNo;
+	@Column(name="follow_seq", nullable=false, updatable=false)
+	private long followSeq;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="follow_from", nullable=false, updatable=false)

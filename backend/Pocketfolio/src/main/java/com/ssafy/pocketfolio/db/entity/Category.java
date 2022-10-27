@@ -25,8 +25,8 @@ import lombok.ToString;
 public class Category {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="room_no", nullable=false, updatable=false)
-	private long categoryNo;
+	@Column(name="category_seq", nullable=false, updatable=false)
+	private long categorySeq;
 	
 	@Column(name="category_name", length=20, nullable=false)
 	@NotNull

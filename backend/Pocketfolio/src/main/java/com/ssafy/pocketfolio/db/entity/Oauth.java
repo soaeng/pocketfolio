@@ -14,23 +14,26 @@ import javax.persistence.*;
 @ToString
 @Entity
 @Table(
-name="comment_like",
+name="oauth",
 uniqueConstraints = {
-		@UniqueConstraint(name="UK_COMMENT_LIKE", columnNames={"comment_seq", "user_seq"})
+		@UniqueConstraint(name="UK_OAUTH_KEY", columnNames={"oauth_key"}),
+		@UniqueConstraint(name="UK_OAUTH_USER_FROM", columnNames={"user_seq", "oauth_from"})
 }
 )
-public class CommentLike {
+public class Oauth {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="comment_like_seq", nullable=false, updatable=false)
-	private long commentLikeSeq;
+	@Column(name="oauth_seq", nullable=false, updatable=false)
+	private long oauthSeq;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="comment_seq", nullable=false, updatable=false)
-	@OnDelete(action = OnDeleteAction.CASCADE)
+	@Column(name="oauth_key", length=127, nullable=false, updatable=false)
 	@NotNull
-	private BoardComment boardComment;
-	
+	private String oauthKey;
+
+	@Column(name="oauth_from", length=30, nullable=false, updatable=false)
+	@NotNull
+	private String oauthFrom;
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="user_seq", nullable=false, updatable=false)
 	@OnDelete(action = OnDeleteAction.CASCADE)
