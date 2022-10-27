@@ -36,23 +36,23 @@ import lombok.ToString;
 @Table(
 name="room_like",
 uniqueConstraints = {
-		@UniqueConstraint(name="UK_ROOM_LIKE", columnNames={"room_no", "user_no"})
+		@UniqueConstraint(name="UK_ROOM_LIKE", columnNames={"room_seq", "user_seq"})
 }
 )
 public class RoomLike {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="room_like_no", nullable=false, updatable=false)
-	private long roomLikeNo;
+	@Column(name="room_like_seq", nullable=false, updatable=false)
+	private long roomLikeSeq;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="room_no", nullable=false, updatable=false)
+	@JoinColumn(name="room_seq", nullable=false, updatable=false)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	@NotNull
 	private Room room;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="user_no", nullable=false, updatable=false)
+	@JoinColumn(name="user_seq", nullable=false, updatable=false)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	@NotNull
 	private User user;

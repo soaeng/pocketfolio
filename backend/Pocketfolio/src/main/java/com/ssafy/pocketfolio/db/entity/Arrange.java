@@ -31,17 +31,17 @@ import lombok.ToString;
 public class Arrange {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="arrange_no", nullable=false, updatable=false)
-	private long arrangeNo;
+	@Column(name="arrange_seq", nullable=false, updatable=false)
+	private long arrangeSeq;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="room_no", nullable=false, updatable=false)
+	@JoinColumn(name="room_seq", nullable=false, updatable=false)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	@NotNull
 	private Room room;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="item_no", nullable=false, updatable=false)
+	@JoinColumn(name="item_seq", nullable=false, updatable=false)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	@NotNull
 	private Item item;
@@ -60,7 +60,7 @@ public class Arrange {
 	private int locationZ;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="port_no")
+	@JoinColumn(name="port_seq")
 	private Portfolio portfolio;
 	
 	public void updateArrange(int locationX, int locationY, int locationZ) {

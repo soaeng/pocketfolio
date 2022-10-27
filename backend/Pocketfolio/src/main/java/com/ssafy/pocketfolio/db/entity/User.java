@@ -29,8 +29,8 @@ uniqueConstraints = {
 public class User {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="user_no", nullable=false, updatable=false)
-	private long userNo;
+	@Column(name="user_seq", nullable=false, updatable=false)
+	private long userSeq;
 
 	@Column(name="user_email", length=50, nullable=false)
 	@NotNull

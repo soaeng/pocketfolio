@@ -20,8 +20,8 @@ import java.time.ZonedDateTime;
 public class Board {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="board_no", nullable=false, updatable=false)
-	private long boardNo;
+	@Column(name="board_seq", nullable=false, updatable=false)
+	private long boardSeq;
 	
 	@Column(name="board_title", length=100, nullable=false)
 	@NotNull
@@ -35,13 +35,13 @@ public class Board {
 	private String boardThumbnail;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="user_no", nullable=false, updatable=false)
+	@JoinColumn(name="user_seq", nullable=false, updatable=false)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	@NotNull
 	private User user;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="board_category_no")
+	@JoinColumn(name="board_category_seq")
 	private BoardCategory boardCategory;
 	
 	@Column(name="board_created", nullable=false, updatable=false, columnDefinition = "datetime DEFAULT (current_time)")

@@ -21,8 +21,8 @@ import java.time.ZonedDateTime;
 public class BoardComment {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="comment_no", nullable=false, updatable=false)
-	private long commentNo;
+	@Column(name="comment_seq", nullable=false, updatable=false)
+	private long commentSeq;
 	
 	@Column(name="comment_content", length=1000, nullable=false, updatable=false)
 	@NotNull
@@ -39,13 +39,13 @@ public class BoardComment {
 	private LocalDateTime commentCreated;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="board_no", nullable=false, updatable=false)
+	@JoinColumn(name="board_seq", nullable=false, updatable=false)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	@NotNull
 	private Board board;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="user_no")
+	@JoinColumn(name="user_seq")
 	private User user;
 
 	@PrePersist

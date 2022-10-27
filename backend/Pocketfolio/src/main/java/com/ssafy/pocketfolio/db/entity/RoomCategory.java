@@ -30,25 +30,25 @@ import lombok.ToString;
 @Entity
 @Table(
 name="room_category",
-//indexes = @Index(name="IDX_CHATROOM_USER_CHATROOMNO", columnList="chatroom_no"),
+//indexes = @Index(name="IDX_CHATROOM_USER_CHATROOMNO", columnList="chatroom_seq"),
 uniqueConstraints = {
-		@UniqueConstraint(name="UK_ROOM_CATEGORY", columnNames={"room_no", "category_no"})
+		@UniqueConstraint(name="UK_ROOM_CATEGORY", columnNames={"room_seq", "category_seq"})
 }
 )
 public class RoomCategory {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="room_category_no", nullable=false, updatable=false)
-	private long roomCategoryNo;
+	@Column(name="room_category_seq", nullable=false, updatable=false)
+	private long roomCategorySeq;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="room_no", nullable=false, updatable=false)
+	@JoinColumn(name="room_seq", nullable=false, updatable=false)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	@NotNull
 	private Room room;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="category_no", nullable=false, updatable=false)
+	@JoinColumn(name="category_seq", nullable=false, updatable=false)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	@NotNull
 	private Category category;

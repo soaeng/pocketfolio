@@ -19,23 +19,23 @@ import java.time.ZonedDateTime;
 @Table(
 name="room_tag",
 uniqueConstraints = {
-		@UniqueConstraint(name="UK_ROOM_TAG", columnNames={"room_no", "tag_no"})
+		@UniqueConstraint(name="UK_ROOM_TAG", columnNames={"room_seq", "tag_seq"})
 }
 )
 public class RoomTag {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="room_tag_no", nullable=false, updatable=false)
-	private long roomTagNo;
+	@Column(name="room_tag_seq", nullable=false, updatable=false)
+	private long roomTagSeq;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="room_no", nullable=false, updatable=false)
+	@JoinColumn(name="room_seq", nullable=false, updatable=false)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	@NotNull
 	private Room room;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="tag_no", nullable=false, updatable=false)
+	@JoinColumn(name="tag_seq", nullable=false, updatable=false)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	@NotNull
 	private Tag tag;

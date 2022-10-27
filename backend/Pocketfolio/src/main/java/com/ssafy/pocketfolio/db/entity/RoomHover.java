@@ -31,17 +31,17 @@ import lombok.ToString;
 @Table(
 name="room_hover",
 uniqueConstraints = {
-		@UniqueConstraint(name="UK_ROOM_HOVER", columnNames={"room_no", "room_hover_url"})
+		@UniqueConstraint(name="UK_ROOM_HOVER", columnNames={"room_seq", "room_hover_url"})
 }
 )
 public class RoomHover {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="room_hover_no", nullable=false, updatable=false)
-	private long roomHoverNo;
+	@Column(name="room_hover_seq", nullable=false, updatable=false)
+	private long roomHoverSeq;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="room_no", nullable=false, updatable=false)
+	@JoinColumn(name="room_seq", nullable=false, updatable=false)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	@NotNull
 	private Room room;

@@ -15,8 +15,8 @@ import javax.persistence.*;
 public class BoardCategory {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="board_category_no", nullable=false, updatable=false)
-	private long boardCategoryNo;
+	@Column(name="board_category_seq", nullable=false, updatable=false)
+	private long boardCategorySeq;
 	
 	@Column(name="board_category_name", length=20, nullable=false)
 	@NotNull

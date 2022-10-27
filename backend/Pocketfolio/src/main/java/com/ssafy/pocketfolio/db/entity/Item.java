@@ -31,8 +31,8 @@ uniqueConstraints = {
 public class Item {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="item_no", nullable=false, updatable=false)
-	private long itemNo;
+	@Column(name="item_seq", nullable=false, updatable=false)
+	private long itemSeq;
 	
 	@Column(name="item_name", length=20, nullable=false)
 	@NotNull

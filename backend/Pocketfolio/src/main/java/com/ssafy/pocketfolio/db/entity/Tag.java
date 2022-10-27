@@ -16,21 +16,21 @@ import javax.persistence.*;
 @Table(
 name="tag",
 uniqueConstraints = {
-		@UniqueConstraint(name="UK_TAG", columnNames={"port_no", "tag_name"})
+		@UniqueConstraint(name="UK_TAG", columnNames={"port_seq", "tag_name"})
 }
 )
 public class Tag {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="tag_no", nullable=false, updatable=false)
-	private long tagNo;
+	@Column(name="tag_seq", nullable=false, updatable=false)
+	private long tagSeq;
 
 	@Column(name="tag_name", length=20, nullable=false, updatable=false)
 	@NotNull
 	private String tagName;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="port_no", nullable=false, updatable=false)
+	@JoinColumn(name="port_seq", nullable=false, updatable=false)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	@NotNull
 	private Portfolio portfolio;

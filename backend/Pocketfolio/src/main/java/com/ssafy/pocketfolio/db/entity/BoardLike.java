@@ -19,23 +19,23 @@ import java.time.ZonedDateTime;
 @Table(
 name="board_like",
 uniqueConstraints = {
-		@UniqueConstraint(name="UK_BOARD_LIKE", columnNames={"board_no", "user_no"})
+		@UniqueConstraint(name="UK_BOARD_LIKE", columnNames={"board_seq", "user_seq"})
 }
 )
 public class BoardLike {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="board_like_no", nullable=false, updatable=false)
-	private long boardLikeNo;
+	@Column(name="board_like_seq", nullable=false, updatable=false)
+	private long boardLikeSeq;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="board_no", nullable=false, updatable=false)
+	@JoinColumn(name="board_seq", nullable=false, updatable=false)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	@NotNull
 	private Board board;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="user_no", nullable=false, updatable=false)
+	@JoinColumn(name="user_seq", nullable=false, updatable=false)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	@NotNull
 	private User user;
