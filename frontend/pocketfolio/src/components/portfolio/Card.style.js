@@ -37,20 +37,42 @@ export const TitleDiv = styled.div`
   display: flex;
   align-items: center;
   height: 20%;
-  margin-left: 0.5rem;
   font-family: bold;
+  border-bottom: 0.3px solid rgba(0, 0, 0, 0.3);
+`;
+
+export const Title = styled.div`
+  margin-left: 1rem;
 `;
 
 export const LikeDiv = styled.div`
   display: flex;
   justify-content: center;
-  border-top: 1px solid gray;
+  width: 50%;
+  justify-content: space-around;
+  margin: auto;
 `;
 
-export const LikeContent = styled.div``;
-
-export const DeleteBtn = styled.img`
-  margin: 1rem 1rem 0 0;
-  width: 30px;
+export const LikeContent = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  width: 40%;
 `;
 
+export const Img = styled.img`
+  &.deleteBtn {
+    margin: 1rem 1rem 0 0;
+    width: 30px;
+    cursor: pointer;
+  }
+
+  &.hearteye {
+    height: 15px;
+    width: 15px;
+  }
+`;
+
+export const Count = styled.span`
+
+`

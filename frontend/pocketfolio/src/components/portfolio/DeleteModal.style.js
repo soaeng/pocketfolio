@@ -34,9 +34,10 @@ export const Contents = styled.div`
 
 export const BtnDiv = styled.div`
   display: flex;
-  margin: auto;
+  
   justify-content: space-evenly;
   width: 40%;
+  height: 30%;
 `;
 
 export const StyledBtn = styled.button`

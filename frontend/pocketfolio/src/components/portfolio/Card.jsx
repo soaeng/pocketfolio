@@ -4,10 +4,12 @@ import {
   Item,
   ImgDiv,
   TitleDiv,
+  Title,
   LikeDiv,
   LikeContent,
   Thumbnail,
-  DeleteBtn,
+  Img,
+  Count,
 } from './Card.style';
 import DeleteModal from './DeleteModal';
 
@@ -15,8 +17,8 @@ const Card = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const openModal = () => {
-    setIsOpen(true)
-  }
+    setIsOpen(true);
+  };
 
   return (
     <Wrapper>
@@ -24,24 +26,39 @@ const Card = () => {
         <ImgDiv>
           <Thumbnail src={process.env.PUBLIC_URL + '/assets/images/room.png'} />
         </ImgDiv>
-        <TitleDiv>아이링크</TitleDiv>
+        <TitleDiv>
+          <Title>아이링크</Title>
+        </TitleDiv>
         <LikeDiv>
-          
-          <LikeContent>좋아요 13</LikeContent>
-          <LikeContent>방문자 13</LikeContent>
+          <LikeContent>
+            <Img
+              className="hearteye"
+              src={process.env.PUBLIC_URL + '/assets/images/heart.png'}
+            />
+            <Count>20</Count>
+          </LikeContent>
+          <LikeContent>
+            <Img
+              className="hearteye"
+              src={process.env.PUBLIC_URL + '/assets/images/eye.png'}
+            />
+            <Count>13</Count>
+          </LikeContent>
         </LikeDiv>
       </Item>
-      <DeleteBtn
-      onClick={openModal} 
-      src={process.env.PUBLIC_URL + '/assets/images/trashcan.png'} />
+      <Img
+        className="deleteBtn"
+        onClick={openModal}
+        src={process.env.PUBLIC_URL + '/assets/images/trashcan.png'}
+      />
 
       {isOpen && (
         <DeleteModal
-        onClose={() => {
-          setIsOpen(false);
-        }}/>
+          onClose={() => {
+            setIsOpen(false);
+          }}
+        />
       )}
-
     </Wrapper>
   );
 };
