@@ -53,3 +53,4 @@ export const DeleteBtn = styled.img`
   margin: 1rem 1rem 0 0;
   width: 30px;
 `;
+

@@ -26,6 +26,7 @@ const Card = () => {
         </ImgDiv>
         <TitleDiv>아이링크</TitleDiv>
         <LikeDiv>
+          
           <LikeContent>좋아요 13</LikeContent>
           <LikeContent>방문자 13</LikeContent>
         </LikeDiv>
