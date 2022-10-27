@@ -29,34 +29,15 @@ export const Contents = styled.div`
   justify-content: space-around;
   align-items: center;
   height: 100%;
-  h1 {
-    font-size: 30px;
-    font-weight: 600;
-    margin: 0;
-    color: #be2018;
-  }
-
-  .buttonDiv {
-    display: flex;
-    justify-content: space-around;
-    width: 30%;
-
-    .close {
-      &:hover {
-        letter-spacing: 2px;
-        transform: scale(1);
-        background-color: #be2018;
-        cursor: pointer;
-      }
-    }
-  }
+ 
 `;
 
 export const BtnDiv = styled.div`
   display: flex;
-  margin: auto;
+  
   justify-content: space-evenly;
   width: 40%;
+  height: 30%;
 `;
 
 export const StyledBtn = styled.button`
@@ -72,6 +53,7 @@ export const StyledBtn = styled.button`
     font-weight: 1000;
     font-size: 20px;
     cursor: pointer;
+    
   }
   
   &.delete {

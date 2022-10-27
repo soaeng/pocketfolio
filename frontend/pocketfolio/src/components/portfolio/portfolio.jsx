@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import Nav from '../common/nav';
 import {useNavigate} from 'react-router-dom';
 import {
   Container,
@@ -27,6 +28,8 @@ const Portfolio = () => {
   }
 
   return (
+    <>
+    <Nav></Nav>
     <Background>
       <Container>
         <Header>나의 역사</Header>
@@ -55,6 +58,7 @@ const Portfolio = () => {
         </CardWrapper>
       </Container>
     </Background>
+    </>
   );
 };
 
