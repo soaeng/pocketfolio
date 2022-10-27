@@ -1,5 +1,4 @@
 import {useEffect, useRef} from 'react';
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {Frame, Outer, Divider, Content1, Title} from './landing.style';
 import {Button} from '../common/Button';
 
@@ -99,9 +98,7 @@ const Landing = () => {
         <Content1>
           <Title>손쉽게 만드는 나만의 포트폴리오 전시장</Title>
           <Button>바로 시작하기</Button>
-          <button>
-            <FontAwesomeIcon icon="fa-solid fa-circle-chevron-down" />
-          </button>
+          <button></button>
         </Content1>
       </Frame>
       <Divider />
