@@ -29,12 +29,11 @@ export const Contents = styled.div`
   justify-content: space-around;
   align-items: center;
   height: 100%;
- 
 `;
 
 export const BtnDiv = styled.div`
   display: flex;
-  
+
   justify-content: space-evenly;
   width: 40%;
   height: 30%;
@@ -53,13 +52,12 @@ export const StyledBtn = styled.button`
     font-weight: 1000;
     font-size: 20px;
     cursor: pointer;
-    
   }
-  
+
   &.delete {
     width: 6rem;
     height: 2.8rem;
-    background-color: #2C2365;
+    background-color: #2c2365;
     box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.3),
       0px 1px 3px 1px rgba(0, 0, 0, 0.15);
     border: 0;
