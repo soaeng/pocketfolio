@@ -7,7 +7,7 @@ import {
   TextContainer,
   ImageContainer,
   Text,
-  RoomBotton,
+  RoomButton,
 } from './carouselPage.style';
 
 const Page2 = () => {
@@ -31,7 +31,8 @@ const Page2 = () => {
             <br />
             3D 포트폴리오를 만들어보세요2
           </Text>
-          <RoomBotton onClick={buttonClickHandler}>바로 시작하기</RoomBotton>
+          <RoomButton onClick={buttonClickHandler}>바로 시작하기</RoomButton>
+          <RoomButton onClick={buttonClickHandler}>바로 시작하기</RoomButton>
         </TextContainer>
       </Page2Container>
       <ImageContainer src="./assets/images/logo.png" />

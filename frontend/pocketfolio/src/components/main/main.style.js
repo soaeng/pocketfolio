@@ -43,3 +43,8 @@ export const CarouselNavButtonNone = styled.button`
   background-color: white;
   opacity: 50%;
 `;
+
+export const Test = styled.div`
+  position: relative;
+  top: 300px;
+`;

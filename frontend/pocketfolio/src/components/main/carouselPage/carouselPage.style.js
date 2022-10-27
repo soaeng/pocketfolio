@@ -50,7 +50,7 @@ export const Text = styled.p`
 `;
 
 // Move to Room Button
-export const RoomBotton = styled.button`
+export const RoomButton = styled.button`
   width: 200px;
   margin: 0.5rem;
   padding: 0.5rem 1rem;

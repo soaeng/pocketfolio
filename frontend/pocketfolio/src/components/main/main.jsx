@@ -8,9 +8,11 @@ import {
   CarouselNav,
   CarouselNavButton,
   CarouselNavButtonNone,
+  Test,
 } from './main.style';
 import Page1 from './carouselPage/page1';
 import Page2 from './carouselPage/page2';
+import RecCarousel from './recCarousel';
 
 // Main Carousel 자동 화면 전환을 위한 함수 선언
 const useInteval = (callback, delay) => {
@@ -94,6 +96,10 @@ function Main() {
           </Content>
         </Slider>
       </Container>
+      {/* 추천 Carousel */}
+      <Test>
+        <RecCarousel />
+      </Test>
     </>
   );
 }
