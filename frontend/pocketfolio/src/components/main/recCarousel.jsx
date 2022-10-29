@@ -1,92 +1,69 @@
-import React, {useState, useEffect, useRef} from 'react';
+// 추천 carousel
+import React, { useState, useEffect, useRef } from "react";
+import {Container, Carousel, Item, Ui} from './recCarousel.style'
 
-// 임시 data
-const Card = () => {
-  return (
-    <div>
-      <h2>card1</h2>
-    </div>
-  );
-};
+// 임시데이터
+const items = [
+    {
+        icon:"face",
+        copy:'01. Lorem ipsum dolor sit amet, consectetur adipiscing elit.'
+    },{
+        icon:"pets",
+        copy:'02. Sed do eiusmod tempor incididunt ut labore.'
+    },{
+        icon:"stars",
+        copy:'03. Consectetur adipiscing elit.'
+    },{
+        icon:"invert_colors",
+        copy:'04. Ut enim ad minim veniam, quis nostrud exercitation.'
+    },{
+        icon:"psychology",
+        copy:'05. Llamco nisi ut aliquip ex ea commodo consequat.'
+    },{
+        icon:"brightness_7",
+        copy:'06. Misi ut aliquip ex ea commodo consequat.'
+    },{
+      icon:"brightness",
+      copy:'07. Misi ut aliquip ex ea commodo consequat.'
+  }
+];
 
-const Card1 = () => {
-  return (
-    <div>
-      <h2>card2</h2>
-    </div>
-  );
-};
+const RecCarousel = () => {
+  const [item, setItem] = useState(items);
+  const carousel = useRef(null)
 
-const Card2 = () => {
-  return (
-    <div>
-      <h2>card3</h2>
-    </div>
-  );
-};
+  const handleLeft = (e) => {
+    e.preventDefault();
+    carousel.current.scrollLeft -= carousel.current.offsetWidth
+  }
 
-const Card3 = () => {
-  return (
-    <div>
-      <h2>card4</h2>
-    </div>
-  );
-};
+  const handleRight = (e) => {
+    e.preventDefault();
+    carousel.current.scrollLeft += carousel.current.offsetWidth
+  }
 
-const Card4 = () => {
-  return (
-    <div>
-      <h2>card5</h2>
-    </div>
-  );
-};
-
-// 추천 Carousel component
-function RecCarousel() {
-  const pageSlider = [
-    {id: 1, component: <Card />},
-    {id: 2, component: <Card1 />},
-    {id: 3, component: <Card2 />},
-    {id: 4, component: <Card3 />},
-    {id: 5, component: <Card4 />},
-  ];
-
-  const [slideIndex, setSlideIndex] = useState(1);
-
-  const prevSlide = () => {
-    if (slideIndex !== 1) {
-      setSlideIndex(slideIndex - 1);
-    }
-  };
-
-  const nextSlide = () => {
-    if (slideIndex !== pageSlider.length) {
-      setSlideIndex(slideIndex + 1);
-    }
-  };
-
-  return (
+  return(
     <>
-      <div>
-        {/* pre 버튼 */}
-        {/* 첫 carousel일 때 버튼 안보이게*/}
-        {slideIndex !== 1 && <button onClick={prevSlide}>pre</button>}
-        {/* 카드 */}
-        {pageSlider.map((obj, index) => {
-          return (
-            <div key={obj.id}>
-              {slideIndex === index + 1 && pageSlider[index]['component']}
-            </div>
-          );
+    <Container>
+      <Carousel ref={carousel}>
+        {item.map((it) => {
+          const {icon, copy} = it;
+          return(
+            <Item>
+              <div>{icon}</div>
+              <div>{copy}</div>
+            </Item>
+          )
         })}
-        {/* next 버튼 */}
-        {/* 마지막 carousel일 때 버튼 안보이게 */}
-        {slideIndex !== pageSlider.length && (
-          <button onClick={nextSlide}>ne</button>
-        )}
-      </div>
-    </>
+      </Carousel>
+      
+    </Container>
+    <Ui>
+    <button onClick={handleLeft}>{"<"}</button>
+    <button onClick={handleRight}>{">"}</button>
+  </Ui>
+  </>
   );
 }
 
-export default RecCarousel;
+export default RecCarousel
