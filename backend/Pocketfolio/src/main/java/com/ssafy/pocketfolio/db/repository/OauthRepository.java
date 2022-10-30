@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface OauthRepository extends JpaRepository<Oauth, Long> {
 
-	Optional<Oauth> findByOauthKey(String oauthKey);
-	Optional<Oauth> findByUser_UserSeqAndOauthFrom(long userSeq, String oauthFrom);
+	Optional<Oauth> findByKey(String key);
+	Optional<Oauth> findByUser_UserSeqAndFrom(long userSeq, String from);
 
 }

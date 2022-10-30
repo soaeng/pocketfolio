@@ -1,18 +1,19 @@
 package com.ssafy.pocketfolio.security.service;
 
+import com.ssafy.pocketfolio.db.entity.User;
+import com.ssafy.pocketfolio.db.repository.UserRepository;
+import com.ssafy.pocketfolio.security.dto.UserAuthDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import com.ssafy.pocketfolio.db.entity.User;
-import com.ssafy.pocketfolio.db.repository.UserRepository;
-import com.ssafy.pocketfolio.security.dto.UserAuthDto;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Optional;
-import java.util.stream.Collectors;
+import java.util.Set;
 
 @Log4j2
 @Service
@@ -24,10 +25,10 @@ public class UserDetailsService implements org.springframework.security.core.use
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        log.info("ClubUserDetailsService loadUserByUsername " + username);
+        log.info("UserDetailsService loadUserByUsername " + username);
 
 
-        Optional<User> result = userRepository.findByUserEmail(username);
+        Optional<User> result = userRepository.findByEmail(username);
 
         if(result.isEmpty()){
             throw new UsernameNotFoundException("Check User Email or from Social ");
@@ -38,18 +39,20 @@ public class UserDetailsService implements org.springframework.security.core.use
         log.info("-----------------------------");
         log.info(user);
 
-        ArrayList<Integer> arr = new ArrayList<>(); // 이것도 나중에 수정
-        arr.add(1);
+        Set<GrantedAuthority> roleSet = new HashSet<>();
+        roleSet.add(new SimpleGrantedAuthority("ROLE_USER"));
 
         UserAuthDto userAuthDto = new UserAuthDto(
-                user.getUserName(),
-                user.getUserEmail(),
-                arr.stream().map(
-                                role -> new SimpleGrantedAuthority("ROLE_USER"))
-                        .collect(Collectors.toList())
+                Long.toString(user.getUserSeq()),
+                roleSet
+
+//                user.getUserRoleSet().stream()
+//                        .map(role -> new SimpleGrantedAuthority("ROLE_"+role.name()))
+//                        .collect(Collectors.toSet())
         );
 
-//        userAuthDto.setName(user.getUserName());
+        userAuthDto.setEmail(user.getEmail());
+        userAuthDto.setName(user.getName());
 
         return userAuthDto;
     }

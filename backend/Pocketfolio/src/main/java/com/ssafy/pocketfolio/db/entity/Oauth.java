@@ -16,8 +16,8 @@ import javax.persistence.*;
 @Table(
 name="oauth",
 uniqueConstraints = {
-		@UniqueConstraint(name="UK_OAUTH_KEY", columnNames={"oauth_key"}),
-		@UniqueConstraint(name="UK_OAUTH_USER_FROM", columnNames={"user_seq", "oauth_from"})
+		@UniqueConstraint(name="UK_OAUTH_KEY", columnNames={"key"}),
+		@UniqueConstraint(name="UK_OAUTH_USER_FROM", columnNames={"user_seq", "from"})
 }
 )
 public class Oauth {
@@ -26,13 +26,13 @@ public class Oauth {
 	@Column(name="oauth_seq", nullable=false, updatable=false)
 	private long oauthSeq;
 	
-	@Column(name="oauth_key", length=127, nullable=false, updatable=false)
+	@Column(name="key", length=127, nullable=false, updatable=false)
 	@NotNull
-	private String oauthKey;
+	private String key;
 
-	@Column(name="oauth_from", length=30, nullable=false, updatable=false)
+	@Column(name="from", length=30, nullable=false, updatable=false)
 	@NotNull
-	private String oauthFrom;
+	private String from;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="user_seq", nullable=false, updatable=false)

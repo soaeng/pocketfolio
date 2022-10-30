@@ -1,31 +1,15 @@
 package com.ssafy.pocketfolio.db.entity;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.PrePersist;
-import javax.persistence.Table;
-
+import com.sun.istack.NotNull;
+import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-import com.sun.istack.NotNull;
-
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 
 @Getter
 @Builder
@@ -40,19 +24,19 @@ public class GuestbookComment {
 	@Column(name="comment_seq", nullable=false, updatable=false)
 	private long commentSeq;
 	
-	@Column(name="comment_content", length=1000, nullable=false)
+	@Column(name="content", length=1000, nullable=false)
 	@NotNull
-	private String commentContent;
+	private String content;
 	
-	@Column(name="comment_is_public", length=1, nullable=false,
-			columnDefinition = "char(1) CHECK (comment_is_public in ('T', 'F')) DEFAULT 'T'")
+	@Column(name="is_public", length=1, nullable=false,
+			columnDefinition = "char(1) CHECK (is_public in ('T', 'F')) DEFAULT 'T'")
 	@ColumnDefault("'T'")
 	@NotNull
-	private String commentIsPublic; // "T" or "F"
+	private String isPublic; // "T" or "F"
 	
-	@Column(name="comment_created", nullable=false, updatable=false, columnDefinition = "datetime DEFAULT (current_time)")
+	@Column(name="created", nullable=false, updatable=false, columnDefinition = "datetime DEFAULT (current_time)")
 	@NotNull
-	private LocalDateTime commentCreated;
+	private LocalDateTime created;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="guestbook_seq", nullable=false, updatable=false)
@@ -64,16 +48,16 @@ public class GuestbookComment {
 	@JoinColumn(name="user_seq")
 	private User user;
 	
-//	public void updateCommentContent(String commentContent) { // update content only
-//		this.commentContent = commentContent;
+//	public void updateContent(String content) { // update content only
+//		this.content = content;
 //	}
 //	
-//	public void updateGuestbookIsPublic(String commentIsPublic) { // change public only
-//		this.commentIsPublic = commentIsPublic;
+//	public void changeIsPublic(String isPublic) { // change public only
+//		this.isPublic = isPublic;
 //	}
 	
 	@PrePersist
 	public void createdAt() {
-		this.commentCreated = ZonedDateTime.now(ZoneId.of("Asia/Seoul")).toLocalDateTime();
+		this.created = ZonedDateTime.now(ZoneId.of("Asia/Seoul")).toLocalDateTime();
 	}
 }

@@ -18,11 +18,11 @@ public class BoardCategory {
 	@Column(name="board_category_seq", nullable=false, updatable=false)
 	private long boardCategorySeq;
 	
-	@Column(name="board_category_name", length=20, nullable=false)
+	@Column(name="name", length=20, nullable=false)
 	@NotNull
-	private String boardCategoryName;
+	private String name;
 	
-	public void updateBoardCategoryName(String boardCategoryName) { // for administrator
-		this.boardCategoryName = boardCategoryName;
+	public void updateName(String name) { // for administrator
+		this.name = name;
 	}
 }

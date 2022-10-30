@@ -24,22 +24,22 @@ public class Alert {
 	@Column(name="alert_seq", nullable=false, updatable=false)
 	private long alertSeq;
 
-	@Column(name="alert_text", length=255, nullable=false)
+	@Column(name="text", length=255, nullable=false)
 	@NotNull
-	private String alertText;
+	private String text;
 	
-	@Column(name="alert_url", length=255)
-	private String alertUrl;
+	@Column(name="url", length=255)
+	private String url;
 
-	@Column(name="alert_confirm", length=1, nullable=false,
-			columnDefinition = "char(1) CHECK (`alert_confirm` in ('T', 'F')) default 'F'")
-	@ColumnDefault("'T'")
+	@Column(name="is_confirmed", length=1, nullable=false,
+			columnDefinition = "char(1) CHECK (`is_confirmed` in ('T', 'F')) default 'F'")
+	@ColumnDefault("'F'")
 	@NotNull
-	private String alertConfirm; // "T" or "F"
+	private String isConfirmed; // "T" or "F"
 
-	@Column(name="alert_created", nullable=false, updatable=false, columnDefinition = "datetime DEFAULT (current_time)")
+	@Column(name="created", nullable=false, updatable=false, columnDefinition = "datetime DEFAULT (current_time)")
 	@NotNull
-	private LocalDateTime alertCreated;
+	private LocalDateTime created;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="user_seq", nullable=false, updatable=false)
@@ -47,20 +47,20 @@ public class Alert {
 	@NotNull
 	private User user;
 	
-	public void updateAlertText(String alertText) { // for system or administrator
-		this.alertText = alertText;
+	public void updateText(String text) { // for system or administrator
+		this.text = text;
 	}
 	
-	public void updateAlertUrl(String alertUrl) { // for system or administrator
-		this.alertUrl = alertUrl;
+	public void updateUrl(String url) { // for system or administrator
+		this.url = url;
 	}
 	
-	public void checkConfirm() {
-		this.alertConfirm = "T";
+	public void changeIsConfirmed() {
+		this.isConfirmed = "T";
 	}
 
 	@PrePersist
 	public void createdAt() {
-		this.alertCreated = ZonedDateTime.now(ZoneId.of("Asia/Seoul")).toLocalDateTime();
+		this.created = ZonedDateTime.now(ZoneId.of("Asia/Seoul")).toLocalDateTime();
 	}
 }

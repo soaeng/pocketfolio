@@ -1,18 +1,12 @@
 package com.ssafy.pocketfolio.db.entity;
 
+import com.sun.istack.NotNull;
+import lombok.*;
+
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-
-import javax.persistence.*;
-
-import com.sun.istack.NotNull;
-
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 @Getter
 @Builder
@@ -23,7 +17,7 @@ import lombok.ToString;
 @Table(
 name="user",
 uniqueConstraints = {
-		@UniqueConstraint(name="UK_USER_EMAIL", columnNames="user_email")
+		@UniqueConstraint(name="UK_USER_EMAIL", columnNames="email")
 }
 )
 public class User {
@@ -32,47 +26,47 @@ public class User {
 	@Column(name="user_seq", nullable=false, updatable=false)
 	private long userSeq;
 
-	@Column(name="user_email", length=50, nullable=false)
+	@Column(name="email", length=50, nullable=false)
 	@NotNull
-	private String userEmail;
+	private String email;
 	
-	@Column(name="user_name", length=12, nullable=false)
+	@Column(name="name", length=12, nullable=false)
 	@NotNull
-	private String userName;
+	private String name;
 	
-	@Column(name="user_profile", length=255)
-	private String userProfile;
+	@Column(name="profile_pic", length=255)
+	private String profilePic;
 	
-	@Column(name="user_desc", length=200)
-	private String userDesc;
+	@Column(name="desc", length=200)
+	private String desc;
 	
-	@Column(name="user_created", nullable=false, updatable=false, columnDefinition = "datetime DEFAULT (current_time)")
+	@Column(name="created", nullable=false, updatable=false, columnDefinition = "datetime DEFAULT (current_time)")
 	@NotNull
-	private LocalDateTime userCreated;
+	private LocalDateTime created;
 
-	@Column(name="user_token", length=1000)
-	private String userToken;
+	@Column(name="token", length=1000)
+	private String token;
 	
 //	@Column(name="user_point", nullable=false, columnDefinition = "int CHECK (user_point >= 0)")
 //	@ColumnDefault("0")
 //	private int userPoint;
 
-	public void updateUser(String userName, String userProfile, String userDesc) {
-		this.userName = userName;
-		this.userProfile = userProfile;
-		this.userDesc = userDesc;
+	public void updateUser(String name, String profilePic, String desc) {
+		this.name = name;
+		this.profilePic = profilePic;
+		this.desc = desc;
 	}
 
-	public void updateUserToken(String userToken) {
-		this.userToken = userToken;
+	public void updateToken(String token) {
+		this.token = token;
 	}
 
-	public void updateUserEmail(String userEmail) { // need duplicate check
-		this.userEmail = userEmail;
+	public void updateEmail(String email) { // need duplicate check
+		this.email = email;
 	}
 	
 	@PrePersist
 	public void createdAt() {
-		this.userCreated = ZonedDateTime.now(ZoneId.of("Asia/Seoul")).toLocalDateTime();
+		this.created = ZonedDateTime.now(ZoneId.of("Asia/Seoul")).toLocalDateTime();
 	}
 }

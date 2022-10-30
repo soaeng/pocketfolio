@@ -4,18 +4,21 @@ import com.ssafy.pocketfolio.db.entity.Oauth;
 import com.ssafy.pocketfolio.db.entity.User;
 import com.ssafy.pocketfolio.db.repository.OauthRepository;
 import com.ssafy.pocketfolio.db.repository.UserRepository;
+import com.ssafy.pocketfolio.security.dto.UserAuthDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
-import com.ssafy.pocketfolio.security.dto.UserAuthDto;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
 
 @Log4j2
 @Service
@@ -25,6 +28,8 @@ public class OAuth2UserDetailsService extends DefaultOAuth2UserService {
     private final UserRepository userRepository;
 
     private final OauthRepository oauthRepository;
+
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
@@ -68,70 +73,61 @@ public class OAuth2UserDetailsService extends DefaultOAuth2UserService {
 
         log.info("EMAIL: " + email);
         log.info("NAME: " + name);
-//        ClubMember member = saveSocialMember(email); //조금 뒤에 사용
-//
-//        return oAuth2User;
-        User user = saveSocialMember(email, name, clientName, userNameAttributeName); // 1234
 
-        ArrayList<Integer> arr = new ArrayList<>(); // 이것도 나중에 수정
-        arr.add(1);
+        User user;
+        Optional<User> result = userRepository.findByEmail(email);
+
+        if (!result.isPresent()) {
+            // 회원 가입
+            user = saveSocialUser(email, name);
+            saveSocialOAuth(user, clientName, userNameAttributeName);
+        } else {
+            // 기존 회원 로그인
+            user = result.get();
+            if (!oauthRepository.findByUser_UserSeqAndFrom(user.getUserSeq(), clientName).isPresent()) {
+                // 기존 회원의 다른 소셜 로그인과 연동
+                // key가 고유한 값인지 확인되면 findByKey로 검색하면 됨
+                saveSocialOAuth(user, clientName, userNameAttributeName);
+            }
+        }
+
+        Set<GrantedAuthority> roleSet = new HashSet<>();
+        roleSet.add(new SimpleGrantedAuthority("ROLE_USER"));
 
         UserAuthDto userAuthDto = new UserAuthDto(
-                user.getUserName(),
-                user.getUserEmail(),
-                arr.stream().map(
-                                role -> new SimpleGrantedAuthority("ROLE_USER"))
-                        .collect(Collectors.toList()),
+                Long.toString(user.getUserSeq()),
+                roleSet,
                 oAuth2User.getAttributes()
         );
-//        userAuthDto.setName(user.getUserName());
+
+        userAuthDto.setEmail(user.getEmail());
+        userAuthDto.setName(user.getName());
 
         return userAuthDto;
     }
 
-
-    private User saveSocialMember(String email, String name, String from, String key) { // 12345 여기서 처리
-
-        //기존에 동일한 이메일로 가입한 회원이 있는 경우에는 그대로 조회만
-        Optional<User> result = userRepository.findByUserEmail(email);
-
-        if (result.isPresent()) {
-            User user = result.get();
-            Optional<Oauth> oauthResult = oauthRepository.findByUser_UserSeqAndOauthFrom(user.getUserSeq(), from);
-            if (!oauthResult.isPresent()) {
-                Oauth oauth = Oauth.builder()
-//                        .oauthKey(UUID.randomUUID().toString()) // 이거 나중에 key 뭐 받을 지 결정되면 수정
-                        .oauthKey(key) // 이거 나중에 key 뭐 받을 지 결정되면 수정
-                        .oauthFrom(from)
-                        .user(user)
-                        .build();
-                oauthRepository.save(oauth);
-            }
-
-            return result.get();
-        }
-
+    private User saveSocialUser(String email, String name) {
         if (name == null || name.isEmpty()) {
             name = email.substring(0, email.indexOf("@"));
         }
 
-        //없다면 회원 추가 패스워드는 1111 이름은 그냥 이메일 주소로
         User user = User.builder()
-                .userEmail(email)
-                .userName(name)
+                .email(email)
+                .name(name)
                 .build();
 
         userRepository.save(user);
+        return user;
+    }
 
+    private void saveSocialOAuth(User user, String from, String key) {
         Oauth oauth = Oauth.builder()
 //                .oauthKey(UUID.randomUUID().toString()) // 이거 나중에 key 뭐 받을 지 결정되면 수정
-                .oauthKey(key) // 이거 나중에 key 뭐 받을 지 결정되면 수정
-                .oauthFrom(from)
+                .key(key) // 이거 나중에 key 뭐 받을 지 결정되면 수정
+                .from(from)
                 .user(user)
                 .build();
         oauthRepository.save(oauth);
-
-        return user;
     }
 
 }

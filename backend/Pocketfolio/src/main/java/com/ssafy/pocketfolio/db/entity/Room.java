@@ -1,32 +1,15 @@
 package com.ssafy.pocketfolio.db.entity;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
-import javax.persistence.Table;
-
+import com.sun.istack.NotNull;
+import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-import com.sun.istack.NotNull;
-
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 
 @Getter
 @Builder
@@ -44,9 +27,9 @@ public class Room {
 	@Column(name="room_seq", nullable=false, updatable=false)
 	private long roomSeq;
 	
-	@Column(name="room_name", length=20, nullable=false)
+	@Column(name="name", length=20, nullable=false)
 	@NotNull
-	private String roomName;
+	private String name;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="user_seq", nullable=false, updatable=false)
@@ -54,56 +37,56 @@ public class Room {
 	@NotNull
 	private User user;
 	
-	@Column(name="room_theme")
-	private int roomTheme;
+	@Column(name="theme")
+	private int theme;
 	
-	@Column(name="room_thumbnail", length=255)
-	private String roomThumbnail;
+	@Column(name="thumbnail", length=255)
+	private String thumbnail;
 
-	@Column(name="room_is_main", length=1, nullable=false,
-			columnDefinition = "char(1) CHECK (room_is_main in ('T', 'F'))")
+	@Column(name="is_main", length=1, nullable=false,
+			columnDefinition = "char(1) CHECK (is_main in ('T', 'F'))")
 	@NotNull
-	private String roomIsMain; // "T" or "F"
+	private String isMain; // "T" or "F"
 
-	@Column(name="room_public", length=1, nullable=false,
-			columnDefinition = "char(1) CHECK (room_public in ('O', 'S', 'C')) DEFAULT 'O'")
+	@Column(name="privacy", length=1, nullable=false,
+			columnDefinition = "char(1) CHECK (privacy in ('O', 'S', 'C')) DEFAULT 'O'")
 	@ColumnDefault("'O'")
 	@NotNull
-	private String roomPublic; // "O"는 Open(공개), "S"는 Shared(링크 공개), "C"는 Closed(비공개)
+	private String privacy; // "O"는 Open(공개), "S"는 Shared(링크 공개), "C"는 Closed(비공개)
 
-	@Column(name="room_created", nullable=false, updatable=false, columnDefinition = "datetime DEFAULT (current_time)")
+	@Column(name="created", nullable=false, updatable=false, columnDefinition = "datetime DEFAULT (current_time)")
 	@NotNull
-	private LocalDateTime roomCreated;
+	private LocalDateTime created;
 	
-	@Column(name="room_updated", nullable=false, columnDefinition = "datetime DEFAULT (current_time)")
+	@Column(name="updated", nullable=false, columnDefinition = "datetime DEFAULT (current_time)")
 	@NotNull
-	private LocalDateTime roomUpdated;
+	private LocalDateTime updated;
 	
-	public void updateRoom(String roomName, String roomThumbnail) { // update room info
-		this.roomName = roomName;
-		this.roomThumbnail = roomThumbnail;
+	public void updateRoom(String name, String thumbnail) { // update room info
+		this.name = name;
+		this.thumbnail = thumbnail;
 	}
 	
-	public void updateRoomTheme(int roomTheme) { // update room theme only
-		this.roomTheme = roomTheme;
+	public void updateTheme(int theme) { // update room theme only
+		this.theme = theme;
 	}
 
-	public void changeMain(String roomIsMain) {
-		this.roomIsMain = roomIsMain;
+	public void changeIsMain(String isMain) {
+		this.isMain = isMain;
 	}
 
-	public void changePublic(String roomPublic) {
-		this.roomPublic = roomPublic;
+	public void updatePrivacy(String privacy) {
+		this.privacy = privacy;
 	}
 	
 	@PrePersist
 	public void createdAt() {
-		this.roomCreated = ZonedDateTime.now(ZoneId.of("Asia/Seoul")).toLocalDateTime();
-		this.roomUpdated = ZonedDateTime.now(ZoneId.of("Asia/Seoul")).toLocalDateTime();
+		this.created = ZonedDateTime.now(ZoneId.of("Asia/Seoul")).toLocalDateTime();
+		this.updated = ZonedDateTime.now(ZoneId.of("Asia/Seoul")).toLocalDateTime();
 	}
 	
 	@PreUpdate
 	public void updatedAt() {
-		this.roomUpdated = ZonedDateTime.now(ZoneId.of("Asia/Seoul")).toLocalDateTime();
+		this.updated = ZonedDateTime.now(ZoneId.of("Asia/Seoul")).toLocalDateTime();
 	}
 }

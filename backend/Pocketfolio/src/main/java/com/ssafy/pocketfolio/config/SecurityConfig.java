@@ -5,10 +5,12 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -24,6 +26,7 @@ import com.ssafy.pocketfolio.security.util.JWTUtil;
 @Configuration
 @Log4j2
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
+@EnableWebSecurity
 public class SecurityConfig {
 
     @Autowired
@@ -46,10 +49,21 @@ public class SecurityConfig {
         //반드시 필요
         http.authenticationManager(authenticationManager);
 
-        http.formLogin();
-        http.csrf().disable();
-        http.logout();
-        http.oauth2Login().successHandler(successHandler());
+        // 패턴 등록
+        http.authorizeHttpRequests((auth) -> {
+            auth
+                    .antMatchers("/", "/css/**", "/images/**", "/js/**", "/login", "/logout", "/api/swagger/**",
+                            "/api/users/signup", "/api/users/login", "/api/users/logout").permitAll()
+                    .antMatchers(HttpMethod.GET, "/api/rooms/like", "/api/portfolios/room/*").authenticated()
+                    .antMatchers(HttpMethod.GET, "/**").permitAll()
+                    .anyRequest().authenticated();
+//            auth.antMatchers("/sample/member").hasRole("USER");
+        });
+
+        http.formLogin(); // 인가 및 인증이 안 되면 로그인 페이지로 이동
+        http.csrf().disable(); // CSRF 토큰 발행 X
+        http.logout(); // 별도의 설정이 없으면 /logout 시 로그아웃 페이지로 이동
+        http.oauth2Login().successHandler(successHandler()); // OAuth 로그인
 
         http.rememberMe().tokenValiditySeconds(60*60*24*7).userDetailsService(userDetailsService);
         http.addFilterBefore(apiCheckFilter(), UsernamePasswordAuthenticationFilter.class);
