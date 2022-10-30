@@ -16,24 +16,25 @@ import javax.persistence.*;
 @Table(
 name="comment_like",
 uniqueConstraints = {
-		@UniqueConstraint(name="UK_COMMENT_LIKE", columnNames={"comment_no", "user_no"})
+		@UniqueConstraint(name="UK_COMMENT_LIKE", columnNames={"comment_seq", "user_seq"})
 }
 )
 public class CommentLike {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="comment_like_no", nullable=false, updatable=false)
-	private long commentLikeNo;
+	@Column(name="comment_like_seq", nullable=false, updatable=false)
+	private long commentLikeSeq;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="comment_no", nullable=false, updatable=false)
+	@JoinColumn(name="comment_seq", nullable=false, updatable=false)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	@NotNull
 	private BoardComment boardComment;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="user_no", nullable=false, updatable=false)
+	@JoinColumn(name="user_seq", nullable=false, updatable=false)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	@NotNull
 	private User user;
+
 }

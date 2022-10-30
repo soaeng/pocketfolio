@@ -1,25 +1,11 @@
 package com.ssafy.pocketfolio.db.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-
+import com.sun.istack.NotNull;
+import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-import com.sun.istack.NotNull;
-
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import javax.persistence.*;
 
 @Getter
 @Builder
@@ -31,17 +17,17 @@ import lombok.ToString;
 public class Arrange {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="arrange_no", nullable=false, updatable=false)
-	private long arrangeNo;
+	@Column(name="arrange_seq", nullable=false, updatable=false)
+	private long arrangeSeq;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="room_no", nullable=false, updatable=false)
+	@JoinColumn(name="room_seq", nullable=false, updatable=false)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	@NotNull
 	private Room room;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="item_no", nullable=false, updatable=false)
+	@JoinColumn(name="item_seq", nullable=false, updatable=false)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	@NotNull
 	private Item item;
@@ -60,7 +46,7 @@ public class Arrange {
 	private int locationZ;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="port_no")
+	@JoinColumn(name="port_seq")
 	private Portfolio portfolio;
 	
 	public void updateArrange(int locationX, int locationY, int locationZ) {
@@ -69,7 +55,7 @@ public class Arrange {
 		this.locationZ = locationZ;
 	}
 	
-	public void updateArrangePortfolio(Portfolio portfolio) { // can take null
+	public void updatePortfolio(Portfolio portfolio) { // can take null
 		this.portfolio = portfolio;
 	}
 }

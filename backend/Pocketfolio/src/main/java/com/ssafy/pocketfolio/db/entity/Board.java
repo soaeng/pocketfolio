@@ -20,53 +20,53 @@ import java.time.ZonedDateTime;
 public class Board {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="board_no", nullable=false, updatable=false)
-	private long boardNo;
+	@Column(name="board_seq", nullable=false, updatable=false)
+	private long boardSeq;
 	
-	@Column(name="board_title", length=100, nullable=false)
+	@Column(name="title", length=100, nullable=false)
 	@NotNull
-	private String boardTitle;
+	private String title;
 
-	@Column(name="board_content", nullable=false, columnDefinition = "text")
+	@Column(name="content", nullable=false, columnDefinition = "text")
 	@NotNull
-	private String boardContent;
+	private String content;
 
-	@Column(name="board_thumbnail", length=255)
-	private String boardThumbnail;
+	@Column(name="thumbnail", length=255)
+	private String thumbnail;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="user_no", nullable=false, updatable=false)
+	@JoinColumn(name="user_seq", nullable=false, updatable=false)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	@NotNull
 	private User user;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="board_category_no")
+	@JoinColumn(name="board_category_seq")
 	private BoardCategory boardCategory;
 	
-	@Column(name="board_created", nullable=false, updatable=false, columnDefinition = "datetime DEFAULT (current_time)")
+	@Column(name="created", nullable=false, updatable=false, columnDefinition = "datetime DEFAULT (current_time)")
 	@NotNull
-	private LocalDateTime boardCreated;
+	private LocalDateTime created;
 	
-	@Column(name="board_updated", nullable=false, columnDefinition = "datetime DEFAULT (current_time)")
+	@Column(name="updated", nullable=false, columnDefinition = "datetime DEFAULT (current_time)")
 	@NotNull
-	private LocalDateTime boardUpdated;
+	private LocalDateTime updated;
 	
-	public void updateBoard(String boardTitle, String boardContent, String boardThumbnail, BoardCategory boardCategory) {
-		this.boardTitle = boardTitle;
-		this.boardContent = boardContent;
-		this.boardThumbnail = boardThumbnail; // can be null
+	public void updateBoard(String title, String content, String thumbnail, BoardCategory boardCategory) {
+		this.title = title;
+		this.content = content;
+		this.thumbnail = thumbnail; // can be null
 		this.boardCategory = boardCategory; // can be null
 	}
 	
 	@PrePersist
 	public void createdAt() {
-		this.boardCreated = ZonedDateTime.now(ZoneId.of("Asia/Seoul")).toLocalDateTime();
-		this.boardUpdated = ZonedDateTime.now(ZoneId.of("Asia/Seoul")).toLocalDateTime();
+		this.created = ZonedDateTime.now(ZoneId.of("Asia/Seoul")).toLocalDateTime();
+		this.updated = ZonedDateTime.now(ZoneId.of("Asia/Seoul")).toLocalDateTime();
 	}
 	
 	@PreUpdate
 	public void updatedAt() {
-		this.boardUpdated = ZonedDateTime.now(ZoneId.of("Asia/Seoul")).toLocalDateTime();
+		this.updated = ZonedDateTime.now(ZoneId.of("Asia/Seoul")).toLocalDateTime();
 	}
 }

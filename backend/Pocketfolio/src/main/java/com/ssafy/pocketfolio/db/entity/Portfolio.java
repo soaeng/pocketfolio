@@ -1,31 +1,14 @@
 package com.ssafy.pocketfolio.db.entity;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
-import javax.persistence.Table;
-
+import com.sun.istack.NotNull;
+import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-import com.sun.istack.NotNull;
-
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 
 @Getter
 @Builder
@@ -37,46 +20,46 @@ import lombok.ToString;
 public class Portfolio {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="port_no", nullable=false, updatable=false)
-	private long portNo;
+	@Column(name="port_seq", nullable=false, updatable=false)
+	private long portSeq;
 
-	@Column(name="port_name", length=50)
-	private String portName;
+	@Column(name="name", length=50)
+	private String name;
 
-	@Column(name="port_summary", length=2000)
-	private String portSummary;
+	@Column(name="summary", length=2000)
+	private String summary;
 	
-	@Column(name="port_thumbnail", length=255) // remove if not needed
-	private String portThumbnail;
+	@Column(name="thumbnail", length=255) // remove if not needed
+	private String thumbnail;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="user_no", nullable=false, updatable=false)
+	@JoinColumn(name="user_seq", nullable=false, updatable=false)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	@NotNull
 	private User user;
 	
-	@Column(name="port_created", nullable=false, updatable=false, columnDefinition = "datetime DEFAULT (current_time)")
+	@Column(name="created", nullable=false, updatable=false, columnDefinition = "datetime DEFAULT (current_time)")
 	@NotNull
-	private LocalDateTime portCreated;
+	private LocalDateTime created;
 	
-	@Column(name="port_updated", nullable=false, columnDefinition = "datetime DEFAULT (current_time)")
+	@Column(name="updated", nullable=false, columnDefinition = "datetime DEFAULT (current_time)")
 	@NotNull
-	private LocalDateTime portUpdated;
+	private LocalDateTime updated;
 	
-	public void updatePortfolio(String portName, String portSummary, String portThumbnail) {
-		this.portName = portName;
-		this.portSummary = portSummary;
-		this.portThumbnail = portThumbnail;
+	public void updatePortfolio(String name, String summary, String thumbnail) {
+		this.name = name;
+		this.summary = summary;
+		this.thumbnail = thumbnail;
 	}
 	
 	@PrePersist
 	public void createdAt() {
-		this.portCreated = ZonedDateTime.now(ZoneId.of("Asia/Seoul")).toLocalDateTime();
-		this.portUpdated = ZonedDateTime.now(ZoneId.of("Asia/Seoul")).toLocalDateTime();
+		this.created = ZonedDateTime.now(ZoneId.of("Asia/Seoul")).toLocalDateTime();
+		this.updated = ZonedDateTime.now(ZoneId.of("Asia/Seoul")).toLocalDateTime();
 	}
 	
 	@PreUpdate
 	public void updatedAt() {
-		this.portUpdated = ZonedDateTime.now(ZoneId.of("Asia/Seoul")).toLocalDateTime();
+		this.updated = ZonedDateTime.now(ZoneId.of("Asia/Seoul")).toLocalDateTime();
 	}
 }
