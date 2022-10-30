@@ -6,14 +6,14 @@ export const Background = styled.div`
   height: 100vh;
   display: flex;
   justify-content: center;
-  align-items: center;
+
 `;
 
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
-  margin: auto;
+  justify-content: space-evenly;
+  height: 70%;
 `;
 
 export const Header = styled.span`
