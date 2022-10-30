@@ -16,6 +16,9 @@ export const Carousel = styled.div`
 `
 
 export const Item = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   margin: 10px;
   padding: 10px;
   width: 305px;
@@ -26,7 +29,7 @@ export const Item = styled.div`
 
 export const Ui = styled.div`
   position: absolute;
-    top: 50%;
+    top: 60%;
     transform: translateY(-50%);
     display: flex;
     width: calc(100% - 12px * 2);
@@ -57,4 +60,9 @@ export const Ui = styled.div`
         border: 1px solid rgba(255, 255, 255, 1);
       }
   }
+`
+
+export const Item3 = styled.div`
+  display:flex;
+  justify-content: space-between;
 `
