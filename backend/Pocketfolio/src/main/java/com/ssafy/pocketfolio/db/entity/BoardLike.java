@@ -6,9 +6,6 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 
 @Getter
 @Builder
@@ -39,4 +36,5 @@ public class BoardLike {
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	@NotNull
 	private User user;
+
 }

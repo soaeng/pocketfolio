@@ -36,4 +36,5 @@ public class CommentLike {
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	@NotNull
 	private User user;
+
 }

@@ -1,25 +1,11 @@
 package com.ssafy.pocketfolio.db.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-
+import com.sun.istack.NotNull;
+import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-import com.sun.istack.NotNull;
-
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import javax.persistence.*;
 
 @Getter
 @Builder
@@ -40,26 +26,26 @@ public class PortfolioUrl {
 	@NotNull
 	private Portfolio portfolio;
 	
-	@Column(name="port_url", length=255, nullable=false)
+	@Column(name="url", length=255, nullable=false)
 	@NotNull
-	private String portUrl;
+	private String url;
 
-	@Column(name="port_url_name", length=50) // remove if not needed
-	private String portUrlName;
+	@Column(name="name", length=50) // remove if not needed
+	private String name;
 	
-	@Column(name="port_url_type", nullable=false)
+	@Column(name="type", nullable=false)
 	@NotNull
-	private int portUrlType;
+	private int type;
 	
-	public void updateUrl(String portUrl) { // update URL only
-		this.portUrl = portUrl;
+	public void updateUrl(String url) { // update URL only
+		this.url = url;
 	}
 	
-	public void updateUrlName(String portUrlName) { // can take null
-		this.portUrlName = portUrlName;
+	public void updateName(String name) { // can take null
+		this.name = name;
 	}
 	
-	public void updateUrlType(int portUrlType) {
-		this.portUrlType = portUrlType;
+	public void updateType(int type) {
+		this.type = type;
 	}
 }

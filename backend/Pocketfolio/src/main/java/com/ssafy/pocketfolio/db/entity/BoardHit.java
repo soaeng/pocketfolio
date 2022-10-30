@@ -19,7 +19,7 @@ import java.time.ZonedDateTime;
 @Table(
 name="board_hit",
 uniqueConstraints = {
-		@UniqueConstraint(name="UK_BOARD_HIT", columnNames={"board_seq", "user_seq", "board_hit_date"})
+		@UniqueConstraint(name="UK_BOARD_HIT", columnNames={"board_seq", "user_seq", "hit_date"})
 } // user_seq가 null이 되어서 유니크키가 제대로 작동하지 않을 경우 수정 필요
 )
 public class BoardHit {
@@ -38,12 +38,12 @@ public class BoardHit {
 	@JoinColumn(name="user_seq")
 	private User user;
 	
-	@Column(name="board_hit_date", nullable=false, updatable=false, columnDefinition = "date DEFAULT (current_date)")
+	@Column(name="hit_date", nullable=false, updatable=false, columnDefinition = "date DEFAULT (current_date)")
 	@NotNull
-	private LocalDate boardHitDate;
+	private LocalDate hitDate;
 	
 	@PrePersist
 	public void createdAt() {
-		this.boardHitDate = ZonedDateTime.now(ZoneId.of("Asia/Seoul")).toLocalDate();
+		this.hitDate = ZonedDateTime.now(ZoneId.of("Asia/Seoul")).toLocalDate();
 	}
 }
