@@ -21,35 +21,35 @@ import java.time.ZonedDateTime;
 public class BoardComment {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="comment_no", nullable=false, updatable=false)
-	private long commentNo;
+	@Column(name="comment_seq", nullable=false, updatable=false)
+	private long commentSeq;
 	
-	@Column(name="comment_content", length=1000, nullable=false, updatable=false)
+	@Column(name="content", length=1000, nullable=false, updatable=false)
 	@NotNull
-	private String commentContent;
+	private String content;
 	
-	@Column(name="comment_is_public", length=1, nullable=false, updatable=false,
-			columnDefinition = "char(1) CHECK (comment_is_public in ('T', 'F')) DEFAULT 'T'")
+	@Column(name="is_public", length=1, nullable=false, updatable=false,
+			columnDefinition = "char(1) CHECK (is_public in ('T', 'F')) DEFAULT 'T'")
 	@ColumnDefault("'T'")
 	@NotNull
-	private String commentIsPublic; // "T" or "F"
+	private String isPublic; // "T" or "F"
 	
-	@Column(name="comment_created", nullable=false, updatable=false, columnDefinition = "datetime DEFAULT (current_time)")
+	@Column(name="created", nullable=false, updatable=false, columnDefinition = "datetime DEFAULT (current_time)")
 	@NotNull
-	private LocalDateTime commentCreated;
+	private LocalDateTime created;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="board_no", nullable=false, updatable=false)
+	@JoinColumn(name="board_seq", nullable=false, updatable=false)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	@NotNull
 	private Board board;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="user_no")
+	@JoinColumn(name="user_seq")
 	private User user;
 
 	@PrePersist
 	public void createdAt() {
-		this.commentCreated = ZonedDateTime.now(ZoneId.of("Asia/Seoul")).toLocalDateTime();
+		this.created = ZonedDateTime.now(ZoneId.of("Asia/Seoul")).toLocalDateTime();
 	}
 }

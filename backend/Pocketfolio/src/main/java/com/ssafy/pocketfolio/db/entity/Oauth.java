@@ -14,27 +14,29 @@ import javax.persistence.*;
 @ToString
 @Entity
 @Table(
-name="room_like",
+name="oauth",
 uniqueConstraints = {
-		@UniqueConstraint(name="UK_ROOM_LIKE", columnNames={"room_seq", "user_seq"})
+		@UniqueConstraint(name="UK_OAUTH_KEY", columnNames={"key"}),
+		@UniqueConstraint(name="UK_OAUTH_USER_FROM", columnNames={"user_seq", "from"})
 }
 )
-public class RoomLike {
+public class Oauth {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="room_like_seq", nullable=false, updatable=false)
-	private long roomLikeSeq;
+	@Column(name="oauth_seq", nullable=false, updatable=false)
+	private long oauthSeq;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="room_seq", nullable=false, updatable=false)
-	@OnDelete(action = OnDeleteAction.CASCADE)
+	@Column(name="key", length=127, nullable=false, updatable=false)
 	@NotNull
-	private Room room;
-	
+	private String key;
+
+	@Column(name="from", length=30, nullable=false, updatable=false)
+	@NotNull
+	private String from;
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="user_seq", nullable=false, updatable=false)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	@NotNull
 	private User user;
-
 }

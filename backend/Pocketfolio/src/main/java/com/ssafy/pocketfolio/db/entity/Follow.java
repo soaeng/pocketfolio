@@ -1,26 +1,11 @@
 package com.ssafy.pocketfolio.db.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
-
+import com.sun.istack.NotNull;
+import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-import com.sun.istack.NotNull;
-
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import javax.persistence.*;
 
 @Getter
 @Builder
@@ -31,24 +16,24 @@ import lombok.ToString;
 @Table(
 name="follow",
 uniqueConstraints = {
-		@UniqueConstraint(name="UK_FOLLOW", columnNames={"follow_from", "follow_to"})
+		@UniqueConstraint(name="UK_FOLLOW", columnNames={"user_from", "user_to"})
 }
 )
 public class Follow {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="follow_no", nullable=false, updatable=false)
-	private long followNo;
+	@Column(name="follow_seq", nullable=false, updatable=false)
+	private long followSeq;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="follow_from", nullable=false, updatable=false)
+	@JoinColumn(name="user_from", nullable=false, updatable=false)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	@NotNull
-	private User followFrom;
+	private User userFrom;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="follow_to", nullable=false, updatable=false)
+	@JoinColumn(name="user_to", nullable=false, updatable=false)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	@NotNull
-	private User followTo;
+	private User userTo;
 }

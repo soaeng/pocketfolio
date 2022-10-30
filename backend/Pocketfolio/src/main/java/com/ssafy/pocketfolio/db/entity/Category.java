@@ -1,19 +1,9 @@
 package com.ssafy.pocketfolio.db.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
 import com.sun.istack.NotNull;
+import lombok.*;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import javax.persistence.*;
 
 @Getter
 @Builder
@@ -22,17 +12,17 @@ import lombok.ToString;
 @ToString
 @Entity
 @Table(name="category")
-public class Category {
+public class Category { // room category
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="room_no", nullable=false, updatable=false)
-	private long categoryNo;
+	@Column(name="category_seq", nullable=false, updatable=false)
+	private long categorySeq;
 	
-	@Column(name="category_name", length=20, nullable=false)
+	@Column(name="name", length=20, nullable=false)
 	@NotNull
-	private String categoryName;
+	private String name;
 	
-	public void updateCategoryName(String categoryName) { // for administrator
-		this.categoryName = categoryName;
+	public void updateName(String name) { // for administrator
+		this.name = name;
 	}
 }
