@@ -29,15 +29,13 @@ export const NavSearchInput = styled.input`
   border-radius: 16px;
   border: 1px solid #bbb;
   padding: 6px 0 6px 0;
-  padding-left: 20px;
-  margin: 6px;
 
   &::-webkit-input-placeholder {
     background-image: url(https://cdn1.iconfinder.com/data/icons/hawcons/32/698627-icon-111-search-256.png);
     background-size: contain;
-    background-position: 1px center;
+    background-position: 10px center;
     background-repeat: no-repeat;
-    padding-left: 30px;
+    padding-left: 40px;
   }
 
   &:focus {
