@@ -10,6 +10,7 @@ import {
   Thumbnail,
   Img,
   Count,
+  Button,
 } from './Card.style';
 import DeleteModal from './DeleteModal';
 
@@ -23,6 +24,9 @@ const Card = () => {
   return (
     <Wrapper>
       <Item>
+        <Button 
+        onClick={openModal}
+        src={process.env.PUBLIC_URL + '/assets/images/minus.png'}></Button>
         <ImgDiv>
           <Thumbnail src={process.env.PUBLIC_URL + '/assets/images/room.png'} />
         </ImgDiv>

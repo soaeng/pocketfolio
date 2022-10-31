@@ -7,19 +7,21 @@ export const Wrapper = styled.div`
 `;
 
 export const Item = styled.div`
+position: relative;
   height: 15rem;
   width: 12rem;
   margin-right: 1rem;
   border-radius: 1.5rem;
   background-color: white;
-  
 `;
 
 export const ImgDiv = styled.div`
+  
   display: flex;
   justify-content: center;
   height: 70%;
   border-radius: 1.5rem 1.5rem 0 0;
+
 `;
 
 export const Thumbnail = styled.img`
@@ -72,3 +74,12 @@ export const Img = styled.img`
 `;
 
 export const Count = styled.span``;
+
+export const Button = styled.img`
+  position: absolute;
+  width: 35px;
+  height: 35px;
+  left: 10.7rem;
+  top: -1rem;
+  cursor: pointer;
+`;
