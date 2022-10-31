@@ -3,8 +3,9 @@ import styled from 'styled-components';
 import {Body3} from '../../styles/styles.style';
 
 export const Container = styled.div`
-padding-left: 25vw;
-`
+  padding-left: 25vw;
+  padding-top: 75px;
+`;
 
 // SearchInput
 export const SearchInput = styled.input`
@@ -39,27 +40,27 @@ export const Card = styled.div`
   flex-wrap: wrap;
   overflow-x: auto;
   scroll-behavior: smooth;
-`
+`;
 
 export const Item = styled.div`
   margin: 10px;
   padding: 10px;
   width: 305px;
   border-radius: 16px;
-  box-shadow: 0px 2px 5px 1px rgba(0,0,0,.25);
+  box-shadow: 0px 2px 5px 1px rgba(0, 0, 0, 0.25);
   flex: none;
-`
+`;
 
 export const Tag = styled(Body3)`
   background-color: lightgrey;
-  padding:10px 20px;
+  padding: 10px 20px;
   border-radius: 16px;
   cursor: pointer;
-  `
+`;
 
 export const TagContainer = styled.div`
-display:flex;
-justify-content: space-around;
-padding-left: 20vw;
-padding-right: 15vw;
-`
+  display: flex;
+  justify-content: space-around;
+  padding-left: 20vw;
+  padding-right: 15vw;
+`;
