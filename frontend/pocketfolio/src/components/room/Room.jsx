@@ -1,4 +1,5 @@
 import RoomNav from './RoomNav';
+import RoomInfo from './RoomInfo';
 import {Container, ThreeCanvas} from './Room.style';
 import {Canvas} from '@react-three/fiber';
 import {OrbitControls} from '@react-three/drei';
@@ -11,8 +12,8 @@ const Room = () => {
   return (
     <Container>
       <RoomNav />
-
-      <Canvas shadows camera={{position: [10, 10, 10], fov: 25}}>
+      <RoomInfo />
+      <Canvas WebGLShadowMap camera={{position: [10, 10, 10], fov: 25}}>
         <OrbitControls autoRotate={false} />
         <gridHelper />
         <axesHelper />
