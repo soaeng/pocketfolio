@@ -3,7 +3,7 @@ import { Route, Routes, BrowserRouter } from 'react-router-dom';
 import './App.css';
 import Landing from './components/landing/landing';
 import Main from './components/main/main';
-import Portfolio from './components/portfolio/portfolio';
+import Portfolio from './components/portfolio/Portfolio';
 import Room from './components/room/room';
 import Search from './components/search/search';
 import Login from './components/user/login';
