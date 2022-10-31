@@ -3,12 +3,14 @@ import styled from 'styled-components';
 
 // Navbar
 export const NavContainer = styled.div`
-  padding: 0.5rem;
-  height: 3.5rem;
-  z-index: 999;
+  position: fixed;
   align-items: center;
   display: flex;
   justify-content: space-between;
+  padding: 0.5rem;
+  height: 3.5rem;
+  width: 100%;
+  z-index: 999;
 `;
 
 // Logo Img
@@ -22,6 +24,7 @@ export const NavLogoImg = styled.img`
 // Nav Search
 export const NavSearchInput = styled.input`
   width: 30%;
+  min-width: 200px;
   height: 20px;
   border-radius: 16px;
   border: 1px solid #bbb;
@@ -46,6 +49,7 @@ export const NavSearchInput = styled.input`
 // Nav Button
 export const NavBotton = styled.button`
   padding: 0.5rem 1rem;
+  margin: 15px;
   border-radius: 16px;
   border: none;
   background-color: #3c2e9b;
