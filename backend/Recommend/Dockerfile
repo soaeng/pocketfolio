@@ -1,6 +1,6 @@
 # ./Dockerfile 
 FROM python:3.8
-WORKDIR /var/jenkins_home/workspace/k7e101/backend/Recommend
+WORKDIR /var/jenkins_home/workspace/backend/backend/Recommend
 
 ## Install packages
 COPY requirements.txt ./
