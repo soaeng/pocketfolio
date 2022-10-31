@@ -1,7 +1,7 @@
 import logo from './logo.svg';
 import { Route, Routes, BrowserRouter } from 'react-router-dom';
 import './App.css';
-import Landing from './components/landing/landing';
+import Landing from './components/landing/Landing';
 import Main from './components/main/main';
 import Portfolio from './components/portfolio/Portfolio';
 import Room from './components/room/room';

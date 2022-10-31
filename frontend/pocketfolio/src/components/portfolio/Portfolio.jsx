@@ -12,6 +12,7 @@ import {
 import Card from './Card';
 import AddPort from './AddPort';
 
+
 const Portfolio = () => {
   const navigate = useNavigate();
 
@@ -31,26 +32,19 @@ const Portfolio = () => {
           <Header>나의 역사</Header>
 
           <CardWrapper>
-            <Text>나의 소중한 포트폴리오들</Text>
+          <Text>나의 소중한 마이룸들</Text>
             <CardList>
               <Card></Card>
               <Card></Card>
               <Card></Card>
-              <div onClick={addPortfolio}>
-                <AddPort />
-              </div>
+
+  
             </CardList>
           </CardWrapper>
 
           <CardWrapper>
-            <Text>나의 소중한 마이룸들</Text>
-            <CardList>
-              <Card></Card>
-              <Card></Card>
-              <div onClick={addMyRoom}>
-                <AddPort />
-              </div>
-            </CardList>
+            <div>제목</div>
+
           </CardWrapper>
         </Container>
       </Background>
