@@ -18,7 +18,6 @@ import {
   ShowIcon,
   ShowState,
 } from './RoomInfo.style';
-import InfoModal from './InfoModal';
 import RoomDetail from './RoomDetail';
 
 const RoomInfo = () => {
