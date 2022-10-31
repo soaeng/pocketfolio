@@ -22,6 +22,7 @@ export const NavLogoImg = styled.img`
 // Nav Search
 export const NavSearchInput = styled.input`
   width: 30%;
+  min-width: 200px;
   height: 20px;
   border-radius: 16px;
   border: 1px solid #bbb;
