@@ -12,7 +12,7 @@ import {
   DotBtn,
   Dots,
   Description,
-} from './landing.style';
+} from './Landing.style';
 import {Button} from '../common/Button';
 import {BsChevronDoubleDown} from 'react-icons/bs';
 
