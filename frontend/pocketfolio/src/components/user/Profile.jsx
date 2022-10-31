@@ -17,7 +17,7 @@ import {
   Btnbox,
   Btn,
   ImgInputDiv,
-} from './profile.style';
+} from './Profile.style';
 
 const Profile = () => {
   return (

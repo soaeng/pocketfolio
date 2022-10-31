@@ -1,13 +1,13 @@
 import logo from './logo.svg';
 import { Route, Routes, BrowserRouter } from 'react-router-dom';
 import './App.css';
-import Landing from './components/landing/landing';
-import Main from './components/main/main';
+import Landing from './components/landing/Landing';
+import Main from './components/main/Main';
 import Portfolio from './components/portfolio/Portfolio';
-import Room from './components/room/room';
-import Search from './components/search/search';
-import Login from './components/user/login';
-import Profile from './components/user/profile';
+import Room from './components/room/Room';
+import Search from './components/search/Search';
+import Login from './components/user/Login';
+import Profile from './components/user/Profile';
 import PortfolioEdit from './components/portfolio/PortfolioEdit';
 
 function App() {
