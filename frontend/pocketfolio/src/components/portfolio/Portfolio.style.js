@@ -6,15 +6,18 @@ export const Background = styled.div`
   height: 100vh;
   display: flex;
   justify-content: center;
+  
 
 `;
 
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
+  margin: auto;
   justify-content: space-evenly;
   height: 90%;
   width: 50rem;
+  
 `;
 
 export const Header = styled.span`
@@ -34,14 +37,21 @@ export const CardWrapper = styled.div`
 
 export const Text = styled.div`
   margin-bottom: 1rem;
+
+  &.porttitle{
+    border-bottom : 1px solid #BABABA;
+    padding-bottom: 1rem;
+  }
 `;
 
 export const CardList = styled.div`
   display: flex;
   align-items: center;
-  height: 100%;
+
   width: 50rem;
-  overflow: auto;
+  /* overflow-x: auto; */
+  /* overflow-y: visible; */
+  /* outline: 1px solid; */
   
   &::-webkit-scrollbar {
     width: 10px;
