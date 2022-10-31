@@ -24,7 +24,7 @@ function Nav() {
   );
 
   const logoClickHandler = () => {
-    navigate('/');
+    navigate('/main');
   };
 
   const loginClickHandler = () => {

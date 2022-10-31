@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import {H1, Body1} from '../../../styles/styles.style';
 
 const Flex = styled.div`
   display: flex;
@@ -49,8 +50,14 @@ export const Text = styled.p`
   height: fit-content;
 `;
 
+export const Text1 = styled.h3`
+  width: 100%;
+  height: fit-content;
+`;
+
 // Move to Room Button
 export const RoomButton = styled.button`
+  z-index: 999;
   width: 200px;
   margin: 0.5rem;
   padding: 0.5rem 1rem;

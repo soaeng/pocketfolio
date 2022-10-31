@@ -6,6 +6,7 @@ import {
   TextContainer,
   ImageContainer,
   Text,
+  Text1,
   RoomButton,
 } from './carouselPage.style';
 
@@ -13,18 +14,18 @@ const Page1 = () => {
   const navigate = useNavigate();
 
   const buttonClickHandler = () => {
-    navigate('/room');
+    navigate('/port');
   };
 
   return (
     <div>
       <Page1Container>
         <TextContainer>
-          <Text>
+          <Text1>
             설치가 필요없는
             <br />
             포트폴리오 툴
-          </Text>
+          </Text1>
           <Text>
             언제 어디서나 손쉽게 꾸밀 수 있는
             <br />
