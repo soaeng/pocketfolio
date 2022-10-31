@@ -13,7 +13,7 @@ import {
   LoginIcon,
   LoginText,
   CommentText,
-} from './login.style';
+} from './Login.style';
 
 const Login = () => {
   const navigate = useNavigate();

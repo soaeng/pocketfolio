@@ -111,17 +111,17 @@ const Body2 = styled.p`
 
   // md(HD, <1500px)
   @media screen and (max-width: 1500px) {
-    font-size: 0.75rem;
+    font-size: 0.9rem;
   }
 
   // sm(태블릿, <900px)
   @media screen and (max-width: 900px) {
-    font-size: 0.5rem;
+    font-size: 0.8rem;
   }
 
   // xs(모바일, <600px)
   @media screen and (max-width: 600px) {
-    font-size: 0.25rem;
+    font-size: 0.5rem;
   }
 `;
 
