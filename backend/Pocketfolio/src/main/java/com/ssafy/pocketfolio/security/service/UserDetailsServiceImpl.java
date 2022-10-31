@@ -9,6 +9,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -18,7 +19,7 @@ import java.util.Set;
 @Log4j2
 @Service
 @RequiredArgsConstructor
-public class UserDetailsService implements org.springframework.security.core.userdetails.UserDetailsService {
+public class UserDetailsServiceImpl implements org.springframework.security.core.userdetails.UserDetailsService {
 
     private final UserRepository userRepository;
 
@@ -44,6 +45,7 @@ public class UserDetailsService implements org.springframework.security.core.use
 
         UserAuthDto userAuthDto = new UserAuthDto(
                 Long.toString(user.getUserSeq()),
+                new BCryptPasswordEncoder().encode("1111"),
                 roleSet
 
 //                user.getUserRoleSet().stream()

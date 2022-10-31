@@ -61,10 +61,14 @@ public class ApiLoginFilter extends AbstractAuthenticationProcessingFilter {
         try {
             token = jwtUtil.generateAccessToken(userSeqStr);
 
+            log.info(token);
+
             response.setContentType("text/plain");
             response.getOutputStream().write(token.getBytes());
 
-            log.info(token);
+//            response.addHeader("Authorization", "Bearer " + token);
+
+//            response.addHeader("Refresh", "Bearer " + token);
 
         } catch (Exception e) {
             e.printStackTrace();

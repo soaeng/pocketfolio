@@ -1,8 +1,15 @@
 package com.ssafy.pocketfolio.config;
 
 
+import com.ssafy.pocketfolio.security.filter.ApiCheckFilter;
+import com.ssafy.pocketfolio.security.filter.ApiLoginFilter;
+import com.ssafy.pocketfolio.security.handler.ApiLoginFailHandler;
+import com.ssafy.pocketfolio.security.handler.LoginSuccessHandler;
+import com.ssafy.pocketfolio.security.service.UserDetailsServiceImpl;
+import com.ssafy.pocketfolio.security.util.JWTUtil;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -16,13 +23,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.ssafy.pocketfolio.security.filter.ApiCheckFilter;
-import com.ssafy.pocketfolio.security.filter.ApiLoginFilter;
-import com.ssafy.pocketfolio.security.handler.ApiLoginFailHandler;
-import com.ssafy.pocketfolio.security.handler.LoginSuccessHandler;
-import com.ssafy.pocketfolio.security.service.UserDetailsService;
-import com.ssafy.pocketfolio.security.util.JWTUtil;
-
 @Configuration
 @Log4j2
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
@@ -30,7 +30,10 @@ import com.ssafy.pocketfolio.security.util.JWTUtil;
 public class SecurityConfig {
 
     @Autowired
-    private UserDetailsService userDetailsService;
+    private UserDetailsServiceImpl userDetailsService;
+
+    @Value("${server.servlet.context-path:''}")
+    private String contextPath;
 
     @Bean
     PasswordEncoder passwordEncoder() {
@@ -52,10 +55,12 @@ public class SecurityConfig {
         // 패턴 등록
         http.authorizeHttpRequests((auth) -> {
             auth
-                    .antMatchers("/", "/css/**", "/images/**", "/js/**", "/login", "/logout", "/swagger/**",
-                            "/users/signup", "/users/login", "/users/logout").permitAll()
-                    .antMatchers(HttpMethod.GET, "/rooms/like", "/portfolios/room/*").authenticated()
-                    .antMatchers(HttpMethod.GET, "/**").permitAll()
+                    .antMatchers(contextPath + "/", contextPath + "/css/**", contextPath + "/images/**",
+                            contextPath + "/js/**", contextPath + "/login", contextPath + "/logout",
+                            contextPath + "/swagger/**", contextPath + "/users/signup", contextPath + "/users/login",
+                            contextPath + "/users/logout").permitAll()
+                    .antMatchers(HttpMethod.GET, contextPath + "/rooms/like", contextPath + "/portfolios/room/*").authenticated()
+                    .antMatchers(HttpMethod.GET, contextPath + "/**").permitAll()
                     .anyRequest().authenticated();
 //            auth.antMatchers("/sample/member").hasRole("USER");
         });
@@ -86,7 +91,6 @@ public class SecurityConfig {
     }
 
 
-
     @Bean
     public JWTUtil jwtUtil() {
         return new JWTUtil();
@@ -99,7 +103,7 @@ public class SecurityConfig {
 
     @Bean
     public ApiCheckFilter apiCheckFilter() {
-        String[] patterns = {"/api/rooms/like", "/api/portfolios/room/*"};
+        String[] patterns = {contextPath + "/rooms/like", contextPath + "portfolios/room/*"};
 
         return new ApiCheckFilter(patterns, jwtUtil()); // ! patterns 더 추가할지 말지 봐야 함
     }
