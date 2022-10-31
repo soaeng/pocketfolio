@@ -46,11 +46,11 @@ const Card = () => {
           </LikeContent>
         </LikeDiv>
       </Item>
-      <Img
+      {/* <Img
         className="deleteBtn"
         onClick={openModal}
         src={process.env.PUBLIC_URL + '/assets/images/trashcan.png'}
-      />
+      /> */}
 
       {isOpen && (
         <DeleteModal
