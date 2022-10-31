@@ -2,6 +2,8 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
+  width: 90%;
+  display: flex;
   padding-left: 5%;
   padding-right: 5%;
 `;
@@ -16,8 +18,9 @@ export const Carousel = styled.div`
 `;
 
 export const Item = styled.div`
-  display: grid;
-  grid-template-rows: 50px 50px;
+  display: flex;
+  width: 22%;
+  min-width: 150px;
   flex-direction: column;
   justify-content: space-between;
   margin: 10px;

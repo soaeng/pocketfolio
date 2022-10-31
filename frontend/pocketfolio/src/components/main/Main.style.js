@@ -4,11 +4,11 @@ import styled from 'styled-components';
 // Main Carousel
 export const Container = styled.div`
   justify-content: space-between;
+  padding-top: 75px;
 `;
 
 // Main Carousel Slider
 export const Slider = styled.div`
-  display: flex;
   align-items: center;
   justify-content: center;
 `;
@@ -19,7 +19,7 @@ export const Content = styled.div`
 `;
 export const CarouselNav = styled.div`
   position: absolute;
-  top: 110px;
+  top: 115px;
 `;
 
 // CarouselNavButton 색 변경
