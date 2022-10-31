@@ -1,4 +1,5 @@
 import RoomNav from './RoomNav';
+import RoomInfo from './RoomInfo';
 import {Container, ThreeCanvas} from './Room.style';
 import {Canvas} from '@react-three/fiber';
 import {OrbitControls} from '@react-three/drei';
@@ -11,19 +12,19 @@ const Room = () => {
   return (
     <Container>
       <RoomNav />
-
-      <Canvas>
+      <RoomInfo />
+      <Canvas WebGLShadowMap camera={{position: [10, 10, 10], fov: 25}}>
         <OrbitControls autoRotate={false} />
         <gridHelper />
         <axesHelper />
+        <camera position={[10, 10, 10]} />
 
         <mesh>
-          <ambientLight intensity={1} />
-          <directionalLight position={[10, 10, 10]} intensity={1} />
+          <ambientLight intensity={1} castShadow />
+          <directionalLight position={[10, 10, 10]} intensity={1} castShadow />
           <boxGeometry args={[1, 1, 1]} />
           <meshStandardMaterial attach="material" color={0xa3b18a} />
         </mesh>
-
       </Canvas>
     </Container>
   );
