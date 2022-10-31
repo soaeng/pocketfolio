@@ -11,6 +11,7 @@ import {
 } from './Portfolio.style';
 import Card from './Card';
 import AddPort from './AddPort';
+import PortList from './PortList';
 
 const Portfolio = () => {
   const navigate = useNavigate();
@@ -41,6 +42,9 @@ const Portfolio = () => {
           </CardWrapper>
           <CardWrapper>
             <Text className="porttitle">나의 소중한 포트폴리오들</Text>
+            <PortList></PortList>
+            <PortList></PortList>
+            <PortList></PortList>
           </CardWrapper>
         </Container>
       </Background>
