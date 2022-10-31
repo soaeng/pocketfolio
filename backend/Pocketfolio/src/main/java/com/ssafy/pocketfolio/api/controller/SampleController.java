@@ -40,9 +40,9 @@ public class SampleController {
 
     }
 //
-//    @PreAuthorize("#clubAuthMember != null && #clubAuthMember.username eq \"user95@zerock.org\"")
+//    @PreAuthorize("#userAuthDto != null && #userAuthDto.username eq userSeq")
 //    @GetMapping("/exOnly")
-//    public String exMemberOnly(@AuthenticationPrincipal UserAuthDto userAuthDto){
+//    public String exMemberOnly(@AuthenticationPrincipal UserAuthDto userAuthDto, int userSeq){
 //
 //        log.info("exMemberOnly.............");
 //        log.info(userAuthDto);

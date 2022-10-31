@@ -39,11 +39,9 @@ public class Portfolio {
 	private User user;
 	
 	@Column(name="created", nullable=false, updatable=false, columnDefinition = "datetime DEFAULT (current_time)")
-	@NotNull
 	private LocalDateTime created;
 	
 	@Column(name="updated", nullable=false, columnDefinition = "datetime DEFAULT (current_time)")
-	@NotNull
 	private LocalDateTime updated;
 	
 	public void updatePortfolio(String name, String summary, String thumbnail) {

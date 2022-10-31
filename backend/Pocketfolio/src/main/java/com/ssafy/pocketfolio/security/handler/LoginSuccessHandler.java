@@ -15,17 +15,17 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Log4j2
-public class ClubLoginSuccessHandler implements AuthenticationSuccessHandler {
+public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 
     private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
     private PasswordEncoder passwordEncoder;
 
-    public ClubLoginSuccessHandler(){
+    public LoginSuccessHandler(){
         passwordEncoder = new BCryptPasswordEncoder();
     }
 
-    public ClubLoginSuccessHandler(PasswordEncoder passwordEncoder){
+    public LoginSuccessHandler(PasswordEncoder passwordEncoder){
         this.passwordEncoder = passwordEncoder;
     }
 

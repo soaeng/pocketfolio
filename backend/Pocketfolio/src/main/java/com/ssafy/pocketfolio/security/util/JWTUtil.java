@@ -14,25 +14,35 @@ import java.util.Date;
 @Log4j2
 public class JWTUtil {
 
-    private String secretKey = "catsAndDogs"; // test
+    private String secretKey = "catsAndDogs101"; // test
 
     //1month
     private long expire = 60 * 24* 30;
+    private long refreshExpire = expire * 5;
 
-    public String generateToken(String content) throws Exception{
+    public String generateAccessToken(String userSeqStr) throws Exception {
+        return generateToken(userSeqStr, "accessToken", expire);
+    }
+
+    public String generateRefreshToken(String userSeqStr) throws Exception {
+        return generateToken(userSeqStr, "refreshToken", refreshExpire);
+    }
+
+    private String generateToken(String uid, String subject, long expire) throws Exception {
 
         return Jwts.builder()
                 .setIssuedAt(new Date())
                 .setExpiration(Date.from(ZonedDateTime.now().plusMinutes(expire).toInstant()))
                 //.setExpiration(Date.from(ZonedDateTime.now().plusSeconds(1).toInstant()))
-                .claim("sub", content)
+                .setSubject(subject)
+                .claim("uid", uid)
                 .signWith(SignatureAlgorithm.HS256, secretKey.getBytes("UTF-8"))
                 .compact();
     }
 
-    public String validateAndExtract(String tokenStr)throws Exception {
+    public long validateAndExtractUserSeq(String tokenStr) throws Exception {
 
-        String contentValue = null;
+        long userSeq = 0L;
 
         try {
             DefaultJws defaultJws = (DefaultJws) Jwts.parser()
@@ -46,16 +56,15 @@ public class JWTUtil {
 
             log.info("------------------------");
 
-            contentValue = claims.getSubject();
-
-
+//            contentValue = claims.getSubject();
+            userSeq = Long.parseLong((String) claims.get("uid"));
 
         }catch(Exception e){
             e.printStackTrace();
             log.error(e.getMessage());
-            contentValue = null;
+            userSeq = 0L;
         }
-        return contentValue;
+        return userSeq;
     }
 
 }

@@ -19,7 +19,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import com.ssafy.pocketfolio.security.filter.ApiCheckFilter;
 import com.ssafy.pocketfolio.security.filter.ApiLoginFilter;
 import com.ssafy.pocketfolio.security.handler.ApiLoginFailHandler;
-import com.ssafy.pocketfolio.security.handler.ClubLoginSuccessHandler;
+import com.ssafy.pocketfolio.security.handler.LoginSuccessHandler;
 import com.ssafy.pocketfolio.security.service.UserDetailsService;
 import com.ssafy.pocketfolio.security.util.JWTUtil;
 
@@ -52,9 +52,9 @@ public class SecurityConfig {
         // 패턴 등록
         http.authorizeHttpRequests((auth) -> {
             auth
-                    .antMatchers("/", "/css/**", "/images/**", "/js/**", "/login", "/logout", "/api/swagger/**",
-                            "/api/users/signup", "/api/users/login", "/api/users/logout").permitAll()
-                    .antMatchers(HttpMethod.GET, "/api/rooms/like", "/api/portfolios/room/*").authenticated()
+                    .antMatchers("/", "/css/**", "/images/**", "/js/**", "/login", "/logout", "/swagger/**",
+                            "/users/signup", "/users/login", "/users/logout").permitAll()
+                    .antMatchers(HttpMethod.GET, "/rooms/like", "/portfolios/room/*").authenticated()
                     .antMatchers(HttpMethod.GET, "/**").permitAll()
                     .anyRequest().authenticated();
 //            auth.antMatchers("/sample/member").hasRole("USER");
@@ -63,9 +63,10 @@ public class SecurityConfig {
         http.formLogin(); // 인가 및 인증이 안 되면 로그인 페이지로 이동
         http.csrf().disable(); // CSRF 토큰 발행 X
         http.logout(); // 별도의 설정이 없으면 /logout 시 로그아웃 페이지로 이동
-        http.oauth2Login().successHandler(successHandler()); // OAuth 로그인
+        http.oauth2Login(); // OAuth 로그인
+//        http.oauth2Login().successHandler(successHandler()); // OAuth 로그인 후 redirect 이동
 
-        http.rememberMe().tokenValiditySeconds(60*60*24*7).userDetailsService(userDetailsService);
+//        http.rememberMe().tokenValiditySeconds(60*60*24*7).userDetailsService(userDetailsService);
         http.addFilterBefore(apiCheckFilter(), UsernamePasswordAuthenticationFilter.class);
 
         http.addFilterBefore(apiLoginFilter(authenticationManager), UsernamePasswordAuthenticationFilter.class);
@@ -75,7 +76,7 @@ public class SecurityConfig {
 
     public ApiLoginFilter apiLoginFilter(AuthenticationManager authenticationManager) throws Exception{
 
-        ApiLoginFilter apiLoginFilter =  new ApiLoginFilter("/api/login", jwtUtil());
+        ApiLoginFilter apiLoginFilter =  new ApiLoginFilter("/users/login", jwtUtil());
         apiLoginFilter.setAuthenticationManager(authenticationManager);
 
         apiLoginFilter
@@ -92,14 +93,15 @@ public class SecurityConfig {
     }
 
     @Bean
-    public ClubLoginSuccessHandler successHandler() {
-        return new ClubLoginSuccessHandler(passwordEncoder());
+    public LoginSuccessHandler successHandler() {
+        return new LoginSuccessHandler(passwordEncoder());
     }
 
     @Bean
     public ApiCheckFilter apiCheckFilter() {
+        String[] patterns = {"/api/rooms/like", "/api/portfolios/room/*"};
 
-        return new ApiCheckFilter("/notes/**/*", jwtUtil());
+        return new ApiCheckFilter(patterns, jwtUtil()); // ! patterns 더 추가할지 말지 봐야 함
     }
 
 //    public ApiLoginFilter apiLoginFilter(AuthenticationManager authenticationManager) throws Exception{

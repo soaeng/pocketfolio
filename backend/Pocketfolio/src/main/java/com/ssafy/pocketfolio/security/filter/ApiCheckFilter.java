@@ -13,18 +13,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Arrays;
 
 
 @Log4j2
 public class ApiCheckFilter extends OncePerRequestFilter {
 
     private AntPathMatcher antPathMatcher;
-    private String pattern;
+    private String[] patterns;
     private JWTUtil jwtUtil;
 
-    public ApiCheckFilter(String pattern, JWTUtil jwtUtil){
+    public ApiCheckFilter(String[] patterns, JWTUtil jwtUtil){
         this.antPathMatcher = new AntPathMatcher();
-        this.pattern = pattern;
+        this.patterns = patterns;
         this.jwtUtil = jwtUtil;
     }
 
@@ -33,9 +34,10 @@ public class ApiCheckFilter extends OncePerRequestFilter {
 
         log.info("REQUESTURI: " + request.getRequestURI());
 
-        log.info(antPathMatcher.match(pattern, request.getRequestURI()));
+//        log.info(antPathMatcher.match(pattern, request.getRequestURI()));
+        log.info(matchAtLeastOne(request));
 
-        if(antPathMatcher.match(pattern, request.getRequestURI())) {
+        if(matchAtLeastOne(request)) {
 
             log.info("ApiCheckFilter.................................................");
             log.info("ApiCheckFilter.................................................");
@@ -45,7 +47,6 @@ public class ApiCheckFilter extends OncePerRequestFilter {
 
             if(checkHeader){
                 filterChain.doFilter(request, response);
-                return;
             }else {
                 response.setStatus(HttpServletResponse.SC_FORBIDDEN);
                 // json 리턴
@@ -57,8 +58,8 @@ public class ApiCheckFilter extends OncePerRequestFilter {
 
                 PrintWriter out = response.getWriter();
                 out.print(json);
-                return;
             }
+            return;
         }
 
         filterChain.doFilter(request, response);
@@ -74,14 +75,18 @@ public class ApiCheckFilter extends OncePerRequestFilter {
             log.info("Authorization exist: " + authHeader);
 
             try {
-                String email = jwtUtil.validateAndExtract(authHeader.substring(7));
-                log.info("validate result: " + email);
-                checkResult =  email.length() > 0;
+                long userSeq = jwtUtil.validateAndExtractUserSeq(authHeader.substring(7));
+                log.info("validate result: " + userSeq);
+                checkResult = userSeq > 0;
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
 
         return checkResult;
+    }
+
+    private boolean matchAtLeastOne(HttpServletRequest request) throws ServletException {
+        return Arrays.stream(patterns).anyMatch(e -> antPathMatcher.match(e, request.getRequestURI()));
     }
 }

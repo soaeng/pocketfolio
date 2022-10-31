@@ -54,18 +54,17 @@ public class ApiLoginFilter extends AbstractAuthenticationProcessingFilter {
 
         log.info(authResult.getPrincipal());
 
-        //email address
-        String email = ((UserAuthDto)authResult.getPrincipal()).getUsername();
+        // Long.toString(userSeq)
+        String userSeqStr = ((UserAuthDto)authResult.getPrincipal()).getUsername();
 
         String token = null;
         try {
-            token = jwtUtil.generateToken(email);
+            token = jwtUtil.generateAccessToken(userSeqStr);
 
             response.setContentType("text/plain");
             response.getOutputStream().write(token.getBytes());
 
             log.info(token);
-
 
         } catch (Exception e) {
             e.printStackTrace();
