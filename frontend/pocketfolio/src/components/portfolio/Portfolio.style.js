@@ -33,6 +33,7 @@ export const CardWrapper = styled.div`
   margin-top: 1rem;
   height: 35%;
   width: 100%;
+  outline: 1px solid;
 `;
 
 export const Text = styled.div`
