@@ -1,7 +1,5 @@
 import styled from 'styled-components';
 import {Body2, Body3, Body4} from '../../styles/styles.style';
-import {MdPersonAddAlt1, MdPeopleAlt, MdPersonRemoveAlt1} from 'react-icons/md';
-import {HiHeart, HiOutlineHeart, HiOutlineEye} from 'react-icons/hi2';
 import {
   RiUserFollowFill,
   RiUserAddLine,
@@ -21,16 +19,22 @@ export const Container = styled.div`
   border: 1px solid #333333;
   background: rgb(255, 255, 255, 0.85);
   color: #333333;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
   cursor: default;
+
+  display: flex;
+  flex-direction: column;
 
   @media screen and (max-width: 1000px) {
     width: 80%;
     top: 4rem;
     left: 8%;
   }
+`;
+
+export const Box = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 `;
 
 export const ImgInfoDiv = styled.div`
