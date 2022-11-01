@@ -10,7 +10,9 @@ import {
   LinkIcon,
 } from './RoomDetail.style';
 
+// 마이룸 상세정보
 const RoomDetail = ({closeDetail}) => {
+
   return (
     <Container>
       <UpArrowDiv>
