@@ -35,7 +35,6 @@ public class BoardComment {
 	private String isPublic; // "T" or "F"
 	
 	@Column(name="created", nullable=false, updatable=false, columnDefinition = "datetime DEFAULT (current_time)")
-	@NotNull
 	private LocalDateTime created;
 	
 	@ManyToOne(fetch = FetchType.LAZY)

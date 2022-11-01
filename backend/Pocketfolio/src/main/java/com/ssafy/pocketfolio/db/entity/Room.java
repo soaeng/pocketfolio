@@ -55,11 +55,9 @@ public class Room {
 	private String privacy; // "O"는 Open(공개), "S"는 Shared(링크 공개), "C"는 Closed(비공개)
 
 	@Column(name="created", nullable=false, updatable=false, columnDefinition = "datetime DEFAULT (current_time)")
-	@NotNull
 	private LocalDateTime created;
 	
 	@Column(name="updated", nullable=false, columnDefinition = "datetime DEFAULT (current_time)")
-	@NotNull
 	private LocalDateTime updated;
 	
 	public void updateRoom(String name, String thumbnail) { // update room info

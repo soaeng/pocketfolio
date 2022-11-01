@@ -45,11 +45,9 @@ public class Board {
 	private BoardCategory boardCategory;
 	
 	@Column(name="created", nullable=false, updatable=false, columnDefinition = "datetime DEFAULT (current_time)")
-	@NotNull
 	private LocalDateTime created;
 	
 	@Column(name="updated", nullable=false, columnDefinition = "datetime DEFAULT (current_time)")
-	@NotNull
 	private LocalDateTime updated;
 	
 	public void updateBoard(String title, String content, String thumbnail, BoardCategory boardCategory) {

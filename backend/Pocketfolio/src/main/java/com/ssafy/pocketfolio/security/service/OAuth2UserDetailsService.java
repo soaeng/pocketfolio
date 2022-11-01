@@ -55,6 +55,7 @@ public class OAuth2UserDetailsService extends DefaultOAuth2UserService {
 
         String email = null;
         String name = null;
+        String key = (String) oAuth2User.getAttributes().get(userNameAttributeName);
 
         if (clientName.equals("Google")) {
             email = oAuth2User.getAttribute("email");
@@ -73,6 +74,7 @@ public class OAuth2UserDetailsService extends DefaultOAuth2UserService {
 
         log.info("EMAIL: " + email);
         log.info("NAME: " + name);
+        log.info("key: " + key);
 
         User user;
         Optional<User> result = userRepository.findByEmail(email);
@@ -80,14 +82,14 @@ public class OAuth2UserDetailsService extends DefaultOAuth2UserService {
         if (!result.isPresent()) {
             // 회원 가입
             user = saveSocialUser(email, name);
-            saveSocialOAuth(user, clientName, userNameAttributeName);
+            saveSocialOAuth(user, clientName, key);
         } else {
             // 기존 회원 로그인
             user = result.get();
             if (!oauthRepository.findByUser_UserSeqAndFrom(user.getUserSeq(), clientName).isPresent()) {
                 // 기존 회원의 다른 소셜 로그인과 연동
                 // key가 고유한 값인지 확인되면 findByKey로 검색하면 됨
-                saveSocialOAuth(user, clientName, userNameAttributeName);
+                saveSocialOAuth(user, clientName, key);
             }
         }
 
@@ -96,8 +98,10 @@ public class OAuth2UserDetailsService extends DefaultOAuth2UserService {
 
         UserAuthDto userAuthDto = new UserAuthDto(
                 Long.toString(user.getUserSeq()),
+                passwordEncoder.encode("1111"),
                 roleSet,
-                oAuth2User.getAttributes()
+                oAuth2User.getAttributes(),
+                clientName.toLowerCase()
         );
 
         userAuthDto.setEmail(user.getEmail());

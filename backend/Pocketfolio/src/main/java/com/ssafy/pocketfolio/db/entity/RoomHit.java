@@ -39,7 +39,6 @@ public class RoomHit {
 	private User user;
 	
 	@Column(name="hit_date", nullable=false, updatable=false, columnDefinition = "date DEFAULT (current_date)")
-	@NotNull
 	private LocalDate hitDate;
 	
 	@PrePersist
