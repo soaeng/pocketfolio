@@ -12,7 +12,7 @@ import {
   DeleteBtn,
 } from './Portfolio.style';
 import Card from './Card';
-import AddPort from './AddPort';
+import AddMyRoom from './AddMyRoom';
 import PortList from './PortList';
 import {Body1} from '../../styles/styles.style';
 
@@ -44,7 +44,7 @@ const Portfolio = () => {
             <CardList>
               <Card isDelete={isDelete}></Card>
               <div>
-                <AddPort></AddPort>
+                <AddMyRoom></AddMyRoom>
               </div>
             </CardList>
           </CardWrapper>
