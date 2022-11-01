@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef, useReducer} from 'react';
+import React, {useEffect, useRef, useReducer} from 'react';
 import {useNavigate} from 'react-router-dom';
 
 import Nav from '../common/nav';
@@ -12,9 +12,10 @@ import {
   RoomButton,
   Item,
   Test,
+  Items,
+  ImageContainer,
+  ColorBox,
 } from './Main.style';
-import Page1 from './carouselPage/page1';
-import Page2 from './carouselPage/page2';
 import RecCarousel from './RecCarousel';
 
 const pageSlider = [
@@ -36,6 +37,9 @@ const pageSlider = [
 
 // Main 페이지
 function Main() {
+  const navigate = useNavigate();
+
+  // 5초마다 화면 전환을 위한 것
   const carousel = useRef(null);
   const reducer = (state, action) => {
     carousel.current.scrollTo({
@@ -46,7 +50,6 @@ function Main() {
     return action;
   };
   const [slideIndex, scrollCarousel] = useReducer(reducer, 1);
-  const navigate = useNavigate();
   useEffect(() => {
     const timer = setTimeout(() => {
       if (slideIndex === pageSlider.length) {
@@ -58,13 +61,10 @@ function Main() {
     };
   }, [slideIndex]);
 
+  // 바로 시작 버튼 이동
   const buttonClickHandler = () => {
     navigate('/port');
   };
-
-  // 5초마다 화면 전환을 위한 것
-  const delay = 5000;
-  const [isRunning, setIsRunning] = useState(true);
 
   return (
     <>
@@ -72,33 +72,52 @@ function Main() {
       <Nav />
       {/* Main Carousel */}
       <Container>
+        <ColorBox />
         <Content ref={carousel}>
           {pageSlider.map((sl, index) => {
             const {title1, title2, text1, text2, buttonText} = sl;
-            console.log(sl, 456);
             return (
               <Item>
-                <div>{title1}</div>
-                <div>{title2}</div>
-                <div>{text1}</div>
-                <div>{text2}</div>
-                <RoomButton onClick={buttonClickHandler}>
-                  {buttonText}
-                </RoomButton>
+                <Items>
+                  <div>{title1}</div>
+                  <div>{title2}</div>
+                  <div>{text1}</div>
+                  <div>{text2}</div>
+                  <RoomButton onClick={buttonClickHandler}>
+                    {buttonText}
+                  </RoomButton>
+                  <ImageContainer src="./assets/images/logo2.png" />
+                </Items>
               </Item>
             );
           })}
           <CarouselNav>
-            <CarouselNavButton
-              onClick={() => {
-                scrollCarousel(1);
-              }}
-            />
-            <CarouselNavButton
-              onClick={() => {
-                scrollCarousel(2);
-              }}
-            />
+            {slideIndex === 1 ? (
+              <CarouselNavButton
+                onClick={() => {
+                  scrollCarousel(1);
+                }}
+              />
+            ) : (
+              <CarouselNavButtonNone
+                onClick={() => {
+                  scrollCarousel(1);
+                }}
+              />
+            )}
+            {slideIndex === 2 ? (
+              <CarouselNavButton
+                onClick={() => {
+                  scrollCarousel(2);
+                }}
+              />
+            ) : (
+              <CarouselNavButtonNone
+                onClick={() => {
+                  scrollCarousel(2);
+                }}
+              />
+            )}
           </CarouselNav>
         </Content>
       </Container>
