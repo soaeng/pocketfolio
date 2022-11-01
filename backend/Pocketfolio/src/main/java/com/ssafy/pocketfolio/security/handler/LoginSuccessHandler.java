@@ -52,21 +52,21 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
         // Long.toString(userSeq)
         String userSeqStr = userAuthDto.getUsername();
 
-        String accessToken = null;
-        String refreshToken = null;
         try {
-            accessToken = jwtUtil.generateAccessToken(userSeqStr);
-            refreshToken = jwtUtil.generateRefreshToken(userSeqStr);
+            String accessToken = jwtUtil.generateAccessToken(userSeqStr);
+            String refreshToken = jwtUtil.generateRefreshToken(userSeqStr);
 
             log.info("accessToken: " + accessToken);
             log.info("refreshToken: " + refreshToken);
 
-            String url = makeRedirectUrl(accessToken, refreshToken, userAuthDto.getFrom());
+            String url = makeRedirectUrl(accessToken, refreshToken);
 
             if (response.isCommitted()) {
                 log.debug("응답이 이미 커밋된 상태입니다. " + url + "로 리다이렉트하도록 바꿀 수 없습니다.");
                 return;
             }
+
+            log.info("Redirect URL: " + url);
 
             redirectStrategy.sendRedirect(request, response, url);
 
@@ -75,8 +75,8 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
         }
     }
 
-    private String makeRedirectUrl(String accessToken, String refreshToken, String from) {
-        return UriComponentsBuilder.fromUriString("http://localhost:8081/api/login/oauth2/code/" + from)
+    private String makeRedirectUrl(String accessToken, String refreshToken) {
+        return UriComponentsBuilder.fromUriString("/users/oauth/login")
                 .queryParam("accessToken", accessToken)
                 .queryParam("refreshToken", refreshToken)
                 .build().toUriString();
