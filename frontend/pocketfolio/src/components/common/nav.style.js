@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 // Navbar
 export const NavContainer = styled.div`
-  position: fixed;
+  position: sticky;
   align-items: center;
   display: flex;
   justify-content: space-between;
@@ -11,6 +11,7 @@ export const NavContainer = styled.div`
   height: 3.5rem;
   width: 100%;
   z-index: 999;
+  top: 0;
 `;
 
 // Logo Img
@@ -19,6 +20,18 @@ export const NavLogoImg = styled.img`
   top: 1.5rem;
   height: 100%;
   cursor: pointer;
+
+  /* @media screen and (max-width: 1024px) {
+    min-height: 70%;
+  }
+
+  @media screen and (max-width: 450px) {
+    min-height: 50%;
+  }
+
+  @media screen and (max-width: 320px) {
+    min-height: 30%;
+  } */
 `;
 
 // Nav Search
@@ -42,6 +55,14 @@ export const NavSearchInput = styled.input`
     border: 1px solid #333333;
     outline: none;
   }
+
+  /* @media screen and (max-width: 450px) {
+    display: none;
+  }
+
+  @media screen and (max-width: 320px) {
+    display: none;
+  } */
 `;
 
 // Nav Button

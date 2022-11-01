@@ -1,5 +1,6 @@
 import React, {useEffect, useRef, useReducer} from 'react';
 import {useNavigate} from 'react-router-dom';
+import styled from 'styled-components';
 
 import Nav from '../common/nav';
 import {
@@ -15,6 +16,10 @@ import {
   Items,
   ImageContainer,
   ColorBox,
+  ContentItem,
+  Title,
+  Text,
+  RecCarouselContainer,
 } from './Main.style';
 import RecCarousel from './RecCarousel';
 
@@ -39,9 +44,21 @@ const pageSlider = [
 function Main() {
   const navigate = useNavigate();
 
+  const color1 = {
+    backgroundColor: '#b94d4d',
+  };
+  const color2 = {
+    backgroundColor: '#10468e',
+  };
+
+  let _style = {
+    backgroundColor: '#b94d4d',
+  };
+
   // 5초마다 화면 전환을 위한 것
   const carousel = useRef(null);
   const reducer = (state, action) => {
+    _style = action === 1 ? color1 : color2;
     carousel.current.scrollTo({
       top: 0,
       left: carousel.current.offsetWidth * (action - 1),
@@ -72,21 +89,25 @@ function Main() {
       <Nav />
       {/* Main Carousel */}
       <Container>
-        <ColorBox />
+        <ColorBox style={_style} />
         <Content ref={carousel}>
           {pageSlider.map((sl, index) => {
             const {title1, title2, text1, text2, buttonText} = sl;
             return (
               <Item>
                 <Items>
-                  <div>{title1}</div>
-                  <div>{title2}</div>
-                  <div>{text1}</div>
-                  <div>{text2}</div>
-                  <RoomButton onClick={buttonClickHandler}>
-                    {buttonText}
-                  </RoomButton>
-                  <ImageContainer src="./assets/images/logo2.png" />
+                  <ContentItem>
+                    <Title>{title1}</Title>
+                    <Title>{title2}</Title>
+                    <Text>{text1}</Text>
+                    <Text>{text2}</Text>
+                    <RoomButton onClick={buttonClickHandler}>
+                      {buttonText}
+                    </RoomButton>
+                  </ContentItem>
+                  <div>
+                    <ImageContainer src="./assets/images/logo2.png" />
+                  </div>
                 </Items>
               </Item>
             );
@@ -122,9 +143,9 @@ function Main() {
         </Content>
       </Container>
       {/* 추천 Carousel */}
-      <Test>
+      <RecCarouselContainer>
         <RecCarousel />
-      </Test>
+      </RecCarouselContainer>
     </>
   );
 }
