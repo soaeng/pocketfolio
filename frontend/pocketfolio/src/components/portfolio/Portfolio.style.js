@@ -1,13 +1,12 @@
 import styled from 'styled-components';
 
 export const Background = styled.div`
-  background-color: #F7F7F7;
+  background-color: #f7f7f7;
   width: 100vw;
   height: 100vh;
   display: flex;
   justify-content: center;
   flex-direction: column;
-
 `;
 
 export const Container = styled.div`
@@ -17,7 +16,6 @@ export const Container = styled.div`
   justify-content: space-evenly;
   height: 90%;
   width: 50rem;
-  
 `;
 
 export const Header = styled.span`
@@ -38,10 +36,8 @@ export const CardWrapper = styled.div`
 export const Text = styled.div`
   margin-bottom: 1rem;
 
-  
-    border-bottom : 1px solid #BABABA;
-    padding-bottom: 1rem;
-  
+  border-bottom: 1px solid #bababa;
+  padding-bottom: 1rem;
 `;
 
 export const CardList = styled.div`
@@ -52,7 +48,7 @@ export const CardList = styled.div`
   /* overflow-x: auto; */
   /* overflow-y: visible; */
   /* outline: 1px solid; */
-  
+
   &::-webkit-scrollbar {
     width: 10px;
     height: 10px;
@@ -60,7 +56,7 @@ export const CardList = styled.div`
 
   &::-webkit-scrollbar-thumb {
     height: 5%;
-    background-color: #3C2E9B;
+    background-color: #3c2e9b;
     border-radius: 2rem;
   }
 
@@ -76,25 +72,23 @@ export const BtnDiv = styled.div`
   /* padding-bottom: 1.5rem; */
   padding-right: 5rem;
   z-index: 65;
-`
+`;
 
 export const DeleteBtn = styled.button`
-     width: 6rem;
-    height: 2.8rem;
-    background-color: #2c2365;
-    box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.3),
-      0px 1px 3px 1px rgba(0, 0, 0, 0.15);
-    border: 0;
-    border-radius: 100px;
-    color: #ffffff;
-    font-weight: 1000;
-    font-size: 20px;
-    cursor: pointer;
+  width: 6rem;
+  height: 2.8rem;
+  background-color: #2c2365;
+  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.3),
+    0px 1px 3px 1px rgba(0, 0, 0, 0.15);
+  border: 0;
+  border-radius: 100px;
+  color: #ffffff;
+  font-weight: 1000;
+  font-size: 20px;
+  cursor: pointer;
 
-    p{
-      margin: 0;
-    }
-
-`
-
+  p {
+    margin: 0;
+  }
+`;
 
