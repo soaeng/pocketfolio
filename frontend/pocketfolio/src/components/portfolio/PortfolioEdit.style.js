@@ -2,7 +2,8 @@ import styled from 'styled-components';
 
 export const Background = styled.div`
   display: flex;
-  justify-content: center;
+  /* justify-content: center; */
+  /* padding-top: 5rem; */
   align-items: center;
   width: 100vw;
   height: 100vh;
@@ -11,17 +12,17 @@ export const Background = styled.div`
   flex-direction: column;
 
   .ck.ck-editor__editable:not(.ck-editor__nested-editable) {
-  min-height: 500px;
-}
+    min-height: 500px;
+  }
 `;
 
 export const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
   width: 80%;
   height: 900px;
-
 `;
-
-
 
 export const Header = styled.div`
   display: flex;
@@ -29,4 +30,4 @@ export const Header = styled.div`
   border-bottom: 2px solid;
   text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   width: max-content;
-`
+`;
