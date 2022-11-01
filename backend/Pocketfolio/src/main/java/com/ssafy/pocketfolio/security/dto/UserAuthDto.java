@@ -21,13 +21,14 @@ public class UserAuthDto extends User implements OAuth2User {
 
     private String name;
 
-//    private String from;
+    private String from; // lower case
 
     private Map<String, Object> attr;
 
-    public UserAuthDto(String username, String password, Collection<? extends GrantedAuthority> authorities, Map<String, Object> attr) {
+    public UserAuthDto(String username, String password, Collection<? extends GrantedAuthority> authorities, Map<String, Object> attr, String from) {
         this(username, password, authorities);
         this.attr = attr;
+        this.from = from;
     }
 
     public UserAuthDto(String username, String password, Collection<? extends GrantedAuthority> authorities) {

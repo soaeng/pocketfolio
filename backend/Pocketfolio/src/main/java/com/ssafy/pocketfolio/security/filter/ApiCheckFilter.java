@@ -1,18 +1,16 @@
 package com.ssafy.pocketfolio.security.filter;
 
+import com.ssafy.pocketfolio.security.util.JWTUtil;
 import lombok.extern.log4j.Log4j2;
-import net.minidev.json.JSONObject;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
-import com.ssafy.pocketfolio.security.util.JWTUtil;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.Arrays;
 
 
@@ -21,11 +19,13 @@ public class ApiCheckFilter extends OncePerRequestFilter {
 
     private AntPathMatcher antPathMatcher;
     private String[] patterns;
+    private String[] postForGuestPatterns;
     private JWTUtil jwtUtil;
 
-    public ApiCheckFilter(String[] patterns, JWTUtil jwtUtil){
+    public ApiCheckFilter(String[] patterns, String[] postForGuestPatterns, JWTUtil jwtUtil){
         this.antPathMatcher = new AntPathMatcher();
         this.patterns = patterns;
+        this.postForGuestPatterns = postForGuestPatterns;
         this.jwtUtil = jwtUtil;
     }
 
@@ -33,60 +33,54 @@ public class ApiCheckFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
         log.info("REQUESTURI: " + request.getRequestURI());
+        log.info("this uri need token: " + needToken(request));
 
-//        log.info(antPathMatcher.match(pattern, request.getRequestURI()));
-        log.info(matchAtLeastOne(request));
-
-        if(matchAtLeastOne(request)) {
+        if (needToken(request)) {
 
             log.info("ApiCheckFilter.................................................");
             log.info("ApiCheckFilter.................................................");
             log.info("ApiCheckFilter.................................................");
 
-            boolean checkHeader = checkAuthHeader(request);
+            long userSeq = checkAuthHeaderAndExtractUserSeq(request);
+            request.setAttribute("userSeq", userSeq); // setAttribute 위치 어디로 할지 고민 1
 
-            if(checkHeader){
-                filterChain.doFilter(request, response);
-            }else {
-                response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-                // json 리턴
-                response.setContentType("application/json;charset=utf-8");
-                JSONObject json = new JSONObject();
-                String message = "FAIL CHECK API TOKEN";
-                json.put("code", "403");
-                json.put("message", message);
-
-                PrintWriter out = response.getWriter();
-                out.print(json);
-            }
-            return;
         }
 
         filterChain.doFilter(request, response);
     }
 
-    private boolean checkAuthHeader(HttpServletRequest request) {
+    private long checkAuthHeaderAndExtractUserSeq(HttpServletRequest request) {
 
-        boolean checkResult = false;
+        long userSeq = 0L;
 
-        String authHeader = request.getHeader("Authorization");
+        String authHeader = request.getHeader("accessToken");
 
-        if(StringUtils.hasText(authHeader) && authHeader.startsWith("Bearer ")){
-            log.info("Authorization exist: " + authHeader);
+        if (StringUtils.hasText(authHeader) && authHeader.startsWith("Bearer ")) {
+            log.info("Authorization(accessToken) exist: " + authHeader);
 
             try {
-                long userSeq = jwtUtil.validateAndExtractUserSeq(authHeader.substring(7));
+                userSeq = jwtUtil.validateAndExtractUserSeq(authHeader.substring(7));
                 log.info("validate result: " + userSeq);
-                checkResult = userSeq > 0;
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
 
-        return checkResult;
+        return userSeq;
     }
 
-    private boolean matchAtLeastOne(HttpServletRequest request) throws ServletException {
-        return Arrays.stream(patterns).anyMatch(e -> antPathMatcher.match(e, request.getRequestURI()));
+    private boolean needToken(HttpServletRequest request) throws ServletException {
+        String method = request.getMethod();
+        if ("PUT".equalsIgnoreCase(method) || "DELETE".equalsIgnoreCase(method)) {
+            return true;
+        }
+        String requestURI = request.getRequestURI();
+        if ("POST".equalsIgnoreCase(method)) {
+            if (Arrays.stream(postForGuestPatterns).anyMatch(e -> antPathMatcher.match(e, requestURI))) {
+                return false;
+            }
+            return true;
+        }
+        return Arrays.stream(patterns).anyMatch(e -> antPathMatcher.match(e, requestURI));
     }
 }

@@ -2,8 +2,6 @@ package com.ssafy.pocketfolio.config;
 
 
 import com.ssafy.pocketfolio.security.filter.ApiCheckFilter;
-import com.ssafy.pocketfolio.security.filter.ApiLoginFilter;
-import com.ssafy.pocketfolio.security.handler.ApiLoginFailHandler;
 import com.ssafy.pocketfolio.security.handler.LoginSuccessHandler;
 import com.ssafy.pocketfolio.security.service.UserDetailsServiceImpl;
 import com.ssafy.pocketfolio.security.util.JWTUtil;
@@ -68,27 +66,27 @@ public class SecurityConfig {
         http.formLogin(); // 인가 및 인증이 안 되면 로그인 페이지로 이동
         http.csrf().disable(); // CSRF 토큰 발행 X
         http.logout(); // 별도의 설정이 없으면 /logout 시 로그아웃 페이지로 이동
-        http.oauth2Login(); // OAuth 로그인
-//        http.oauth2Login().successHandler(successHandler()); // OAuth 로그인 후 redirect 이동
+//        http.oauth2Login(); // OAuth 로그인
+        http.oauth2Login().successHandler(successHandler()); // OAuth 로그인 후 redirect 이동
 
 //        http.rememberMe().tokenValiditySeconds(60*60*24*7).userDetailsService(userDetailsService);
         http.addFilterBefore(apiCheckFilter(), UsernamePasswordAuthenticationFilter.class);
 
-        http.addFilterBefore(apiLoginFilter(authenticationManager), UsernamePasswordAuthenticationFilter.class);
+//        http.addFilterBefore(apiLoginFilter(authenticationManager), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
 
-    public ApiLoginFilter apiLoginFilter(AuthenticationManager authenticationManager) throws Exception{
-
-        ApiLoginFilter apiLoginFilter =  new ApiLoginFilter("/users/login", jwtUtil());
-        apiLoginFilter.setAuthenticationManager(authenticationManager);
-
-        apiLoginFilter
-                .setAuthenticationFailureHandler(new ApiLoginFailHandler());
-
-        return apiLoginFilter;
-    }
+//    public ApiLoginFilter apiLoginFilter(AuthenticationManager authenticationManager) throws Exception {
+//
+//        ApiLoginFilter apiLoginFilter =  new ApiLoginFilter("/users/login", jwtUtil());
+//        apiLoginFilter.setAuthenticationManager(authenticationManager);
+//
+//        apiLoginFilter
+//                .setAuthenticationFailureHandler(new ApiLoginFailHandler());
+//
+//        return apiLoginFilter;
+//    }
 
 
     @Bean
@@ -98,14 +96,18 @@ public class SecurityConfig {
 
     @Bean
     public LoginSuccessHandler successHandler() {
-        return new LoginSuccessHandler(passwordEncoder());
+        return new LoginSuccessHandler(passwordEncoder(), jwtUtil());
     }
 
     @Bean
     public ApiCheckFilter apiCheckFilter() {
-        String[] patterns = {contextPath + "/rooms/like", contextPath + "portfolios/room/*"};
+        String[] patterns = {contextPath + "/rooms/like", contextPath + "/portfolios/room/*", contextPath + "/users/profile/me"};
+        // GET일 때도 토큰이 있어야 하는 녀석들
 
-        return new ApiCheckFilter(patterns, jwtUtil()); // ! patterns 더 추가할지 말지 봐야 함
+        String[] postForGuestPatterns = {contextPath + "/users/signup", contextPath + "/users/login", contextPath + "/users/logout"};
+        // POST일 때도 토큰이 필요 없는 녀석들
+
+        return new ApiCheckFilter(patterns, postForGuestPatterns, jwtUtil()); // ! patterns 더 추가할지 말지 봐야 함
     }
 
 //    public ApiLoginFilter apiLoginFilter(AuthenticationManager authenticationManager) throws Exception{

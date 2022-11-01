@@ -100,7 +100,8 @@ public class OAuth2UserDetailsService extends DefaultOAuth2UserService {
                 Long.toString(user.getUserSeq()),
                 passwordEncoder.encode("1111"),
                 roleSet,
-                oAuth2User.getAttributes()
+                oAuth2User.getAttributes(),
+                clientName.toLowerCase()
         );
 
         userAuthDto.setEmail(user.getEmail());
