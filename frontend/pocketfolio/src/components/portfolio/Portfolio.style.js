@@ -6,14 +6,14 @@ export const Background = styled.div`
   height: 100vh;
   display: flex;
   justify-content: center;
-  
+  flex-direction: column;
 
 `;
 
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
-  margin: auto;
+  margin: 0 auto;
   justify-content: space-evenly;
   height: 90%;
   width: 50rem;
@@ -38,10 +38,10 @@ export const CardWrapper = styled.div`
 export const Text = styled.div`
   margin-bottom: 1rem;
 
-  &.porttitle{
+  
     border-bottom : 1px solid #BABABA;
     padding-bottom: 1rem;
-  }
+  
 `;
 
 export const CardList = styled.div`
@@ -69,5 +69,32 @@ export const CardList = styled.div`
     border-radius: 2rem;
   }
 `;
+
+export const BtnDiv = styled.div`
+  display: flex;
+  justify-content: end;
+  /* padding-bottom: 1.5rem; */
+  padding-right: 5rem;
+  z-index: 65;
+`
+
+export const DeleteBtn = styled.button`
+     width: 6rem;
+    height: 2.8rem;
+    background-color: #2c2365;
+    box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.3),
+      0px 1px 3px 1px rgba(0, 0, 0, 0.15);
+    border: 0;
+    border-radius: 100px;
+    color: #ffffff;
+    font-weight: 1000;
+    font-size: 20px;
+    cursor: pointer;
+
+    p{
+      margin: 0;
+    }
+
+`
 
 

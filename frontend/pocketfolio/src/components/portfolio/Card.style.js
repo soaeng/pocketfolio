@@ -4,10 +4,12 @@ export const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  cursor: pointer;
+  z-index: 1;
 `;
 
 export const Item = styled.div`
-position: relative;
+  position: relative;
   height: 15rem;
   width: 12rem;
   margin-right: 1rem;
@@ -16,12 +18,10 @@ position: relative;
 `;
 
 export const ImgDiv = styled.div`
-  
   display: flex;
   justify-content: center;
   height: 70%;
   border-radius: 1.5rem 1.5rem 0 0;
-
 `;
 
 export const Thumbnail = styled.img`
@@ -32,7 +32,7 @@ export const Thumbnail = styled.img`
 export const TitleDiv = styled.div`
   display: flex;
   align-items: center;
-  height: 12%;
+  height: 3rem;
   font-family: bold;
   border-bottom: 0.3px solid rgba(0, 0, 0, 0.3);
 `;
@@ -44,12 +44,10 @@ export const Title = styled.div`
 
 export const LikeDiv = styled.div`
   display: flex;
-
   justify-content: center;
   width: 70%;
   justify-content: space-around;
-
-  height: 20%;
+  padding-top: 0.5rem;
   margin: auto;
 `;
 
@@ -81,5 +79,6 @@ export const Button = styled.img`
   height: 35px;
   left: 10.7rem;
   top: -1rem;
+  z-index: 9999;
   cursor: pointer;
 `;
