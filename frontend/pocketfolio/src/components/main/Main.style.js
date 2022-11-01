@@ -18,9 +18,9 @@ export const Content = styled.div`
   display: flex;
   overflow-x: auto;
   scroll-behavior: smooth;
-  ::-webkit-scrollbar {
+  /* ::-webkit-scrollbar {
     display: none;
-  }
+  } */
 `;
 
 export const CarouselNav = styled.div`
@@ -52,7 +52,6 @@ export const CarouselNavButtonNone = styled.button`
 
 export const Test = styled.div`
   position: relative;
-  top: 300px;
 `;
 
 export const Item = styled.div`

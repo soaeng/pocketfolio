@@ -20,7 +20,6 @@ import RecCarousel from './RecCarousel';
 // Main Carousel 자동 화면 전환을 위한 함수 선언
 const useInteval = (callback, delay) => {
   const savedCallback = useRef();
-  const intervalIdRef = useRef();
 
   useEffect(() => {
     savedCallback.current = callback;
@@ -32,13 +31,9 @@ const useInteval = (callback, delay) => {
     }
 
     if (delay !== null) {
-      intervalIdRef.current = setInterval(tick, delay);
+      const id = setInterval(tick, delay);
+      return () => clearInterval(id);
     }
-
-    const id = intervalIdRef.current;
-    return () => {
-      clearInterval(id);
-    };
   }, [delay]);
 };
 
@@ -46,24 +41,23 @@ const useInteval = (callback, delay) => {
 function Main() {
   const pageSlider = [
     {
-      title1:"설치가 필요없는",
-      title2:"포트폴리오 툴",
-      text1:"언제 어디서나 손쉽게 꾸밀 수 있는",
-      text2:"3D 포트폴리오를 만들어보세요",
-      buttonText:"바로 시작하기",
-      
+      title1: '설치가 필요없는',
+      title2: '포트폴리오 툴',
+      text1: '언제 어디서나 손쉽게 꾸밀 수 있는',
+      text2: '3D 포트폴리오를 만들어보세요',
+      buttonText: '바로 시작하기',
     },
     {
-      title1:"설치가 필요없는2",
-      title2:"포트폴리오 툴2",
-      text1:"언제 어디서나 손쉽게 꾸밀 수 있는2",
-      text2:"3D 포트폴리오를 만들어보세요2",
-      buttonText:"바로 시작하기",
-    }
+      title1: '설치가 필요없는2',
+      title2: '포트폴리오 툴2',
+      text1: '언제 어디서나 손쉽게 꾸밀 수 있는2',
+      text2: '3D 포트폴리오를 만들어보세요2',
+      buttonText: '바로 시작하기',
+    },
   ];
 
-  const [slideIndex, setSlideIndex] = useState(pageSlider);
-  console.log(slideIndex, 123)
+  const [slideIndex, setSlideIndex] = useState(1);
+  console.log(slideIndex, 123);
 
   const carousel = useRef(null);
 
@@ -73,24 +67,18 @@ function Main() {
     navigate('/port');
   };
 
-
-
   // 5초마다 화면 전환을 위한 것
-  // const delay = 5000;
-  // const [isRunning, setIsRunning] = useState(true);
+  const delay = 5000;
+  const [isRunning, setIsRunning] = useState(true);
 
-  // useInteval(
-  //   () => {
-  //     if (slideIndex === pageSlider.length) {
-  //       setSlideIndex(1);
-  //     } else setSlideIndex(slideIndex + 1);
-  //   },
-  //   isRunning ? delay : null,
-  // );
-
-  // const slideNav = index => {
-  //   setSlideIndex(index);
-  // };
+  useInteval(
+    () => {
+      if (slideIndex === pageSlider.length) {
+        setSlideIndex(1);
+      } else setSlideIndex(slideIndex + 1);
+    },
+    isRunning ? delay : null,
+  );
 
   const handleLeft = e => {
     e.preventDefault();
@@ -102,7 +90,6 @@ function Main() {
     carousel.current.scrollLeft += carousel.current.offsetWidth;
   };
 
-
   return (
     <>
       {/* Navbar */}
@@ -110,21 +97,24 @@ function Main() {
       {/* Main Carousel */}
       <Container>
         <Content ref={carousel}>
-          {slideIndex.map(sl => {
+          {pageSlider.map((sl, index) => {
             const {title1, title2, text1, text2, buttonText} = sl;
-            return(
+            console.log(sl, 456);
+            return (
               <Item>
                 <div>{title1}</div>
                 <div>{title2}</div>
                 <div>{text1}</div>
                 <div>{text2}</div>
-                <RoomButton onClick={buttonClickHandler}>{buttonText}</RoomButton>
+                <RoomButton onClick={buttonClickHandler}>
+                  {buttonText}
+                </RoomButton>
               </Item>
-            )
+            );
           })}
           <CarouselNav>
-            <CarouselNavButton onClick={handleLeft}/>
-            <CarouselNavButton onClick={handleRight}/>
+            <CarouselNavButton onClick={handleLeft} />
+            <CarouselNavButton onClick={handleRight} />
           </CarouselNav>
         </Content>
       </Container>
