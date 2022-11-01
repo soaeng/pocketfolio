@@ -15,7 +15,7 @@ import {
 } from './Card.style';
 import DeleteModal from './DeleteModal';
 
-const Card = () => {
+const Card = ({isDelete}) => {
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
   const openModal = () => {
@@ -28,10 +28,12 @@ const Card = () => {
   return (
     <Wrapper>
       <Item>
-        <Button
-          onClick={openModal}
-          src={process.env.PUBLIC_URL + '/assets/images/minus.png'}
-        ></Button>
+        {isDelete && (
+          <Button
+            onClick={openModal}
+            src={process.env.PUBLIC_URL + '/assets/images/minus.png'}
+          ></Button>
+        )}
         <div onClick={moveMyRoom}>
           <ImgDiv>
             <Thumbnail

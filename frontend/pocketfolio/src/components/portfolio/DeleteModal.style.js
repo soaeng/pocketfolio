@@ -21,6 +21,8 @@ export const ModalWrap = styled.div`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  /* 애니메이션 */
+  
 `;
 
 export const Contents = styled.div`
@@ -40,6 +42,9 @@ export const BtnDiv = styled.div`
 `;
 
 export const StyledBtn = styled.button`
+  p {
+    margin: 0;
+  }
   &.cancel {
     width: 6rem;
     height: 2.8rem;

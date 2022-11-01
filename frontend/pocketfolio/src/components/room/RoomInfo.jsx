@@ -1,6 +1,7 @@
 import {useState} from 'react';
 import {
   Container,
+  Box,
   ImgInfoDiv,
   RoomImgBox,
   RoomImg,
@@ -17,55 +18,74 @@ import {
   ShowIcon,
   ShowState,
 } from './RoomInfo.style';
+import RoomDetail from './RoomDetail';
 
 const RoomInfo = () => {
   const [like, setLike] = useState(false);
   const [follow, setFollow] = useState(false);
+  const [detail, setDetail] = useState(false);
 
   // 20자 제한
   const roomName = 'E101님의 마이룸';
 
+  // 팔로우
   const handleFollow = () => {
     setFollow(!follow);
   };
 
+  // 좋아요
   const handleLike = () => {
     setLike(!like);
   };
 
+  // detail Modal
+  const toggleDetail = () => {
+    setDetail(!detail);
+  };
+
+  const closeDetail = () => {
+    setDetail(false);
+  };
+
   return (
     <Container>
-      <ImgInfoDiv>
-        <RoomImgBox>
-          <RoomImg
-            src={process.env.PUBLIC_URL + '/assets/images/logo_kakao.png'}
-          />
-        </RoomImgBox>
-        <NameCategoryDiv>
-          <RoomName>{roomName}</RoomName>
-          <RoomCategory>개발</RoomCategory>
-        </NameCategoryDiv>
-      </ImgInfoDiv>
+      <Box>
+        <ImgInfoDiv>
+          <RoomImgBox onClick={toggleDetail}>
+            <RoomImg
+              src={process.env.PUBLIC_URL + '/assets/images/logo_kakao.png'}
+            />
+          </RoomImgBox>
+          <NameCategoryDiv>
+            <RoomName onClick={toggleDetail}>{roomName}</RoomName>
+            <RoomCategory>개발</RoomCategory>
+          </NameCategoryDiv>
+        </ImgInfoDiv>
 
-      <LikeShowFollowContainer>
-        <IconDiv className="follow" onClick={handleFollow}>
-          {follow ? <AlreadyFollowIcon /> : <FollowIcon />}
-        </IconDiv>
+        {/* {detail ? <InfoModal closeDetail={closeDetail} /> : null} */}
 
-        <LikeShowDiv>
-          <IconDiv onClick={handleLike}>
-            {like ? <LikeIcon /> : <DislikeIcon />}
+        <LikeShowFollowContainer>
+          <IconDiv className="follow" onClick={handleFollow}>
+            {follow ? <AlreadyFollowIcon /> : <FollowIcon />}
           </IconDiv>
-          <ShowState>101</ShowState>
-        </LikeShowDiv>
 
-        <LikeShowDiv>
-          <IconDiv>
-            <ShowIcon />
-          </IconDiv>
-          <ShowState>101</ShowState>
-        </LikeShowDiv>
-      </LikeShowFollowContainer>
+          <LikeShowDiv>
+            <IconDiv onClick={handleLike}>
+              {like ? <LikeIcon /> : <DislikeIcon />}
+            </IconDiv>
+            <ShowState>101</ShowState>
+          </LikeShowDiv>
+
+          <LikeShowDiv>
+            <IconDiv>
+              <ShowIcon />
+            </IconDiv>
+            <ShowState>101</ShowState>
+          </LikeShowDiv>
+        </LikeShowFollowContainer>
+      </Box>
+
+      {detail ? <RoomDetail closeDetail={closeDetail} /> : null}
     </Container>
   );
 };
