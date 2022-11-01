@@ -9,6 +9,7 @@ import {
 } from './RoomNav.style';
 import Avatar from '../common/avatar';
 
+// 마이룸 네브바
 const RoomNav = () => {
   const navigate = useNavigate();
 
@@ -17,14 +18,17 @@ const RoomNav = () => {
     sessionStorage.getItem('Id'),
   );
 
+  // main page로 이동
   const logoClickHandler = () => {
     navigate('/main');
   };
 
+  // login page로 이동
   const loginClickHandler = () => {
     navigate('/login');
   };
 
+  // 포트폴리오로 이동
   const roomClickHandler = () => {
     navigate('/port');
   };

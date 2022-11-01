@@ -20,6 +20,7 @@ import {
 } from './RoomInfo.style';
 import RoomDetail from './RoomDetail';
 
+// 마이룸 상단 방정보
 const RoomInfo = () => {
   const [like, setLike] = useState(false);
   const [follow, setFollow] = useState(false);
