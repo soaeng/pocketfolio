@@ -1,4 +1,6 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useEffect, useRef, useReducer} from 'react';
+import {useNavigate} from 'react-router-dom';
+import styled from 'styled-components';
 
 import Nav from '../common/nav';
 import {
@@ -8,61 +10,77 @@ import {
   CarouselNav,
   CarouselNavButton,
   CarouselNavButtonNone,
+  RoomButton,
+  Item,
   Test,
+  Items,
+  ImageContainer,
+  ColorBox,
+  ContentItem,
+  Title,
+  Text,
+  RecCarouselContainer,
 } from './Main.style';
-import Page1 from './carouselPage/page1';
-import Page2 from './carouselPage/page2';
 import RecCarousel from './RecCarousel';
 
-// Main Carousel 자동 화면 전환을 위한 함수 선언
-const useInteval = (callback, delay) => {
-  const savedCallback = useRef();
-  const intervalIdRef = useRef();
-
-  useEffect(() => {
-    savedCallback.current = callback;
-  }, [callback]);
-
-  useEffect(() => {
-    function tick() {
-      savedCallback.current();
-    }
-
-    if (delay !== null) {
-      intervalIdRef.current = setInterval(tick, delay);
-    }
-
-    const id = intervalIdRef.current;
-    return () => {
-      clearInterval(id);
-    };
-  }, [delay]);
-};
+const pageSlider = [
+  {
+    title1: '설치가 필요없는',
+    title2: '포트폴리오 툴',
+    text1: '언제 어디서나 손쉽게 꾸밀 수 있는',
+    text2: '3D 포트폴리오를 만들어보세요',
+    buttonText: '바로 시작하기',
+  },
+  {
+    title1: '설치가 필요없는2',
+    title2: '포트폴리오 툴2',
+    text1: '언제 어디서나 손쉽게 꾸밀 수 있는2',
+    text2: '3D 포트폴리오를 만들어보세요2',
+    buttonText: '바로 시작하기',
+  },
+];
 
 // Main 페이지
 function Main() {
-  const pageSlider = [
-    {id: 1, component: <Page1 />},
-    {id: 2, component: <Page2 />},
-  ];
+  const navigate = useNavigate();
 
-  const [slideIndex, setSlideIndex] = useState(1);
+  const color1 = {
+    backgroundColor: '#b94d4d',
+  };
+  const color2 = {
+    backgroundColor: '#10468e',
+  };
+
+  let _style = {
+    backgroundColor: '#b94d4d',
+  };
 
   // 5초마다 화면 전환을 위한 것
-  const delay = 5000;
-  const [isRunning, setIsRunning] = useState(true);
-
-  useInteval(
-    () => {
+  const carousel = useRef(null);
+  const reducer = (state, action) => {
+    _style = action === 1 ? color1 : color2;
+    carousel.current.scrollTo({
+      top: 0,
+      left: carousel.current.offsetWidth * (action - 1),
+      behavior: 'smooth',
+    });
+    return action;
+  };
+  const [slideIndex, scrollCarousel] = useReducer(reducer, 1);
+  useEffect(() => {
+    const timer = setTimeout(() => {
       if (slideIndex === pageSlider.length) {
-        setSlideIndex(1);
-      } else setSlideIndex(slideIndex + 1);
-    },
-    isRunning ? delay : null,
-  );
+        scrollCarousel(1);
+      } else scrollCarousel(slideIndex + 1);
+    }, 5000);
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [slideIndex]);
 
-  const slideNav = index => {
-    setSlideIndex(index);
+  // 바로 시작 버튼 이동
+  const buttonClickHandler = () => {
+    navigate('/port');
   };
 
   return (
@@ -71,35 +89,63 @@ function Main() {
       <Nav />
       {/* Main Carousel */}
       <Container>
-        <Slider>
-          <Content>
-            {pageSlider.map((obj, index) => {
-              return (
-                <div key={obj.id}>
-                  {slideIndex === index + 1 && pageSlider[index]['component']}
-                </div>
-              );
-            })}
-            <CarouselNav>
-              {Array.from({length: 2}).map((item, index) => (
-                <div>
-                  {slideIndex === index + 1 ? (
-                    <CarouselNavButton onClick={() => slideNav(index + 1)} />
-                  ) : (
-                    <CarouselNavButtonNone
-                      onClick={() => slideNav(index + 1)}
-                    />
-                  )}
-                </div>
-              ))}
-            </CarouselNav>
-          </Content>
-        </Slider>
+        <ColorBox style={_style} />
+        <Content ref={carousel}>
+          {pageSlider.map((sl, index) => {
+            const {title1, title2, text1, text2, buttonText} = sl;
+            return (
+              <Item>
+                <Items>
+                  <ContentItem>
+                    <Title>{title1}</Title>
+                    <Title>{title2}</Title>
+                    <Text>{text1}</Text>
+                    <Text>{text2}</Text>
+                    <RoomButton onClick={buttonClickHandler}>
+                      {buttonText}
+                    </RoomButton>
+                  </ContentItem>
+                  <div>
+                    <ImageContainer src="./assets/images/logo2.png" />
+                  </div>
+                </Items>
+              </Item>
+            );
+          })}
+          <CarouselNav>
+            {slideIndex === 1 ? (
+              <CarouselNavButton
+                onClick={() => {
+                  scrollCarousel(1);
+                }}
+              />
+            ) : (
+              <CarouselNavButtonNone
+                onClick={() => {
+                  scrollCarousel(1);
+                }}
+              />
+            )}
+            {slideIndex === 2 ? (
+              <CarouselNavButton
+                onClick={() => {
+                  scrollCarousel(2);
+                }}
+              />
+            ) : (
+              <CarouselNavButtonNone
+                onClick={() => {
+                  scrollCarousel(2);
+                }}
+              />
+            )}
+          </CarouselNav>
+        </Content>
       </Container>
       {/* 추천 Carousel */}
-      <Test>
+      <RecCarouselContainer>
         <RecCarousel />
-      </Test>
+      </RecCarouselContainer>
     </>
   );
 }

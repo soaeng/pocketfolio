@@ -2,19 +2,19 @@ import styled from 'styled-components';
 import {H1, Body1} from '../../../styles/styles.style';
 
 const Flex = styled.div`
-  display: flex;
+  /* display: flex; */
 `;
 const rowDiv = styled(Flex)`
   flex-direction: row;
-  width: 100%;
+  /* width: 100%; */
 `;
 const columnDiv = styled(Flex)`
   flex-direction: column;
-  width: 100%;
+  /* width: 100%; */
 `;
 
 export const MainContainer = styled.div`
-  position: relative;
+  /* position: relative; */
 `;
 
 export const Page1Container = styled(rowDiv)`

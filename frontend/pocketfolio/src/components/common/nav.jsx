@@ -56,7 +56,7 @@ function Nav() {
 
   return (
     <NavContainer>
-      <NavLogoImg onClick={logoClickHandler} src="./assets/images/logo.png" />
+      <NavLogoImg onClick={logoClickHandler} src="./assets/images/logo2.png" />
       {window.location.pathname === '/search' ? null : (
         <NavSearchInput
           placeholder="검색어를 입력해주세요"
