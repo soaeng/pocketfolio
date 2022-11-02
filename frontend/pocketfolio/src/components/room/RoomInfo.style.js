@@ -23,11 +23,23 @@ export const Container = styled.div`
 
   display: flex;
   flex-direction: column;
+  transition: all 1s;
 
   @media screen and (max-width: 1000px) {
     width: 80%;
     top: 4rem;
     left: 8%;
+    transition: all 0s;
+  }
+
+  &.sidebar {
+    display: none;
+  }
+
+  @media screen and (max-width: 1200px) {
+    &.sidebar {
+      display: block;
+    }
   }
 `;
 

@@ -10,7 +10,7 @@ import {
 import Avatar from '../common/avatar';
 
 // 마이룸 네브바
-const RoomNav = () => {
+const RoomNav = ({sidebar}) => {
   const navigate = useNavigate();
 
   // 로그인 표시 => 수정 필요
@@ -34,7 +34,7 @@ const RoomNav = () => {
   };
 
   return (
-    <Container>
+    <Container className={sidebar ? "side": null}>
       <LogoContainer onClick={logoClickHandler}>
         <LogoImg src={process.env.PUBLIC_URL + '/assets/images/logo2.png'} />
       </LogoContainer>

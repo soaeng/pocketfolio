@@ -14,6 +14,17 @@ export const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+
+  &.side {
+    width: calc(100vw - 1rem - 40rem);
+    transition: all 0.5s;
+  }
+
+  @media screen and (max-width: 1200px) {
+    &.side {
+      width: calc(100vw - 1rem);
+    } 
+  }
 `;
 
 // Logo

@@ -21,7 +21,7 @@ import {
 import RoomDetail from './RoomDetail';
 
 // 마이룸 상단 방정보
-const RoomInfo = () => {
+const RoomInfo = ({sidebar}) => {
   const [like, setLike] = useState(false);
   const [follow, setFollow] = useState(false);
   const [detail, setDetail] = useState(false);
@@ -49,7 +49,7 @@ const RoomInfo = () => {
   };
 
   return (
-    <Container>
+    <Container className={sidebar? "sidebar" : null}>
       <Box>
         <ImgInfoDiv>
           <RoomImgBox onClick={toggleDetail}>
