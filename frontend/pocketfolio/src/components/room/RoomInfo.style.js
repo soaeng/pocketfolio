@@ -41,6 +41,12 @@ export const Container = styled.div`
       display: block;
     }
   }
+
+  @media screen and (max-height: 750px) {
+    &.sidebar {
+      display: none;
+    }
+  }
 `;
 
 export const Box = styled.div`
