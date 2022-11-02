@@ -22,9 +22,9 @@ const AddPort = () => {
     content: '',
   });
 
-  // 입력창에 쓰인 해시태그
+  // 해시태그 인풋값
   const [hashtag, setHashtag] = useState('');
-  // 등록한 해시태그
+  // 등록 된 해시태그
   const [hashArr, setHashArr] = useState([]);
 
   // 포트폴리오 제목 저장
@@ -34,7 +34,6 @@ const AddPort = () => {
       ...portContent,
       [name]: value,
     });
-    console.log(portContent);
   };
 
   // 해시태그 입력
@@ -44,14 +43,22 @@ const AddPort = () => {
 
   // 해시태그 입력창에서 엔터 눌렀을 때,
   const onKeyUp = useCallback(e => {
-    // 해시태그 배열에 추가 후 입력 창 초기화
+    // 해시태그 배열에 추가 후 입력 창 초기화 (공백값 제외)
     if (e.keyCode === 13 && e.target.value.trim() !== '') {
       setHashArr(hashArr => [...hashArr, hashtag]);
       setHashtag('');
     }
   });
 
+  // 해시태그 삭제
+  const deleteHash = e => {
+    let selected = e.target.getAttribute('value');
+    const result = hashArr.filter(content => content !== selected);
+    setHashArr(result);
+  };
+
   console.log(hashtag, hashArr);
+  console.log(portContent);
 
   return (
     <Background>
@@ -69,7 +76,7 @@ const AddPort = () => {
             type="text"
             autoComplete="off"
             placeholder="포트폴리오 제목"
-            onChange={getValue}
+            onBlur={getValue}
             name="title"
           ></Title>
         </TitleDiv>
@@ -90,8 +97,10 @@ const AddPort = () => {
             />
           </InputDiv>
           <HashList>
-            {hashArr.map(item => (
-              <HashOutter># {item}</HashOutter>
+            {hashArr.map((item, idx) => (
+              <HashOutter id={idx} key={idx} value={item} onClick={deleteHash}>
+                # {item}
+              </HashOutter>
             ))}
           </HashList>
         </HashDiv>
