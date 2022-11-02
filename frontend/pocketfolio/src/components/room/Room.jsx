@@ -29,8 +29,6 @@ const Room = () => {
       <RoomInfo sidebar={sidebar} />
       <CanvasWrapper className={sidebar ? 'active' : ''}>
         <Canvas
-          // flat
-          // linear
           camera={{position: [10, 10, 10], fov: 25}}
         >
           <OrbitControls autoRotate={false} />
@@ -51,7 +49,12 @@ const Room = () => {
         </Canvas>
       </CanvasWrapper>
 
-      {sidebar ? null : <Menu room_id={room_id} openSidebar={openSidebar} />}
+      {sidebar ? null : (
+        <Menu
+          room_id={room_id}
+          openSidebar={openSidebar}
+        />
+      )}
 
       <Sidebar sidebar={sidebar} closeSidebar={closeSidebar} />
     </Container>

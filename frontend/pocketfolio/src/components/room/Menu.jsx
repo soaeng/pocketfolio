@@ -2,7 +2,6 @@ import {
   Container,
   MenuButton,
   Bar,
-  MenuList,
   MenuDiv,
   EditIcon,
   PortIcon,
@@ -30,6 +29,13 @@ const Menu = ({room_id, openSidebar}) => {
 
   const moveToPort = () => {
     navigate('/port');
+  };
+
+  // copy to clipboard
+  const copyURL = () => {
+    window.navigator.clipboard.writeText(
+      `https://k7e101.p.ssafy.io/room/${room_id}`,
+    );
   };
 
   return (
@@ -62,7 +68,7 @@ const Menu = ({room_id, openSidebar}) => {
         </ToolTip>
       </MenuDiv>
 
-      <MenuDiv className={toggle ? 'share' : ''}>
+      <MenuDiv className={toggle ? 'share' : ''} onClick={copyURL}>
         <ShareIcon />
         <ToolTip className="tooltip">
           <ToolTipText>URL 복사</ToolTipText>
