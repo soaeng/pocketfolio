@@ -11,13 +11,15 @@ export const Container = styled.div`
   // position
   z-index: 1;
   position: fixed;
+  top: 0;
+  left: 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
 
   &.side {
     width: calc(100vw - 1rem - 40rem);
-    transition: all 0.5s;
+    transition: all 0.25s ease;
   }
 
   @media screen and (max-width: 1200px) {
