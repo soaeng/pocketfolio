@@ -14,7 +14,7 @@ import {
 import {useState} from 'react';
 import {useNavigate} from 'react-router-dom';
 
-const Menu = ({room_id, openSidebar}) => {
+const Menu = ({room_id, openSidebar, copyURL}) => {
   const [toggle, setToggle] = useState(false);
   const navigate = useNavigate();
 
@@ -29,13 +29,6 @@ const Menu = ({room_id, openSidebar}) => {
 
   const moveToPort = () => {
     navigate('/port');
-  };
-
-  // copy to clipboard
-  const copyURL = () => {
-    window.navigator.clipboard.writeText(
-      `https://k7e101.p.ssafy.io/room/${room_id}`,
-    );
   };
 
   return (
