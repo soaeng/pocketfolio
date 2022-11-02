@@ -5,7 +5,7 @@ export const Background = styled.div`
   align-items: center;
   width: 100vw;
   height: 100vh;
-  background-color: #f7f7f7;
+  /* background-color: #f7f7f7; */
 
   flex-direction: column;
 
