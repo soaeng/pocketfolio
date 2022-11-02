@@ -5,8 +5,7 @@ export const Background = styled.div`
   align-items: center;
   width: 100vw;
   height: 100vh;
-  /* background-color: #f7f7f7; */
-
+  background-color: #f7f7f7;
   flex-direction: column;
 
   .ck.ck-editor__editable:not(.ck-editor__nested-editable) {
@@ -18,7 +17,7 @@ export const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
-  margin-top: 10rem;
+  margin-top: 5rem;
   width: 60%;
   height: 900px;
 `;
@@ -96,4 +95,44 @@ export const HashOutter = styled.div`
   line-height: 20px;
   margin-right: 5px;
   cursor: pointer;
+`;
+
+export const BtnDiv = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  width: 60%;
+`;
+
+export const StyledBtn = styled.button`
+  p {
+    margin: 0;
+  }
+  &.cancel {
+    width: 6rem;
+    height: 2.8rem;
+    background-color: rgba(255, 255, 255, 0.08);
+    box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.3),
+      0px 1px 3px 1px rgba(0, 0, 0, 0.15);
+    border: 0;
+    border-radius: 100px;
+    color: #2c2365;
+    font-weight: 1000;
+    font-size: 20px;
+    cursor: pointer;
+  }
+
+  &.save {
+    width: 6rem;
+    height: 2.8rem;
+    margin-left: 1rem;
+    background-color: #2c2365;
+    box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.3),
+      0px 1px 3px 1px rgba(0, 0, 0, 0.15);
+    border: 0;
+    border-radius: 100px;
+    color: #ffffff;
+    font-weight: 1000;
+    font-size: 20px;
+    cursor: pointer;
+  }
 `;
