@@ -16,9 +16,8 @@ const Editor = ({portContent, setPortContent}) => {
           const data = editor.getData();
           setPortContent({
             ...portContent,
-            content: data
-          })
-          console.log(portContent);
+            content: data,
+          });
         }}
       />
     </div>
