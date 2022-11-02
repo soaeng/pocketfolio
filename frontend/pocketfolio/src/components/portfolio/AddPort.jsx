@@ -14,7 +14,7 @@ import {
 } from './AddPort.style';
 import Nav from '../common/nav';
 import Editor from './Editor.test';
-
+import ReactHtmlParser from 'html-react-parser'
 const AddPort = () => {
   // 포트폴리오 제목, 내용 변수
   const [portContent, setPortContent] = useState({
@@ -106,6 +106,11 @@ const AddPort = () => {
         </HashDiv>
         <Editor portContent={portContent} setPortContent={setPortContent} />
       </Wrapper>
+
+      <div>
+        {portContent.title}
+        {ReactHtmlParser(portContent.content)}
+      </div>
     </Background>
   );
 };
