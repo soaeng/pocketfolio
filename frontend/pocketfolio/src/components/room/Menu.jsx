@@ -2,7 +2,6 @@ import {
   Container,
   MenuButton,
   Bar,
-  MenuList,
   MenuDiv,
   EditIcon,
   PortIcon,
@@ -15,7 +14,7 @@ import {
 import {useState} from 'react';
 import {useNavigate} from 'react-router-dom';
 
-const Menu = ({room_id}) => {
+const Menu = ({room_id, openSidebar}) => {
   const [toggle, setToggle] = useState(false);
   const navigate = useNavigate();
 
@@ -30,6 +29,13 @@ const Menu = ({room_id}) => {
 
   const moveToPort = () => {
     navigate('/port');
+  };
+
+  // copy to clipboard
+  const copyURL = () => {
+    window.navigator.clipboard.writeText(
+      `https://k7e101.p.ssafy.io/room/${room_id}`,
+    );
   };
 
   return (
@@ -48,7 +54,7 @@ const Menu = ({room_id}) => {
         </ToolTip>
       </MenuDiv>
 
-      <MenuDiv className={toggle ? 'visit' : ''}>
+      <MenuDiv className={toggle ? 'visit' : ''} onClick={openSidebar}>
         <VisitIcon />
         <ToolTip className="tooltip">
           <ToolTipText>방명록</ToolTipText>
@@ -62,7 +68,7 @@ const Menu = ({room_id}) => {
         </ToolTip>
       </MenuDiv>
 
-      <MenuDiv className={toggle ? 'share' : ''}>
+      <MenuDiv className={toggle ? 'share' : ''} onClick={copyURL}>
         <ShareIcon />
         <ToolTip className="tooltip">
           <ToolTipText>URL 복사</ToolTipText>

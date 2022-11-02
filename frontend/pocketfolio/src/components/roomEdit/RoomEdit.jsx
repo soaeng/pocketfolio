@@ -1,4 +1,4 @@
-import RoomNav from './RoomNav';
+import RoomNav from '../room/RoomNav';
 import {useParams} from 'react-router-dom';
 
 // 마이룸 수정

@@ -29,6 +29,22 @@ export const Container = styled.div`
     top: 4rem;
     left: 8%;
   }
+
+  &.sidebar {
+    display: none;
+  }
+
+  @media screen and (max-width: 1200px) {
+    &.sidebar {
+      display: block;
+    }
+  }
+
+  @media screen and (max-height: 750px) {
+    &.sidebar {
+      display: none;
+    }
+  }
 `;
 
 export const Box = styled.div`

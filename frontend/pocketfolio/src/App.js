@@ -6,7 +6,7 @@ import Search from './components/search/Search';
 
 // Room
 import Room from './components/room/Room';
-import RoomEdit from './components/room/RoomEdit';
+import RoomEdit from './components/roomEdit/RoomEdit';
 
 // User
 import Login from './components/user/Login';
