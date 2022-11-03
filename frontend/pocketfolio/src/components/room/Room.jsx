@@ -2,10 +2,10 @@ import RoomNav from './RoomNav';
 import RoomInfo from './RoomInfo';
 import Sidebar from './Sidebar';
 import Menu from './Menu';
-import Toast from './Toast';
 import {Container, CanvasWrapper} from './Room.style';
 import {Canvas} from '@react-three/fiber';
 import {OrbitControls} from '@react-three/drei';
+import toast, {Toaster} from 'react-hot-toast';
 import {useParams} from 'react-router-dom';
 import {useState} from 'react';
 
@@ -16,7 +16,6 @@ const Room = () => {
   const room_id = parseInt(params.room_id);
 
   const [sidebar, setSidebar] = useState(false);
-  const [toast, setToast] = useState([]);
 
   const openSidebar = () => {
     setSidebar(true);
@@ -31,12 +30,7 @@ const Room = () => {
     window.navigator.clipboard.writeText(
       `https://k7e101.p.ssafy.io/room/${room_id}`,
     );
-    addToast('URL이 복사되었습니다');
-  };
-
-  // addToast
-  const addToast = text => {
-    setToast([...toast, text]);
+    toast.success('URL이 복사되었습니다.');
   };
 
   return (
@@ -59,6 +53,22 @@ const Room = () => {
             <meshStandardMaterial attach="material" color={0xa3b18a} />
           </mesh>
         </Canvas>
+        <Toaster
+          position="bottom-left"
+          containerStyle={{
+            position: 'absolute',
+            bottom: '1.5rem',
+            left: '1.5rem',
+          }}
+          toastOptions={{
+            duration: 3000,
+            style: {
+              background: '#fff',
+              color: '#333333',
+              fontSize: '0.85rem',
+            },
+          }}
+        />
       </CanvasWrapper>
 
       {sidebar ? null : (
@@ -66,10 +76,8 @@ const Room = () => {
       )}
 
       <Sidebar sidebar={sidebar} closeSidebar={closeSidebar} />
-      <Toast toast={toast} />
     </Container>
   );
 };
-
 
 export default Room;
