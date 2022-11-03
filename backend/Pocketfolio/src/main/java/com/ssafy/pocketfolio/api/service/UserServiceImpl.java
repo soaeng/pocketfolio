@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -65,5 +66,24 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteUser(long userSeq) {
         userRepository.deleteById(userSeq);
+    }
+
+    @Override // 12345
+    public List<UserRes> findUserList(String type, String keyword, String sort) {
+        return null;
+    }
+
+    @Override
+    @Transactional
+    public void login(long userSeq, String refreshToken) {
+        User user = userRepository.findById(userSeq).get();
+        user.updateToken(refreshToken);
+    }
+
+    @Override
+    @Transactional
+    public void logout(long userSeq) {
+        User user = userRepository.findById(userSeq).get();
+        user.updateToken(null);
     }
 }
