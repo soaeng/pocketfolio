@@ -11,9 +11,13 @@ import {
   HashInput,
   HashOutter,
   HashList,
+  BtnDiv,
+  StyledBtn,
 } from './AddPort.style';
 import Nav from '../common/nav';
 import Editor from './Editor.test';
+import { Body1 } from '../../styles/styles.style';
+import ReactHtmlParser from 'html-react-parser';
 
 const AddPort = () => {
   // 포트폴리오 제목, 내용 변수
@@ -68,12 +72,12 @@ const AddPort = () => {
 
         <TitleDiv>
           <Img
+            alt="pencil"
             className="pencil"
             src={process.env.PUBLIC_URL + '/assets/images/pencil.png'}
-          ></Img>
+          />
           <Title
             className="title"
-            type="text"
             autoComplete="off"
             placeholder="포트폴리오 제목"
             onBlur={getValue}
@@ -84,9 +88,10 @@ const AddPort = () => {
         <HashDiv className="HashWrap">
           <InputDiv>
             <Img
+              alt="hash"
               className="hashtag"
               src={process.env.PUBLIC_URL + '/assets/images/hash2.png'}
-            ></Img>
+            />
             <HashInput
               className="HashInput"
               type="text"
@@ -98,7 +103,7 @@ const AddPort = () => {
           </InputDiv>
           <HashList>
             {hashArr.map((item, idx) => (
-              <HashOutter id={idx} key={idx} value={item} onClick={deleteHash}>
+              <HashOutter key={idx} value={item} onClick={deleteHash}>
                 # {item}
               </HashOutter>
             ))}
@@ -106,6 +111,18 @@ const AddPort = () => {
         </HashDiv>
         <Editor portContent={portContent} setPortContent={setPortContent} />
       </Wrapper>
+      <BtnDiv>
+        <StyledBtn className="cancel">
+          <Body1>취소</Body1>
+        </StyledBtn>
+        <StyledBtn className="save">
+        <Body1>저장</Body1>
+        </StyledBtn>
+      </BtnDiv>
+      {/* <div>
+        {portContent.title}
+        {ReactHtmlParser(portContent.content)}
+      </div> */}
     </Background>
   );
 };

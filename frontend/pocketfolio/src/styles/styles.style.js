@@ -77,7 +77,7 @@ const H3 = styled.h3`
 
 const Body1 = styled.p`
   // xl(4k, ≥2100px)
-  font-size: 3rem;
+  font-size: 1.7rem;
 
   // lg(FHD <2100px)
   @media screen and (max-width: 2100px) {
