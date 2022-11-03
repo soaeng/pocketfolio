@@ -20,6 +20,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -53,7 +56,11 @@ public class PortfolioServiceImpl implements PortfolioService{
 
         if (thumbnail != null) {
             File dest = saveFile(thumbnail, "portfolio" + File.separator + "thumbnail");
-            thumbnailUrl = dest.getPath();
+            if (dest != null) {
+                thumbnailUrl = dest.getPath();
+            } else {
+                return null;
+            }
         }
 
         portfolio = req.toEntity(req, thumbnailUrl, user);
@@ -114,9 +121,31 @@ public class PortfolioServiceImpl implements PortfolioService{
 
         File dest = new File(upload.getPath() + File.separator + saveName);
         log.debug(dest.getPath());
+
+        if (uploadDirName.contains("thumbnail")) {
+            log.debug("thumbnail 파일 확장자 확인");
+            if(!checkImageType(Paths.get(dest.getPath()))){
+                log.debug("thumbnail 파일 확장자 확인 실패");
+                return null;
+            }
+        }
+
         file.transferTo(dest);
         return dest;
     }
+
+    // 이미지 파일 체크
+    private boolean checkImageType(Path filePath) {
+        try {
+            String contentType = Files.probeContentType(filePath);
+            return contentType.startsWith("image");
+        }catch(IOException e) {
+            e.printStackTrace();
+        }
+        log.debug("이미지 파일이 아닙니다.");
+        return false;
+    }
+
 
 
     @Override
