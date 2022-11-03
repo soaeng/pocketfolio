@@ -1,17 +1,54 @@
 import React from 'react';
 import {CKEditor} from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-import Nav from '../common/nav';
 
-const Editor = ({portContent, setPortContent}) => {
+// const API_URL = 'https://k7e101.p.ssafy.io/.';
+const UPLOAD_ENDPOINT = 'upload_files';
+
+export default function MyEditor({portContent, setPortContent, ...props}) {
+  function uploadAdapter(loader) {
+    return {
+      upload: () => {
+        return new Promise((resolve, reject) => {
+          const body = new FormData();
+          loader.file.then(file => {
+            body.append('files', file);
+            // let headers = new Headers();
+            // headers.append("Origin", "http://localhost:3000");
+            // fetch(`${API_URL}/${UPLOAD_ENDPOINT}`, {
+            //   method: 'post',
+            //   body: body,
+            //   // mode: "no-cors"
+            // })
+            //   .then(res => res.json())
+            //   .then(res => {
+            //     resolve({
+            //       default: `${API_URL}/${res.filename}`,
+            //     });
+            //   })
+            //   .catch(err => {
+            //     reject(err);
+            //   });
+          });
+        });
+      },
+    };
+  }
+  function uploadPlugin(editor) {
+    editor.plugins.get('FileRepository').createUploadAdapter = loader => {
+      return uploadAdapter(loader);
+    };
+  }
   return (
-    <div>
+    <div className="App">
       <CKEditor
-        editor={ClassicEditor}
-        data=""
         config={{
-          placeholder: '내용을 입력하세요.',
+          extraPlugins: [uploadPlugin],
         }}
+        editor={ClassicEditor}
+        onReady={editor => {}}
+        onBlur={(event, editor) => {}}
+        onFocus={(event, editor) => {}}
         onChange={(event, editor) => {
           const data = editor.getData();
           setPortContent({
@@ -19,9 +56,8 @@ const Editor = ({portContent, setPortContent}) => {
             content: data,
           });
         }}
+        {...props}
       />
     </div>
   );
-};
-
-export default Editor;
+}

@@ -61,9 +61,19 @@ const AddPort = () => {
     setHashArr(result);
   };
 
+  
+  const Viewer = ({content}) => (
+
+    <div
+    className="ck-content"
+    dangerouslySetInnerHTML={{ __html: content }}
+    >
+      
+    </div>
+  );
   console.log(hashtag, hashArr);
   console.log(portContent);
-
+  
   return (
     <Background>
       {/* <Nav></Nav> */}
@@ -119,10 +129,15 @@ const AddPort = () => {
         <Body1>저장</Body1>
         </StyledBtn>
       </BtnDiv>
-      {/* <div>
+      
+      {/* 포트폴리오 로우 데이터 */}
+      <div>
         {portContent.title}
         {ReactHtmlParser(portContent.content)}
-      </div> */}
+      </div>
+
+      {/* 유저에게 보여져야 할 포트폴리오 */}
+      <Viewer content={portContent.content} />
     </Background>
   );
 };
