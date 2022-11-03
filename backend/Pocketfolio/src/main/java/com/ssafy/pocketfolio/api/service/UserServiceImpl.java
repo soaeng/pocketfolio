@@ -4,6 +4,7 @@ import com.ssafy.pocketfolio.api.dto.request.UserUpdateReq;
 import com.ssafy.pocketfolio.api.dto.response.UserRes;
 import com.ssafy.pocketfolio.db.entity.User;
 import com.ssafy.pocketfolio.db.repository.UserRepository;
+import com.ssafy.pocketfolio.db.view.UserView;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -29,8 +30,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserRes findUser(long userSeq) {
-        User user = userRepository.findById(userSeq).get();
-        return new UserRes(user);
+        UserView userView = userRepository.findProfileById(userSeq).get();
+        return new UserRes(userView);
     }
 
     @Override
@@ -71,13 +72,6 @@ public class UserServiceImpl implements UserService {
     @Override // 12345
     public List<UserRes> findUserList(String type, String keyword, String sort) {
         return null;
-    }
-
-    @Override
-    @Transactional
-    public void login(long userSeq, String refreshToken) {
-        User user = userRepository.findById(userSeq).get();
-        user.updateToken(refreshToken);
     }
 
     @Override
