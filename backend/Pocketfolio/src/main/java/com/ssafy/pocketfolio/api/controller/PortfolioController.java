@@ -29,9 +29,6 @@ public class PortfolioController {
         // TODO: 회원 정보 받는 방법?
         Long user = 1L;
 
-        // 프론트에서 전달받은 포트폴리오 썸네일 이미지
-        // TODO: 확장자 제한 걸기 필요
-
         // 포트폴리오 저장 후 패당 포트폴리오 번호 반환
         Long response = portfolioService.insertPortfolio(request, thumbnail, user, files);
 
