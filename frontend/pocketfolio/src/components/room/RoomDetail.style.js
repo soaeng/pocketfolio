@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import {Body2, Body3, Body4} from '../../styles/styles.style';
+import {Body3, Body4} from '../../styles/styles.style';
 import {RiCake2Fill, RiLinksFill, RiArrowUpSLine} from 'react-icons/ri';
 
 export const Container = styled.div`
