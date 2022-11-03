@@ -1,8 +1,10 @@
 package com.ssafy.pocketfolio.security.service;
 
 import com.ssafy.pocketfolio.db.entity.Oauth;
+import com.ssafy.pocketfolio.db.entity.Room;
 import com.ssafy.pocketfolio.db.entity.User;
 import com.ssafy.pocketfolio.db.repository.OauthRepository;
+import com.ssafy.pocketfolio.db.repository.RoomRepository;
 import com.ssafy.pocketfolio.db.repository.UserRepository;
 import com.ssafy.pocketfolio.security.dto.UserAuthDto;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +30,8 @@ public class OAuth2UserDetailsService extends DefaultOAuth2UserService {
     private final UserRepository userRepository;
 
     private final OauthRepository oauthRepository;
+
+    private final RoomRepository roomRepository;
 
     private final PasswordEncoder passwordEncoder;
 
@@ -55,6 +59,7 @@ public class OAuth2UserDetailsService extends DefaultOAuth2UserService {
 
         String email = null;
         String name = null;
+        String key = (String) oAuth2User.getAttributes().get(userNameAttributeName);
 
         if (clientName.equals("Google")) {
             email = oAuth2User.getAttribute("email");
@@ -73,21 +78,29 @@ public class OAuth2UserDetailsService extends DefaultOAuth2UserService {
 
         log.info("EMAIL: " + email);
         log.info("NAME: " + name);
+        log.info("key: " + key); // 나중에 지워야 함 1234
 
         User user;
         Optional<User> result = userRepository.findByEmail(email);
+        boolean isSignUp = false;
 
         if (!result.isPresent()) {
             // 회원 가입
             user = saveSocialUser(email, name);
-            saveSocialOAuth(user, clientName, userNameAttributeName);
+            log.info("DB User 생성 완료");
+            saveSocialOAuth(user, clientName, key);
+            log.info("DB OAuth 생성 완료");
+            createFirstRoom(user);
+            log.info("DB Room 생성 완료");
+            isSignUp = true;
         } else {
             // 기존 회원 로그인
             user = result.get();
             if (!oauthRepository.findByUser_UserSeqAndFrom(user.getUserSeq(), clientName).isPresent()) {
                 // 기존 회원의 다른 소셜 로그인과 연동
                 // key가 고유한 값인지 확인되면 findByKey로 검색하면 됨
-                saveSocialOAuth(user, clientName, userNameAttributeName);
+                saveSocialOAuth(user, clientName, key);
+                log.info("DB OAuth 생성 완료");
             }
         }
 
@@ -96,8 +109,11 @@ public class OAuth2UserDetailsService extends DefaultOAuth2UserService {
 
         UserAuthDto userAuthDto = new UserAuthDto(
                 Long.toString(user.getUserSeq()),
+                passwordEncoder.encode("1111"),
                 roleSet,
-                oAuth2User.getAttributes()
+                oAuth2User.getAttributes(),
+                clientName.toLowerCase(),
+                isSignUp
         );
 
         userAuthDto.setEmail(user.getEmail());
@@ -122,12 +138,21 @@ public class OAuth2UserDetailsService extends DefaultOAuth2UserService {
 
     private void saveSocialOAuth(User user, String from, String key) {
         Oauth oauth = Oauth.builder()
-//                .oauthKey(UUID.randomUUID().toString()) // 이거 나중에 key 뭐 받을 지 결정되면 수정
                 .key(key) // 이거 나중에 key 뭐 받을 지 결정되면 수정
                 .from(from)
                 .user(user)
                 .build();
         oauthRepository.save(oauth);
+    }
+
+    private void createFirstRoom(User user) {
+        Room room = Room.builder()
+                .name(user.getName() + "님의 포켓")
+                .user(user)
+                .isMain("T")
+                .privacy("O")
+                .build();
+        roomRepository.save(room);
     }
 
 }

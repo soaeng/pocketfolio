@@ -37,11 +37,10 @@ public class User {
 	@Column(name="profile_pic", length=255)
 	private String profilePic;
 	
-	@Column(name="desc", length=200)
-	private String desc;
+	@Column(name="describe", length=200)
+	private String describe;
 	
 	@Column(name="created", nullable=false, updatable=false, columnDefinition = "datetime DEFAULT (current_time)")
-	@NotNull
 	private LocalDateTime created;
 
 	@Column(name="token", length=1000)
@@ -51,10 +50,10 @@ public class User {
 //	@ColumnDefault("0")
 //	private int userPoint;
 
-	public void updateUser(String name, String profilePic, String desc) {
+	public void updateUser(String name, String profilePic, String describe) {
 		this.name = name;
 		this.profilePic = profilePic;
-		this.desc = desc;
+		this.describe = describe;
 	}
 
 	public void updateToken(String token) {
