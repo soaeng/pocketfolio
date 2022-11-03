@@ -1,18 +1,14 @@
 import {Route, Routes, BrowserRouter} from 'react-router-dom';
 import './App.css';
+
+// pages
 import Landing from './components/landing/Landing';
 import Main from './components/main/Main';
 import Search from './components/search/Search';
-
-// Room
 import Room from './components/room/Room';
 import RoomEdit from './components/roomEdit/RoomEdit';
-
-// User
 import Login from './components/user/Login';
 import Profile from './components/user/Profile';
-
-// Portfolio
 import AddPort from './components/portfolio/AddPort';
 import Portfolio from './components/portfolio/Portfolio';
 import PortDetail from './components/portfolio/PortDetail';
