@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Log4j2
 @RestController
@@ -44,6 +45,9 @@ public class UserController {
         try {
             result = userService.findUser(userSeq);
             status = HttpStatus.OK;
+        } catch (NoSuchElementException e) {
+            log.error("검색하려는 userSeq(" + userSeq + ") 없음");
+            status = HttpStatus.NOT_FOUND;
         } catch (Exception e) {
             log.error(e.getMessage());
             status = HttpStatus.INTERNAL_SERVER_ERROR;
