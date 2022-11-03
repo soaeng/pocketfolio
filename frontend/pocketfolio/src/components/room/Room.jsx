@@ -57,8 +57,6 @@ const Room = () => {
           position="bottom-left"
           containerStyle={{
             position: 'absolute',
-            bottom: '1.5rem',
-            left: '1.5rem',
           }}
           toastOptions={{
             duration: 3000,
