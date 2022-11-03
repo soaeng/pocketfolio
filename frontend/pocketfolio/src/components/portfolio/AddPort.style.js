@@ -11,6 +11,16 @@ export const Background = styled.div`
   .ck.ck-editor__editable:not(.ck-editor__nested-editable) {
     min-height: 500px;
   }
+  
+  &.ck-content blockquote {
+    overflow: hidden;
+    padding-right: 14em;
+    padding-left: 1.5em;
+    margin-left: 0;
+    margin-right: 0;
+    font-style: italic;
+    border-left: solid 5px hsl(0, 0%, 80%);
+  }
 `;
 
 export const Wrapper = styled.div`
