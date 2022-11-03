@@ -5,9 +5,11 @@ import com.ssafy.pocketfolio.api.dto.request.PortfolioReq;
 import com.ssafy.pocketfolio.api.dto.response.PortfolioRes;
 import com.ssafy.pocketfolio.db.entity.Portfolio;
 import com.ssafy.pocketfolio.db.entity.PortfolioUrl;
+import com.ssafy.pocketfolio.db.entity.Tag;
 import com.ssafy.pocketfolio.db.entity.User;
 import com.ssafy.pocketfolio.db.repository.PortfolioRepository;
 import com.ssafy.pocketfolio.db.repository.PortfolioUrlRepository;
+import com.ssafy.pocketfolio.db.repository.TagRepository;
 import com.ssafy.pocketfolio.db.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,7 +19,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Slf4j
@@ -29,6 +34,7 @@ public class PortfolioServiceImpl implements PortfolioService{
     private final UserRepository userRepository;
     private final PortfolioRepository portfolioRepository;
     private final PortfolioUrlRepository portfolioUrlRepository;
+    private final TagRepository tagRepository;
 
     @Value("${app.fileupload.uploadPath}")
     private String uploadPath;
@@ -36,123 +42,131 @@ public class PortfolioServiceImpl implements PortfolioService{
     @Value("${app.fileupload.uploadDir}")
     private String uploadDir;
 
-    /**
-     * 포트폴리오 등록
-     *
-     * @return 등록한 포트폴리오 번호
-     * @params 제목, 개요, 썸네일, 포트폴리오 url list, tag list, 생성일
-     */
     @Override
     @Transactional
-    public Long insertPortfolio(PortfolioReq req, Long userSeq, List<MultipartFile> files) {
+    public Long insertPortfolio(PortfolioReq req, MultipartFile thumbnail, Long userSeq, List<MultipartFile> files) throws IOException {
+        log.info("[POST] Service - insertPortfolio");
 
-        log.info("[Service - Portfolio] insertPortfolio");
-        try{
-            User user = userRepository.findById(userSeq).orElseThrow();
-            Portfolio portfolio = req.toEntity(req, user);
+        Portfolio portfolio = null;
+        User user = userRepository.findById(userSeq).orElseThrow();
+        String thumbnailUrl = null;
 
-            // 포트폴리오 저장
-            Long portSeq = portfolioRepository.save(portfolio).getPortSeq();
-            log.debug("저장된 포트폴리오 번호: %d", portSeq);
+        if (thumbnail != null) {
+            File dest = saveFile(thumbnail, "portfolio" + File.separator + "thumbnail");
+            thumbnailUrl = dest.getPath();
+        }
 
-            // 파일 저장 위치 지정 (없는 경우 폴더 생성)
-            File upload = new File(uploadPath + File.separator + uploadDir + File.separator + "portfolio");
-            if (!upload.exists()){
-                upload.mkdir();
-                log.debug("포트폴리오 업로드 폴더 생성");
+        portfolio = req.toEntity(req, thumbnailUrl, user);
+
+        log.debug("req.toString(): " + req.toString());
+
+        // 포트폴리오 저장
+        Long portSeq = portfolioRepository.save(portfolio).getPortSeq();
+        log.debug("저장된 포트폴리오 번호: " + portSeq);
+
+        // 태그 저장
+        if (req.getTags() != null) {
+            Tag tag = null;
+            for (String tagStr : req.getTags()) {
+                tag = Tag.builder()
+                        .name(tagStr)
+                        .portfolio(portfolio)
+                        .build();
+                tagRepository.save(tag);
+                log.debug("tag: " + tag.toString());
             }
+        }
 
+        if (files != null){
             for (MultipartFile file : files) {
-                // Random uuid
-                UUID uuid = UUID.randomUUID();
-                // 원래 파일명
-                String fileName = file.getName();
-                // 파일 확장자
-                String fileExt = fileName.substring(fileName.lastIndexOf(".") + 1);
-                // uuid + 확장자로 저장
-                String saveName = uuid + "." + fileExt;
-
-                File dest = new File(upload + File.separator + saveName);
-                file.transferTo(dest);
-
-                PortfolioUrlDto urlDto = PortfolioUrlDto.toDto(fileName, dest.getPath(), portfolio);
+                File dest = saveFile(file, "portfolio");
+                log.debug("file.getOriginalFilename(): " + file.getOriginalFilename());
+                PortfolioUrlDto urlDto = PortfolioUrlDto.toDto(file.getOriginalFilename(), dest.getPath(), portfolio);
                 PortfolioUrl url = PortfolioUrlDto.toEntity(urlDto);
 
                 portfolioUrlRepository.save(url);
             }
-            return portSeq;
-        } catch (Exception e) {
-            return null;
         }
+        return portSeq;
     }
 
-    /**
-     * 포트폴리오 목록 조회
-     *
-     * @param user
-     * @return 포트폴리오 목록 res (포트폴리오 번호, 제목, 썸네일, tag list) list
-     * @params user
-     */
+    public File saveFile(MultipartFile file, String uploadDirName) throws IOException {
+        // Random uuid
+        UUID uuid = UUID.randomUUID();
+        // 원래 파일명
+        String fileName = file.getOriginalFilename();
+        log.debug("파일명: " + fileName);
+        // 파일 확장자
+        String fileExt = fileName.substring(fileName.lastIndexOf(".") + 1);
+        log.debug("파일 확장자: " + fileExt);
+
+        // uuid + 확장자로 저장
+        String saveName = uuid + "." + fileExt;
+        log.debug("saveName: " + saveName);
+
+        // 파일 저장 위치 지정 (없는 경우 폴더 생성)
+        File upload = new File(uploadPath + File.separator + uploadDir + File.separator + uploadDirName);
+        if (!upload.exists()){
+            upload.mkdir();
+            log.info("파일 업로드 폴더 생성 완료");
+            log.debug(upload.getPath());
+        }
+
+        File dest = new File(upload.getPath() + File.separator + saveName);
+        log.debug(dest.getPath());
+        file.transferTo(dest);
+        return dest;
+    }
+
+
     @Override
-    public List<PortfolioRes> findPortfolioList(Long user) {
-        return null;
+    public List<PortfolioRes> findPortfolioList(Long userSeq) {
+        log.info("[GET] Service - findPortfolioList");
+        List<PortfolioRes> portfolioRes = new ArrayList<>();
+
+        User user = userRepository.findById(userSeq).orElseThrow();
+        List<Portfolio> portfolios = portfolioRepository.findAllByUser(user);
+        int len = portfolios.size();
+
+        for(int i = 0; i<len; i++){
+            Portfolio portfolio = portfolios.get(i);
+            List<PortfolioUrl> urls = portfolioUrlRepository.findAllByPortfolio(Optional.ofNullable(portfolio));
+            List<Tag> tags = tagRepository.findAllByPortfolio(Optional.ofNullable(portfolio));
+            PortfolioRes result = PortfolioRes.toDto(portfolio, urls, tags);
+            portfolioRes.add(result);
+        }
+
+        return portfolioRes;
     }
 
-    /**
-     * 포트폴리오 조회
-     *
-     * @param portSeq
-     * @return 포트폴리오 상세 (제목, 개요, 포트폴리오 url list, tag list, 생성일)
-     * @params 포트폴리오 번호
-     */
     @Override
     public PortfolioRes findPortfolio(Long portSeq) {
-        return null;
+        log.info("[GET] Service - findPortfolio");
+
+        Portfolio portfolio = portfolioRepository.findById(portSeq).orElseThrow();
+
+        List<PortfolioUrl> urls = portfolioUrlRepository.findAllByPortfolio(Optional.of(portfolio));
+        List<Tag> tags = tagRepository.findAllByPortfolio(Optional.of(portfolio));
+        PortfolioRes result = PortfolioRes.toDto(portfolio, urls, tags);
+
+        return result;
     }
 
-    /**
-     * 포트폴리오 수정
-     *
-     * @param req
-     * @return 수정한 포트폴리오 번호
-     * @params 포트폴리오 번호, 제목, 개요, 썸네일, 포트폴리오 url list, tag list, 수정일
-     */
     @Override
     public Long updatePortfolio(PortfolioReq req) {
         return null;
     }
 
-    /**
-     * 포트폴리오 삭제
-     *
-     * @param portSeq
-     * @return 성공 여부
-     * @params 포트폴리오 번호
-     */
     @Override
     public boolean deletePortfolio(Long portSeq) {
         return false;
     }
 
-    /**
-     * 포트폴리오 태그 등록
-     *
-     * @param name
-     * @return 성공 여부
-     * @params String[] 태그
-     */
     @Override
     public boolean insertTag(String name) {
         return false;
     }
 
-    /**
-     * 포트폴리오 태그 삭제
-     *
-     * @param portSeq
-     * @return 성공 여부
-     * @params 포트폴리오 태그 번호
-     */
     @Override
     public boolean deleteTag(Long portSeq) {
         return false;
