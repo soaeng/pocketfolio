@@ -177,7 +177,7 @@ public class UserController {
             @ApiResponse(responseCode = "500", description = "서버 에러", content = @Content(schema = @Schema(implementation = LoginRes.class)))
     })
     @GetMapping("/oauth/signup") // redirect from social login
-    public ResponseEntity<LoginRes> signUp(@RequestParam String accessToken, @RequestParam String refreshToken, @RequestParam String userSeqStr) {
+    public ResponseEntity<LoginRes> signUp(@RequestParam String accessToken, @RequestParam String refreshToken) {
         log.info("Controller: signUp() -- redirect --");
 
         HttpStatus status;
@@ -185,8 +185,6 @@ public class UserController {
 
         try {
             if (accessToken != null && !accessToken.isEmpty() && refreshToken != null && !refreshToken.isEmpty()) {
-                long userSeq = Long.parseLong(userSeqStr);
-                userService.login(userSeq, refreshToken);
                 result = new LoginRes(accessToken, refreshToken);
                 status = HttpStatus.CREATED;
             } else {
@@ -205,7 +203,7 @@ public class UserController {
             @ApiResponse(responseCode = "500", description = "서버 에러", content = @Content(schema = @Schema(implementation = LoginRes.class)))
     })
     @GetMapping("/oauth/login") // redirect from social login
-    public ResponseEntity<LoginRes> login(@RequestParam String accessToken, @RequestParam String refreshToken, @RequestParam String userSeqStr) {
+    public ResponseEntity<LoginRes> login(@RequestParam String accessToken, @RequestParam String refreshToken) {
         log.info("Controller: login() -- redirect --");
 
         HttpStatus status;
@@ -213,8 +211,6 @@ public class UserController {
 
         try {
             if (accessToken != null && !accessToken.isEmpty() && refreshToken != null && !refreshToken.isEmpty()) {
-                long userSeq = Long.parseLong(userSeqStr);
-                userService.login(userSeq, refreshToken);
                 result = new LoginRes(accessToken, refreshToken);
                 status = HttpStatus.CREATED;
             } else {
