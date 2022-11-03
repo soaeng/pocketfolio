@@ -51,6 +51,7 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 
         // Long.toString(userSeq)
         String userSeqStr = userAuthDto.getUsername();
+        boolean isSignUp = userAuthDto.isSignUp();
 
         try {
             String accessToken = jwtUtil.generateAccessToken(userSeqStr);
@@ -59,7 +60,7 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
             log.info("accessToken: " + accessToken);
             log.info("refreshToken: " + refreshToken);
 
-            String url = makeRedirectUrl(accessToken, refreshToken);
+            String url = makeRedirectUrl(accessToken, refreshToken, userSeqStr, isSignUp);
 
             if (response.isCommitted()) {
                 log.debug("응답이 이미 커밋된 상태입니다. " + url + "로 리다이렉트하도록 바꿀 수 없습니다.");
@@ -75,10 +76,11 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
         }
     }
 
-    private String makeRedirectUrl(String accessToken, String refreshToken) {
-        return UriComponentsBuilder.fromUriString("/users/oauth/login")
+    private String makeRedirectUrl(String accessToken, String refreshToken, String userSeqStr, boolean isSignUp) {
+        return UriComponentsBuilder.fromUriString("/users/oauth" + (isSignUp ? "/signup" : "/login"))
                 .queryParam("accessToken", accessToken)
                 .queryParam("refreshToken", refreshToken)
+                .queryParam("userSeqStr", userSeqStr)
                 .build().toUriString();
     }
 

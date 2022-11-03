@@ -41,7 +41,7 @@ public class ApiCheckFilter extends OncePerRequestFilter {
             log.info("ApiCheckFilter.................................................");
             log.info("ApiCheckFilter.................................................");
 
-            long userSeq = checkAuthHeaderAndExtractUserSeq(request);
+            Long userSeq = checkAuthHeaderAndExtractUserSeq(request);
             request.setAttribute("userSeq", userSeq); // setAttribute 위치 어디로 할지 고민 1
 
         }
@@ -53,7 +53,7 @@ public class ApiCheckFilter extends OncePerRequestFilter {
 
         long userSeq = 0L;
 
-        String authHeader = request.getHeader("accessToken");
+        String authHeader = request.getHeader("Authorization");
 
         if (StringUtils.hasText(authHeader) && authHeader.startsWith("Bearer ")) {
             log.info("Authorization(accessToken) exist: " + authHeader);

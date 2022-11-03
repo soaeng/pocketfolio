@@ -101,7 +101,7 @@ public class SecurityConfig {
 
     @Bean
     public ApiCheckFilter apiCheckFilter() {
-        String[] patterns = {contextPath + "/rooms/like", contextPath + "/portfolios/room/*", contextPath + "/users/profile/me"};
+        String[] patterns = {contextPath + "/rooms/like", contextPath + "/portfolios/room/*", contextPath + "/users/profile"};
         // GET일 때도 토큰이 있어야 하는 녀석들
 
         String[] postForGuestPatterns = {contextPath + "/users/signup", contextPath + "/users/login", contextPath + "/users/logout"};
