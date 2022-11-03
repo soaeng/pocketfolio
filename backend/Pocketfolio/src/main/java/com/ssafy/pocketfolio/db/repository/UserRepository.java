@@ -8,6 +8,8 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<User, Long> {
 
 	Optional<User> findByEmail(String email);
+
+
 //	List<User> findByNameLikeOrderByCreated(String name);
 //	List<User> findByNameLikeOrderByCreatedDesc(String name);
 //	@Query
