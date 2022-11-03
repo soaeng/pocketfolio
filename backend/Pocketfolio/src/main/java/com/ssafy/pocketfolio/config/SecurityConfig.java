@@ -55,8 +55,8 @@ public class SecurityConfig {
             auth
                     .antMatchers(contextPath + "/", contextPath + "/css/**", contextPath + "/images/**",
                             contextPath + "/js/**", contextPath + "/login", contextPath + "/logout",
-                            contextPath + "/swagger/**", contextPath + "/users/signup", contextPath + "/users/login",
-                            contextPath + "/users/logout").permitAll()
+                            contextPath + "/swagger", contextPath + "/swagger/**", contextPath + "/users/signup",
+                            contextPath + "/users/login", contextPath + "/users/logout").permitAll()
                     .antMatchers(HttpMethod.GET, contextPath + "/rooms/like", contextPath + "/portfolios/room/*").authenticated()
                     .antMatchers(HttpMethod.GET, contextPath + "/**").permitAll()
                     .anyRequest().authenticated();
