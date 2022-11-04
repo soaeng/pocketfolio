@@ -71,7 +71,7 @@ public class ApiCheckFilter extends OncePerRequestFilter {
 
     private boolean needToken(HttpServletRequest request) throws ServletException {
         String method = request.getMethod();
-        if ("PUT".equalsIgnoreCase(method) || "DELETE".equalsIgnoreCase(method)) {
+        if ("PATCH".equalsIgnoreCase(method) || "DELETE".equalsIgnoreCase(method)) {
             return true;
         }
         String requestURI = request.getRequestURI();
@@ -81,6 +81,7 @@ public class ApiCheckFilter extends OncePerRequestFilter {
             }
             return true;
         }
+
         return Arrays.stream(patterns).anyMatch(e -> antPathMatcher.match(e, requestURI));
     }
 }
