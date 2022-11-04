@@ -8,6 +8,7 @@ import Search from './components/search/Search';
 import Room from './components/room/Room';
 import RoomEdit from './components/roomEdit/RoomEdit';
 import Login from './components/user/Login';
+import Oauth from './components/user/Oauth';
 import Profile from './components/user/Profile';
 import AddPort from './components/portfolio/AddPort';
 import Portfolio from './components/portfolio/Portfolio';
@@ -28,6 +29,7 @@ function App() {
 
         {/* User */}
         <Route path="/login" element={<Login />} />
+        <Route path="/oauth" element={<Oauth />} />
         <Route path="/profile" element={<Profile />} />
 
         {/* Portfolio */}

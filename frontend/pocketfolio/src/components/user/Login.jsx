@@ -1,5 +1,4 @@
 import {useNavigate} from 'react-router-dom';
-import {login, testLogin} from '../../store/oauthSlice';
 import {
   Container,
   SelfContainer,
