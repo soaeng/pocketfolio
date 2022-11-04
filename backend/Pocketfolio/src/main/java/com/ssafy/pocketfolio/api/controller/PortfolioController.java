@@ -3,6 +3,7 @@ package com.ssafy.pocketfolio.api.controller;
 import com.ssafy.pocketfolio.api.dto.request.PortfolioReq;
 import com.ssafy.pocketfolio.api.dto.response.PortfolioRes;
 import com.ssafy.pocketfolio.api.service.PortfolioServiceImpl;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -18,19 +19,20 @@ import java.util.List;
 @RestController
 @RequestMapping("/portfolios")
 @RequiredArgsConstructor
+@Tag(name = "PortfolioController", description = "포트폴리오 API")
 public class PortfolioController {
 
     private final PortfolioServiceImpl portfolioService;
 
     @PostMapping
-    private ResponseEntity<Long> insertPortfolio(@RequestPart(value="portfolio") PortfolioReq request, @RequestPart(value = "thumbnail", required = false) MultipartFile thumbnail, @RequestPart(value = "files", required = false) List<MultipartFile> files) throws IOException {
-        log.info("[POST] Controller - Portfolio");
+    private ResponseEntity<Long> insertPortfolio(HttpServletRequest request, @RequestPart(value="portfolio") PortfolioReq portfolio, @RequestPart(value = "thumbnail", required = false) MultipartFile thumbnail, @RequestPart(value = "files", required = false) List<MultipartFile> files) throws IOException {
+        log.debug("[POST] Controller - Portfolio");
 
-        // TODO: 회원 정보 받는 방법?
-        Long user = 1L;
+//        long userSeq = (Long) request.getAttribute("userSeq");
+        long userSeq = 1l;
 
         // 포트폴리오 저장 후 패당 포트폴리오 번호 반환
-        Long response = portfolioService.insertPortfolio(request, thumbnail, user, files);
+        Long response = portfolioService.insertPortfolio(portfolio, thumbnail, userSeq, files);
 
         if (response != null) {
             return new ResponseEntity<>(response, HttpStatus.CREATED);
@@ -41,9 +43,9 @@ public class PortfolioController {
 
     @GetMapping
     private ResponseEntity<List<PortfolioRes>> findPortfolioList(HttpServletRequest request){
-        log.info("[GET] Controller - findPortfolioList");
+        log.debug("[GET] Controller - findPortfolioList");
 //        Long user = (Long) request.getAttribute("userSeq");
-        Long userSeq = 1L;
+        long userSeq = 1l;
         List<PortfolioRes> response = portfolioService.findPortfolioList(userSeq);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
@@ -51,10 +53,36 @@ public class PortfolioController {
 
     @GetMapping("/{portSeq}")
     private ResponseEntity<PortfolioRes> findPortfolio(@PathVariable(value = "portSeq") Long portSeq){
-        log.info("[GET] Controller - findPortfolio");
+        log.debug("[GET] Controller - findPortfolio");
         PortfolioRes response = portfolioService.findPortfolio(portSeq);
-
+        // TODO: pagenation으로 할 수도 있어서 일단 전체 개수 따로 반환하지 않음.
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @PatchMapping("/{portSeq}")
+    private ResponseEntity<Long> updatePortfolio(@RequestPart(value="portfolio") PortfolioReq request, @RequestPart(value = "thumbnail", required = false) MultipartFile thumbnail, @RequestPart(value = "files", required = false) List<MultipartFile> files) throws IOException {
+        log.debug("[PATCH] Controller - Portfolio");
+
+        // 포트폴리오 저장 후 패당 포트폴리오 번호 반환
+        Long response = portfolioService.updatePortfolio(request, thumbnail, files);
+
+        if (response != null) {
+            return new ResponseEntity<>(response, HttpStatus.CREATED);
+        } else {
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @DeleteMapping("/{portSeq}")
+    private ResponseEntity<Boolean> deletePortfolio(@PathVariable(value="portSeq") Long portSeq) {
+        log.debug("[DELETE] Controller - Portfolio");
+        try {
+            portfolioService.deletePortfolio(portSeq);
+            return new ResponseEntity<>(true, HttpStatus.CREATED);
+        }
+        catch (Exception e) {
+            log.error(e.getMessage());
+            return new ResponseEntity<>(false, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

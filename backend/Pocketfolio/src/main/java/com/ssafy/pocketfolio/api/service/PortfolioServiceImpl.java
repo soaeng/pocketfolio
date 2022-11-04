@@ -25,7 +25,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Slf4j
@@ -47,40 +46,46 @@ public class PortfolioServiceImpl implements PortfolioService{
 
     @Override
     @Transactional
-    public Long insertPortfolio(PortfolioReq req, MultipartFile thumbnail, Long userSeq, List<MultipartFile> files) throws IOException {
-        log.info("[POST] Service - insertPortfolio");
-
+    public long insertPortfolio(PortfolioReq req, MultipartFile thumbnail, long userSeq, List<MultipartFile> files) throws IOException {
+        log.debug("[POST] Service - insertPortfolio");
         Portfolio portfolio = null;
+
+        // 사용자 번호를 통한 사용자 조회
         User user = userRepository.findById(userSeq).orElseThrow();
+        // 저장된 썸네일 주소
         String thumbnailUrl = null;
 
+        // 저장할 썸네일 파일이 있다면
         if (thumbnail != null) {
+            // 파일 저장
             File dest = saveFile(thumbnail, "portfolio" + File.separator + "thumbnail");
             if (dest != null) {
                 thumbnailUrl = dest.getPath();
+                log.debug("썸네일 이미지 저장 성공");
             } else {
-                return null;
+                log.error("썸네일 이미지 저장 실패");
+                return -1;
             }
         }
 
-        portfolio = req.toEntity(req, thumbnailUrl, user);
-
-        log.debug("req.toString(): " + req.toString());
+        log.debug("req: " + req.toString());
+        log.debug("thumbnailUrl: " + thumbnailUrl);
+        log.debug("user: " + user);
 
         // 포트폴리오 저장
-        Long portSeq = portfolioRepository.save(portfolio).getPortSeq();
+        portfolio = PortfolioReq.toEntity(req, thumbnailUrl, user);
+        long portSeq = portfolioRepository.save(portfolio).getPortSeq();
         log.debug("저장된 포트폴리오 번호: " + portSeq);
 
-        // 태그 저장
+        // 태그가 있다면 저장
         if (req.getTags() != null) {
-            Tag tag = null;
             for (String tagStr : req.getTags()) {
-                tag = Tag.builder()
+                Tag tag = Tag.builder()
                         .name(tagStr)
                         .portfolio(portfolio)
                         .build();
                 tagRepository.save(tag);
-                log.debug("tag: " + tag.toString());
+                log.debug("tag: " + tag);
             }
         }
 
@@ -91,12 +96,14 @@ public class PortfolioServiceImpl implements PortfolioService{
                 PortfolioUrlDto urlDto = PortfolioUrlDto.toDto(file.getOriginalFilename(), dest.getPath(), portfolio);
                 PortfolioUrl url = PortfolioUrlDto.toEntity(urlDto);
 
+                assert url != null;
                 portfolioUrlRepository.save(url);
             }
         }
         return portSeq;
     }
 
+    // 파일 저장
     public File saveFile(MultipartFile file, String uploadDirName) throws IOException {
         // Random uuid
         UUID uuid = UUID.randomUUID();
@@ -104,6 +111,7 @@ public class PortfolioServiceImpl implements PortfolioService{
         String fileName = file.getOriginalFilename();
         log.debug("파일명: " + fileName);
         // 파일 확장자
+        assert fileName != null;
         String fileExt = fileName.substring(fileName.lastIndexOf(".") + 1);
         log.debug("파일 확장자: " + fileExt);
 
@@ -114,9 +122,13 @@ public class PortfolioServiceImpl implements PortfolioService{
         // 파일 저장 위치 지정 (없는 경우 폴더 생성)
         File upload = new File(uploadPath + File.separator + uploadDir + File.separator + uploadDirName);
         if (!upload.exists()){
-            upload.mkdir();
-            log.info("파일 업로드 폴더 생성 완료");
-            log.debug(upload.getPath());
+            boolean wasSuccessful = upload.mkdir();
+            if (wasSuccessful){
+                log.debug("파일 업로드 폴더 생성 완료");
+                log.debug(upload.getPath());
+            } else {
+                log.debug("파일 업로드 폴더 생성 실패");
+            }
         }
 
         File dest = new File(upload.getPath() + File.separator + saveName);
@@ -125,12 +137,12 @@ public class PortfolioServiceImpl implements PortfolioService{
         if (uploadDirName.contains("thumbnail")) {
             log.debug("thumbnail 파일 확장자 확인");
             if(!checkImageType(Paths.get(dest.getPath()))){
-                log.debug("thumbnail 파일 확장자 확인 실패");
+                log.error("thumbnail 파일은 이미지 파일만 허용됨");
                 return null;
             }
         }
-
         file.transferTo(dest);
+        log.debug("파일 저장 성공");
         return dest;
     }
 
@@ -146,21 +158,17 @@ public class PortfolioServiceImpl implements PortfolioService{
         return false;
     }
 
-
-
     @Override
-    public List<PortfolioRes> findPortfolioList(Long userSeq) {
-        log.info("[GET] Service - findPortfolioList");
+    public List<PortfolioRes> findPortfolioList(long userSeq) {
+        log.debug("[GET] Service - findPortfolioList");
         List<PortfolioRes> portfolioRes = new ArrayList<>();
 
         User user = userRepository.findById(userSeq).orElseThrow();
         List<Portfolio> portfolios = portfolioRepository.findAllByUser(user);
-        int len = portfolios.size();
 
-        for(int i = 0; i<len; i++){
-            Portfolio portfolio = portfolios.get(i);
-            List<PortfolioUrl> urls = portfolioUrlRepository.findAllByPortfolio(Optional.ofNullable(portfolio));
-            List<Tag> tags = tagRepository.findAllByPortfolio(Optional.ofNullable(portfolio));
+        for (Portfolio portfolio : portfolios) {
+            List<PortfolioUrl> urls = portfolioUrlRepository.findAllByPortfolio(portfolio);
+            List<Tag> tags = tagRepository.findAllByPortfolio(portfolio);
             PortfolioRes result = PortfolioRes.toDto(portfolio, urls, tags);
             portfolioRes.add(result);
         }
@@ -169,35 +177,31 @@ public class PortfolioServiceImpl implements PortfolioService{
     }
 
     @Override
-    public PortfolioRes findPortfolio(Long portSeq) {
-        log.info("[GET] Service - findPortfolio");
+    public PortfolioRes findPortfolio(long portSeq) {
+        log.debug("[GET] Service - findPortfolio");
 
         Portfolio portfolio = portfolioRepository.findById(portSeq).orElseThrow();
 
-        List<PortfolioUrl> urls = portfolioUrlRepository.findAllByPortfolio(Optional.of(portfolio));
-        List<Tag> tags = tagRepository.findAllByPortfolio(Optional.of(portfolio));
-        PortfolioRes result = PortfolioRes.toDto(portfolio, urls, tags);
+        List<PortfolioUrl> urls = portfolioUrlRepository.findAllByPortfolio(portfolio);
+        List<Tag> tags = tagRepository.findAllByPortfolio(portfolio);
 
-        return result;
+        return PortfolioRes.toDto(portfolio, urls, tags);
     }
 
     @Override
-    public Long updatePortfolio(PortfolioReq req) {
+    @Transactional
+    public Long updatePortfolio(PortfolioReq req, MultipartFile thumbnail, List<MultipartFile> files) {
+        log.debug("[PATCH] Service - updatePortfolio");
         return null;
     }
 
     @Override
-    public boolean deletePortfolio(Long portSeq) {
-        return false;
-    }
-
-    @Override
-    public boolean insertTag(String name) {
-        return false;
-    }
-
-    @Override
-    public boolean deleteTag(Long portSeq) {
-        return false;
+    public void deletePortfolio(long portSeq) {
+        log.debug("[DELETE] Service - deletePortfolio");
+        Portfolio portfolio = portfolioRepository.findById(portSeq).orElseThrow();
+        tagRepository.deleteAllByPortfolio(portfolio);
+        portfolioUrlRepository.deleteAllByPortfolio(portfolio);
+        // 해당 포트폴리오 삭제
+        portfolioRepository.deleteById(portSeq);
     }
 }
