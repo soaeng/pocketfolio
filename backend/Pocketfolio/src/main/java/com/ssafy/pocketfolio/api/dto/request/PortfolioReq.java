@@ -25,7 +25,6 @@ public class PortfolioReq {
         if (req == null) {
             return null;
         }
-
         return Portfolio.builder()
                 .name(req.name)
                 .summary(req.summary)
@@ -33,4 +32,5 @@ public class PortfolioReq {
                 .user(user)
                 .build();
     }
+
 }
