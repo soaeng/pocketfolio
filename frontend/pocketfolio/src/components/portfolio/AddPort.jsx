@@ -16,7 +16,7 @@ import {
 } from './AddPort.style';
 import Nav from '../common/nav';
 import Editor from './Editor.test';
-import { Body1 } from '../../styles/styles.style';
+import {Body1} from '../../styles/styles.style';
 import ReactHtmlParser from 'html-react-parser';
 
 const AddPort = () => {
@@ -61,22 +61,19 @@ const AddPort = () => {
     setHashArr(result);
   };
 
-  
+  // 태그가 적용된 뷰어
   const Viewer = ({content}) => (
-
     <div
-    className="ck-content"
-    dangerouslySetInnerHTML={{ __html: content }}
-    >
-      
-    </div>
+      className="ck-content"
+      dangerouslySetInnerHTML={{__html: content}}
+    ></div>
   );
   console.log(hashtag, hashArr);
   console.log(portContent);
-  
+
   return (
     <Background>
-      {/* <Nav></Nav> */}
+      <Nav></Nav>
       <Wrapper className="wrapper">
         <Header>포트폴리오 관리하기</Header>
 
@@ -126,18 +123,18 @@ const AddPort = () => {
           <Body1>취소</Body1>
         </StyledBtn>
         <StyledBtn className="save">
-        <Body1>저장</Body1>
+          <Body1>저장</Body1>
         </StyledBtn>
       </BtnDiv>
-      
+
       {/* 포트폴리오 로우 데이터 */}
-      <div>
+      {/* <div>
         {portContent.title}
         {ReactHtmlParser(portContent.content)}
-      </div>
+      </div> */}
 
       {/* 유저에게 보여져야 할 포트폴리오 */}
-      <Viewer content={portContent.content} />
+      {/* <Viewer content={portContent.content} /> */}
     </Background>
   );
 };
