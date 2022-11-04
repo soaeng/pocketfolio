@@ -44,11 +44,11 @@ public class PortfolioServiceImpl implements PortfolioService{
     @Value("${app.fileupload.uploadDir}")
     private String uploadDir;
 
+    // 포트폴리오 등록
     @Override
     @Transactional
     public long insertPortfolio(PortfolioReq req, MultipartFile thumbnail, long userSeq, List<MultipartFile> files) throws IOException {
         log.debug("[POST] Service - insertPortfolio");
-        Portfolio portfolio = null;
 
         // 사용자 번호를 통한 사용자 조회
         User user = userRepository.findById(userSeq).orElseThrow();
@@ -57,50 +57,196 @@ public class PortfolioServiceImpl implements PortfolioService{
 
         // 저장할 썸네일 파일이 있다면
         if (thumbnail != null) {
-            // 파일 저장
-            File dest = saveFile(thumbnail, "portfolio" + File.separator + "thumbnail");
-            if (dest != null) {
-                thumbnailUrl = dest.getPath();
-                log.debug("썸네일 이미지 저장 성공");
-            } else {
-                log.error("썸네일 이미지 저장 실패");
-                return -1;
-            }
+            thumbnailUrl = saveThumbnail(thumbnail);
         }
 
-        log.debug("req: " + req.toString());
-        log.debug("thumbnailUrl: " + thumbnailUrl);
-        log.debug("user: " + user);
-
         // 포트폴리오 저장
-        portfolio = PortfolioReq.toEntity(req, thumbnailUrl, user);
+        Portfolio portfolio = PortfolioReq.toEntity(req, thumbnailUrl, user);
         long portSeq = portfolioRepository.save(portfolio).getPortSeq();
         log.debug("저장된 포트폴리오 번호: " + portSeq);
 
         // 태그가 있다면 저장
         if (req.getTags() != null) {
+            saveTags(req.getTags(), portfolio);
+        }
+
+        if (files != null){
+            saveUrls(files, portfolio);
+        }
+        return portSeq;
+    }
+
+    // 포트폴리오 목록 조회
+    @Override
+    public List<PortfolioRes> findPortfolioList(long userSeq) {
+        log.debug("[GET] Service - findPortfolioList");
+        List<PortfolioRes> portfolioRes = new ArrayList<>();
+
+        User user = userRepository.findById(userSeq).orElseThrow();
+        List<Portfolio> portfolios = portfolioRepository.findAllByUser(user);
+
+        for (Portfolio portfolio : portfolios) {
+            List<PortfolioUrl> urls = portfolioUrlRepository.findAllByPortfolio(portfolio);
+            List<Tag> tags = tagRepository.findAllByPortfolio(portfolio);
+            PortfolioRes result = PortfolioRes.toDto(portfolio, urls, tags);
+            portfolioRes.add(result);
+        }
+
+        return portfolioRes;
+    }
+
+    // 포트폴리오 조회
+    @Override
+    public PortfolioRes findPortfolio(long portSeq) {
+        log.debug("[GET] Service - findPortfolio");
+
+        Portfolio portfolio = portfolioRepository.findById(portSeq).orElseThrow();
+
+        List<PortfolioUrl> urls = portfolioUrlRepository.findAllByPortfolio(portfolio);
+        List<Tag> tags = tagRepository.findAllByPortfolio(portfolio);
+
+        return PortfolioRes.toDto(portfolio, urls, tags);
+    }
+
+    // 포트폴리오 수정
+    @Override
+    @Transactional
+    public long updatePortfolio(long portSeq, PortfolioReq req, MultipartFile thumbnail, List<MultipartFile> files) throws IOException {
+        log.debug("[PATCH] Service - updatePortfolio");
+
+        Portfolio portfolio = portfolioRepository.findById(portSeq).orElseThrow(() -> new IllegalArgumentException("해당 포트폴리오가 존재하지 않습니다."));
+        log.debug("portfolio" + portfolio.toString());
+        // 저장된 썸네일 주소
+        String thumbnailUrl = portfolio.getThumbnail();
+
+        // 저장할 썸네일 파일이 있다면 thumbnail 수정
+        if (thumbnail != null) {
+            if (thumbnailUrl != null) {
+                File file = new File(thumbnailUrl);
+                if (file.exists()){
+                    log.debug("썸네일 삭제 완료!");
+                    file.delete();
+                }
+            }
+            thumbnailUrl = saveThumbnail(thumbnail);
+        }
+
+        portfolio.updatePortfolio(req.getName(), req.getSummary(), thumbnailUrl);
+
+        // 태그가 있다면 기존 태그 삭제 후 새로 저장
+        if (req.getTags() != null) {
+            tagRepository.deleteAllByPortfolio(portfolio);
+            List<Tag> tags = new ArrayList<>();
             for (String tagStr : req.getTags()) {
                 Tag tag = Tag.builder()
                         .name(tagStr)
                         .portfolio(portfolio)
                         .build();
-                tagRepository.save(tag);
+                tags.add(tag);
                 log.debug("tag: " + tag);
             }
+            saveTags(req.getTags(), portfolio);
         }
 
+        List<PortfolioUrl> urls = portfolioUrlRepository.findAllByPortfolio(portfolio);
+        // 파일이 있다면 기존 파일 DB, 물리적 삭제 후 새로 저장
         if (files != null){
-            for (MultipartFile file : files) {
-                File dest = saveFile(file, "portfolio");
-                log.debug("file.getOriginalFilename(): " + file.getOriginalFilename());
-                PortfolioUrlDto urlDto = PortfolioUrlDto.toDto(file.getOriginalFilename(), dest.getPath(), portfolio);
-                PortfolioUrl url = PortfolioUrlDto.toEntity(urlDto);
+            for (PortfolioUrl url : urls) {
+                // TODO: File save 시 upload dir부터만 저장하도록 (4 전체 경로 공개 X)
+                File file = new File(url.getUrl());
+                if (file.exists()){
+                    log.debug("파일 삭제 완료!");
+                    file.delete();
+                }
+            }
+            portfolioUrlRepository.deleteAllByPortfolio(portfolio);
 
-                assert url != null;
-                portfolioUrlRepository.save(url);
+            saveUrls(files, portfolio);
+        }
+
+        return portSeq;
+    }
+
+    // 포트폴리오 삭제
+    @Override
+    public void deletePortfolio(long portSeq) {
+        log.debug("[DELETE] Service - deletePortfolio");
+        Portfolio portfolio = portfolioRepository.findById(portSeq).orElseThrow();
+        if (portfolio.getThumbnail() != null) {
+            File file = new File(portfolio.getThumbnail());
+            if (file.exists()){
+                log.debug("썸네일 파일 삭제 완료");
+                file.delete();
             }
         }
-        return portSeq;
+        tagRepository.deleteAllByPortfolio(portfolio);
+        List<PortfolioUrl> urls = portfolioUrlRepository.findAllByPortfolio(portfolio);
+        if(!urls.isEmpty()) {
+            for (PortfolioUrl url : urls) {
+                File file = new File(url.getUrl());
+                if (file.exists()){
+                    log.debug("파일 삭제 완료!");
+                    file.delete();
+                }
+            }
+        }
+        portfolioUrlRepository.deleteAllByPortfolio(portfolio);
+        // 해당 포트폴리오 삭제
+        portfolioRepository.deleteById(portSeq);
+    }
+
+    // 태그 저장
+    public void saveTags(String[] tagList, Portfolio portfolio) {
+        List<Tag> tags = new ArrayList<>();
+        for (String tagStr : tagList) {
+            Tag tag = Tag.builder()
+                    .name(tagStr)
+                    .portfolio(portfolio)
+                    .build();
+            tags.add(tag);
+            log.debug("tag: " + tag);
+        }
+        try{
+            tagRepository.saveAll(tags);
+        } catch (Exception e) {
+            log.error("태그 저장 실패");
+        }
+    }
+
+    // 썸네일 저장
+    public String saveThumbnail(MultipartFile thumbnail) throws IOException {
+        // 파일 저장
+        File dest = saveFile(thumbnail, "portfolio" + File.separator + "thumbnail");
+        if (dest != null) {
+            log.debug("썸네일 이미지 저장 성공");
+            return dest.getPath();
+        } else {
+            log.error("썸네일 이미지 저장 실패");
+            return null;
+        }
+    }
+
+    // 이미지 파일 체크
+    private boolean checkImageType(Path filePath) {
+        try {
+            String contentType = Files.probeContentType(filePath);
+            return contentType.startsWith("image");
+        }catch(IOException e) {
+            e.printStackTrace();
+        }
+        log.debug("이미지 파일이 아닙니다.");
+        return false;
+    }
+
+    public void saveUrls(List<MultipartFile> files, Portfolio portfolio) throws IOException {
+        for (MultipartFile file : files) {
+            File dest = saveFile(file, "portfolio");
+            PortfolioUrlDto urlDto = PortfolioUrlDto.toDto(file.getOriginalFilename(), dest.getPath(), portfolio);
+            PortfolioUrl url = PortfolioUrlDto.toEntity(urlDto);
+
+            assert url != null;
+            portfolioUrlRepository.save(url);
+        }
     }
 
     // 파일 저장
@@ -144,64 +290,5 @@ public class PortfolioServiceImpl implements PortfolioService{
         file.transferTo(dest);
         log.debug("파일 저장 성공");
         return dest;
-    }
-
-    // 이미지 파일 체크
-    private boolean checkImageType(Path filePath) {
-        try {
-            String contentType = Files.probeContentType(filePath);
-            return contentType.startsWith("image");
-        }catch(IOException e) {
-            e.printStackTrace();
-        }
-        log.debug("이미지 파일이 아닙니다.");
-        return false;
-    }
-
-    @Override
-    public List<PortfolioRes> findPortfolioList(long userSeq) {
-        log.debug("[GET] Service - findPortfolioList");
-        List<PortfolioRes> portfolioRes = new ArrayList<>();
-
-        User user = userRepository.findById(userSeq).orElseThrow();
-        List<Portfolio> portfolios = portfolioRepository.findAllByUser(user);
-
-        for (Portfolio portfolio : portfolios) {
-            List<PortfolioUrl> urls = portfolioUrlRepository.findAllByPortfolio(portfolio);
-            List<Tag> tags = tagRepository.findAllByPortfolio(portfolio);
-            PortfolioRes result = PortfolioRes.toDto(portfolio, urls, tags);
-            portfolioRes.add(result);
-        }
-
-        return portfolioRes;
-    }
-
-    @Override
-    public PortfolioRes findPortfolio(long portSeq) {
-        log.debug("[GET] Service - findPortfolio");
-
-        Portfolio portfolio = portfolioRepository.findById(portSeq).orElseThrow();
-
-        List<PortfolioUrl> urls = portfolioUrlRepository.findAllByPortfolio(portfolio);
-        List<Tag> tags = tagRepository.findAllByPortfolio(portfolio);
-
-        return PortfolioRes.toDto(portfolio, urls, tags);
-    }
-
-    @Override
-    @Transactional
-    public Long updatePortfolio(PortfolioReq req, MultipartFile thumbnail, List<MultipartFile> files) {
-        log.debug("[PATCH] Service - updatePortfolio");
-        return null;
-    }
-
-    @Override
-    public void deletePortfolio(long portSeq) {
-        log.debug("[DELETE] Service - deletePortfolio");
-        Portfolio portfolio = portfolioRepository.findById(portSeq).orElseThrow();
-        tagRepository.deleteAllByPortfolio(portfolio);
-        portfolioUrlRepository.deleteAllByPortfolio(portfolio);
-        // 해당 포트폴리오 삭제
-        portfolioRepository.deleteById(portSeq);
     }
 }
