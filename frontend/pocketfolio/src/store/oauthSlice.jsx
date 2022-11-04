@@ -6,9 +6,9 @@ export const login = createAsyncThunk(
   'LOGIN',
   async (social, {rejectWithValue}) => {
     try {
-      const res = await http.get(`oauth2/authorization/${social}`);
-      console.log(res)
-      return
+      // const res = await http.get(`oauth2/authorization/${social}`);
+      // console.log(res);
+      return;
       // const accessToken = res.data.accessToken;
       // const refreshToken = res.data.refreshToken;
       // window.localStorage.setItem('access-Token', accessToken);
