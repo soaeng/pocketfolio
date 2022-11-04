@@ -32,5 +32,4 @@ public class PortfolioReq {
                 .user(user)
                 .build();
     }
-
 }

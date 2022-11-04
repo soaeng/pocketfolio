@@ -9,15 +9,4 @@ public class TagDto {
     private Long tagSeq;
     private String name;
     private Portfolio portfolio;
-
-    public static Tag toEntity(TagDto res) {
-        if(res == null) {
-            return null;
-        }
-        return Tag.builder()
-                .name(res.name)
-                .portfolio(res.portfolio)
-                .build();
-    }
-
 }

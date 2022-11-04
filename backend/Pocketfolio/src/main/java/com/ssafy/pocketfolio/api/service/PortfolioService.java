@@ -36,18 +36,18 @@ public interface PortfolioService {
 
     /**
      * 포트폴리오 수정
+     * @param portSeq 수정할 포트폴리오 번호
      * @param req 포트폴리오 정보
      * @param thumbnail 프트폴리오 썸네일 이미지
      * @param files 포트폴리오 첨부 파일
      * @return 수정된 포트폴리오 번호
      * @throws IOException 수정 과정 중 문제 발생 시 던져짐
      */
-    Long updatePortfolio(PortfolioReq req, MultipartFile thumbnail, List<MultipartFile> files) throws IOException;
+    long updatePortfolio(long portSeq, PortfolioReq req, MultipartFile thumbnail, List<MultipartFile> files) throws IOException;
 
     /**
      * 포트폴리오 삭제
      * @param portSeq 삭제할 포트폴리오 번호
      */
     void deletePortfolio(long portSeq);
-
 }
