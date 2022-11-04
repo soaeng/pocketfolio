@@ -56,13 +56,10 @@ public class SecurityConfig {
         // 패턴 등록
         http.authorizeHttpRequests((auth) -> {
             auth
-                    .antMatchers(contextPath + "/", contextPath + "/css/**", contextPath + "/images/**",
-                            contextPath + "/js/**", contextPath + "/login", contextPath + "/logout",
-                            contextPath + "/swagger", contextPath + "/swagger/**", contextPath + "/users/signup",
-                            contextPath + "/users/login", contextPath + "/users/logout").permitAll()
-                    .antMatchers(HttpMethod.GET, contextPath + "/rooms/like",
-                            contextPath + "/portfolios/room/*", contextPath + "/users/profile").authenticated()
-                    .antMatchers(HttpMethod.GET, contextPath + "/**").permitAll()
+                    .antMatchers("/", "/css/**", "/images/**", "/js/**", "/login", "/logout", "/swagger",
+                            "/swagger/**", "/swagger-ui/**", "/users/signup", "/users/login", "/users/logout").permitAll()
+                    .antMatchers(HttpMethod.GET, "/rooms/like", "/portfolios/room/*", "/users/profile").authenticated()
+                    .antMatchers(HttpMethod.GET, "/**").permitAll()
                     .anyRequest().authenticated();
 //            auth.antMatchers("/sample/member").hasRole("USER");
         });
