@@ -1,4 +1,6 @@
 import {useNavigate} from 'react-router-dom';
+import {useDispatch} from 'react-redux';
+import {login} from '../../store/oauthSlice';
 import {
   Container,
   SelfContainer,
@@ -17,9 +19,15 @@ import {
 
 const Login = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const moveToMain = () => {
     navigate('/main');
+  };
+
+  // social login
+  const loginFunc = social => {
+    dispatch(login(social));
   };
 
   return (
@@ -37,7 +45,7 @@ const Login = () => {
           <LogoImg src={process.env.PUBLIC_URL + '/assets/images/logo.png'} />
         </LogoDiv>
 
-        <LoginDiv className="google">
+        <LoginDiv className="google" onClick={() => loginFunc('google')}>
           <LoginIconDiv>
             <LoginIcon
               src={process.env.PUBLIC_URL + '/assets/images/logo_google.png'}
@@ -65,7 +73,7 @@ const Login = () => {
         </LoginDiv>
 
         <LoginDiv className="github">
-          <LoginIconDiv>
+          <LoginIconDiv className="github">
             <LoginIcon
               src={process.env.PUBLIC_URL + '/assets/images/logo_github.png'}
             />

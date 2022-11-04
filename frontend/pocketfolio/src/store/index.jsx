@@ -6,7 +6,7 @@ import storage from 'redux-persist/lib/storage';
 import {combineReducers, configureStore} from '@reduxjs/toolkit';
 
 // slice
-import oauthReducer from './oauth';
+import oauthReducer from './oauthSlice';
 
 
 // persist
