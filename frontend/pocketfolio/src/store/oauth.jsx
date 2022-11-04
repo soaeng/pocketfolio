@@ -4,9 +4,9 @@ import http from '../api/axios';
 /** 로그인 */
 export const login = createAsyncThunk(
   'LOGIN',
-  async ( args, {rejectWithValue}) => {
+  async (args, {rejectWithValue}) => {
     try {
-      // const res = await http.post('member/login.do', userData);
+      const res = await http.post('oauth2/authorization/google', userData);
       // const accessToken = res.data.accessToken;
       // const refreshToken = res.data.refreshToken;
       // window.localStorage.setItem('access-Token', accessToken);
