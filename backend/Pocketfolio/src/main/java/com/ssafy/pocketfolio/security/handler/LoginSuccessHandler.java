@@ -19,7 +19,7 @@ import java.io.IOException;
 @Log4j2
 public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 
-    private final String FRONT_URL = "http://localhost:3000";
+    private final String FRONT_URL = "https://k7e101.p.ssafy.io";
 
     private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
@@ -85,15 +85,15 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
     }
 
     private String makeRedirectUrl(String accessToken, String refreshToken, boolean isSignUp) {
-        return UriComponentsBuilder.fromUriString("/users/oauth" + (isSignUp ? "/signup" : "/login"))
-                .queryParam("accessToken", accessToken)
-                .queryParam("refreshToken", refreshToken)
-                .build().toUriString();
-
-//        return UriComponentsBuilder.fromUriString(FRONT_URL + (isSignUp ? "/signup" : "/login"))
+//        return UriComponentsBuilder.fromUriString("/users/oauth" + (isSignUp ? "/signup" : "/login"))
 //                .queryParam("accessToken", accessToken)
 //                .queryParam("refreshToken", refreshToken)
 //                .build().toUriString();
+
+        return UriComponentsBuilder.fromUriString(FRONT_URL + "/oauth")
+                .queryParam("accessToken", accessToken)
+                .queryParam("refreshToken", refreshToken)
+                .build().toUriString();
     }
 
 }
