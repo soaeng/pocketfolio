@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -54,16 +53,16 @@ public class SecurityConfig {
         //반드시 필요
         http.authenticationManager(authenticationManager);
 
-        // 패턴 등록
-        http.authorizeHttpRequests((auth) -> {
-            auth
-                    .antMatchers("/", "/css/**", "/images/**", "/js/**", "/login", "/logout", "/swagger",
-                            "/swagger/**", "/swagger-ui/**", "/users/signup", "/users/login", "/users/logout").permitAll()
-                    .antMatchers(HttpMethod.GET, "/rooms/like", "/portfolios/room/*", "/users/profile").authenticated()
-                    .antMatchers(HttpMethod.GET, "/**").permitAll()
-                    .anyRequest().authenticated();
-//            auth.antMatchers("/sample/member").hasRole("USER");
-        });
+//        // 패턴 등록
+//        http.authorizeHttpRequests((auth) -> {
+//            auth
+//                    .antMatchers("/", "/css/**", "/images/**", "/js/**", "/login", "/logout", "/swagger",
+//                            "/swagger/**", "/swagger-ui/**", "/users/signup", "/users/login", "/users/logout").permitAll()
+//                    .antMatchers(HttpMethod.GET, "/rooms/like", "/portfolios/room/*", "/users/profile").authenticated()
+//                    .antMatchers(HttpMethod.GET, "/**").permitAll()
+//                    .anyRequest().authenticated();
+////            auth.antMatchers("/sample/member").hasRole("USER");
+//        });
 
 //        http.formLogin(); // 인가 및 인증이 안 되면 로그인 페이지로 이동
         http.csrf().disable(); // CSRF 토큰 발행 X
