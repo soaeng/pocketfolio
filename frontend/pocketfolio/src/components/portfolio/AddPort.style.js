@@ -9,9 +9,26 @@ export const Background = styled.div`
   flex-direction: column;
 
   .ck.ck-editor__editable:not(.ck-editor__nested-editable) {
-    min-height: 500px;
+    height: 500px;
+    z-index: 1000;
+    background-color: white;
+    &::-webkit-scrollbar {
+      width: 10px;
+      height: 10px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      height: 5%;
+      background-color: #3c2e9b;
+      border-radius: 2rem;
+    }
+
+    &::-webkit-scrollbar-track {
+      background-color: #d7dcff;
+      border-radius: 2rem;
+    }
   }
-  
+
   &.ck-content blockquote {
     overflow: hidden;
     padding-right: 14em;

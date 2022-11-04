@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@ckeditor/ckeditor5-build-classic": "^35.2.1",
+    "@ckeditor/ckeditor5-build-decoupled-document": "^35.3.0",
     "@ckeditor/ckeditor5-react": "^5.0.2",
     "@react-three/drei": "^9.40.0",
     "@react-three/fiber": "^8.9.0",
