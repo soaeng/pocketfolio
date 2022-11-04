@@ -78,20 +78,37 @@ export const LoginDiv = styled.div`
 
   &.kakao {
     background-color: #fddc3f;
+
+    &:hover {
+      background-color: #e7ca3d;
+    }
   }
 
   &.google {
     outline: 1.5px solid #808080;
+
+    &:hover {
+      background-color: #e1e1e1;
+    }
   }
 
   &.facebook {
     background-color: #3b5998;
     color: #ffffff;
+
+    &:hover {
+      background-color: #344f88;
+      color: #e1e1e1;
+    }
   }
 
   &.github {
     background-color: #000000;
     color: #ffffff;
+
+    &:hover {
+      color: #e1e1e1;
+    }
   }
 
   @media screen and (max-width: 450px) {
@@ -108,6 +125,14 @@ export const LoginIconDiv = styled.div`
   height: 94%;
   aspect-ratio: 1 / 1;
   margin-right: 1rem;
+
+  &.github {
+    background-color: white;
+
+    &:hover {
+      background-color: #e1e1e1;
+    }
+  }
 `;
 
 export const LoginIcon = styled.img`
