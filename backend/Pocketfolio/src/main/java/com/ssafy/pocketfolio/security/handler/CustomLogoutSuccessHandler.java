@@ -4,8 +4,6 @@ import com.ssafy.pocketfolio.security.service.OAuthService;
 import com.ssafy.pocketfolio.security.util.JWTUtil;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.web.DefaultRedirectStrategy;
-import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.util.StringUtils;
 
@@ -17,9 +15,9 @@ import java.io.IOException;
 @Log4j2
 public class CustomLogoutSuccessHandler implements LogoutSuccessHandler {
 
-    private final String FRONT_URL = "http://localhost:3000";
+    private final String FRONT_URL = "https://k7e101.p.ssafy.io";
 
-    private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
+//    private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
     private JWTUtil jwtUtil;
 
@@ -55,11 +53,11 @@ public class CustomLogoutSuccessHandler implements LogoutSuccessHandler {
             }
         }
 
-        response.setStatus(HttpServletResponse.SC_OK);
+        response.setStatus(HttpServletResponse.SC_CREATED);
 
         // 12345
 //        response.sendRedirect(FRONT_URL + "/logout?result=success");
-        response.sendRedirect(FRONT_URL + "/main"); // 백에서 main으로 바로 이동
+//        response.sendRedirect(FRONT_URL + "/main"); // 백에서 main으로 바로 이동
     }
 
     private long checkAuthHeaderAndExtractUserSeq(HttpServletRequest request) {
