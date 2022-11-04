@@ -2,6 +2,7 @@ package com.ssafy.pocketfolio.config;
 
 
 import com.ssafy.pocketfolio.security.filter.ApiCheckFilter;
+import com.ssafy.pocketfolio.security.handler.CustomLogoutSuccessHandler;
 import com.ssafy.pocketfolio.security.handler.LoginSuccessHandler;
 import com.ssafy.pocketfolio.security.service.OAuthService;
 import com.ssafy.pocketfolio.security.service.UserDetailsServiceImpl;
@@ -66,13 +67,13 @@ public class SecurityConfig {
 
 //        http.formLogin(); // 인가 및 인증이 안 되면 로그인 페이지로 이동
         http.csrf().disable(); // CSRF 토큰 발행 X
-//        http.logout(); // 별도의 설정이 없으면 /logout 시 로그아웃 페이지로 이동
 //        http.oauth2Login(); // OAuth 로그인
         http.oauth2Login().successHandler(successHandler()); // OAuth 로그인 후 redirect 이동
+        http.logout().logoutUrl("/oauth/logout").logoutSuccessHandler(logoutSuccessHandler());
 
 //        http.rememberMe().tokenValiditySeconds(60*60*24*7).userDetailsService(userDetailsService);
         http.addFilterBefore(apiCheckFilter(), UsernamePasswordAuthenticationFilter.class);
-        http.cors();
+//        http.cors();
 
 //        http.addFilterBefore(apiLoginFilter(authenticationManager), UsernamePasswordAuthenticationFilter.class);
 
@@ -99,6 +100,11 @@ public class SecurityConfig {
     @Bean
     public LoginSuccessHandler successHandler() {
         return new LoginSuccessHandler(passwordEncoder(), jwtUtil(), oAuthService);
+    }
+
+    @Bean
+    public CustomLogoutSuccessHandler logoutSuccessHandler() {
+        return new CustomLogoutSuccessHandler(jwtUtil(), oAuthService);
     }
 
     @Bean

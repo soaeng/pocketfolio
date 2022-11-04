@@ -77,10 +77,4 @@ public class UserServiceImpl implements UserService {
         return null;
     }
 
-    @Override
-    @Transactional
-    public void logout(long userSeq) {
-        User user = userRepository.findById(userSeq).get();
-        user.updateToken(null);
-    }
 }
