@@ -10,6 +10,7 @@ import org.springframework.util.StringUtils;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 @Log4j2
@@ -39,7 +40,9 @@ public class CustomLogoutSuccessHandler implements LogoutSuccessHandler {
 
         try {
             long userSeq = checkAuthHeaderAndExtractUserSeq(request);
-            oAuthService.deleteRefreshToken(userSeq);
+            if (userSeq > 0) { // 검증 12345
+                oAuthService.deleteRefreshToken(userSeq);
+            }
         } catch (Exception e) {
             log.error("onLogoutSuccess Error: " + e.getMessage());
             e.printStackTrace();
@@ -47,7 +50,10 @@ public class CustomLogoutSuccessHandler implements LogoutSuccessHandler {
 
         if (authentication != null && authentication.getDetails() != null) {
             try {
-                request.getSession().invalidate();
+                HttpSession session = request.getSession();
+                if (session != null) {
+                    session.invalidate();
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
