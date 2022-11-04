@@ -47,8 +47,8 @@ public class UserRes {
     public UserRes(UserView userView) {
         name = userView.getName();
         profilePic = userView.getProfilePic();
-        followerTotal = userView.getFollwerTotal();
-        followingTotal = userView.getFollwingTotal();
+        followerTotal = userView.getFollowerTotal();
+        followingTotal = userView.getFollowingTotal();
         describe = userView.getDescribe();
     }
 }

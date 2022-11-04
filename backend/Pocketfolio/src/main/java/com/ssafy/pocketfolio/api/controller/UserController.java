@@ -231,25 +231,24 @@ public class UserController {
     @PatchMapping("/logout")
     public ResponseEntity<Boolean> logout(HttpServletRequest request) {
         log.info("Controller: logout()");
-        HttpStatus status = HttpStatus.CREATED;
+        HttpStatus status;
 
-        boolean result = true;
+        boolean result = false;
 
         try {
             long userSeq = (Long) request.getAttribute("userSeq");
             if (userSeq > 0) {
                 userService.logout(userSeq);
-//                result = true;
+                result = true;
                 status = HttpStatus.CREATED;
             } else {
-//                log.error("사용 불가능 토큰");
-//                status = HttpStatus.FORBIDDEN;
+                log.error("사용 불가능 토큰");
+                status = HttpStatus.FORBIDDEN;
             }
         } catch (Exception e) {
             log.error(e.getMessage());
-//            status = HttpStatus.INTERNAL_SERVER_ERROR;
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
         }
-
         return new ResponseEntity<>(result, status);
     }
 
