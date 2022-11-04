@@ -72,6 +72,7 @@ public class SecurityConfig {
 
 //        http.rememberMe().tokenValiditySeconds(60*60*24*7).userDetailsService(userDetailsService);
         http.addFilterBefore(apiCheckFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.cors();
 
 //        http.addFilterBefore(apiLoginFilter(authenticationManager), UsernamePasswordAuthenticationFilter.class);
 
