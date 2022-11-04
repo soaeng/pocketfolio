@@ -82,8 +82,6 @@ export default function MyEditor({portContent, setPortContent, ...props}) {
               26,
               27,
               28,
-              29,
-              30,
             ],
           },
         }}
@@ -95,6 +93,7 @@ export default function MyEditor({portContent, setPortContent, ...props}) {
           });
         }}
       />
+      {/* <img src={imgUrl}></img> */}
     </div>
   );
 }

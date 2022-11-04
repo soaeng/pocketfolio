@@ -9,8 +9,7 @@ export const Background = styled.div`
   flex-direction: column;
 
   .ck.ck-editor__editable:not(.ck-editor__nested-editable) {
-    height: 500px;
-    z-index: 1000;
+    height: 400px;
     background-color: white;
     &::-webkit-scrollbar {
       width: 10px;
@@ -43,10 +42,9 @@ export const Background = styled.div`
 export const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
-  margin-top: 5rem;
+  margin-top: 3rem;
   width: 60%;
-  height: 900px;
+  height: 70%;
 `;
 
 export const Header = styled.div`
@@ -87,6 +85,7 @@ export const HashDiv = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-around;
+  
 `;
 
 export const InputDiv = styled.div`

@@ -75,8 +75,6 @@ const AddPort = () => {
     <Background>
       <Nav></Nav>
       <Wrapper className="wrapper">
-        <Header>포트폴리오 관리하기</Header>
-
         <TitleDiv>
           <Img
             alt="pencil"
