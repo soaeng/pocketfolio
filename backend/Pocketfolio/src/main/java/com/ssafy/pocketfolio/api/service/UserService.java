@@ -13,5 +13,4 @@ public interface UserService {
     void deleteUser(long userSeq);
     List<UserRes> findUserList(String type, String keyword, String sort);
 
-    void logout(long userSeq);
 }

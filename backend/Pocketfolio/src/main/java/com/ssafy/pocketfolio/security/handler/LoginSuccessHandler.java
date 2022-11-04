@@ -19,6 +19,8 @@ import java.io.IOException;
 @Log4j2
 public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 
+    private final String FRONT_URL = "http://localhost:3000";
+
     private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
 //    private PasswordEncoder passwordEncoder;
@@ -88,7 +90,7 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
                 .queryParam("refreshToken", refreshToken)
                 .build().toUriString();
 
-//        return UriComponentsBuilder.fromUriString("http://localhost:3000" + (isSignUp ? "/signup" : "/login"))
+//        return UriComponentsBuilder.fromUriString(FRONT_URL + (isSignUp ? "/signup" : "/login"))
 //                .queryParam("accessToken", accessToken)
 //                .queryParam("refreshToken", refreshToken)
 //                .build().toUriString();

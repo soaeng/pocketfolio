@@ -223,33 +223,33 @@ public class UserController {
         return new ResponseEntity<>(result, status);
     }
 
-    @Operation(summary = "로그아웃", description = "로그아웃", responses = {
-            @ApiResponse(responseCode = "201", description = "회원 정보 수정 성공", content = @Content(schema = @Schema(implementation = Boolean.class))),
-            @ApiResponse(responseCode = "404", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = Boolean.class))),
-            @ApiResponse(responseCode = "500", description = "서버 에러", content = @Content(schema = @Schema(implementation = Boolean.class)))
-    })
-    @PatchMapping("/logout")
-    public ResponseEntity<Boolean> logout(HttpServletRequest request) {
-        log.info("Controller: logout()");
-        HttpStatus status;
-
-        boolean result = false;
-
-        try {
-            long userSeq = (Long) request.getAttribute("userSeq");
-            if (userSeq > 0) {
-                userService.logout(userSeq);
-                result = true;
-                status = HttpStatus.CREATED;
-            } else {
-                log.error("사용 불가능 토큰");
-                status = HttpStatus.FORBIDDEN;
-            }
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            status = HttpStatus.INTERNAL_SERVER_ERROR;
-        }
-        return new ResponseEntity<>(result, status);
-    }
+//    @Operation(summary = "로그아웃", description = "로그아웃", responses = {
+//            @ApiResponse(responseCode = "201", description = "회원 정보 수정 성공", content = @Content(schema = @Schema(implementation = Boolean.class))),
+//            @ApiResponse(responseCode = "404", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = Boolean.class))),
+//            @ApiResponse(responseCode = "500", description = "서버 에러", content = @Content(schema = @Schema(implementation = Boolean.class)))
+//    })
+//    @PatchMapping("/logout")
+//    public ResponseEntity<Boolean> logout(HttpServletRequest request) {
+//        log.info("Controller: logout()");
+//        HttpStatus status;
+//
+//        boolean result = false;
+//
+//        try {
+//            long userSeq = (Long) request.getAttribute("userSeq");
+//            if (userSeq > 0) {
+//                userService.logout(userSeq);
+//                result = true;
+//                status = HttpStatus.CREATED;
+//            } else {
+//                log.error("사용 불가능 토큰");
+//                status = HttpStatus.FORBIDDEN;
+//            }
+//        } catch (Exception e) {
+//            log.error(e.getMessage());
+//            status = HttpStatus.INTERNAL_SERVER_ERROR;
+//        }
+//        return new ResponseEntity<>(result, status);
+//    }
 
 }

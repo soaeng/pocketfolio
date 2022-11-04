@@ -17,4 +17,11 @@ public class OAuthServiceImpl implements OAuthService {
         User user = userRepository.findById(userSeq).get();
         user.updateToken(refreshToken);
     }
+
+    @Override
+    @Transactional
+    public void deleteRefreshToken(long userSeq) {
+        User user = userRepository.findById(userSeq).get();
+        user.updateToken(null);
+    }
 }
