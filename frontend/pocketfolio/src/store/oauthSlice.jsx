@@ -6,27 +6,14 @@ export const login = createAsyncThunk(
   'LOGIN',
   async (social, {rejectWithValue}) => {
     try {
-      const res = await http.get(`oauth2/authorization/${social}`);
-      console.log(res);
+      // const res = await http.get(`oauth2/authorization/${social}`);
+      // console.log(res);
       return;
       // const accessToken = res.data.accessToken;
       // const refreshToken = res.data.refreshToken;
       // window.localStorage.setItem('access-Token', accessToken);
       // window.localStorage.setItem('refresh-Token', refreshToken);
       // return res;
-    } catch (err) {
-      return rejectWithValue(err.response);
-    }
-  },
-);
-
-export const testLogin = createAsyncThunk(
-  'TESTLOGIN',
-  async ({rejectWithValue}) => {
-    try {
-      const res = await http.get(`users/profile/${1}`);
-      console.log(res);
-      return;
     } catch (err) {
       return rejectWithValue(err.response);
     }

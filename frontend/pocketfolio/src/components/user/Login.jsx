@@ -1,5 +1,4 @@
 import {useNavigate} from 'react-router-dom';
-import {useDispatch} from 'react-redux';
 import {login, testLogin} from '../../store/oauthSlice';
 import {
   Container,
@@ -19,7 +18,6 @@ import {
 
 const Login = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
 
   const moveToMain = () => {
     navigate('/main');
@@ -27,7 +25,7 @@ const Login = () => {
 
   // social login
   const loginFunc = social => {
-    dispatch(login(social));
+    window.location.href = `https://k7e101.p.ssafy.io/api/oauth2/authorization/${social}`;
   };
 
   return (
@@ -54,7 +52,7 @@ const Login = () => {
           <LoginText>구글로 시작하기</LoginText>
         </LoginDiv>
 
-        <LoginDiv className="kakao" onClick={() => testLogin()}>
+        <LoginDiv className="kakao" onClick={() => loginFunc('kakao')}>
           <LoginIconDiv>
             <LoginIcon
               src={process.env.PUBLIC_URL + '/assets/images/logo_kakao.png'}
@@ -63,7 +61,7 @@ const Login = () => {
           <LoginText>카카오로 시작하기</LoginText>
         </LoginDiv>
 
-        <LoginDiv className="facebook">
+        <LoginDiv className="facebook" onClick={() => loginFunc('facebook')}>
           <LoginIconDiv>
             <LoginIcon
               src={process.env.PUBLIC_URL + '/assets/images/logo_facebook.png'}
@@ -72,7 +70,7 @@ const Login = () => {
           <LoginText>페이스북으로 시작하기</LoginText>
         </LoginDiv>
 
-        <LoginDiv className="github">
+        <LoginDiv className="github" onClick={() => loginFunc('github')} >
           <LoginIconDiv className="github">
             <LoginIcon
               src={process.env.PUBLIC_URL + '/assets/images/logo_github.png'}
