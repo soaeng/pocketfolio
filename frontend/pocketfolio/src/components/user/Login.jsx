@@ -1,6 +1,6 @@
 import {useNavigate} from 'react-router-dom';
 import {useDispatch} from 'react-redux';
-import {login} from '../../store/oauthSlice';
+import {login, testLogin} from '../../store/oauthSlice';
 import {
   Container,
   SelfContainer,
@@ -54,7 +54,7 @@ const Login = () => {
           <LoginText>구글로 시작하기</LoginText>
         </LoginDiv>
 
-        <LoginDiv className="kakao">
+        <LoginDiv className="kakao" onClick={() => testLogin()}>
           <LoginIconDiv>
             <LoginIcon
               src={process.env.PUBLIC_URL + '/assets/images/logo_kakao.png'}
