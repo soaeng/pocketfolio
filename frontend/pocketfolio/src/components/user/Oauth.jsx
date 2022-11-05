@@ -1,15 +1,15 @@
 import {useEffect} from 'react';
-import {useNavigate, useParams} from 'react-router-dom';
+import {useNavigate, useSearchParams} from 'react-router-dom';
 
 const Oauth = () => {
   const navigate = useNavigate();
-  const params = useParams();
+  const searchParams = useSearchParams();
 
   useEffect(() => {
-    console.log(params);
+    console.log(searchParams);
   }, []);
 
-  return ;
+  return;
 };
 
 export default Oauth;
