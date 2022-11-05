@@ -41,9 +41,6 @@ public class PortfolioServiceImpl implements PortfolioService{
     @Value("${app.fileupload.uploadPath}")
     private String uploadPath;
 
-    @Value("${app.fileupload.uploadDir}")
-    private String uploadDir;
-
     // 포트폴리오 등록
     @Override
     @Transactional
@@ -51,13 +48,17 @@ public class PortfolioServiceImpl implements PortfolioService{
         log.debug("[POST] Service - insertPortfolio");
 
         // 사용자 번호를 통한 사용자 조회
-        User user = userRepository.findById(userSeq).orElseThrow();
+        // TODO: 사용자 예외 처리
+        User user = userRepository.findById(userSeq).orElseThrow(() -> new IllegalArgumentException("해당 사용자가 존재하지 않습니다."));
         // 저장된 썸네일 주소
         String thumbnailUrl = null;
 
         // 저장할 썸네일 파일이 있다면
         if (thumbnail != null) {
             thumbnailUrl = saveThumbnail(thumbnail);
+            if(thumbnailUrl == null) {
+                return -1;
+            }
         }
 
         // 포트폴리오 저장
@@ -70,9 +71,11 @@ public class PortfolioServiceImpl implements PortfolioService{
             saveTags(req.getTags(), portfolio);
         }
 
+        // 첨부된 파일이 있다면 저장
         if (files != null){
             saveUrls(files, portfolio);
         }
+        
         return portSeq;
     }
 
@@ -81,8 +84,8 @@ public class PortfolioServiceImpl implements PortfolioService{
     public List<PortfolioRes> findPortfolioList(long userSeq) {
         log.debug("[GET] Service - findPortfolioList");
         List<PortfolioRes> portfolioRes = new ArrayList<>();
-
-        User user = userRepository.findById(userSeq).orElseThrow();
+        
+        User user = userRepository.findById(userSeq).orElseThrow(() -> new IllegalArgumentException("해당 사용자가 존재하지 않습니다."));
         List<Portfolio> portfolios = portfolioRepository.findAllByUser(user);
 
         for (Portfolio portfolio : portfolios) {
@@ -100,8 +103,7 @@ public class PortfolioServiceImpl implements PortfolioService{
     public PortfolioRes findPortfolio(long portSeq) {
         log.debug("[GET] Service - findPortfolio");
 
-        Portfolio portfolio = portfolioRepository.findById(portSeq).orElseThrow();
-
+        Portfolio portfolio = portfolioRepository.findById(portSeq).orElseThrow(() -> new IllegalArgumentException("해당 포트폴리오가 존재하지 않습니다."));
         List<PortfolioUrl> urls = portfolioUrlRepository.findAllByPortfolio(portfolio);
         List<Tag> tags = tagRepository.findAllByPortfolio(portfolio);
 
@@ -121,14 +123,14 @@ public class PortfolioServiceImpl implements PortfolioService{
 
         // 저장할 썸네일 파일이 있다면 thumbnail 수정
         if (thumbnail != null) {
+            // 저장된 썸네일 주소가 있으면 해당 썸네일 삭제 후 새로 저장
             if (thumbnailUrl != null) {
-                File file = new File(thumbnailUrl);
-                if (file.exists()){
-                    log.debug("썸네일 삭제 완료!");
-                    file.delete();
-                }
+                deleteFile(thumbnailUrl);
             }
             thumbnailUrl = saveThumbnail(thumbnail);
+            if(thumbnailUrl == null) {
+                return -1;
+            }
         }
 
         portfolio.updatePortfolio(req.getName(), req.getSummary(), thumbnailUrl);
@@ -136,15 +138,6 @@ public class PortfolioServiceImpl implements PortfolioService{
         // 태그가 있다면 기존 태그 삭제 후 새로 저장
         if (req.getTags() != null) {
             tagRepository.deleteAllByPortfolio(portfolio);
-            List<Tag> tags = new ArrayList<>();
-            for (String tagStr : req.getTags()) {
-                Tag tag = Tag.builder()
-                        .name(tagStr)
-                        .portfolio(portfolio)
-                        .build();
-                tags.add(tag);
-                log.debug("tag: " + tag);
-            }
             saveTags(req.getTags(), portfolio);
         }
 
@@ -152,18 +145,11 @@ public class PortfolioServiceImpl implements PortfolioService{
         // 파일이 있다면 기존 파일 DB, 물리적 삭제 후 새로 저장
         if (files != null){
             for (PortfolioUrl url : urls) {
-                // TODO: File save 시 upload dir부터만 저장하도록 (4 전체 경로 공개 X)
-                File file = new File(url.getUrl());
-                if (file.exists()){
-                    log.debug("파일 삭제 완료!");
-                    file.delete();
-                }
+                deleteFile(url.getUrl());
             }
             portfolioUrlRepository.deleteAllByPortfolio(portfolio);
-
             saveUrls(files, portfolio);
         }
-
         return portSeq;
     }
 
@@ -171,27 +157,21 @@ public class PortfolioServiceImpl implements PortfolioService{
     @Override
     public void deletePortfolio(long portSeq) {
         log.debug("[DELETE] Service - deletePortfolio");
-        Portfolio portfolio = portfolioRepository.findById(portSeq).orElseThrow();
+        Portfolio portfolio = portfolioRepository.findById(portSeq).orElseThrow(() -> new IllegalArgumentException("해당 포트폴리오가 존재하지 않습니다."));
+        // 썸네일 삭제
         if (portfolio.getThumbnail() != null) {
-            File file = new File(portfolio.getThumbnail());
-            if (file.exists()){
-                log.debug("썸네일 파일 삭제 완료");
-                file.delete();
-            }
+            deleteFile(portfolio.getThumbnail());
         }
         tagRepository.deleteAllByPortfolio(portfolio);
         List<PortfolioUrl> urls = portfolioUrlRepository.findAllByPortfolio(portfolio);
+        // 첨부파일 삭제
         if(!urls.isEmpty()) {
             for (PortfolioUrl url : urls) {
-                File file = new File(url.getUrl());
-                if (file.exists()){
-                    log.debug("파일 삭제 완료!");
-                    file.delete();
-                }
+                deleteFile(url.getUrl());
             }
         }
         portfolioUrlRepository.deleteAllByPortfolio(portfolio);
-        // 해당 포트폴리오 삭제
+        // 포트폴리오 삭제
         portfolioRepository.deleteById(portSeq);
     }
 
@@ -266,15 +246,13 @@ public class PortfolioServiceImpl implements PortfolioService{
         log.debug("saveName: " + saveName);
 
         // 파일 저장 위치 지정 (없는 경우 폴더 생성)
-        File upload = new File(uploadPath + File.separator + uploadDir + File.separator + uploadDirName);
+        File upload = new File(uploadPath + File.separator + uploadDirName);
         if (!upload.exists()){
-            boolean wasSuccessful = upload.mkdir();
-            if (wasSuccessful){
-                log.debug("파일 업로드 폴더 생성 완료");
-                log.debug(upload.getPath());
-            } else {
-                log.debug("파일 업로드 폴더 생성 실패");
+            boolean result = upload.mkdir();
+            if (!result) {
+                log.debug("폴더 생성 실패");
             }
+            log.debug("폴더 생성 성공");
         }
 
         File dest = new File(upload.getPath() + File.separator + saveName);
@@ -287,8 +265,21 @@ public class PortfolioServiceImpl implements PortfolioService{
                 return null;
             }
         }
+
         file.transferTo(dest);
-        log.debug("파일 저장 성공");
+        log.debug("파일 저장 완료");
         return dest;
+    }
+    
+    // 파일 삭제
+    public void deleteFile(String filePath) {
+        File file = new File(filePath);
+        if (file.exists()){
+            boolean result = file.delete();
+            if (!result) {
+                log.debug("파일 삭제 실패");
+            }
+            log.debug("파일 삭제 성공");
+        }
     }
 }
