@@ -6,12 +6,13 @@ const Oauth = () => {
   const [searchParams] = useSearchParams();
 
   useEffect(() => {
+
+    // save token at local storage
     const accessToken = searchParams.get('accessToken');
     const refreshToken = searchParams.get('refreshToken');
     window.localStorage.setItem('access-Token', accessToken);
     window.localStorage.setItem('refresh-Token', refreshToken);
-    const token = window.localStorage.getItem('access-Token');
-    console.log(token)
+
     navigate('/');
   }, []);
 
