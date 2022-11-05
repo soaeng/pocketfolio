@@ -27,14 +27,11 @@ public class PortfolioController {
     @PostMapping
     private ResponseEntity<Long> insertPortfolio(HttpServletRequest request, @RequestPart(value="portfolio") PortfolioReq portfolio, @RequestPart(value = "thumbnail", required = false) MultipartFile thumbnail, @RequestPart(value = "files", required = false) List<MultipartFile> files) throws IOException {
         log.debug("[POST] Controller - Portfolio");
-
         long userSeq = (Long) request.getAttribute("userSeq");
-//        long userSeq = 1l;
-
         // 포트폴리오 저장 후 해당 포트폴리오 번호 반환
         Long response = portfolioService.insertPortfolio(portfolio, thumbnail, userSeq, files);
 
-        if (response != null) {
+        if (response != -1) {
             return new ResponseEntity<>(response, HttpStatus.CREATED);
         } else {
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -45,7 +42,6 @@ public class PortfolioController {
     private ResponseEntity<List<PortfolioRes>> findPortfolioList(HttpServletRequest request){
         log.debug("[GET] Controller - findPortfolioList");
         long userSeq = (Long) request.getAttribute("userSeq");
-//        long userSeq = 1l;
         List<PortfolioRes> response = portfolioService.findPortfolioList(userSeq);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
@@ -62,11 +58,10 @@ public class PortfolioController {
     @PatchMapping("/{portSeq}")
     private ResponseEntity<Long> updatePortfolio(@PathVariable(value="portSeq") long portSeq, @RequestPart(value="portfolio") PortfolioReq request, @RequestPart(value = "thumbnail", required = false) MultipartFile thumbnail, @RequestPart(value = "files", required = false) List<MultipartFile> files) throws IOException {
         log.debug("[PATCH] Controller - Portfolio");
-
         // 포트폴리오 저장 후 해당 포트폴리오 번호 반환
         Long response = portfolioService.updatePortfolio(portSeq, request, thumbnail, files);
 
-        if (response != null) {
+        if (response != -1) {
             return new ResponseEntity<>(response, HttpStatus.CREATED);
         } else {
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
