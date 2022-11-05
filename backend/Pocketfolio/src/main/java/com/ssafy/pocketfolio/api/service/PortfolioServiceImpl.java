@@ -40,6 +40,8 @@ public class PortfolioServiceImpl implements PortfolioService{
 
     @Value("${app.fileupload.uploadPath}")
     private String uploadPath;
+    @Value("${app.fileupload.uploadDir}")
+    private String uploadDir;
 
     // 포트폴리오 등록
     @Override
@@ -246,7 +248,7 @@ public class PortfolioServiceImpl implements PortfolioService{
         log.debug("saveName: " + saveName);
 
         // 파일 저장 위치 지정 (없는 경우 폴더 생성)
-        File upload = new File(uploadPath + File.separator + uploadDirName);
+        File upload = new File(uploadPath + File.separator + uploadDir + File.separator + uploadDirName);
         if (!upload.exists()){
             boolean result = upload.mkdir();
             if (!result) {
