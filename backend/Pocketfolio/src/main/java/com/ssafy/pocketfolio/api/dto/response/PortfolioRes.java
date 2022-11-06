@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 @Builder
 @ToString
 public class PortfolioRes {
-    private Long portSeq;               // 포트폴리오 번호
+    private long portSeq;               // 포트폴리오 번호
     private String name;                // 제목
     private String summary;             // 개요
     private String thumbnail;           // 썸네일 url
@@ -32,29 +32,9 @@ public class PortfolioRes {
                 .thumbnail(entity.getThumbnail())
                 .created(entity.getCreated())
                 .updated(entity.getUpdated())
-                .urls(urls.stream().map(PortfolioRes::toDto).collect(Collectors.toList()))
-                .tags(tags.stream().map(PortfolioRes::toDto).collect(Collectors.toList()))
-                .build();
-    }
-    public static PortfolioUrlDto toDto(PortfolioUrl entity){
-        if (entity == null) {
-            return null;
-        }
-        return PortfolioUrlDto.builder()
-                .portUrlSeq(entity.getPortUrlSeq())
-                .url(entity.getUrl())
-                .name(entity.getName())
-                .type(entity.getType())
+                .urls(urls.stream().map(PortfolioUrlDto::toDto).collect(Collectors.toList()))
+                .tags(tags.stream().map(TagDto::toDto).collect(Collectors.toList()))
                 .build();
     }
 
-    public static TagDto toDto(Tag entity) {
-        if (entity == null) {
-            return null;
-        }
-        return TagDto.builder()
-                .tagSeq(entity.getTagSeq())
-                .name(entity.getName())
-                .build();
-    }
 }
