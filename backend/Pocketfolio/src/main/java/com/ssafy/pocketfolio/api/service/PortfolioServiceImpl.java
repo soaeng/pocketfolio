@@ -3,6 +3,7 @@ package com.ssafy.pocketfolio.api.service;
 import com.ssafy.pocketfolio.api.dto.PortfolioUrlDto;
 import com.ssafy.pocketfolio.api.dto.request.PortfolioReq;
 import com.ssafy.pocketfolio.api.dto.response.PortfolioRes;
+import com.ssafy.pocketfolio.api.util.MultipartFileHandler;
 import com.ssafy.pocketfolio.db.entity.Portfolio;
 import com.ssafy.pocketfolio.db.entity.PortfolioUrl;
 import com.ssafy.pocketfolio.db.entity.Tag;
@@ -20,12 +21,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @Slf4j
 @Service
@@ -36,6 +33,7 @@ public class PortfolioServiceImpl implements PortfolioService{
     private final PortfolioRepository portfolioRepository;
     private final PortfolioUrlRepository portfolioUrlRepository;
     private final TagRepository tagRepository;
+    private final MultipartFileHandler fileHandler;
 
     @Value("${app.fileupload.uploadPath}")
     private String uploadPath;
@@ -56,7 +54,7 @@ public class PortfolioServiceImpl implements PortfolioService{
 
         // 저장할 썸네일 파일이 있다면
         if (thumbnail != null) {
-            thumbnailUrl = saveThumbnail(thumbnail);
+            thumbnailUrl = fileHandler.saveThumbnail(thumbnail, "portfolio" + File.separator + "thumbnail");
             if(thumbnailUrl == null) {
                 return -1;
             }
@@ -126,9 +124,9 @@ public class PortfolioServiceImpl implements PortfolioService{
         if (thumbnail != null) {
             // 저장된 썸네일 주소가 있으면 해당 썸네일 삭제 후 새로 저장
             if (thumbnailUrl != null) {
-                deleteFile(thumbnailUrl);
+                fileHandler.deleteFile(thumbnailUrl);
             }
-            thumbnailUrl = saveThumbnail(thumbnail);
+            thumbnailUrl = fileHandler.saveThumbnail(thumbnail, "portfolio" + File.separator + "thumbnail");
             if(thumbnailUrl == null) {
                 return -1;
             }
@@ -146,7 +144,7 @@ public class PortfolioServiceImpl implements PortfolioService{
         // 파일이 있다면 기존 파일 DB, 물리적 삭제 후 새로 저장
         if (files != null){
             for (PortfolioUrl url : urls) {
-                deleteFile(url.getUrl());
+                fileHandler.deleteFile(url.getUrl());
             }
             portfolioUrlRepository.deleteAllByPortfolio(portfolio);
             saveUrls(files, portfolio);
@@ -161,14 +159,14 @@ public class PortfolioServiceImpl implements PortfolioService{
         Portfolio portfolio = portfolioRepository.findById(portSeq).orElseThrow(() -> new IllegalArgumentException("해당 포트폴리오가 존재하지 않습니다."));
         // 썸네일 삭제
         if (portfolio.getThumbnail() != null) {
-            deleteFile(portfolio.getThumbnail());
+            fileHandler.deleteFile(portfolio.getThumbnail());
         }
         tagRepository.deleteAllByPortfolio(portfolio);
         List<PortfolioUrl> urls = portfolioUrlRepository.findAllByPortfolio(portfolio);
         // 첨부파일 삭제
         if(!urls.isEmpty()) {
             for (PortfolioUrl url : urls) {
-                deleteFile(url.getUrl());
+                fileHandler.deleteFile(url.getUrl());
             }
         }
         portfolioUrlRepository.deleteAllByPortfolio(portfolio);
@@ -194,34 +192,10 @@ public class PortfolioServiceImpl implements PortfolioService{
         }
     }
 
-    // 썸네일 저장
-    public String saveThumbnail(MultipartFile thumbnail) throws IOException {
-        // 파일 저장
-        File dest = saveFile(thumbnail, "portfolio" + File.separator + "thumbnail");
-        if (dest != null) {
-            log.debug("썸네일 이미지 저장 성공");
-            return dest.getPath();
-        } else {
-            log.error("썸네일 이미지 저장 실패");
-            return null;
-        }
-    }
-
-    // 이미지 파일 체크
-    private boolean checkImageType(Path filePath) {
-        try {
-            String contentType = Files.probeContentType(filePath);
-            return contentType.startsWith("image");
-        }catch(IOException e) {
-            e.printStackTrace();
-        }
-        log.debug("이미지 파일이 아닙니다.");
-        return false;
-    }
 
     public void saveUrls(List<MultipartFile> files, Portfolio portfolio) throws IOException {
         for (MultipartFile file : files) {
-            File dest = saveFile(file, "portfolio");
+            File dest = fileHandler.saveFile(file, "portfolio");
             PortfolioUrlDto urlDto = PortfolioUrlDto.toDto(file.getOriginalFilename(), dest.getPath(), portfolio);
             PortfolioUrl url = PortfolioUrlDto.toEntity(urlDto);
 
@@ -230,57 +204,4 @@ public class PortfolioServiceImpl implements PortfolioService{
         }
     }
 
-    // 파일 저장
-    public File saveFile(MultipartFile file, String uploadDirName) throws IOException {
-        // Random uuid
-        UUID uuid = UUID.randomUUID();
-        // 원래 파일명
-        String fileName = file.getOriginalFilename();
-        log.debug("파일명: " + fileName);
-        // 파일 확장자
-        assert fileName != null;
-        String fileExt = fileName.substring(fileName.lastIndexOf(".") + 1);
-        log.debug("파일 확장자: " + fileExt);
-
-        // uuid + 확장자로 저장
-        String saveName = uuid + "." + fileExt;
-        log.debug("saveName: " + saveName);
-
-        // 파일 저장 위치 지정 (없는 경우 폴더 생성)
-        File upload = new File(uploadPath + File.separator + uploadDir + File.separator + uploadDirName);
-        if (!upload.exists()){
-            boolean result = upload.mkdir();
-            if (!result) {
-                log.debug("폴더 생성 실패");
-            }
-            log.debug("폴더 생성 성공");
-        }
-
-        File dest = new File(upload.getPath() + File.separator + saveName);
-        log.debug(dest.getPath());
-
-        if (uploadDirName.contains("thumbnail")) {
-            log.debug("thumbnail 파일 확장자 확인");
-            if(!checkImageType(Paths.get(dest.getPath()))){
-                log.error("thumbnail 파일은 이미지 파일만 허용됨");
-                return null;
-            }
-        }
-
-        file.transferTo(dest);
-        log.debug("파일 저장 완료");
-        return dest;
-    }
-    
-    // 파일 삭제
-    public void deleteFile(String filePath) {
-        File file = new File(filePath);
-        if (file.exists()){
-            boolean result = file.delete();
-            if (!result) {
-                log.debug("파일 삭제 실패");
-            }
-            log.debug("파일 삭제 성공");
-        }
-    }
 }
