@@ -9,6 +9,7 @@ export const getMyInfo = createAsyncThunk(
       console.log(res);
       return res;
     } catch (error) {
+      console.log('유저정보에러', error)
       return rejectWithValue(error);
     }
   },
