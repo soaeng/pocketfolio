@@ -92,13 +92,35 @@ public class RoomController {
         HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
 
         try{
-//            long userSeq = (Long) request.getAttribute("userSeq");
-            long userSeq = 2l;
+            long userSeq = (Long) request.getAttribute("userSeq");
             if (userSeq > 0) {
                 response = roomService.updateRoom(roomSeq, roomReq, thumbnail);
                 if (response > 0) {
                     status = HttpStatus.CREATED;
                 }
+            } else {
+                log.error("사용 불가능 토큰");
+                status = HttpStatus.FORBIDDEN;
+            }
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
+
+        return new ResponseEntity<>(response, status);
+    }
+
+    @DeleteMapping("/{roomSeq}")
+    public ResponseEntity<Boolean> deleteRoom(@PathVariable(value = "roomSeq") Long roomSeq, HttpServletRequest request){
+        log.debug("[DELETE] Controller - deleteRoom");
+        boolean response = false;
+        HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
+
+        try{
+            long userSeq = (Long) request.getAttribute("userSeq");
+            if (userSeq > 0) {
+                roomService.deleteRoom(roomSeq);
+                response = true;
+                status = HttpStatus.OK;
             } else {
                 log.error("사용 불가능 토큰");
                 status = HttpStatus.FORBIDDEN;

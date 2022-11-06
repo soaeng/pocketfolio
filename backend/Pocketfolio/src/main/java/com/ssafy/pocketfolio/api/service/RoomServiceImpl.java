@@ -92,7 +92,7 @@ public class RoomServiceImpl implements RoomService {
         RoomDto roomDto = new RoomDto(room);
 
         // 본인 방이 아닌 경우 + 당일 방문하지 않은 경우 조회수 1 증가
-        if (userSeq != room.getUser().getUserSeq() && !roomHitRepository.existsRoomHitByUserAndHitDateEquals(user, ZonedDateTime.now(ZoneId.of("Asia/Seoul")).toLocalDate())) {
+        if (userSeq != room.getUser().getUserSeq() && !roomHitRepository.existsRoomHitByUserAndRoomAndHitDateEquals(user, room, ZonedDateTime.now(ZoneId.of("Asia/Seoul")).toLocalDate())) {
             roomHitRepository.save(RoomHit.builder().room(room).user(user).build());
         }
 
@@ -111,9 +111,9 @@ public class RoomServiceImpl implements RoomService {
     @Transactional
     public long updateRoom(long roomSeq, RoomReq req, MultipartFile thumbnail) throws IOException {
         log.debug("[POST] Service - updateRoom");
-        // 저장된 썸네일 주소
-        String thumbnailUrl = null;
         Room room = roomRepository.findById(roomSeq).orElseThrow(() -> new IllegalArgumentException("해당 방을 찾을 수 없습니다."));
+        // 저장된 썸네일 주소
+        String thumbnailUrl = room.getThumbnail();
 
         // 저장할 썸네일 파일이 있다면 thumbnail 수정
         if (thumbnail != null) {
@@ -135,6 +135,14 @@ public class RoomServiceImpl implements RoomService {
         }
 
         return roomSeq;
+    }
+
+    @Override
+    @Transactional
+    public void deleteRoom(long roomSeq) {
+        log.debug("[DELETE] Service - deleteRoom");
+        roomRepository.deleteById(roomSeq);
+
     }
 
     @Override
