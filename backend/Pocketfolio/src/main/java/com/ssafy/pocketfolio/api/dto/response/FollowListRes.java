@@ -5,18 +5,19 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.*;
 
-import javax.validation.constraints.Email;
-
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-@Tag(name = "UserDto", description = "유저 Dto (res + req)")
-public class UserListRes {
-    @Email
-    @Schema(description = "이메일", nullable = false, maxLength = 50, example = "test@test.com")
-    private String email;
+@Tag(name = "FollowListRes", description = "팔로우 목록 Response")
+public class FollowListRes {
+
+    @Schema(description = "팔로우 번호: 0이면 팔로우하지 않았음", nullable = false)
+    private long followSeq;
+
+    @Schema(description = "유저 번호", nullable = false)
+    private long userSeq;
 
     @Schema(description = "이름", nullable = false, maxLength = 12)
     private String name;
@@ -24,16 +25,9 @@ public class UserListRes {
     @Schema(description = "프로필 사진 파일 url", maxLength = 255, example = "/img/J2EeRo2d.jpg")
     private String profilePic;
 
-    @Schema(description = "자기소개", maxLength = 200)
-    private String describe;
-
-//    @Schema(description = "마이룸 목록")
-//    private List<RoomRes> rooms;
-
-    public UserListRes(User user) {
-        email = user.getEmail();
+    public FollowListRes(User user) {
+        userSeq = user.getUserSeq();
         name = user.getName();
         profilePic = user.getProfilePic();
-        describe = user.getDescribe();
     }
 }

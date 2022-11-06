@@ -19,7 +19,8 @@ import java.io.IOException;
 @Log4j2
 public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 
-    private final String FRONT_URL = "https://k7e101.p.ssafy.io";
+//    private final String FRONT_URL = "https://k7e101.p.ssafy.io";
+    private final String FRONT_URL = "http://localhost:3000";
 
     private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
