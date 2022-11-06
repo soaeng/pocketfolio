@@ -1,5 +1,6 @@
 import {useEffect} from 'react';
 import {useNavigate, useSearchParams} from 'react-router-dom';
+import {saveToken, saveRefreshToken} from '../../api/jwt';
 
 const Oauth = () => {
   const navigate = useNavigate();
@@ -9,8 +10,8 @@ const Oauth = () => {
     // save token at local storage
     const accessToken = searchParams.get('accessToken');
     const refreshToken = searchParams.get('refreshToken');
-    window.localStorage.setItem('access-Token', accessToken);
-    window.localStorage.setItem('refresh-Token', refreshToken);
+    saveToken(accessToken);
+    saveRefreshToken(refreshToken);
 
     navigate('/main');
   }, []);

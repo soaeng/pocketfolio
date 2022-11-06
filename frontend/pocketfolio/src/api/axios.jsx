@@ -1,16 +1,27 @@
 import axios from 'axios';
+import {getToken} from './jwt';
 
-export const http = axios.create({
+const http = axios.create({
   baseURL: 'https://k7e101.p.ssafy.io/api/',
   headers: {
     'Content-type': 'application/json',
   },
 });
 
-// add access token to header
-axios.interceptors.request.use(config => {
-  config.headers['access-Token'] = window.localStorage.getItem('access-Token');
-  console.log(config)
-  return config
+http.interceptors.request.use(function (config) {
+  config.headers['access-Token'] = `${getToken()}`;
+  return config;
 });
 
+http.interceptors.response.use(
+  res => res,
+  async error => {
+    const {
+      config,
+      reponse: {status},
+    } = error;
+    console.log(error);
+  },
+);
+
+export {http};
