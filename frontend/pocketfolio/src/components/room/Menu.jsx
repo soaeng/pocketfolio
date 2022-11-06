@@ -14,7 +14,7 @@ import {
 import {useState} from 'react';
 import {useNavigate} from 'react-router-dom';
 
-const Menu = ({room_id, openSidebar, copyURL}) => {
+const Menu = ({room_id, changeSidebar, copyURL}) => {
   const [toggle, setToggle] = useState(false);
   const navigate = useNavigate();
 
@@ -27,10 +27,6 @@ const Menu = ({room_id, openSidebar, copyURL}) => {
     navigate(`/room/edit/${room_id}`);
   };
 
-  const moveToPort = () => {
-    navigate('/port');
-  };
-
   return (
     <Container>
       <MenuDiv onClick={moveToEdit} className={toggle ? 'edit' : ''}>
@@ -40,14 +36,20 @@ const Menu = ({room_id, openSidebar, copyURL}) => {
         </ToolTip>
       </MenuDiv>
 
-      <MenuDiv onClick={moveToPort} className={toggle ? 'port' : ''}>
+      <MenuDiv
+        onClick={() => changeSidebar('port')}
+        className={toggle ? 'port' : ''}
+      >
         <PortIcon />
         <ToolTip className="tooltip">
           <ToolTipText>포트폴리오 목록</ToolTipText>
         </ToolTip>
       </MenuDiv>
 
-      <MenuDiv className={toggle ? 'visit' : ''} onClick={openSidebar}>
+      <MenuDiv
+        className={toggle ? 'visit' : ''}
+        onClick={() => changeSidebar('visit')}
+      >
         <VisitIcon />
         <ToolTip className="tooltip">
           <ToolTipText>방명록</ToolTipText>

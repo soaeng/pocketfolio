@@ -15,14 +15,10 @@ const Room = () => {
   const params = useParams();
   const room_id = parseInt(params.room_id);
 
-  const [sidebar, setSidebar] = useState(false);
+  const [sidebar, setSidebar] = useState('');
 
-  const openSidebar = () => {
-    setSidebar(true);
-  };
-
-  const closeSidebar = () => {
-    setSidebar(false);
+  const changeSidebar = state => {
+    setSidebar(state);
   };
 
   // copy to clipboard
@@ -70,10 +66,14 @@ const Room = () => {
       </CanvasWrapper>
 
       {sidebar ? null : (
-        <Menu room_id={room_id} openSidebar={openSidebar} copyURL={copyURL} />
+        <Menu
+          room_id={room_id}
+          changeSidebar={changeSidebar}
+          copyURL={copyURL}
+        />
       )}
 
-      <Sidebar sidebar={sidebar} closeSidebar={closeSidebar} />
+      <Sidebar sidebar={sidebar} changeSidebar={changeSidebar} />
     </Container>
   );
 };
