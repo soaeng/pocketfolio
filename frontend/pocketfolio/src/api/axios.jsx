@@ -16,10 +16,6 @@ http.interceptors.request.use(function (config) {
 http.interceptors.response.use(
   res => res,
   async error => {
-    const {
-      config,
-      reponse: {status},
-    } = error;
     console.log(error);
   },
 );

@@ -1,7 +1,7 @@
 import React, {useEffect, useRef, useReducer} from 'react';
 import {useNavigate} from 'react-router-dom';
 import {useDispatch} from 'react-redux';
-import styled from 'styled-components';
+import {getToken} from '../../api/jwt';
 
 import Nav from '../common/nav';
 import {
@@ -83,7 +83,7 @@ function Main() {
 
   // 유저 정보 가져오기
   useEffect(() => {
-    if (window.localStorage.getItem('access-Token')) {
+    if (getToken()) {
       dispatch(getMyInfo());
     }
   }, []);
