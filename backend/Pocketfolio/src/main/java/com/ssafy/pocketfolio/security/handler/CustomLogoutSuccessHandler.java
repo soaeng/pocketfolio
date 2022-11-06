@@ -16,7 +16,8 @@ import java.io.IOException;
 @Log4j2
 public class CustomLogoutSuccessHandler implements LogoutSuccessHandler {
 
-    private final String FRONT_URL = "https://k7e101.p.ssafy.io";
+//    private final String FRONT_URL = "https://k7e101.p.ssafy.io";
+//    private final String FRONT_URL = "http://localhost:3000";
 
 //    private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 

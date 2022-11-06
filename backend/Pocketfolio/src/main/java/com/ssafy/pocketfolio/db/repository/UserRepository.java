@@ -35,4 +35,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
 	int countByEmail(String email);
 
+	// follow 12345
+//	@Query(value = "select u from User u join fetch ")
+//	List<User> findByUserFrom_UserSeqAndUserTo_UserSeq(long userFrom, long userTo);
+
 }
