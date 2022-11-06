@@ -42,7 +42,7 @@ public class RoomServiceImpl implements RoomService {
     @Override
     @Transactional
     public long insertRoom(long userSeq, RoomReq req, MultipartFile thumbnail) throws IOException {
-        log.debug("[GET] Service - insertRoom");
+        log.debug("[POST] Service - insertRoom");
         User user = userRepository.findById(userSeq).orElseThrow(() -> new IllegalArgumentException("해당 사용자가 존재하지 않습니다."));
         // 저장된 썸네일 주소
         String thumbnailUrl = null;
@@ -79,18 +79,62 @@ public class RoomServiceImpl implements RoomService {
     @Override
     public RoomDetailRes findRoom(long userSeq, long roomSeq) {
         log.debug("[GET] Service - findRoom");
-        RoomDetailRes roomDetailRes = new RoomDetailRes();
+        RoomDetailRes roomDetailRes;
 
         User user = userRepository.findById(userSeq).orElseThrow(() -> new IllegalArgumentException("해당 사용자를 찾을 수 없습니다."));
         Room room = roomRepository.findById(roomSeq).orElseThrow(() -> new IllegalArgumentException("해당 방을 찾을 수 없습니다."));
         RoomDto roomRes = new RoomDto(room);
 
-        // 본인 방이 아닌 경우 조회수 증가
-        if(userSeq != room.getUser().getUserSeq() && !roomHitRepository.existsRoomHitByUserAnAndHitDateEquals(user, ZonedDateTime.now(ZoneId.of("Asia/Seoul")).toLocalDate())) {
+        // 본인 방이 아닌 경우 + 당일 방문하지 않은 경우 조회수 1 증가
+        if (userSeq != room.getUser().getUserSeq() && !roomHitRepository.existsRoomHitByUserAndHitDateEquals(user, ZonedDateTime.now(ZoneId.of("Asia/Seoul")).toLocalDate())) {
             roomHitRepository.save(RoomHit.builder().room(room).user(user).build());
         }
+
+        roomDetailRes = RoomDetailRes.builder()
+                .room(roomRes)
+                .hitCount(roomHitRepository.countAllByRoom(room))
+                .todayCount(roomHitRepository.countRoomHitToday(roomSeq))
+                .userName(user.getName())
+                .build();
+
         return roomDetailRes;
     }
 
+    @Override
+    @Transactional
+    public boolean insertRoomLike(long userSeq, long roomSeq) {
+        log.debug("[POST] Service - insertRoomLike");
+
+        User user = userRepository.findById(userSeq).orElseThrow(() -> new IllegalArgumentException("해당 사용자를 찾을 수 없습니다."));
+        Room room = roomRepository.findById(roomSeq).orElseThrow(() -> new IllegalArgumentException("해당 방을 찾을 수 없습니다."));
+
+        // 본인 방이 아닌 경우 + 좋아요 이력 없는 경우 좋아요
+        if (userSeq != room.getUser().getUserSeq() && !roomLikeRepository.existsByUser(user)) {
+            roomLikeRepository.save(RoomLike.builder().room(room).user(user).build());
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    @Transactional
+    public boolean deleteRoomLike(long userSeq, long roomSeq) {
+        log.debug("[DELETE] Service - deleteRoomLike");
+
+        User user = userRepository.findById(userSeq).orElseThrow(() -> new IllegalArgumentException("해당 사용자를 찾을 수 없습니다."));
+        Room room = roomRepository.findById(roomSeq).orElseThrow(() -> new IllegalArgumentException("해당 방을 찾을 수 없습니다."));
+
+        // 본인 방이 아닌 경우 + 좋아요 이력 있는 경우 좋아요
+        if (userSeq != room.getUser().getUserSeq() && roomLikeRepository.existsByUser(user)) {
+            try {
+                roomLikeRepository.deleteByRoomAndUser(room, user);
+                return true;
+            } catch (Exception e) {
+                log.error(e.getMessage());
+                return false;
+            }
+        }
+        return false;
+    }
 
 }

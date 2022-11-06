@@ -48,7 +48,7 @@ public class RoomController {
 
     @GetMapping
     public ResponseEntity<List<RoomDetailRes>> findRoomList(HttpServletRequest request) {
-        log.debug("[POST] Controller - findRoomList");
+        log.debug("[GET] Controller - findRoomList");
         List<RoomDetailRes> response = new ArrayList<>();
         HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
 
@@ -60,6 +60,72 @@ public class RoomController {
             log.error(e.getMessage());
         }
 
-        return new ResponseEntity<List<RoomDetailRes>>(response, status);
+        return new ResponseEntity<>(response, status);
+    }
+
+    @GetMapping("/{roomSeq}")
+    public ResponseEntity<RoomDetailRes> findRoom(@PathVariable(value = "roomSeq") Long roomSeq, HttpServletRequest request){
+        log.debug("[GET] Controller - findRoom");
+        RoomDetailRes response = RoomDetailRes.builder().build();
+        HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
+
+        try{
+            long userSeq = (Long) request.getAttribute("userSeq");
+            if (userSeq > 0) {
+                response = roomService.findRoom(userSeq, roomSeq);
+                status = HttpStatus.OK;
+            } else {
+                log.error("사용 불가능 토큰");
+                status = HttpStatus.FORBIDDEN;
+            }
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
+
+        return new ResponseEntity<>(response, status);
+    }
+
+    @PostMapping("/like/{roomSeq}")
+    public ResponseEntity<Boolean> insertRoomLike(@PathVariable(value = "roomSeq") Long roomSeq, HttpServletRequest request){
+        log.debug("[POST] Controller - insertRoomLike");
+        boolean response = false;
+        HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
+
+        try{
+            long userSeq = (Long) request.getAttribute("userSeq");
+            if (userSeq > 0) {
+                response = roomService.insertRoomLike(userSeq, roomSeq);
+                status = HttpStatus.CREATED;
+            } else {
+                log.error("사용 불가능 토큰");
+                status = HttpStatus.FORBIDDEN;
+            }
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
+
+        return new ResponseEntity<>(response, status);
+    }
+
+    @DeleteMapping("/like/{roomSeq}")
+    public ResponseEntity<Boolean> deleteRoomLike(@PathVariable(value = "roomSeq") Long roomSeq, HttpServletRequest request){
+        log.debug("[DELETE] Controller - deleteRoomLike");
+        boolean response = false;
+        HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
+
+        try{
+            long userSeq = (Long) request.getAttribute("userSeq");
+            if (userSeq > 0) {
+                response = roomService.deleteRoomLike(userSeq, roomSeq);
+                status = HttpStatus.OK;
+            } else {
+                log.error("사용 불가능 토큰");
+                status = HttpStatus.FORBIDDEN;
+            }
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
+
+        return new ResponseEntity<>(response, status);
     }
 }
