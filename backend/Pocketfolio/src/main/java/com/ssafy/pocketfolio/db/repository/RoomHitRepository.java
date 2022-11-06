@@ -12,5 +12,5 @@ public interface RoomHitRepository extends JpaRepository<RoomHit, Long>  {
     @Query(value = "SELECT COUNT(*) FROM room_hit WHERE hit_date = CURDATE() AND room_seq = ?1", nativeQuery = true)
     Long countRoomHitToday(long roomSeq);
     Long countAllByRoom(Room room);
-    boolean existsRoomHitByUserAndHitDateEquals(User user, LocalDate date);
+    boolean existsRoomHitByUserAndRoomAndHitDateEquals(User user, Room room, LocalDate date);
 }

@@ -42,10 +42,16 @@ public interface RoomService {
     long updateRoom(long roomSeq, RoomReq req, MultipartFile thumbnail) throws IOException;
 
     /**
+     * 마이룸 삭제
+     * @param roomSeq 방 번호
+     */
+    void deleteRoom(long roomSeq);
+
+    /**
      * 룸 좋아요
      * @param userSeq 좋아요 누르는 회원의 번호 (현재 접속한 회원)
      * @param roomSeq 방 번호
-     * @return 좋아요 성공 여부
+     * @return 좋아요 여부
      */
     boolean insertRoomLike(long userSeq, long roomSeq);
 
@@ -53,7 +59,7 @@ public interface RoomService {
      * 룸 좋아요 취소
      * @param userSeq 좋아요 취소하는 회원의 번호 (현재 접속한 회원)
      * @param roomSeq 방 번호
-     * @return 좋아요 취소 성공 여부
+     * @return 좋아요 취소 여부
      */
     boolean deleteRoomLike(long userSeq, long roomSeq);
 }
