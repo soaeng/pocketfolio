@@ -130,6 +130,11 @@ public class PortfolioServiceImpl implements PortfolioService{
             if(thumbnailUrl == null) {
                 return -1;
             }
+        } else {
+            // 썸네일 삭제 후 전송되고 이전에 썸네일 있었으면 썸네일 파일 삭제
+            if (thumbnailUrl != null) {
+                fileHandler.deleteFile(thumbnailUrl);
+            }
         }
 
         portfolio.updatePortfolio(req.getName(), req.getSummary(), thumbnailUrl);

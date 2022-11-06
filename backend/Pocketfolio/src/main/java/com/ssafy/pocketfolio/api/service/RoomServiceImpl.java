@@ -110,7 +110,7 @@ public class RoomServiceImpl implements RoomService {
     @Override
     @Transactional
     public long updateRoom(long roomSeq, RoomReq req, MultipartFile thumbnail) throws IOException {
-        log.debug("[POST] Service - updateRoom");
+        log.debug("[PATCH] Service - updateRoom");
         Room room = roomRepository.findById(roomSeq).orElseThrow(() -> new IllegalArgumentException("해당 방을 찾을 수 없습니다."));
         // 저장된 썸네일 주소
         String thumbnailUrl = room.getThumbnail();
@@ -124,6 +124,11 @@ public class RoomServiceImpl implements RoomService {
             thumbnailUrl = fileHandler.saveThumbnail(thumbnail, "room" + File.separator + "thumbnail");
             if(thumbnailUrl == null) {
                 return -1;
+            }
+        } else {
+            // 썸네일 삭제 후 전송되고 이전에 썸네일 있었으면 썸네일 파일 삭제
+            if (thumbnailUrl != null) {
+                fileHandler.deleteFile(thumbnailUrl);
             }
         }
 
@@ -141,8 +146,13 @@ public class RoomServiceImpl implements RoomService {
     @Transactional
     public void deleteRoom(long roomSeq) {
         log.debug("[DELETE] Service - deleteRoom");
-        roomRepository.deleteById(roomSeq);
+        Room room = roomRepository.findById(roomSeq).orElseThrow(() -> new IllegalArgumentException("해당 방을 찾을 수 없습니다."));
 
+        // 썸네일 삭제
+        if (room.getThumbnail() != null) {
+            fileHandler.deleteFile(room.getThumbnail());
+        }
+        roomRepository.deleteById(roomSeq);
     }
 
     @Override
