@@ -2,9 +2,12 @@ package com.ssafy.pocketfolio.api.dto.request;
 
 import com.ssafy.pocketfolio.db.entity.Room;
 import com.ssafy.pocketfolio.db.entity.User;
+import lombok.Builder;
+import lombok.Getter;
 
 import java.time.LocalDateTime;
 
+@Getter
 public class RoomReq {
     private String name;            // 방 이름
     private int theme;              // 테마

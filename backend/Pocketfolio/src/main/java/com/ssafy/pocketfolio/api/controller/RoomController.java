@@ -53,8 +53,8 @@ public class RoomController {
         HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
 
         try{
-//            long userSeq = (Long) request.getAttribute("userSeq");
-            response = roomService.findRoomList(2l);
+            long userSeq = (Long) request.getAttribute("userSeq");
+            response = roomService.findRoomList(userSeq);
             status = HttpStatus.OK;
         } catch (Exception e) {
             log.error(e.getMessage());
@@ -74,6 +74,31 @@ public class RoomController {
             if (userSeq > 0) {
                 response = roomService.findRoom(userSeq, roomSeq);
                 status = HttpStatus.OK;
+            } else {
+                log.error("사용 불가능 토큰");
+                status = HttpStatus.FORBIDDEN;
+            }
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
+
+        return new ResponseEntity<>(response, status);
+    }
+
+    @PatchMapping("/{roomSeq}")
+    public ResponseEntity<Long> updateRoom(@PathVariable(value = "roomSeq") Long roomSeq, @RequestPart(value = "room") RoomReq roomReq, @RequestPart(value = "thumbnail", required = false) MultipartFile thumbnail, HttpServletRequest request){
+        log.debug("[PATCH] Controller - updateRoom");
+        Long response = null;
+        HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
+
+        try{
+//            long userSeq = (Long) request.getAttribute("userSeq");
+            long userSeq = 2l;
+            if (userSeq > 0) {
+                response = roomService.updateRoom(roomSeq, roomReq, thumbnail);
+                if (response > 0) {
+                    status = HttpStatus.CREATED;
+                }
             } else {
                 log.error("사용 불가능 토큰");
                 status = HttpStatus.FORBIDDEN;

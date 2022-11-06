@@ -109,6 +109,36 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     @Transactional
+    public long updateRoom(long roomSeq, RoomReq req, MultipartFile thumbnail) throws IOException {
+        log.debug("[POST] Service - updateRoom");
+        // 저장된 썸네일 주소
+        String thumbnailUrl = null;
+        Room room = roomRepository.findById(roomSeq).orElseThrow(() -> new IllegalArgumentException("해당 방을 찾을 수 없습니다."));
+
+        // 저장할 썸네일 파일이 있다면 thumbnail 수정
+        if (thumbnail != null) {
+            // 저장된 썸네일 주소가 있으면 해당 썸네일 삭제 후 새로 저장
+            if (thumbnailUrl != null) {
+                fileHandler.deleteFile(thumbnailUrl);
+            }
+            thumbnailUrl = fileHandler.saveThumbnail(thumbnail, "room" + File.separator + "thumbnail");
+            if(thumbnailUrl == null) {
+                return -1;
+            }
+        }
+
+        try {
+            room.updateRoom(req.getName(), thumbnailUrl);
+            log.debug("저장된 방 번호: " + roomSeq);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
+
+        return roomSeq;
+    }
+
+    @Override
+    @Transactional
     public boolean insertRoomLike(long userSeq, long roomSeq) {
         log.debug("[POST] Service - insertRoomLike");
 

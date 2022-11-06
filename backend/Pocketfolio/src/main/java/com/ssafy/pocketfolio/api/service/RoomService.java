@@ -13,6 +13,7 @@ public interface RoomService {
      * @param userSeq 생성 회원 번호
      * @param req 방 정보
      * @return 생성된 방 번호
+     * @throws IOException 썸네일 이미지 저장 실패 시 던져짐
      */
     long insertRoom(long userSeq, RoomReq req, MultipartFile thumbnail) throws IOException;
 
@@ -30,6 +31,15 @@ public interface RoomService {
      * @return 마이룸(포트폴리오 목록, 마이룸 정보: 썸네일, 제목, 좋아요 수, 조회수), 방 주인 이름
      */
     RoomDetailRes findRoom(long userSeq, long roomSeq);
+
+    /**
+     * 마이룸 수정
+     * @param req 방 정보
+     * @param thumbnail 썸네일 이미지
+     * @return 수정된 방 번호
+     * @throws IOException 썸네일 이미지 저장 실패 시 던져짐
+     */
+    long updateRoom(long roomSeq, RoomReq req, MultipartFile thumbnail) throws IOException;
 
     /**
      * 룸 좋아요
