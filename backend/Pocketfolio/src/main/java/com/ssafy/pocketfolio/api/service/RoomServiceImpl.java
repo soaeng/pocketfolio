@@ -70,7 +70,13 @@ public class RoomServiceImpl implements RoomService {
         List<Room> rooms = roomRepository.findAllByUser(user);
 
         for (Room room : rooms) {
-            // TODO: room 기준으로 가져올 데이터 - 포트폴리오 목록, 마이룸 목록(썸네일, 마이룸 제목), 좋아요 수, 조회수, 방 주인
+            RoomDetailRes roomDetailRes = RoomDetailRes.builder()
+                    .room(new RoomDto(room))
+                    .hitCount(roomHitRepository.countAllByRoom(room))
+                    .likeCount(roomLikeRepository.countAllByRoom(room))
+                    .userName(user.getName())
+                    .build();
+            roomDetailResList.add(roomDetailRes);
         }
 
         return roomDetailResList;
@@ -83,7 +89,7 @@ public class RoomServiceImpl implements RoomService {
 
         User user = userRepository.findById(userSeq).orElseThrow(() -> new IllegalArgumentException("해당 사용자를 찾을 수 없습니다."));
         Room room = roomRepository.findById(roomSeq).orElseThrow(() -> new IllegalArgumentException("해당 방을 찾을 수 없습니다."));
-        RoomDto roomRes = new RoomDto(room);
+        RoomDto roomDto = new RoomDto(room);
 
         // 본인 방이 아닌 경우 + 당일 방문하지 않은 경우 조회수 1 증가
         if (userSeq != room.getUser().getUserSeq() && !roomHitRepository.existsRoomHitByUserAndHitDateEquals(user, ZonedDateTime.now(ZoneId.of("Asia/Seoul")).toLocalDate())) {
@@ -91,7 +97,7 @@ public class RoomServiceImpl implements RoomService {
         }
 
         roomDetailRes = RoomDetailRes.builder()
-                .room(roomRes)
+                .room(roomDto)
                 .hitCount(roomHitRepository.countAllByRoom(room))
                 .todayCount(roomHitRepository.countRoomHitToday(roomSeq))
                 .likeCount(roomLikeRepository.countAllByRoom(room))

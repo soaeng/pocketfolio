@@ -53,8 +53,8 @@ public class RoomController {
         HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
 
         try{
-            long userSeq = (Long) request.getAttribute("userSeq");
-            response = roomService.findRoomList(userSeq);
+//            long userSeq = (Long) request.getAttribute("userSeq");
+            response = roomService.findRoomList(2l);
             status = HttpStatus.OK;
         } catch (Exception e) {
             log.error(e.getMessage());
