@@ -5,7 +5,7 @@ export const getMyInfo = createAsyncThunk(
   'getMyInfo',
   async (data ,{rejectWithValue}) => {
     try {
-      const res = await http.get('/profile');
+      const res = await http.get('profile');
       console.log(res);
       return res;
     } catch (error) {
