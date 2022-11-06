@@ -1,7 +1,7 @@
 package com.ssafy.pocketfolio.api.controller;
 
 import com.ssafy.pocketfolio.api.dto.request.RoomReq;
-import com.ssafy.pocketfolio.api.dto.response.RoomRes;
+import com.ssafy.pocketfolio.api.dto.response.RoomDetailRes;
 import com.ssafy.pocketfolio.api.service.RoomServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -46,4 +46,20 @@ public class RoomController {
         return new ResponseEntity<>(response, status);
     }
 
+    @GetMapping
+    public ResponseEntity<List<RoomDetailRes>> findRoomList(HttpServletRequest request) {
+        log.debug("[POST] Controller - findRoomList");
+        List<RoomDetailRes> response = new ArrayList<>();
+        HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
+
+        try{
+            long userSeq = (Long) request.getAttribute("userSeq");
+            response = roomService.findRoomList(userSeq);
+            status = HttpStatus.OK;
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
+
+        return new ResponseEntity<List<RoomDetailRes>>(response, status);
+    }
 }
