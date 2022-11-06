@@ -9,7 +9,7 @@ const http = axios.create({
 });
 
 http.interceptors.request.use(function (config) {
-  config.headers['access-Token'] = `${getToken()}`;
+  config.headers['Authorization'] = `Bearer ${getToken()}`;
   return config;
 });
 
