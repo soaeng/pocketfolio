@@ -44,15 +44,20 @@ public class Arrange {
 	@Column(name="location_z", nullable=false)
 	@NotNull
 	private int locationZ;
+
+	@Column(name="rotation", nullable=false)
+	@NotNull
+	private int rotation;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="port_seq")
 	private Portfolio portfolio;
 	
-	public void updateArrange(int locationX, int locationY, int locationZ) {
+	public void updateArrange(int locationX, int locationY, int locationZ, int rotation) {
 		this.locationX = locationX;
 		this.locationY = locationY;
 		this.locationZ = locationZ;
+		this.rotation = rotation;
 	}
 	
 	public void updatePortfolio(Portfolio portfolio) { // can take null

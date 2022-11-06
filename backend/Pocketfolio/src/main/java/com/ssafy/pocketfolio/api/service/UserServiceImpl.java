@@ -4,7 +4,9 @@ import com.ssafy.pocketfolio.api.dto.request.UserUpdateReq;
 import com.ssafy.pocketfolio.api.dto.response.UserRes;
 import com.ssafy.pocketfolio.db.entity.User;
 import com.ssafy.pocketfolio.db.repository.UserRepository;
+import com.ssafy.pocketfolio.db.view.UserView;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -16,6 +18,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
+@Log4j2
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
@@ -29,8 +32,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserRes findUser(long userSeq) {
-        User user = userRepository.findById(userSeq).get();
-        return new UserRes(user);
+        UserView userView = userRepository.findProfileById(userSeq).get();
+        log.info("Service findUser: " + userView.getName() + ", " + userView.getProfilePic() + ", " + userView.getFollowerTotal() + ", " + userView.getFollowingTotal() + ", " + userView.getDescribe());
+        return new UserRes(userView);
     }
 
     @Override
@@ -73,17 +77,4 @@ public class UserServiceImpl implements UserService {
         return null;
     }
 
-    @Override
-    @Transactional
-    public void login(long userSeq, String refreshToken) {
-        User user = userRepository.findById(userSeq).get();
-        user.updateToken(refreshToken);
-    }
-
-    @Override
-    @Transactional
-    public void logout(long userSeq) {
-        User user = userRepository.findById(userSeq).get();
-        user.updateToken(null);
-    }
 }

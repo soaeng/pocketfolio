@@ -1,5 +1,6 @@
 package com.ssafy.pocketfolio.security.handler;
 
+import com.ssafy.pocketfolio.security.service.OAuthService;
 import com.ssafy.pocketfolio.security.dto.UserAuthDto;
 import com.ssafy.pocketfolio.security.util.JWTUtil;
 import lombok.extern.log4j.Log4j2;
@@ -18,20 +19,26 @@ import java.io.IOException;
 @Log4j2
 public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 
+//    private final String FRONT_URL = "https://k7e101.p.ssafy.io";
+    private final String FRONT_URL = "http://localhost:3000";
+
     private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
 //    private PasswordEncoder passwordEncoder;
 
     private JWTUtil jwtUtil;
 
+    private OAuthService oAuthService;
+
     public LoginSuccessHandler(JWTUtil jwtUtil){
 //        passwordEncoder = new BCryptPasswordEncoder();
         this.jwtUtil = jwtUtil;
     }
 
-    public LoginSuccessHandler(PasswordEncoder passwordEncoder, JWTUtil jwtUtil){
+    public LoginSuccessHandler(PasswordEncoder passwordEncoder, JWTUtil jwtUtil, OAuthService oAuthService){
 //        this.passwordEncoder = passwordEncoder;
         this.jwtUtil = jwtUtil;
+        this.oAuthService = oAuthService;
     }
 
 
@@ -60,7 +67,9 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
             log.info("accessToken: " + accessToken);
             log.info("refreshToken: " + refreshToken);
 
-            String url = makeRedirectUrl(accessToken, refreshToken, userSeqStr, isSignUp);
+            oAuthService.updateRefreshToken(Long.parseLong(userSeqStr), refreshToken); // DB에 refreshToken 저장
+
+            String url = makeRedirectUrl(accessToken, refreshToken, isSignUp);
 
             if (response.isCommitted()) {
                 log.debug("응답이 이미 커밋된 상태입니다. " + url + "로 리다이렉트하도록 바꿀 수 없습니다.");
@@ -76,11 +85,15 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
         }
     }
 
-    private String makeRedirectUrl(String accessToken, String refreshToken, String userSeqStr, boolean isSignUp) {
-        return UriComponentsBuilder.fromUriString("/users/oauth" + (isSignUp ? "/signup" : "/login"))
+    private String makeRedirectUrl(String accessToken, String refreshToken, boolean isSignUp) {
+//        return UriComponentsBuilder.fromUriString("/users/oauth" + (isSignUp ? "/signup" : "/login"))
+//                .queryParam("accessToken", accessToken)
+//                .queryParam("refreshToken", refreshToken)
+//                .build().toUriString();
+
+        return UriComponentsBuilder.fromUriString(FRONT_URL + "/oauth")
                 .queryParam("accessToken", accessToken)
                 .queryParam("refreshToken", refreshToken)
-                .queryParam("userSeqStr", userSeqStr)
                 .build().toUriString();
     }
 

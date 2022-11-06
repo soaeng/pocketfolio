@@ -1,6 +1,7 @@
 package com.ssafy.pocketfolio.api.dto.response;
 
 import com.ssafy.pocketfolio.db.entity.User;
+import com.ssafy.pocketfolio.db.view.UserView;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.*;
@@ -12,7 +13,7 @@ import javax.validation.constraints.Email;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-@Tag(name = "UserDto", description = "유저 Dto (res + req)")
+@Tag(name = "UserRes", description = "유저 Response")
 public class UserRes {
     @Email
     @Schema(description = "이메일", nullable = false, maxLength = 50, example = "test@test.com")
@@ -23,6 +24,12 @@ public class UserRes {
 
     @Schema(description = "프로필 사진 파일 url", maxLength = 255, example = "/img/J2EeRo2d.jpg")
     private String profilePic;
+
+    @Schema(description = "팔로워 수")
+    private long followerTotal;
+
+    @Schema(description = "팔로잉 수")
+    private long followingTotal;
 
     @Schema(description = "자기소개", maxLength = 200)
     private String describe;
@@ -35,5 +42,13 @@ public class UserRes {
         name = user.getName();
         profilePic = user.getProfilePic();
         describe = user.getDescribe();
+    }
+
+    public UserRes(UserView userView) {
+        name = userView.getName();
+        profilePic = userView.getProfilePic();
+        followerTotal = userView.getFollowerTotal();
+        followingTotal = userView.getFollowingTotal();
+        describe = userView.getDescribe();
     }
 }

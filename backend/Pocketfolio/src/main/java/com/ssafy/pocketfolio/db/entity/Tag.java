@@ -13,17 +13,12 @@ import javax.persistence.*;
 @AllArgsConstructor
 @ToString
 @Entity
-@Table(
-name="tag",
-uniqueConstraints = {
-		@UniqueConstraint(name="UK_TAG", columnNames={"port_seq", "name"})
-}
-)
+@Table(name="tag")
 public class Tag {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="tag_seq", nullable=false, updatable=false)
-	private long tagSeq;
+	private Long tagSeq;
 
 	@Column(name="name", length=20, nullable=false, updatable=false)
 	@NotNull
@@ -34,4 +29,5 @@ public class Tag {
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	@NotNull
 	private Portfolio portfolio;
+
 }

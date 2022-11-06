@@ -14,7 +14,8 @@ import javax.persistence.*;
 @Table(
 name="item",
 uniqueConstraints = {
-		@UniqueConstraint(name="UK_ITEM", columnNames={"key"})
+		@UniqueConstraint(name="UK_ITEM", columnNames={"key"}),
+		@UniqueConstraint(name="UK_ITEM_CATEGORY", columnNames={"category", "name"})
 }
 )
 public class Item {
@@ -26,13 +27,18 @@ public class Item {
 	@Column(name="name", length=20, nullable=false)
 	@NotNull
 	private String name;
-	
+
+	@Column(name="category", length=30, nullable=false)
+	@NotNull
+	private String category;
+
 	@Column(name="key", length=50, nullable=false)
 	@NotNull
 	private String key;
 	
-	public void updateItem(String name, String key) { // for administrator
+	public void updateItem(String name, String category, String key) { // for administrator
 		this.name = name;
+		this.category = category;
 		this.key = key;
 	}
 }

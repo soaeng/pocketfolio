@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Log4j2
 @RestController
@@ -44,6 +45,9 @@ public class UserController {
         try {
             result = userService.findUser(userSeq);
             status = HttpStatus.OK;
+        } catch (NoSuchElementException e) {
+            log.error("검색하려는 userSeq(" + userSeq + ") 없음");
+            status = HttpStatus.NOT_FOUND;
         } catch (Exception e) {
             log.error(e.getMessage());
             status = HttpStatus.INTERNAL_SERVER_ERROR;
@@ -173,7 +177,7 @@ public class UserController {
             @ApiResponse(responseCode = "500", description = "서버 에러", content = @Content(schema = @Schema(implementation = LoginRes.class)))
     })
     @GetMapping("/oauth/signup") // redirect from social login
-    public ResponseEntity<LoginRes> signUp(@RequestParam String accessToken, @RequestParam String refreshToken, @RequestParam String userSeqStr) {
+    public ResponseEntity<LoginRes> signUp(@RequestParam String accessToken, @RequestParam String refreshToken) {
         log.info("Controller: signUp() -- redirect --");
 
         HttpStatus status;
@@ -181,8 +185,6 @@ public class UserController {
 
         try {
             if (accessToken != null && !accessToken.isEmpty() && refreshToken != null && !refreshToken.isEmpty()) {
-                long userSeq = Long.parseLong(userSeqStr);
-                userService.login(userSeq, refreshToken);
                 result = new LoginRes(accessToken, refreshToken);
                 status = HttpStatus.CREATED;
             } else {
@@ -201,7 +203,7 @@ public class UserController {
             @ApiResponse(responseCode = "500", description = "서버 에러", content = @Content(schema = @Schema(implementation = LoginRes.class)))
     })
     @GetMapping("/oauth/login") // redirect from social login
-    public ResponseEntity<LoginRes> login(@RequestParam String accessToken, @RequestParam String refreshToken, @RequestParam String userSeqStr) {
+    public ResponseEntity<LoginRes> login(@RequestParam String accessToken, @RequestParam String refreshToken) {
         log.info("Controller: login() -- redirect --");
 
         HttpStatus status;
@@ -209,8 +211,6 @@ public class UserController {
 
         try {
             if (accessToken != null && !accessToken.isEmpty() && refreshToken != null && !refreshToken.isEmpty()) {
-                long userSeq = Long.parseLong(userSeqStr);
-                userService.login(userSeq, refreshToken);
                 result = new LoginRes(accessToken, refreshToken);
                 status = HttpStatus.CREATED;
             } else {
@@ -223,34 +223,33 @@ public class UserController {
         return new ResponseEntity<>(result, status);
     }
 
-    @Operation(summary = "로그아웃", description = "로그아웃", responses = {
-            @ApiResponse(responseCode = "201", description = "회원 정보 수정 성공", content = @Content(schema = @Schema(implementation = Boolean.class))),
-            @ApiResponse(responseCode = "404", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = Boolean.class))),
-            @ApiResponse(responseCode = "500", description = "서버 에러", content = @Content(schema = @Schema(implementation = Boolean.class)))
-    })
-    @PatchMapping("/logout")
-    public ResponseEntity<Boolean> logout(HttpServletRequest request) {
-        log.info("Controller: logout()");
-        HttpStatus status = HttpStatus.CREATED;
-
-        boolean result = true;
-
-        try {
-            long userSeq = (Long) request.getAttribute("userSeq");
-            if (userSeq > 0) {
-                userService.logout(userSeq);
+//    @Operation(summary = "로그아웃", description = "로그아웃", responses = {
+//            @ApiResponse(responseCode = "201", description = "회원 정보 수정 성공", content = @Content(schema = @Schema(implementation = Boolean.class))),
+//            @ApiResponse(responseCode = "404", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = Boolean.class))),
+//            @ApiResponse(responseCode = "500", description = "서버 에러", content = @Content(schema = @Schema(implementation = Boolean.class)))
+//    })
+//    @PatchMapping("/logout")
+//    public ResponseEntity<Boolean> logout(HttpServletRequest request) {
+//        log.info("Controller: logout()");
+//        HttpStatus status;
+//
+//        boolean result = false;
+//
+//        try {
+//            long userSeq = (Long) request.getAttribute("userSeq");
+//            if (userSeq > 0) {
+//                userService.logout(userSeq);
 //                result = true;
-                status = HttpStatus.CREATED;
-            } else {
+//                status = HttpStatus.CREATED;
+//            } else {
 //                log.error("사용 불가능 토큰");
 //                status = HttpStatus.FORBIDDEN;
-            }
-        } catch (Exception e) {
-            log.error(e.getMessage());
+//            }
+//        } catch (Exception e) {
+//            log.error(e.getMessage());
 //            status = HttpStatus.INTERNAL_SERVER_ERROR;
-        }
-
-        return new ResponseEntity<>(result, status);
-    }
+//        }
+//        return new ResponseEntity<>(result, status);
+//    }
 
 }
