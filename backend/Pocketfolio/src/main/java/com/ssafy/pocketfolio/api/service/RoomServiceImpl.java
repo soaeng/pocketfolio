@@ -94,6 +94,7 @@ public class RoomServiceImpl implements RoomService {
                 .room(roomRes)
                 .hitCount(roomHitRepository.countAllByRoom(room))
                 .todayCount(roomHitRepository.countRoomHitToday(roomSeq))
+                .likeCount(roomLikeRepository.countAllByRoom(room))
                 .userName(user.getName())
                 .build();
 
