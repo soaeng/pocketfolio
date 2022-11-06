@@ -24,10 +24,26 @@ public interface RoomService {
     List<RoomDetailRes> findRoomList(long userSeq);
 
     /**
-     * 마이룸 조회
-     * @param userSeq
-     * @param roomSeq
+     * 방 조회
+     * @param userSeq 방문자 회원 번호
+     * @param roomSeq 방 번호
      * @return 마이룸(포트폴리오 목록, 마이룸 정보: 썸네일, 제목, 좋아요 수, 조회수), 방 주인 이름
      */
     RoomDetailRes findRoom(long userSeq, long roomSeq);
+
+    /**
+     * 룸 좋아요
+     * @param userSeq 좋아요 누르는 회원의 번호 (현재 접속한 회원)
+     * @param roomSeq 방 번호
+     * @return 좋아요 성공 여부
+     */
+    boolean insertRoomLike(long userSeq, long roomSeq);
+
+    /**
+     * 룸 좋아요 취소
+     * @param userSeq 좋아요 취소하는 회원의 번호 (현재 접속한 회원)
+     * @param roomSeq 방 번호
+     * @return 좋아요 취소 성공 여부
+     */
+    boolean deleteRoomLike(long userSeq, long roomSeq);
 }
