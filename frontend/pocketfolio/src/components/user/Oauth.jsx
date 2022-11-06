@@ -1,11 +1,8 @@
 import {useEffect} from 'react';
 import {useNavigate, useSearchParams} from 'react-router-dom';
-import {useDispatch} from 'react-redux';
-import {getMyInfo} from '../../store/oauthSlice';
 
 const Oauth = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const [searchParams] = useSearchParams();
 
   useEffect(() => {
@@ -15,7 +12,6 @@ const Oauth = () => {
     window.localStorage.setItem('access-Token', accessToken);
     window.localStorage.setItem('refresh-Token', refreshToken);
 
-    dispatch(getMyInfo());
     navigate('/main');
   }, []);
 
