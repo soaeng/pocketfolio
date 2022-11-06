@@ -6,3 +6,11 @@ export const http = axios.create({
     'Content-type': 'application/json',
   },
 });
+
+// add access token to header
+axios.interceptors.request.use(config => {
+  config.headers['access-Token'] = window.localStorage.getItem('access-Token');
+  console.log(config)
+  return config
+});
+
