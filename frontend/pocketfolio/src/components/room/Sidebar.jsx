@@ -4,6 +4,7 @@ import {Container, CloseBox, CloseIcon} from './Sidebar.style';
 const Sidebar = ({sidebar, changeSidebar}) => {
   const controlSide = () => {
     if (sidebar === 'port') return changeSidebar('');
+    if (sidebar === 'visit') return changeSidebar('');
   };
 
   return (
