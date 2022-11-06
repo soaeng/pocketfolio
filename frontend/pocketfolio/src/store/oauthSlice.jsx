@@ -3,7 +3,7 @@ import { http } from '../api/axios';
 
 export const getMyInfo = createAsyncThunk(
   'getMyInfo',
-  async ({rejectWithValue}) => {
+  async (data ,{rejectWithValue}) => {
     try {
       const res = await http.get('/profile');
       console.log(res);
