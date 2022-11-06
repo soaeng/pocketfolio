@@ -1,5 +1,6 @@
 import React, {useEffect, useRef, useReducer} from 'react';
 import {useNavigate} from 'react-router-dom';
+import {useDispatch} from 'react-redux';
 import styled from 'styled-components';
 
 import Nav from '../common/nav';
@@ -22,6 +23,7 @@ import {
   RecCarouselContainer,
 } from './Main.style';
 import RecCarousel from './RecCarousel';
+import {getMyInfo} from '../../store/oauthSlice';
 
 const pageSlider = [
   {
@@ -43,6 +45,7 @@ const pageSlider = [
 // Main 페이지
 function Main() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const color1 = {
     backgroundColor: '#b94d4d',
@@ -77,6 +80,13 @@ function Main() {
       clearTimeout(timer);
     };
   }, [slideIndex]);
+
+  // 유저 정보 가져오기
+  useEffect(() => {
+    if (window.localStorage.getItem('access-Token')) {
+      dispatch(getMyInfo());
+    }
+  }, []);
 
   // 바로 시작 버튼 이동
   const buttonClickHandler = () => {
