@@ -1,4 +1,3 @@
-import {useState} from 'react';
 import PortItem from './PortItem';
 import {Container, Title, BtnBox, IconBox, AddIcon} from './PortList.style';
 

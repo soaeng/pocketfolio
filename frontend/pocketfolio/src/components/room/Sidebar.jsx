@@ -1,4 +1,5 @@
 import PortList from './PortList';
+import VisitList from './VisitList';
 import {Container, CloseBox, CloseIcon} from './Sidebar.style';
 
 const Sidebar = ({sidebar, changeSidebar}) => {
@@ -13,7 +14,7 @@ const Sidebar = ({sidebar, changeSidebar}) => {
         <CloseIcon />
       </CloseBox>
       {sidebar === 'port' ? <PortList /> : null}
-      {sidebar === 'visit' ? null : null}
+      {sidebar === 'visit' ? <VisitList /> : null}
     </Container>
   );
 };
