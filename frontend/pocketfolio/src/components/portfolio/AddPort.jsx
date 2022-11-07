@@ -94,10 +94,7 @@ const AddPort = () => {
   };
 
   console.log(hashArr);
-  // console.log(portContent);
 
-
-  
   // 추가
   const [modalOpen, setModalOpen] = useState(false);
   const openModal = () => {

@@ -1,11 +1,11 @@
 import styled from 'styled-components';
+import {RiHeart3Fill, RiEyeLine} from 'react-icons/ri';
 
 export const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   cursor: pointer;
-  z-index: 1;
 `;
 
 export const Item = styled.div`
@@ -74,11 +74,27 @@ export const Img = styled.img`
 export const Count = styled.span``;
 
 export const Button = styled.img`
+  /* visibility: hidden; */
+  opacity: 0;
   position: absolute;
-  width: 35px;
-  height: 35px;
   left: 10.7rem;
   top: -1rem;
-  z-index: 9999;
-  cursor: pointer;
+  width: 35px;
+  height: 35px;
+  transition: all ease-in-out 0.3s;
+
+  &.delete {
+    visibility: visible;
+    opacity: 1;
+    z-index: 99;
+    cursor: pointer;
+    display: flex;
+  }
 `;
+
+export const Heart = styled(RiHeart3Fill)`
+
+`
+export const Eye = styled(RiEyeLine)`
+
+`
