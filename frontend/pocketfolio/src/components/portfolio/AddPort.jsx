@@ -19,10 +19,13 @@ import {
 import Nav from '../common/nav';
 import Editor from './Editor.test';
 import {Body1} from '../../styles/styles.style';
+import SaveModal from './SaveModal';
 import ReactHtmlParser from 'html-react-parser';
 
 const AddPort = () => {
   const navigate = useNavigate();
+
+  const [isOpen, setIsOpen] = useState(false);
   // 포트폴리오 제목, 내용 변수
   const [portContent, setPortContent] = useState({
     title: '',
@@ -35,7 +38,6 @@ const AddPort = () => {
   // 등록 된 해시태그
   const [hashArr, setHashArr] = useState([]);
 
-  
   // 포트폴리오 제목 저장
   const getValue = e => {
     const {name, value} = e.target;
@@ -51,9 +53,9 @@ const AddPort = () => {
   };
 
   // 해시태그 입력창에서 엔터 눌렀을 때,
-  const onKeyUp = (e) => {
-    const {name} = e.target
-    
+  const onKeyUp = e => {
+    const {name} = e.target;
+
     // 해시태그 배열에 추가 후 입력 창 초기화 (공백값 제외)
     if (e.keyCode === 13 && e.target.value.trim() !== '') {
       setHashArr(hashArr => [...hashArr, hashtag]);
@@ -61,8 +63,8 @@ const AddPort = () => {
         ...portContent,
         [name]: hashArr,
       });
-      setHashtag('')
-      console.log('엔터 눌렀는데 추가됐냐?',hashArr)
+      setHashtag('');
+      console.log('엔터 눌렀는데 추가됐냐?', hashArr);
     }
   };
 
@@ -81,15 +83,30 @@ const AddPort = () => {
     ></div>
   );
 
+  // 취소 버튼 클릭 시 /port 로 이동
+  const clickCancel = () => {
+    navigate('/port');
+  };
 
-  const clickCancel = () =>{
-    navigate('/port')
-  }
+  // 저장 버튼 클릭 시 모달 open
+  const saveClick = () => {
+    setIsOpen(true);
+  };
+
   console.log(hashArr);
   // console.log(portContent);
 
 
   
+  // 추가
+  const [modalOpen, setModalOpen] = useState(false);
+  const openModal = () => {
+    setModalOpen(true);
+    
+  };
+  const closeModal = () => {
+    setModalOpen(false);
+  };
   return (
     <Background>
       <Nav></Nav>
@@ -136,13 +153,21 @@ const AddPort = () => {
         </ContentDiv>
       </Wrapper>
       <BtnDiv>
-        <StyledBtn className="cancel">
-          <Body1 onClick={clickCancel}>취소</Body1>
+        <StyledBtn className="cancel" onClick={clickCancel}>
+          <Body1>취소</Body1>
         </StyledBtn>
-        <StyledBtn className="save">
+        <StyledBtn className="save" onClick={openModal}>
           <Body1>저장</Body1>
         </StyledBtn>
       </BtnDiv>
+
+        <SaveModal
+          onClose={() => {
+            setIsOpen(false);
+          }}
+          open={modalOpen} 
+          close={closeModal}
+        ></SaveModal>
 
       {/* 포트폴리오 로우 데이터 */}
       {/* <div>
