@@ -17,4 +17,9 @@ public class UserUpdateReq {
     @Schema(description = "자기소개", maxLength = 200)
     private String describe;
 
+    @Schema(description = "생년월일", example = "yyyy-MM-dd / 2001-01-01")
+//    @DateTimeFormat(pattern = "yyyy-MM-dd") // 여기 변환 안 되면 수정
+//    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
+    private String birth;
+
 }

@@ -4,6 +4,7 @@ import com.sun.istack.NotNull;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -24,7 +25,7 @@ public class User {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="user_seq", nullable=false, updatable=false)
-	private long userSeq;
+	private Long userSeq;
 
 	@Column(name="email", length=50, nullable=false)
 	@NotNull
@@ -36,6 +37,9 @@ public class User {
 	
 	@Column(name="profile_pic", length=255)
 	private String profilePic;
+
+	@Column(name="birth", columnDefinition = "date DEFAULT NULL")
+	private LocalDate birth;
 	
 	@Column(name="describe", length=200)
 	private String describe;
@@ -50,9 +54,10 @@ public class User {
 //	@ColumnDefault("0")
 //	private int userPoint;
 
-	public void updateUser(String name, String profilePic, String describe) {
+	public void updateUser(String name, String profilePic, LocalDate birth, String describe) {
 		this.name = name;
 		this.profilePic = profilePic;
+		this.birth = birth;
 		this.describe = describe;
 	}
 

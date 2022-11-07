@@ -130,6 +130,7 @@ public class OAuth2UserDetailsService extends DefaultOAuth2UserService {
         User user = User.builder()
                 .email(email)
                 .name(name)
+                .describe("안녕하세요. " + name + "입니다.")
                 .build();
 
         userRepository.save(user);
