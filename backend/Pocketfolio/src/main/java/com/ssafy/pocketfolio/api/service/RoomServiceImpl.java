@@ -160,6 +160,7 @@ public class RoomServiceImpl implements RoomService {
             log.error("권한 없음");
             return false;
         }
+
         // 썸네일 삭제
         if (room.getThumbnail() != null) {
             fileHandler.deleteFile(room.getThumbnail());
@@ -177,9 +178,19 @@ public class RoomServiceImpl implements RoomService {
         Room room = roomRepository.findById(roomSeq).orElseThrow(() -> new IllegalArgumentException("해당 방을 찾을 수 없습니다."));
 
         // 본인 방이 아닌 경우 + 좋아요 이력 없는 경우 좋아요
-        if (userSeq != room.getUser().getUserSeq() && !roomLikeRepository.existsByUser(user)) {
-            roomLikeRepository.save(RoomLike.builder().room(room).user(user).build());
-            return true;
+        if (userSeq != room.getUser().getUserSeq()) {
+            if (roomLikeRepository.existsByUser(user)) {
+                log.error("이미 좋아요 추가한 방");
+                return false;
+            } else {
+                try{
+                    roomLikeRepository.save(RoomLike.builder().room(room).user(user).build());
+                    return true;
+                } catch (Exception e) {
+                    log.error(e.getMessage());
+                    return false;
+                }
+            }
         }
         return false;
     }
@@ -193,13 +204,18 @@ public class RoomServiceImpl implements RoomService {
         Room room = roomRepository.findById(roomSeq).orElseThrow(() -> new IllegalArgumentException("해당 방을 찾을 수 없습니다."));
 
         // 본인 방이 아닌 경우 + 좋아요 이력 있는 경우 좋아요
-        if (userSeq != room.getUser().getUserSeq() && roomLikeRepository.existsByUser(user)) {
-            try {
-                roomLikeRepository.deleteByRoomAndUser(room, user);
-                return true;
-            } catch (Exception e) {
-                log.error(e.getMessage());
+        if (userSeq != room.getUser().getUserSeq()) {
+            if (roomLikeRepository.existsByUser(user)) {
+                log.error("좋아요 이력 없음");
                 return false;
+            } else {
+                try {
+                    roomLikeRepository.deleteByRoomAndUser(room, user);
+                    return true;
+                } catch (Exception e) {
+                    log.error(e.getMessage());
+                    return false;
+                }
             }
         }
         return false;

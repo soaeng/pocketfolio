@@ -33,9 +33,7 @@ public class PortfolioController {
             long userSeq = (Long) request.getAttribute("userSeq");
             if (userSeq > 0) {
                 response = portfolioService.insertPortfolio(portfolio, thumbnail, userSeq, files);
-                if (response > 0) {
-                    status = HttpStatus.CREATED;
-                }
+                status = (response > 0) ? HttpStatus.CREATED : HttpStatus.INTERNAL_SERVER_ERROR;
             } else {
                 log.error("사용 불가능 토큰");
                 status = HttpStatus.FORBIDDEN;
@@ -58,7 +56,7 @@ public class PortfolioController {
             long userSeq = (Long) request.getAttribute("userSeq");
             if (userSeq > 0) {
                 response = portfolioService.findPortfolioList(userSeq);
-                status = HttpStatus.OK;
+                status = response != null ? HttpStatus.OK : HttpStatus.INTERNAL_SERVER_ERROR;
             } else {
                 log.error("사용 불가능 토큰");
                 status = HttpStatus.FORBIDDEN;
@@ -78,7 +76,7 @@ public class PortfolioController {
 
         try {
             response = portfolioService.findPortfolio(portSeq);
-            status = HttpStatus.OK;
+            status = response != null ? HttpStatus.OK : HttpStatus.INTERNAL_SERVER_ERROR;
         } catch (Exception e) {
             log.error(e.getMessage());
         }
@@ -97,7 +95,7 @@ public class PortfolioController {
         try {
             if (userSeq > 0) {
                 response = portfolioService.updatePortfolio(userSeq, portSeq, portfolio, thumbnail, files);
-                status = HttpStatus.CREATED;
+                status = response != null ? HttpStatus.CREATED : HttpStatus.INTERNAL_SERVER_ERROR;
             } else {
                 log.error("사용 불가능 토큰");
                 status = HttpStatus.FORBIDDEN;
