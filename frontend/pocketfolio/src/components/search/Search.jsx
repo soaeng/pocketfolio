@@ -9,6 +9,8 @@ import {
   Item,
   Tag,
   TagContainer,
+  RecCarImgDiv,
+  RecCarThumbnail,
 } from './Search.style';
 
 // 임시데이터(card)
@@ -247,6 +249,11 @@ const Search = () => {
           const {icon, copy} = it;
           return (
             <Item>
+              <RecCarImgDiv>
+                <RecCarThumbnail
+                  src={process.env.PUBLIC_URL + '/assets/images/room.png'}
+                />
+              </RecCarImgDiv>
               <div>{icon}</div>
               <div>{copy}</div>
             </Item>
