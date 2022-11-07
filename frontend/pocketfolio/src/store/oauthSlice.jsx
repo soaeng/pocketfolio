@@ -16,6 +16,24 @@ export const getMyInfo = createAsyncThunk(
   },
 );
 
+// 회원정보수정
+export const updateProfile = createAsyncThunk(
+  'getMyInfo',
+  async (data, {rejectWithValue}) => {
+    try {
+      const res = await http.get('users');
+
+      console.log(res)
+      return res
+    } catch (error) {
+      console.log('회원정보수정 에러', error);
+      return rejectWithValue(error);
+    }
+  },
+);
+
+
+
 const initialState = {
   user: null,
 };
