@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -49,7 +48,7 @@ public class RoomController {
     @GetMapping
     public ResponseEntity<List<RoomDetailRes>> findRoomList(HttpServletRequest request) {
         log.debug("[GET] Controller - findRoomList");
-        List<RoomDetailRes> response = new ArrayList<>();
+        List<RoomDetailRes> response = null;
         HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
 
         try{
@@ -66,11 +65,12 @@ public class RoomController {
     @GetMapping("/{roomSeq}")
     public ResponseEntity<RoomDetailRes> findRoom(@PathVariable(value = "roomSeq") Long roomSeq, HttpServletRequest request){
         log.debug("[GET] Controller - findRoom");
-        RoomDetailRes response = RoomDetailRes.builder().build();
+        RoomDetailRes response = null;
         HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
 
         try{
             long userSeq = (Long) request.getAttribute("userSeq");
+            log.debug("userSeq: " + userSeq);
             if (userSeq > 0) {
                 response = roomService.findRoom(userSeq, roomSeq);
                 status = HttpStatus.OK;
@@ -173,6 +173,26 @@ public class RoomController {
             log.error(e.getMessage());
         }
 
+        return new ResponseEntity<>(response, status);
+    }
+
+    @GetMapping("/like")
+    public ResponseEntity<List<RoomDetailRes>> findRoomLikeList(HttpServletRequest request) {
+        List<RoomDetailRes> response = null;
+        HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
+
+        try{
+            long userSeq = (Long) request.getAttribute("userSeq");
+            if (userSeq > 0) {
+
+                status = HttpStatus.OK;
+            } else {
+                log.error("사용 불가능 토큰");
+                status = HttpStatus.FORBIDDEN;
+            }
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
         return new ResponseEntity<>(response, status);
     }
 }

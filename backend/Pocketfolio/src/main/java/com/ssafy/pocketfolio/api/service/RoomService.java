@@ -48,7 +48,7 @@ public interface RoomService {
     void deleteRoom(long roomSeq);
 
     /**
-     * 룸 좋아요
+     * 방 좋아요
      * @param userSeq 좋아요 누르는 회원의 번호 (현재 접속한 회원)
      * @param roomSeq 방 번호
      * @return 좋아요 여부
@@ -56,10 +56,23 @@ public interface RoomService {
     boolean insertRoomLike(long userSeq, long roomSeq);
 
     /**
-     * 룸 좋아요 취소
+     * 방 좋아요 취소
      * @param userSeq 좋아요 취소하는 회원의 번호 (현재 접속한 회원)
      * @param roomSeq 방 번호
      * @return 좋아요 취소 여부
      */
     boolean deleteRoomLike(long userSeq, long roomSeq);
+
+    /**
+     * 본인이 좋아요 남긴 방 목록
+     * @param userSeq 회원 번호 (현재 접속한 회원)
+     * @return 해당 방 목록
+     */
+    List<RoomDetailRes> findRoomLikeList(long userSeq);
+
+    /**
+     * 베스트 방 목록
+     * @return 좋아요 내림차순 방 목록
+     */
+    List<RoomDetailRes> findRoomBestList();
 }
