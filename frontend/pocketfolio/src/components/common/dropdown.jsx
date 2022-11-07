@@ -19,7 +19,7 @@ const DropDown = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector(state => state.oauth.user);
-  console.log(user, '유저 나와라');
+  console.log(user.name, '유저 나와라');
 
   // 마이포켓 이동 => 수정 필요
   const myPocketClickHandler = () => {
@@ -42,11 +42,11 @@ const DropDown = () => {
     <Dropdown>
       <ProfileList>
         <ProfileDiv>profilePic</ProfileDiv>
-        <ProfileDiv>name</ProfileDiv>
+        <ProfileDiv>{user.name}</ProfileDiv>
         <ProfileDiv>email</ProfileDiv>
         <FollowList>
-          <div>follower</div>
-          <div>following</div>
+          <div>팔로워 | {user.followerTotal}</div>
+          <div>팔로잉 | {user.followingTotal}</div>
         </FollowList>
       </ProfileList>
       <DropdownList onClick={myPocketClickHandler}>
