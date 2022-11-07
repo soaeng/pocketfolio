@@ -8,16 +8,12 @@ import com.ssafy.pocketfolio.db.repository.UserRepository;
 import com.ssafy.pocketfolio.db.view.UserView;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.apache.commons.io.FilenameUtils;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
-import java.util.UUID;
 
 @Log4j2
 @Service
@@ -25,17 +21,11 @@ import java.util.UUID;
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
-    @Value("${app.fileupload.uploadDir}")
-    private String uploadFolder;
-
-    @Value("${app.fileupload.uploadPath}")
-    private String uploadPath;
-
     private final MultipartFileHandler fileHandler;
 
     @Override
     public UserRes findUser(long userSeq) {
-        UserView userView = userRepository.findProfileById(userSeq).get();
+        UserView userView = userRepository.findProfileById(userSeq).orElseThrow(() -> new IllegalArgumentException("유저가 존재하지 않습니다."));
         log.info("Service findUser: " + userView.getName() + ", " + userView.getProfilePic() + ", " + userView.getFollowerTotal() + ", " + userView.getFollowingTotal() + ", " + userView.getDescribe());
         return new UserRes(userView);
     }
@@ -43,33 +33,31 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public UserRes updateUser(long userSeq, UserUpdateReq userUpdateReq, MultipartFile multipartFile) throws IOException {
-        User user = userRepository.findById(userSeq).get();
+        User user = userRepository.findById(userSeq).orElseThrow(() -> new IllegalArgumentException("유저가 존재하지 않습니다."));
 
-        File uploadDir = new File(uploadPath + File.separator + uploadFolder);
-        if (!uploadDir.exists()) uploadDir.mkdir();
+        log.debug("user" + user.toString());
 
-        String fileName = multipartFile.getOriginalFilename();
+        String profilePicUrl = user.getProfilePic();
 
-        // Random File Id
-        UUID uuid = UUID.randomUUID();
+        // 저장할 프로필 사진 파일이 있다면 profilePic 수정
+        if (multipartFile != null) {
+            // 저장된 프로필 사진 주소가 있으면 해당 프로필 사진 삭제 후 새로 저장
+            if (profilePicUrl != null) {
+                fileHandler.deleteFile(profilePicUrl);
+            }
+            profilePicUrl = fileHandler.saveThumbnail(multipartFile, "profile");
+            if(profilePicUrl == null) {
+                log.error("프로필 사진이 저장되지 않았습니다.");
+//                throw new IOException("프로필 사진이 저장되지 않았습니다.");
+            }
+        } else {
+            // 프로필 사진 삭제 후 전송되고 이전에 프로필 사진 있었으면 프로필 사진 파일 삭제
+            if (profilePicUrl != null) {
+                fileHandler.deleteFile(profilePicUrl);
+            }
+        }
 
-        //file extension
-        String extension = FilenameUtils.getExtension(fileName); // vs FilenameUtils.getBaseName()
-
-        String savingFileName = uuid + "." + extension;
-
-        File destFile = new File(uploadPath + File.separator + uploadFolder + File.separator + savingFileName);
-
-        System.out.println(uploadPath + File.separator + uploadFolder + File.separator + savingFileName);
-        multipartFile.transferTo(destFile);
-
-        String boardFileUrl = uploadFolder + "/" + savingFileName;
-
-
-
-//        fileHandler.saveThumbnail(); 12345
-
-        user.updateUser(userUpdateReq.getName(), boardFileUrl, userUpdateReq.getDescribe());
+        user.updateUser(userUpdateReq.getName(), profilePicUrl, userUpdateReq.getDescribe());
         return new UserRes(user);
     }
 
