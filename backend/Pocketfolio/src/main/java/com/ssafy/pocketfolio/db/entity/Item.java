@@ -14,8 +14,9 @@ import javax.persistence.*;
 @Table(
 name="item",
 uniqueConstraints = {
-		@UniqueConstraint(name="UK_ITEM", columnNames={"key"}),
-		@UniqueConstraint(name="UK_ITEM_CATEGORY", columnNames={"category", "name"})
+		@UniqueConstraint(name="UK_ITEM", columnNames={"asset"}),
+		@UniqueConstraint(name="UK_ITEM_CATEGORY", columnNames={"category", "name"}),
+		@UniqueConstraint(name="UK_ITEM_IMAGE", columnNames={"image"})
 }
 )
 public class Item {
@@ -28,17 +29,22 @@ public class Item {
 	@NotNull
 	private String name;
 
+	@Column(name="asset", length=255, nullable=false)
+	@NotNull
+	private String asset;
+
+	@Column(name="image", length=255, nullable=false)
+	@NotNull
+	private String image;
+
 	@Column(name="category", length=30, nullable=false)
 	@NotNull
 	private String category;
 
-	@Column(name="key", length=50, nullable=false)
-	@NotNull
-	private String key;
-	
-	public void updateItem(String name, String category, String key) { // for administrator
+	public void updateItem(String name, String asset, String image, String category) { // for administrator
 		this.name = name;
+		this.asset = asset;
+		this.image = image;
 		this.category = category;
-		this.key = key;
 	}
 }
