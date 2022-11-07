@@ -1,6 +1,5 @@
 package com.ssafy.pocketfolio.api.dto.response;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ssafy.pocketfolio.db.entity.User;
 import com.ssafy.pocketfolio.db.view.UserView;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -27,8 +26,8 @@ public class UserRes {
     @Schema(description = "프로필 사진 파일 url", maxLength = 255, example = "/img/J2EeRo2d.jpg")
     private String profilePic;
 
-    @Schema(description = "생년월일", example = "yyyy-MM-dd")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
+    @Schema(description = "생년월일", example = "birth.year=2001 / birth.month=1 / birth.day=1")
+//    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
     private LocalDate birth;
 
     @Schema(description = "팔로워 수")

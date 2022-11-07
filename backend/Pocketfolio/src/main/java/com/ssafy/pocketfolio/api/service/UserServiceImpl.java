@@ -61,7 +61,13 @@ public class UserServiceImpl implements UserService {
             }
         }
 
-        user.updateUser(userUpdateReq.getName(), profilePicUrl, LocalDate.parse(userUpdateReq.getBirth(), DateTimeFormatter.ISO_DATE), userUpdateReq.getDescribe());
+        String birthStr = userUpdateReq.getBirth();
+        LocalDate birth = null;
+        if (birthStr != null) {
+            birth = LocalDate.parse(birthStr, DateTimeFormatter.ISO_DATE);
+        }
+
+        user.updateUser(userUpdateReq.getName(), profilePicUrl, birth, userUpdateReq.getDescribe());
         return new UserRes(user);
     }
 
