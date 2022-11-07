@@ -7,6 +7,8 @@ export const Container = styled.div`
   justify-content: center;
   align-items: center;
 
+  position: relative;
+
   overflow: hidden;
 
   @media screen and (max-width: 1200px) {
@@ -42,5 +44,30 @@ export const CanvasWrapper = styled.div`
       height: 60vh;
       transition: all 0.25s;
     }
+  }
+`;
+
+export const EditBox = styled.div`
+  position: absolute;
+  bottom: 1.5rem;
+  right: 1.5rem;
+
+  display: flex;
+  align-items: center;
+`;
+
+export const Btn = styled.button`
+  background-color: white;
+  border-radius: 1rem;
+  border: 2px solid #333;
+  padding: 0.2rem 0.5rem;
+  font-size: 1rem;
+
+  & + & {
+    margin-left: 0.5rem;
+  }
+
+  &:hover {
+    background-color: #f0f0f0;
   }
 `;
