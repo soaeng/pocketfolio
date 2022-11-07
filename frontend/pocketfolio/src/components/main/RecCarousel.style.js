@@ -6,8 +6,7 @@ import {RiHeart3Line, RiHeart3Fill, RiEyeLine} from 'react-icons/ri';
 export const RecCaContainer = styled.div`
   display: flex;
   flex-direction: column;
-  padding-left: 5%;
-  padding-right: 5%;
+  padding: 3% 5%;
 `;
 
 export const Container = styled.div`
