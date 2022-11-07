@@ -91,4 +91,5 @@ export const NavBotton = styled.button`
 export const LoginDiv = styled.div`
   display: flex;
   align-items: center;
+  position: relative;
 `;
