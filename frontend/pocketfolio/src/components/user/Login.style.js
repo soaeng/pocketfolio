@@ -3,62 +3,53 @@ import styled from 'styled-components';
 export const Container = styled.div`
   width: 100vw;
   height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  position: relative;
   color: #333333;
-`;
+  background-color: yellowgreen;
 
-export const SelfContainer = styled.div`
-  width: 50vw;
-  height: 100vh;
-  background-color: #271e6a;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-
+  
   @media screen and (max-width: 1024px) {
-    display: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 `;
 
-export const IntroText = styled.h2`
-  color: white;
-  font-size: 2.5rem;
-  font-weight: bold;
-  text-shadow: 1.5px 1.5px 1.5px gray;
-  margin: 0;
-`;
-
-export const RoomImgDiv = styled.div`
-  height: 65%;
-  aspect-ratio: 1/1;
-`;
-
-export const RoomImg = styled.img`
+export const CanvasWrapper = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
-`;
+`
 
 export const LoginContainer = styled.div`
-  width: 50vw;
-  height: 100vh;
+  position: absolute;
+  top: calc(50% - 16.5rem);
+  right: 5rem;
+
+  width: 25rem;
+  height: 33rem;
+  padding: 1rem;
+  border-radius: 0.8rem;
+
   background-color: white;
+
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
 
-  @media screen and (max-width: 1024px) {
-    width: 100vw;
+  z-index: 1;
+
+  @media screen and (max-width: 620px) {
+    position: static;
   }
 `;
 
 export const LogoDiv = styled.div`
-  height: 10rem;
-  margin-bottom: 2rem;
+  height: 16%;
+  margin-bottom: 1rem;
 `;
 
 export const LogoImg = styled.img`
@@ -67,9 +58,10 @@ export const LogoImg = styled.img`
 `;
 
 export const LoginDiv = styled.div`
-  width: 23rem;
-  height: 3rem;
-  margin-bottom: 1.2rem;
+  width: calc(82% - 2rem);
+  min-width: 256px;
+  height: 2.5rem;
+  margin-bottom: 1rem;
   padding: 0.6rem 1rem;
   border-radius: 1rem;
   display: flex;
@@ -110,15 +102,6 @@ export const LoginDiv = styled.div`
       color: #e1e1e1;
     }
   }
-
-  @media screen and (max-width: 450px) {
-    width: fit-content;
-    min-width: 344px;
-  }
-
-  @media screen and (max-width: 320px) {
-    width: fit-content;
-  }
 `;
 
 export const LoginIconDiv = styled.div`
@@ -141,21 +124,23 @@ export const LoginIcon = styled.img`
 `;
 
 export const LoginText = styled.p`
-  font-size: 1.7rem;
+  font-size: 1.3rem;
   font-weight: bold;
 
   @media screen and (max-width: 420px) {
-    font-size: 1.5rem;
+    font-size: 1.2rem;
   }
 
-  @media screen and (max-width: 320px) {
-    font-size: 1.2rem;
+  @media screen and (max-width: 370px) {
+    font-size: 1.1rem;
   }
 `;
 
 export const CommentText = styled.p`
-  font-size: 1.3rem;
+  font-size: 1.1rem;
   min-width: 350px;
+  text-align: center;
+  margin-bottom: 0;
 
   @media screen and (max-width: 400px) {
     display: none;
