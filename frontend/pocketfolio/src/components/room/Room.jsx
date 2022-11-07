@@ -2,7 +2,7 @@ import RoomNav from './RoomNav';
 import RoomInfo from './RoomInfo';
 import Sidebar from './Sidebar';
 import Menu from './Menu';
-import {Container, CanvasWrapper} from './Room.style';
+import {Container, CanvasWrapper, EditBox, Btn} from './Room.style';
 import {Canvas} from '@react-three/fiber';
 import {OrbitControls} from '@react-three/drei';
 import toast, {Toaster} from 'react-hot-toast';
@@ -16,9 +16,19 @@ const Room = () => {
   const room_id = parseInt(params.room_id);
 
   const [sidebar, setSidebar] = useState('');
+  const [edit, setEdit] = useState(true);
 
   const changeSidebar = state => {
     setSidebar(state);
+  };
+
+  const onEdit = () => {
+    setEdit(true);
+  };
+
+  const offEdit = () => {
+    setEdit(false);
+    setSidebar('');
   };
 
   // copy to clipboard
@@ -31,8 +41,8 @@ const Room = () => {
 
   return (
     <Container className={sidebar ? 'active' : ''}>
-      <RoomNav sidebar={sidebar} />
-      <RoomInfo sidebar={sidebar} />
+      <RoomNav sidebar={sidebar} edit={edit} />
+      <RoomInfo sidebar={sidebar} edit={edit} />
       <CanvasWrapper className={sidebar ? 'active' : ''}>
         <Canvas camera={{position: [20, 20, 20], fov: 25}}>
           <OrbitControls autoRotate={false} />
@@ -63,17 +73,28 @@ const Room = () => {
             },
           }}
         />
+        {edit ? (
+          <EditBox>
+            <Btn>저장</Btn>
+            <Btn onClick={offEdit}>취소</Btn>
+          </EditBox>
+        ) : null}
       </CanvasWrapper>
 
-      {sidebar ? null : (
+      {sidebar | edit ? null : (
         <Menu
           room_id={room_id}
           changeSidebar={changeSidebar}
           copyURL={copyURL}
+          onEdit={onEdit}
         />
       )}
 
-      <Sidebar sidebar={sidebar} changeSidebar={changeSidebar} />
+      <Sidebar
+        sidebar={sidebar}
+        changeSidebar={changeSidebar}
+        edit={edit}
+      />
     </Container>
   );
 };

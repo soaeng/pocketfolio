@@ -1,7 +1,17 @@
 import styled from 'styled-components';
-import {RiCloseFill} from 'react-icons/ri';
+import {
+  RiCloseFill,
+  RiArrowRightSLine,
+  RiArrowLeftSLine,
+  RiArrowDownSLine,
+  RiArrowUpSLine,
+} from 'react-icons/ri';
 
 export const Container = styled.div`
+  position: relative;
+`;
+
+export const SideContainer = styled.div`
   width: 38rem;
   height: calc(100vh - 4rem);
   padding: 2rem;
@@ -11,6 +21,10 @@ export const Container = styled.div`
 
   &.open {
     transition: all 0.5s;
+    display: block;
+  }
+
+  &.edit {
     display: block;
   }
 
@@ -34,3 +48,60 @@ export const CloseBox = styled.div`
 `;
 
 export const CloseIcon = styled(RiCloseFill)``;
+
+export const ToggleBox = styled.div`
+  position: absolute;
+  top: calc(50% - 3rem);
+  left: -2.5rem;
+
+  width: 2.5rem;
+  height: 6rem;
+
+  border-radius: 2rem 0 0 2rem;
+  background-color: #bdbdbd;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  @media screen and (max-width: 1200px) {
+    position: absolute;
+    left: calc(50% - 3rem);
+    top: -2.5rem;
+
+    height: 2.5rem;
+    width: 6rem;
+
+    border-radius: 2rem 2rem 0 0;
+  }
+`;
+
+export const ToggleIconBox = styled.div`
+  font-size: 1.6rem;
+  width: fit-content;
+  height: fit-content;
+`;
+
+export const ToggleCloseIcon1 = styled(RiArrowRightSLine)`
+  @media screen and (max-width: 1200px) {
+    display: none;
+  }
+`;
+
+export const ToggleOpenIcon1 = styled(RiArrowLeftSLine)`
+  @media screen and (max-width: 1200px) {
+    display: none;
+  }
+`;
+
+export const ToggleCloseIcon2 = styled(RiArrowDownSLine)`
+  @media screen and (min-width: 1200px) {
+    display: none;
+  }
+`;
+
+export const ToggleOpenIcon2 = styled(RiArrowUpSLine)`
+  @media screen and (min-width: 1200px) {
+    display: none;
+  }
+`;

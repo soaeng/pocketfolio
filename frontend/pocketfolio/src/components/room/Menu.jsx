@@ -14,7 +14,7 @@ import {
 import {useState} from 'react';
 import {useNavigate} from 'react-router-dom';
 
-const Menu = ({room_id, changeSidebar, copyURL}) => {
+const Menu = ({room_id, changeSidebar, copyURL, onEdit}) => {
   const [toggle, setToggle] = useState(false);
   const navigate = useNavigate();
 
@@ -23,13 +23,14 @@ const Menu = ({room_id, changeSidebar, copyURL}) => {
     setToggle(!toggle);
   };
 
-  const moveToEdit = () => {
-    navigate(`/room/edit/${room_id}`);
+  const activeEdit = () => {
+    onEdit();
+    changeSidebar('edit');
   };
 
   return (
     <Container>
-      <MenuDiv onClick={moveToEdit} className={toggle ? 'edit' : ''}>
+      <MenuDiv onClick={activeEdit} className={toggle ? 'edit' : ''}>
         <EditIcon />
         <ToolTip className="tooltip">
           <ToolTipText>마이룸 수정</ToolTipText>
