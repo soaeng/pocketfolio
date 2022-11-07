@@ -17,7 +17,8 @@ public class JWTUtil {
     private String secretKey = "catsAndDogs101"; // test
 
     //1month
-    private long expire = 60; // minutes
+//    private long expire = 60; // minutes
+    private long expire = 60 * 24; // 개발용
     private long refreshExpire = expire * 24 * 7;
 
     public String generateAccessToken(String userSeqStr) throws Exception {
