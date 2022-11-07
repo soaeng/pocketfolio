@@ -36,4 +36,17 @@ public class PortfolioUrlDto {
                 .name(name)
                 .build();
     }
+
+    public static PortfolioUrlDto toDto(PortfolioUrl entity){
+        if (entity == null) {
+            return null;
+        }
+        return PortfolioUrlDto.builder()
+                .portUrlSeq(entity.getPortUrlSeq())
+                .url(entity.getUrl())
+                .name(entity.getName())
+                .type(entity.getType())
+                .build();
+    }
+
 }

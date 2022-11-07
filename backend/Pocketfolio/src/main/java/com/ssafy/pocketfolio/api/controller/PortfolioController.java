@@ -49,6 +49,7 @@ public class PortfolioController {
         return new ResponseEntity<>(response, status);
     }
 
+    // 본인의 포트폴리오 목록
     @GetMapping
     private ResponseEntity<List<PortfolioRes>> findPortfolioList(HttpServletRequest request){
         log.debug("[GET] Controller - findPortfolioList");
