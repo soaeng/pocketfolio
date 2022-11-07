@@ -1,15 +1,16 @@
 import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
-import { http } from '../api/axios';
+import {http} from '../api/axios';
 
+// 본인 정보 조회
 export const getMyInfo = createAsyncThunk(
   'getMyInfo',
-  async (data ,{rejectWithValue}) => {
+  async (data, {rejectWithValue}) => {
     try {
-      const res = await http.get('profile');
-      console.log(res);
-      return res;
+      const res = await http.get('users/profile');
+
+      if (res.status === 200) return res.data;
     } catch (error) {
-      console.log('유저정보에러', error)
+      console.log('유저정보에러', error);
       return rejectWithValue(error);
     }
   },
@@ -22,13 +23,17 @@ const initialState = {
 const oauthSlice = createSlice({
   name: 'oauth',
   initialState,
-  reducers: {},
+  reducers: {
+    logout(state) {
+      state.user = null
+    }
+  },
   extraReducers: builder => {
-    builder.addCase(getMyInfo, (state, action) => {
-      console.log('getMyInfo', action.payload);
+    builder.addCase(getMyInfo.fulfilled, (state, action) => {
+      state.user = action.payload
     });
   },
 });
 
-// export const {} = oauthSlice.actions;
+export const { logout } = oauthSlice.actions;
 export default oauthSlice.reducer;
