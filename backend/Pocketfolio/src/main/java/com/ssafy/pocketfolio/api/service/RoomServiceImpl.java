@@ -192,4 +192,14 @@ public class RoomServiceImpl implements RoomService {
         return false;
     }
 
+    @Override
+    public List<RoomDetailRes> findRoomLikeList(long userSeq) {
+        return null;
+    }
+
+    @Override
+    public List<RoomDetailRes> findRoomBestList() {
+        return null;
+    }
+
 }
