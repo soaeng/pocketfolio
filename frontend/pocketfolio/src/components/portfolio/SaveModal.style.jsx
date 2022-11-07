@@ -1,14 +1,15 @@
 import styled from 'styled-components';
+import {Body1} from '../../styles/styles.style';
 
 export const Overlay = styled.div`
   .modal {
+    z-index: 999;
     outline: 2px solid purple;
     position: fixed;
     top: 0;
     right: 0;
     bottom: 0;
     left: 0;
-    z-index: 99;
     background-color: rgba(0, 0, 0, 0.6);
     animation-duration: 0.25s;
     animation-timing-function: ease-out;
@@ -34,7 +35,6 @@ export const Overlay = styled.div`
     position: relative;
     padding: 18px 64px 16px 16px;
     font-weight: 700;
-    
   }
   .modal > section > header button {
     position: absolute;
@@ -115,7 +115,7 @@ export const Contents = styled.section`
 
 export const BtnDiv = styled.footer`
   display: flex;
-  justify-content: flex-end ;
+  justify-content: flex-end;
   padding: 12px 16px;
   text-align: right;
 `;
@@ -139,6 +139,11 @@ export const StyledBtn = styled.button`
     font-size: 20px;
     margin-right: 0.5rem;
     cursor: pointer;
+
+    &:hover {
+      background-color: #f2f2f2;
+      
+    }
   }
 
   &.save {
@@ -153,5 +158,14 @@ export const StyledBtn = styled.button`
     font-weight: 1000;
     font-size: 20px;
     cursor: pointer;
+
+    &:hover {
+      background-color: #3c3288;
+      
+    }
   }
+`;
+
+export const Text = styled(Body1)`
+  font-family: 'NanumSquareBold' !important ;
 `;

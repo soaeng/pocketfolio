@@ -9,9 +9,10 @@ import {
   LikeDiv,
   LikeContent,
   Thumbnail,
-  Img,
   Count,
   Button,
+  Heart,
+  Eye,
 } from './Card.style';
 import DeleteModal from './DeleteModal';
 
@@ -28,12 +29,12 @@ const Card = ({isDelete}) => {
   return (
     <Wrapper>
       <Item>
-        {isDelete && (
-          <Button
-            onClick={openModal}
-            src={process.env.PUBLIC_URL + '/assets/images/minus.png'}
-          ></Button>
-        )}
+        <Button
+          className={isDelete ? 'delete' : ''}
+          onClick={openModal}
+          src={process.env.PUBLIC_URL + '/assets/images/minus.png'}
+        ></Button>
+
         <div onClick={moveMyRoom}>
           <ImgDiv>
             <Thumbnail
@@ -45,28 +46,16 @@ const Card = ({isDelete}) => {
           </TitleDiv>
           <LikeDiv>
             <LikeContent>
-              <Img
-                className="hearteye"
-                src={process.env.PUBLIC_URL + '/assets/images/heart.png'}
-              />
+              <Heart />
               <Count>20</Count>
             </LikeContent>
             <LikeContent>
-              <Img
-                className="hearteye"
-                src={process.env.PUBLIC_URL + '/assets/images/eye.png'}
-              />
+              <Eye />
               <Count>13</Count>
             </LikeContent>
           </LikeDiv>
         </div>
       </Item>
-      {/* <Img
-        className="deleteBtn"
-        onClick={openModal}
-        src={process.env.PUBLIC_URL + '/assets/images/trashcan.png'}
-      /> */}
-
       {isOpen && (
         <DeleteModal
           onClose={() => {

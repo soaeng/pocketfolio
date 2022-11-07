@@ -5,12 +5,11 @@ import {
   Contents,
   BtnDiv,
   StyledBtn,
+  Text,
 } from './SaveModal.style';
-import {H3, Body1} from '../../styles/styles.style';
 
 const SaveModal = props => {
-  console.log(props);
-  const {open, close, onClose} = props;
+  const {open, close} = props;
 
   // 현재 트랜지션 효과를 보여주고 있는 중이라는 상태 값
   const [animate, setAnimate] = useState(false);
@@ -29,7 +28,6 @@ const SaveModal = props => {
   if (!animate && !visible) return null;
 
   return (
-    // 모달의 open close클래스로 css animation을 구현
     <Overlay>
       <ModalWrap className={open ? 'modal open' : 'modal close'}>
         <Contents>
@@ -38,7 +36,7 @@ const SaveModal = props => {
               &times;
             </button>
           </header>
-          <Body1>포트폴리오를 저장 하시겠습니까?</Body1>
+          <Text>포트폴리오를 저장 하시겠습니까?</Text>
           <BtnDiv>
             <StyledBtn className="cancel" onClick={close}>
               취소
