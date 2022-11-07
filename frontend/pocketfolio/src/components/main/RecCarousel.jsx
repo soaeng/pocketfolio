@@ -1,6 +1,20 @@
 // 추천 carousel
 import React, {useState, useEffect, useRef} from 'react';
-import {Container, Carousel, Item, Ui, Item3} from './RecCarousel.style';
+import {
+  RecCaContainer,
+  Container,
+  Carousel,
+  Ui,
+  Item,
+  Item2,
+  Item3,
+  LikeIcon,
+  ShowIcon,
+  LikeShowDiv,
+  RecCarImgDiv,
+  RecCarThumbnail,
+  RecCaTitle,
+} from './RecCarousel.style';
 
 // 임시데이터
 const items = [
@@ -71,29 +85,39 @@ const RecCarousel = () => {
 
   return (
     <>
-      <p>포켓폴리오 추천 작품</p>
-      <Container>
-        <Carousel ref={carousel}>
-          {item.map(it => {
-            const {icon, copy, name, like, seen} = it;
-            return (
-              <Item>
-                <div>{icon}</div>
-                <div>{copy}</div>
-                <Item3>
-                  <div>{name}</div>
-                  <div>❤ {like}</div>
-                  <div>👁 {seen}</div>
-                </Item3>
-              </Item>
-            );
-          })}
-        </Carousel>
-      </Container>
-      <Ui>
-        <button onClick={handleLeft}>{'<'}</button>
-        <button onClick={handleRight}>{'>'}</button>
-      </Ui>
+      <RecCaContainer>
+        <RecCaTitle>포켓폴리오 추천 작품</RecCaTitle>
+        <Container>
+          <Carousel ref={carousel}>
+            {item.map(it => {
+              const {icon, copy, name, like, seen} = it;
+              return (
+                <Item>
+                  <RecCarImgDiv>
+                    <RecCarThumbnail
+                      src={process.env.PUBLIC_URL + '/assets/images/room.png'}
+                    />
+                  </RecCarImgDiv>
+                  <div>{copy}</div>
+                  <Item2>
+                    <div>{name}</div>
+                    <LikeShowDiv>
+                      <LikeIcon />
+                      <Item3>{like}</Item3>
+                      <ShowIcon />
+                      <div>{seen}</div>
+                    </LikeShowDiv>
+                  </Item2>
+                </Item>
+              );
+            })}
+          </Carousel>
+        </Container>
+        <Ui>
+          <button onClick={handleLeft}>{'<'}</button>
+          <button onClick={handleRight}>{'>'}</button>
+        </Ui>
+      </RecCaContainer>
     </>
   );
 };

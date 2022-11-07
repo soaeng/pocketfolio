@@ -1,5 +1,14 @@
 // styled Component
 import styled from 'styled-components';
+import {H3, Body1, Body2} from '../../styles/styles.style';
+import {RiHeart3Line, RiHeart3Fill, RiEyeLine} from 'react-icons/ri';
+
+export const RecCaContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding-left: 5%;
+  padding-right: 5%;
+`;
 
 export const Container = styled.div`
   width: 90%;
@@ -23,7 +32,7 @@ export const Item = styled.div`
   min-width: 150px;
   flex-direction: column;
   justify-content: space-between;
-  margin: 10px;
+  margin: 8px;
   padding: 10px;
   border-radius: 16px;
   box-shadow: 0px 2px 5px 1px rgba(0, 0, 0, 0.25);
@@ -35,9 +44,9 @@ export const Ui = styled.div`
   top: 60%;
   transform: translateY(-50%);
   display: flex;
-  width: calc(100% - 12px * 2);
+  width: calc(100% - 80px * 2);
   justify-content: space-between;
-  padding: 12px;
+  /* padding: 12px; */
   z-index: 100;
 
   button {
@@ -65,7 +74,47 @@ export const Ui = styled.div`
   }
 `;
 
-export const Item3 = styled.div`
+export const Item2 = styled.div`
   display: flex;
   justify-content: space-between;
+`;
+
+export const Item3 = styled.div`
+  padding-right: 0.5rem;
+`;
+
+export const LikeIcon = styled(RiHeart3Fill)`
+  width: 100%;
+  height: 100%;
+`;
+
+export const DislikeIcon = styled(RiHeart3Line)`
+  width: 100%;
+  height: 100%;
+`;
+
+export const ShowIcon = styled(RiEyeLine)`
+  width: 100%;
+  height: 100%;
+  cursor: default;
+`;
+
+export const LikeShowDiv = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+export const RecCarImgDiv = styled.div`
+  display: flex;
+  justify-content: center;
+  height: 70%;
+`;
+
+export const RecCarThumbnail = styled.img`
+  width: 90%;
+`;
+
+// 글자 component 스타일
+export const RecCaTitle = styled(Body1)`
+  padding: 10px;
 `;

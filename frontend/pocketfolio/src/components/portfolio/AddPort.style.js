@@ -1,4 +1,9 @@
 import styled from 'styled-components';
+import {
+  RiHashtag,
+} from 'react-icons/ri';
+
+import {FaSlackHash} from 'react-icons/fa'
 
 export const Background = styled.div`
   display: flex;
@@ -42,9 +47,10 @@ export const Background = styled.div`
 export const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: space-around;
   margin-top: 3rem;
   width: 60%;
-  height: 70%;
+  height: 75%;
 `;
 
 export const Header = styled.div`
@@ -54,16 +60,23 @@ export const Header = styled.div`
   width: max-content;
 `;
 
-export const TitleDiv = styled.div`
-  display: flex;
+export const Label = styled.div`
+  font-weight: bold;
+  margin-bottom: 0.5rem;  
+`;
+
+export const ContentDiv = styled.div`
+  /* display: flex; */
 `;
 
 export const Title = styled.input`
-  width: 100%;
-  height: 3rem;
-  font-size: 2rem;
+  width: 98%;
+  height: 2.5rem;
+  font-size: 1.5rem;
   border: 0.5px solid #bababa;
-  border-radius: 0 0.5rem 0.5rem 0;
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+
 `;
 
 export const Img = styled.img`
@@ -85,7 +98,6 @@ export const HashDiv = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  
 `;
 
 export const InputDiv = styled.div`
@@ -161,4 +173,10 @@ export const StyledBtn = styled.button`
     font-size: 20px;
     cursor: pointer;
   }
+`;
+
+
+export const HashIcon = styled(FaSlackHash)`
+  width: 35px;
+  height: 35px;
 `;

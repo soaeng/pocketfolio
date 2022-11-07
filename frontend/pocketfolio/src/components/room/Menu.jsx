@@ -14,7 +14,7 @@ import {
 import {useState} from 'react';
 import {useNavigate} from 'react-router-dom';
 
-const Menu = ({room_id, openSidebar, copyURL}) => {
+const Menu = ({room_id, changeSidebar, copyURL, onEdit}) => {
   const [toggle, setToggle] = useState(false);
   const navigate = useNavigate();
 
@@ -23,31 +23,34 @@ const Menu = ({room_id, openSidebar, copyURL}) => {
     setToggle(!toggle);
   };
 
-  const moveToEdit = () => {
-    navigate(`/room/edit/${room_id}`);
-  };
-
-  const moveToPort = () => {
-    navigate('/port');
+  const activeEdit = () => {
+    onEdit();
+    changeSidebar('edit');
   };
 
   return (
     <Container>
-      <MenuDiv onClick={moveToEdit} className={toggle ? 'edit' : ''}>
+      <MenuDiv onClick={activeEdit} className={toggle ? 'edit' : ''}>
         <EditIcon />
         <ToolTip className="tooltip">
           <ToolTipText>마이룸 수정</ToolTipText>
         </ToolTip>
       </MenuDiv>
 
-      <MenuDiv onClick={moveToPort} className={toggle ? 'port' : ''}>
+      <MenuDiv
+        onClick={() => changeSidebar('port')}
+        className={toggle ? 'port' : ''}
+      >
         <PortIcon />
         <ToolTip className="tooltip">
           <ToolTipText>포트폴리오 목록</ToolTipText>
         </ToolTip>
       </MenuDiv>
 
-      <MenuDiv className={toggle ? 'visit' : ''} onClick={openSidebar}>
+      <MenuDiv
+        className={toggle ? 'visit' : ''}
+        onClick={() => changeSidebar('visit')}
+      >
         <VisitIcon />
         <ToolTip className="tooltip">
           <ToolTipText>방명록</ToolTipText>

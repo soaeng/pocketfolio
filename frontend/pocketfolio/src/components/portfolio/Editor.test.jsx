@@ -50,7 +50,7 @@ export default function MyEditor({portContent, setPortContent, ...props}) {
   }
 
   return (
-    <div className="App">
+    <div className="Editor">
       <CKEditor
         editor={DecoupledEditor}
         onReady={editor => {
