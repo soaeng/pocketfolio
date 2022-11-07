@@ -9,6 +9,7 @@ import com.ssafy.pocketfolio.db.repository.RoomHitRepository;
 import com.ssafy.pocketfolio.db.repository.RoomLikeRepository;
 import com.ssafy.pocketfolio.db.repository.RoomRepository;
 import com.ssafy.pocketfolio.db.repository.UserRepository;
+import com.ssafy.pocketfolio.db.view.RoomBestListView;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -233,7 +234,7 @@ public class RoomServiceImpl implements RoomService {
         User user = userRepository.findById(userSeq).orElseThrow(() -> new IllegalArgumentException("해당 사용자를 찾을 수 없습니다."));
         try {
             List<Room> rooms = roomLikeRepository.findAllByUser(user).stream().map(RoomLike::getRoom).collect(Collectors.toList());
-            return getRoomDetailResList(rooms, user);
+            return getRoomDetailResList(rooms);
         } catch (Exception e) {
             log.error(e.getMessage());
             return null;
@@ -242,17 +243,30 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public List<RoomDetailRes> findRoomBestList() {
-        return null;
+        log.debug("[GET] Service - findRoomBestList");
+        try {
+            List<RoomBestListView> bestList = roomLikeRepository.findRoomLikeCount();
+            log.debug(bestList.toString());
+            List<Room> rooms = new ArrayList<>();
+            for(RoomBestListView best : bestList) {
+//                Room room =
+//                rooms.add(room);
+            }
+            return getRoomDetailResList(rooms);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return null;
+        }
     }
 
-    public List<RoomDetailRes> getRoomDetailResList(List<Room> rooms, User user) {
+    public List<RoomDetailRes> getRoomDetailResList(List<Room> rooms) {
         List<RoomDetailRes> roomDetailResList = new ArrayList<>();
         for (Room room : rooms) {
             RoomDetailRes roomDetailRes = RoomDetailRes.builder()
                     .room(new RoomDto(room))
                     .hitCount(roomHitRepository.countAllByRoom(room))
                     .likeCount(roomLikeRepository.countAllByRoom(room))
-                    .userName(user.getName())
+                    .userName(room.getUser().getName())
                     .build();
             roomDetailResList.add(roomDetailRes);
         }

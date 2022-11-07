@@ -194,4 +194,24 @@ public class RoomController {
         }
         return new ResponseEntity<>(response, status);
     }
+
+    @GetMapping("/best")
+    public ResponseEntity<List<RoomDetailRes>> findRoomBestList(HttpServletRequest request) {
+        List<RoomDetailRes> response = null;
+        HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
+
+        try{
+            long userSeq = (Long) request.getAttribute("userSeq");
+            if (userSeq > 0) {
+                response = roomService.findRoomBestList();
+                status = HttpStatus.OK;
+            } else {
+                log.error("사용 불가능 토큰");
+                status = HttpStatus.FORBIDDEN;
+            }
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
+        return new ResponseEntity<>(response, status);
+    }
 }
