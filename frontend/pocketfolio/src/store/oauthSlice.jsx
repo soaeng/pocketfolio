@@ -1,33 +1,34 @@
 import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
-import {http} from '../api/axios';
+import { http } from '../api/axios';
 
-/** 로그인 */
-export const login = createAsyncThunk(
-  'LOGIN',
-  async (social, {rejectWithValue}) => {
+export const getMyInfo = createAsyncThunk(
+  'getMyInfo',
+  async (data ,{rejectWithValue}) => {
     try {
-      // const res = await http.get(`oauth2/authorization/${social}`);
-      // console.log(res);
-      return;
-      // const accessToken = res.data.accessToken;
-      // const refreshToken = res.data.refreshToken;
-      // window.localStorage.setItem('access-Token', accessToken);
-      // window.localStorage.setItem('refresh-Token', refreshToken);
-      // return res;
-    } catch (err) {
-      return rejectWithValue(err.response);
+      const res = await http.get('profile');
+      console.log(res);
+      return res;
+    } catch (error) {
+      console.log('유저정보에러', error)
+      return rejectWithValue(error);
     }
   },
 );
 
-const initialState = {};
+const initialState = {
+  user: null,
+};
 
 const oauthSlice = createSlice({
   name: 'oauth',
   initialState,
   reducers: {},
-  extraReducers: {},
+  extraReducers: builder => {
+    builder.addCase(getMyInfo, (state, action) => {
+      console.log('getMyInfo', action.payload);
+    });
+  },
 });
 
-export const {} = oauthSlice.actions;
+// export const {} = oauthSlice.actions;
 export default oauthSlice.reducer;

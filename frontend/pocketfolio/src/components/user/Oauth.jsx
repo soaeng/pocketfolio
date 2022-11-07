@@ -1,15 +1,22 @@
 import {useEffect} from 'react';
-import {useNavigate, useParams} from 'react-router-dom';
+import {useNavigate, useSearchParams} from 'react-router-dom';
+import {saveToken, saveRefreshToken} from '../../api/jwt';
 
 const Oauth = () => {
   const navigate = useNavigate();
-  const params = useParams();
+  const [searchParams] = useSearchParams();
 
   useEffect(() => {
-    console.log(params);
+    // save token at local storage
+    const accessToken = searchParams.get('accessToken');
+    const refreshToken = searchParams.get('refreshToken');
+    saveToken(accessToken);
+    saveRefreshToken(refreshToken);
+
+    navigate('/main');
   }, []);
 
-  return ;
+  return;
 };
 
 export default Oauth;
