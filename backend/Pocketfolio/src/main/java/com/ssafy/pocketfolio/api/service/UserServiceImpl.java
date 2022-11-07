@@ -13,6 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Log4j2
@@ -39,6 +41,8 @@ public class UserServiceImpl implements UserService {
 
         String profilePicUrl = user.getProfilePic();
 
+        log.info("multipartFile is null: " + multipartFile == null);
+
         // 저장할 프로필 사진 파일이 있다면 profilePic 수정
         if (multipartFile != null) {
             // 저장된 프로필 사진 주소가 있으면 해당 프로필 사진 삭제 후 새로 저장
@@ -57,7 +61,7 @@ public class UserServiceImpl implements UserService {
             }
         }
 
-        user.updateUser(userUpdateReq.getName(), profilePicUrl, userUpdateReq.getDescribe());
+        user.updateUser(userUpdateReq.getName(), profilePicUrl, LocalDate.parse(userUpdateReq.getBirth(), DateTimeFormatter.ISO_DATE), userUpdateReq.getDescribe());
         return new UserRes(user);
     }
 

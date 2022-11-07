@@ -15,7 +15,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -115,8 +114,8 @@ public class UserController {
             @ApiResponse(responseCode = "404", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = UserRes.class))),
             @ApiResponse(responseCode = "500", description = "서버 에러", content = @Content(schema = @Schema(implementation = UserRes.class)))
     })
-    @PutMapping
-    public ResponseEntity<UserRes> updateUser(@RequestBody UserUpdateReq userUpdateReq, MultipartHttpServletRequest request) {
+    @PatchMapping
+    public ResponseEntity<UserRes> updateUser(@RequestPart(value = "user") UserUpdateReq userUpdateReq, @RequestPart(value = "profilePic", required = false) MultipartFile profilePic, HttpServletRequest request) {
         log.debug("Controller: updateUser()");
         HttpStatus status;
 
@@ -125,8 +124,7 @@ public class UserController {
         try {
             long userSeq = (Long) request.getAttribute("userSeq");
             if (userSeq > 0) {
-                MultipartFile multipartFile = request.getFile("file");
-                result = userService.updateUser(userSeq, userUpdateReq, multipartFile);
+                result = userService.updateUser(userSeq, userUpdateReq, profilePic);
                 status = HttpStatus.CREATED;
             } else {
                 log.error("사용 불가능 토큰");

@@ -1,5 +1,6 @@
 package com.ssafy.pocketfolio.api.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ssafy.pocketfolio.db.entity.User;
 import com.ssafy.pocketfolio.db.view.UserView;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -7,6 +8,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.*;
 
 import javax.validation.constraints.Email;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -25,11 +27,15 @@ public class UserRes {
     @Schema(description = "프로필 사진 파일 url", maxLength = 255, example = "/img/J2EeRo2d.jpg")
     private String profilePic;
 
+    @Schema(description = "생년월일", example = "yyyy-MM-dd")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
+    private LocalDate birth;
+
     @Schema(description = "팔로워 수")
-    private long followerTotal;
+    private Long followerTotal;
 
     @Schema(description = "팔로잉 수")
-    private long followingTotal;
+    private Long followingTotal;
 
     @Schema(description = "자기소개", maxLength = 200)
     private String describe;
@@ -45,12 +51,15 @@ public class UserRes {
             userProfilePic = "/upload/profile/default.jpg";
         }
         profilePic = userProfilePic;
+        birth = user.getBirth();
         describe = user.getDescribe();
     }
 
     public UserRes(UserView userView) {
+        email = userView.getEmail();
         name = userView.getName();
         profilePic = userView.getProfilePic();
+        birth = userView.getBirth();
         followerTotal = userView.getFollowerTotal();
         followingTotal = userView.getFollowingTotal();
         describe = userView.getDescribe();
