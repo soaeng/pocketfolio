@@ -2,6 +2,7 @@ package com.ssafy.pocketfolio.api.service;
 
 import com.ssafy.pocketfolio.api.dto.request.UserUpdateReq;
 import com.ssafy.pocketfolio.api.dto.response.UserRes;
+import com.ssafy.pocketfolio.api.util.MultipartFileHandler;
 import com.ssafy.pocketfolio.db.entity.User;
 import com.ssafy.pocketfolio.db.repository.UserRepository;
 import com.ssafy.pocketfolio.db.view.UserView;
@@ -29,6 +30,8 @@ public class UserServiceImpl implements UserService {
 
     @Value("${app.fileupload.uploadPath}")
     private String uploadPath;
+
+    private final MultipartFileHandler fileHandler;
 
     @Override
     public UserRes findUser(long userSeq) {
@@ -62,6 +65,9 @@ public class UserServiceImpl implements UserService {
 
         String boardFileUrl = uploadFolder + "/" + savingFileName;
 
+
+
+//        fileHandler.saveThumbnail(); 12345
 
         user.updateUser(userUpdateReq.getName(), boardFileUrl, userUpdateReq.getDescribe());
         return new UserRes(user);

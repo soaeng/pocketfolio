@@ -108,13 +108,18 @@ public class SecurityConfig {
 
     @Bean
     public ApiCheckFilter apiCheckFilter() {
-        String[] patterns = {contextPath + "/rooms/like", contextPath + "/portfolios/room/*", contextPath + "/users/profile"};
-        // GET일 때도 토큰이 있어야 하는 녀석들
+//        String[] patterns = {
+//                contextPath + "/rooms/like", contextPath + "/portfolios/room/*", contextPath + "/users/profile",
+//                contextPath + "/users/search**", contextPath + "/follows/follower", contextPath + "/follows/following",
+//                contextPath + "/users/search**", contextPath + "/follows/**", contextPath + "/rooms/*"
+//        };
+//        // GET일 때도 토큰이 있어야 하는 녀석들
 
         String[] postForGuestPatterns = {contextPath + "/users/logout"};
         // POST일 때도 토큰이 필요 없는 녀석들
 
-        return new ApiCheckFilter(patterns, postForGuestPatterns, jwtUtil()); // ! patterns 더 추가할지 말지 봐야 함
+//        return new ApiCheckFilter(patterns, postForGuestPatterns, jwtUtil()); // ! patterns 더 추가할지 말지 봐야 함
+        return new ApiCheckFilter(postForGuestPatterns, jwtUtil()); // ! patterns 더 추가할지 말지 봐야 함
     }
 
 //    public ApiLoginFilter apiLoginFilter(AuthenticationManager authenticationManager) throws Exception{

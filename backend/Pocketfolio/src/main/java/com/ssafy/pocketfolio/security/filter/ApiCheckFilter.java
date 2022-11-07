@@ -29,6 +29,12 @@ public class ApiCheckFilter extends OncePerRequestFilter {
         this.jwtUtil = jwtUtil;
     }
 
+    public ApiCheckFilter(String[] postForGuestPatterns, JWTUtil jwtUtil){
+        this.antPathMatcher = new AntPathMatcher();
+        this.postForGuestPatterns = postForGuestPatterns;
+        this.jwtUtil = jwtUtil;
+    }
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
@@ -37,8 +43,6 @@ public class ApiCheckFilter extends OncePerRequestFilter {
 
         if (needToken(request)) {
 
-            log.info("ApiCheckFilter.................................................");
-            log.info("ApiCheckFilter.................................................");
             log.info("ApiCheckFilter.................................................");
 
             Long userSeq = checkAuthHeaderAndExtractUserSeq(request);
@@ -51,9 +55,13 @@ public class ApiCheckFilter extends OncePerRequestFilter {
 
     private long checkAuthHeaderAndExtractUserSeq(HttpServletRequest request) {
 
-        long userSeq = 0L;
+        long userSeq = -1L;
 
         String authHeader = request.getHeader("Authorization");
+
+        if (authHeader == null) {
+            return 0L;
+        }
 
         if (StringUtils.hasText(authHeader) && authHeader.startsWith("Bearer ")) {
             log.info("Authorization(accessToken) exist: " + authHeader);
@@ -82,6 +90,7 @@ public class ApiCheckFilter extends OncePerRequestFilter {
             return true;
         }
 
-        return Arrays.stream(patterns).anyMatch(e -> antPathMatcher.match(e, requestURI));
+//        return Arrays.stream(patterns).anyMatch(e -> antPathMatcher.match(e, requestURI));
+        return true;
     }
 }
