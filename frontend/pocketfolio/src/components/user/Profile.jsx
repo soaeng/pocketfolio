@@ -18,8 +18,17 @@ import {
   Btn,
   ImgInputDiv,
 } from './Profile.style';
+import {useSelector} from 'react-redux';
 
 const Profile = () => {
+  const user = useSelector(state => state.oauth.user);
+  console.log(user);
+
+  const data = {
+    name: '',
+    
+  }
+
   return (
     <Container>
       <Title>회원 정보 수정</Title>
