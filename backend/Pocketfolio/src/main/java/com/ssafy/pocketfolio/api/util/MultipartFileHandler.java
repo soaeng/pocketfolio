@@ -84,6 +84,14 @@ public class MultipartFileHandler {
             }
         }
 
+        if (uploadDirName.contains("profile")) {
+            log.debug("profile 파일 확장자 확인");
+            if(!checkImageType(Paths.get(dest.getPath()))){
+                log.error("profile 파일은 이미지 파일만 허용됨");
+                return null;
+            }
+        }
+
         file.transferTo(dest);
         log.debug("파일 저장 완료");
         return dest;

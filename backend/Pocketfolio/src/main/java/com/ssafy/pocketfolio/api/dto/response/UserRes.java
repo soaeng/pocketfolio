@@ -40,7 +40,11 @@ public class UserRes {
     public UserRes(User user) {
         email = user.getEmail();
         name = user.getName();
-        profilePic = user.getProfilePic();
+        String userProfilePic = user.getProfilePic();
+        if (userProfilePic == null) {
+            userProfilePic = "/upload/profile/default.jpg";
+        }
+        profilePic = userProfilePic;
         describe = user.getDescribe();
     }
 
