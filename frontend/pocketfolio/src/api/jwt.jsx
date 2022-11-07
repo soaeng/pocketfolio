@@ -1,18 +1,21 @@
 export const saveToken = token => {
-  window.localStorage.setItem('access-Token', token);
+  window.sessionStorage.setItem('access-Token', token);
 };
 export const saveRefreshToken = token => {
-  window.localStorage.setItem('refresh-Token', token);
+  window.sessionStorage.setItem('refresh-Token', token);
 };
 export const getToken = () => {
-  return window.localStorage.getItem('access-Token');
+  return window.sessionStorage.getItem('access-Token');
 };
 export const getRefreshToken = () => {
-  return window.localStorage.getItem('refresh-Token');
+  return window.sessionStorage.getItem('refresh-Token');
 };
 export const deleteToken = () => {
-  window.localStorage.removeItem('access-Token');
+  window.sessionStorage.removeItem('access-Token');
 };
 export const deleteRefreshToken = () => {
-  window.localStorage.removeItem('refresh-Token');
+  window.sessionStorage.removeItem('refresh-Token');
+};
+export const deleteAllToken = () => {
+  window.sessionStorage.clear();
 };
