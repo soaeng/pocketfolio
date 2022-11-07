@@ -32,7 +32,7 @@ function Nav() {
   };
 
   const roomClickHandler = () => {
-    navigate('/room');
+    navigate('/room/1');
   };
 
   // 검색어 창 입력
@@ -60,12 +60,12 @@ function Nav() {
         onClick={logoClickHandler}
         src={process.env.PUBLIC_URL + '/assets/images/logo2.png'}
       />
-      {window.location.pathname === '/search' ? null : (
+      {window.location.pathname === '/main' ? (
         <NavSearchInput
           placeholder="검색어를 입력해주세요"
           onKeyDown={keyDownHandler}
         />
-      )}
+      ) : null}
       {loginFlag === null ? (
         <NavBotton onClick={loginClickHandler}>로그인/회원가입</NavBotton>
       ) : (
