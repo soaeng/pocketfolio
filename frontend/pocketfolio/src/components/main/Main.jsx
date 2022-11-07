@@ -156,6 +156,10 @@ function Main() {
       <RecCarouselContainer>
         <RecCarousel />
       </RecCarouselContainer>
+      {/* 추천 Carousel */}
+      <RecCarouselContainer>
+        <RecCarousel />
+      </RecCarouselContainer>
     </>
   );
 }

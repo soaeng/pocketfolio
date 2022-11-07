@@ -4,12 +4,13 @@ import styled from 'styled-components';
 // Navbar
 export const NavContainer = styled.div`
   position: sticky;
+  background-color: white;
   align-items: center;
   display: flex;
   justify-content: space-between;
   padding: 0.5rem;
   height: 3.5rem;
-  width: 100%;
+  /* width: 100%; */
   z-index: 999;
   top: 0;
 `;
@@ -38,10 +39,10 @@ export const NavLogoImg = styled.img`
 export const NavSearchInput = styled.input`
   width: 30%;
   min-width: 200px;
-  height: 20px;
+  height: 22px;
   border-radius: 16px;
   border: 1px solid #bbb;
-  padding: 6px 0 6px 0;
+  padding: 6px 0 6px 20px;
 
   &::-webkit-input-placeholder {
     background-image: url(https://cdn1.iconfinder.com/data/icons/hawcons/32/698627-icon-111-search-256.png);
@@ -71,16 +72,17 @@ export const NavBotton = styled.button`
   margin: 15px;
   border-radius: 16px;
   border: none;
-  background-color: #3c2e9b;
+  background-color: #1f2dac;
   color: #fff;
   cursor: pointer;
 
   &:hover {
-    background-color: #35297e;
+    background-color: #1f2dac;
+    box-shadow: 0px 2px 5px 1px rgba(0, 0, 0, 0.25);
   }
 
   &:active {
-    background-color: #35297e;
+    background-color: #1f2dac;
     box-shadow: 0.5px 0.5px 0.5px #333;
   }
 `;

@@ -4,7 +4,6 @@ import {Body3} from '../../styles/styles.style';
 
 export const Container = styled.div`
   padding-left: 25vw;
-  padding-top: 75px;
 `;
 
 // SearchInput
@@ -15,8 +14,7 @@ export const SearchInput = styled.input`
   height: 20px;
   border-radius: 16px;
   border: 1px solid #bbb;
-  padding: 6px 0 6px 0;
-  padding-left: 20px;
+  padding: 6px 0 6px 20px;
   margin: 6px;
 
   &::-webkit-input-placeholder {
@@ -56,11 +54,26 @@ export const Tag = styled(Body3)`
   padding: 10px 20px;
   border-radius: 16px;
   cursor: pointer;
+
+  &:hover {
+    background-color: lightgrey;
+    box-shadow: 0px 1px 2px 1px rgba(0, 0, 0, 0.25);
+  }
 `;
 
 export const TagContainer = styled.div`
   display: flex;
   justify-content: space-around;
-  padding-left: 20vw;
-  padding-right: 15vw;
+  padding-left: 25vw;
+  padding-right: 20vw;
+`;
+
+export const RecCarImgDiv = styled.div`
+  display: flex;
+  justify-content: center;
+  height: 70%;
+`;
+
+export const RecCarThumbnail = styled.img`
+  width: 90%;
 `;
