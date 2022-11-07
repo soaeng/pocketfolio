@@ -183,7 +183,7 @@ public class RoomController {
         try{
             long userSeq = (Long) request.getAttribute("userSeq");
             if (userSeq > 0) {
-
+                response = roomService.findRoomLikeList(userSeq);
                 status = HttpStatus.OK;
             } else {
                 log.error("사용 불가능 토큰");

@@ -22,6 +22,7 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -68,16 +69,20 @@ public class RoomServiceImpl implements RoomService {
         List<RoomDetailRes> roomDetailResList = new ArrayList<>();
 
         User user = userRepository.findById(userSeq).orElseThrow(() -> new IllegalArgumentException("해당 사용자가 존재하지 않습니다."));
-        List<Room> rooms = roomRepository.findAllByUser(user);
-
-        for (Room room : rooms) {
-            RoomDetailRes roomDetailRes = RoomDetailRes.builder()
-                    .room(new RoomDto(room))
-                    .hitCount(roomHitRepository.countAllByRoom(room))
-                    .likeCount(roomLikeRepository.countAllByRoom(room))
-                    .userName(user.getName())
-                    .build();
-            roomDetailResList.add(roomDetailRes);
+        try {
+            List<Room> rooms = roomRepository.findAllByUser(user);
+            for (Room room : rooms) {
+                RoomDetailRes roomDetailRes = RoomDetailRes.builder()
+                        .room(new RoomDto(room))
+                        .hitCount(roomHitRepository.countAllByRoom(room))
+                        .likeCount(roomLikeRepository.countAllByRoom(room))
+                        .userName(user.getName())
+                        .build();
+                roomDetailResList.add(roomDetailRes);
+            }
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            roomDetailResList = null;
         }
 
         return roomDetailResList;
@@ -222,8 +227,17 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
+    @Transactional(readOnly = true) // 지연 조회 시점까지 세션 유지
     public List<RoomDetailRes> findRoomLikeList(long userSeq) {
-        return null;
+        log.debug("[GET] Service - findRoomLikeList");
+        User user = userRepository.findById(userSeq).orElseThrow(() -> new IllegalArgumentException("해당 사용자를 찾을 수 없습니다."));
+        try {
+            List<Room> rooms = roomLikeRepository.findAllByUser(user).stream().map(RoomLike::getRoom).collect(Collectors.toList());
+            return getRoomDetailResList(rooms, user);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return null;
+        }
     }
 
     @Override
@@ -231,4 +245,17 @@ public class RoomServiceImpl implements RoomService {
         return null;
     }
 
+    public List<RoomDetailRes> getRoomDetailResList(List<Room> rooms, User user) {
+        List<RoomDetailRes> roomDetailResList = new ArrayList<>();
+        for (Room room : rooms) {
+            RoomDetailRes roomDetailRes = RoomDetailRes.builder()
+                    .room(new RoomDto(room))
+                    .hitCount(roomHitRepository.countAllByRoom(room))
+                    .likeCount(roomLikeRepository.countAllByRoom(room))
+                    .userName(user.getName())
+                    .build();
+            roomDetailResList.add(roomDetailRes);
+        }
+        return roomDetailResList;
+    }
 }
