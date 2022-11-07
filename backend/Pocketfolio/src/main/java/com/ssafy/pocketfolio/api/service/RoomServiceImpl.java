@@ -41,7 +41,7 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     @Transactional
-    public long insertRoom(long userSeq, RoomReq req, MultipartFile thumbnail) throws IOException {
+    public Long insertRoom(long userSeq, RoomReq req, MultipartFile thumbnail) throws IOException {
         log.debug("[POST] Service - insertRoom");
         User user = userRepository.findById(userSeq).orElseThrow(() -> new IllegalArgumentException("해당 사용자가 존재하지 않습니다."));
         // 저장된 썸네일 주소
@@ -51,7 +51,8 @@ public class RoomServiceImpl implements RoomService {
         if (thumbnail != null) {
             thumbnailUrl = fileHandler.saveThumbnail(thumbnail, "room" + File.separator + "thumbnail");
             if(thumbnailUrl == null) {
-                return -1;
+                log.error("썸네일 저장 실패");
+                return null;
             }
         }
         Room room = RoomReq.toEntity(req, thumbnailUrl, user);
@@ -109,9 +110,15 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     @Transactional
-    public long updateRoom(long roomSeq, RoomReq req, MultipartFile thumbnail) throws IOException {
+    public Long updateRoom(long userSeq, long roomSeq, RoomReq req, MultipartFile thumbnail) throws IOException {
         log.debug("[PATCH] Service - updateRoom");
         Room room = roomRepository.findById(roomSeq).orElseThrow(() -> new IllegalArgumentException("해당 방을 찾을 수 없습니다."));
+
+        if (room.getUser().getUserSeq() != userSeq) {
+            log.error("권한 없음");
+            return null;
+        }
+
         // 저장된 썸네일 주소
         String thumbnailUrl = room.getThumbnail();
 
@@ -123,7 +130,8 @@ public class RoomServiceImpl implements RoomService {
             }
             thumbnailUrl = fileHandler.saveThumbnail(thumbnail, "room" + File.separator + "thumbnail");
             if(thumbnailUrl == null) {
-                return -1;
+                log.error("썸네일 저장 실패");
+                return null;
             }
         } else {
             // 썸네일 삭제 후 전송되고 이전에 썸네일 있었으면 썸네일 파일 삭제
@@ -144,20 +152,25 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     @Transactional
-    public void deleteRoom(long roomSeq) {
+    public Boolean deleteRoom(long userSeq, long roomSeq) {
         log.debug("[DELETE] Service - deleteRoom");
         Room room = roomRepository.findById(roomSeq).orElseThrow(() -> new IllegalArgumentException("해당 방을 찾을 수 없습니다."));
 
+        if (room.getUser().getUserSeq() != userSeq) {
+            log.error("권한 없음");
+            return false;
+        }
         // 썸네일 삭제
         if (room.getThumbnail() != null) {
             fileHandler.deleteFile(room.getThumbnail());
         }
         roomRepository.deleteById(roomSeq);
+        return true;
     }
 
     @Override
     @Transactional
-    public boolean insertRoomLike(long userSeq, long roomSeq) {
+    public Boolean insertRoomLike(long userSeq, long roomSeq) {
         log.debug("[POST] Service - insertRoomLike");
 
         User user = userRepository.findById(userSeq).orElseThrow(() -> new IllegalArgumentException("해당 사용자를 찾을 수 없습니다."));
@@ -173,7 +186,7 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     @Transactional
-    public boolean deleteRoomLike(long userSeq, long roomSeq) {
+    public Boolean deleteRoomLike(long userSeq, long roomSeq) {
         log.debug("[DELETE] Service - deleteRoomLike");
 
         User user = userRepository.findById(userSeq).orElseThrow(() -> new IllegalArgumentException("해당 사용자를 찾을 수 없습니다."));

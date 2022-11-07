@@ -12,8 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -53,13 +51,18 @@ public class PortfolioController {
     @GetMapping
     private ResponseEntity<List<PortfolioRes>> findPortfolioList(HttpServletRequest request){
         log.debug("[GET] Controller - findPortfolioList");
-        List<PortfolioRes> response = new ArrayList<>();
+        List<PortfolioRes> response = null;
         HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
 
         try{
             long userSeq = (Long) request.getAttribute("userSeq");
-            response = portfolioService.findPortfolioList(userSeq);
-            status = HttpStatus.OK;
+            if (userSeq > 0) {
+                response = portfolioService.findPortfolioList(userSeq);
+                status = HttpStatus.OK;
+            } else {
+                log.error("사용 불가능 토큰");
+                status = HttpStatus.FORBIDDEN;
+            }
         } catch (Exception e) {
             log.error(e.getMessage());
         }
@@ -79,20 +82,26 @@ public class PortfolioController {
         } catch (Exception e) {
             log.error(e.getMessage());
         }
-        // TODO: pagenation으로 할 수도 있어서 일단은 전체 개수 따로 반환하지 않음.
         return new ResponseEntity<>(response, status);
     }
 
     @PatchMapping("/{portSeq}")
-    private ResponseEntity<Long> updatePortfolio(@PathVariable(value="portSeq") long portSeq, @RequestPart(value="portfolio") PortfolioReq request, @RequestPart(value = "thumbnail", required = false) MultipartFile thumbnail, @RequestPart(value = "files", required = false) List<MultipartFile> files) {
+    private ResponseEntity<Long> updatePortfolio(@PathVariable(value="portSeq") long portSeq, @RequestPart(value="portfolio") PortfolioReq portfolio, @RequestPart(value = "thumbnail", required = false) MultipartFile thumbnail, @RequestPart(value = "files", required = false) List<MultipartFile> files, HttpServletRequest request) {
         log.debug("[PATCH] Controller - Portfolio");
         // 포트폴리오 저장 후 해당 포트폴리오 번호 반환
         Long response = null;
         HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
 
+        long userSeq = (Long) request.getAttribute("userSeq");
+
         try {
-            response = portfolioService.updatePortfolio(portSeq, request, thumbnail, files);
-            status = HttpStatus.CREATED;
+            if (userSeq > 0) {
+                response = portfolioService.updatePortfolio(userSeq, portSeq, portfolio, thumbnail, files);
+                status = HttpStatus.CREATED;
+            } else {
+                log.error("사용 불가능 토큰");
+                status = HttpStatus.FORBIDDEN;
+            }
         } catch (Exception e) {
             log.error(e.getMessage());
         }
@@ -101,16 +110,22 @@ public class PortfolioController {
     }
 
     @DeleteMapping("/{portSeq}")
-    private ResponseEntity<Boolean> deletePortfolio(@PathVariable(value="portSeq") long portSeq) {
+    private ResponseEntity<Boolean> deletePortfolio(@PathVariable(value="portSeq") long portSeq, HttpServletRequest request) {
         log.debug("[DELETE] Controller - Portfolio");
-        boolean response = false;
+        Boolean response = false;
         HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
 
+        long userSeq = (Long) request.getAttribute("userSeq");
+
         try {
-            portfolioService.deletePortfolio(portSeq);
-            response = true;
-        }
-        catch (Exception e) {
+            if (userSeq > 0) {
+                response = portfolioService.deletePortfolio(userSeq, portSeq);
+                status = response ? HttpStatus.OK : HttpStatus.INTERNAL_SERVER_ERROR;
+            } else {
+                log.error("사용 불가능 토큰");
+                status = HttpStatus.FORBIDDEN;
+            }
+        } catch (Exception e) {
             log.error(e.getMessage());
         }
 
