@@ -27,7 +27,7 @@ import java.util.List;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class PortfolioServiceImpl implements PortfolioService{
+public class PortfolioServiceImpl implements PortfolioService {
 
     private final UserRepository userRepository;
     private final PortfolioRepository portfolioRepository;
@@ -42,7 +42,6 @@ public class PortfolioServiceImpl implements PortfolioService{
         log.debug("[POST] Service - insertPortfolio");
 
         // 사용자 번호를 통한 사용자 조회
-        // TODO: 사용자 예외 처리
         User user = userRepository.findById(userSeq).orElseThrow(() -> new IllegalArgumentException("해당 사용자가 존재하지 않습니다."));
         // 저장된 썸네일 주소
         String thumbnailUrl = null;
