@@ -73,6 +73,20 @@ export const Ui = styled.div`
   }
 `;
 
+export const TestButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #999;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  color: #fff;
+  box-shadow: 0px 2px 5px 1px rgba(0, 0, 0, 0.25);
+  border: 0;
+  transition: all 0.2s cubic-bezier(0.39, 0.575, 0.565, 1);
+`;
+
 export const Item2 = styled.div`
   display: flex;
   justify-content: space-between;
