@@ -15,7 +15,6 @@ import javax.persistence.*;
 name="item",
 uniqueConstraints = {
 		@UniqueConstraint(name="UK_ITEM", columnNames={"asset"}),
-		@UniqueConstraint(name="UK_ITEM_CATEGORY", columnNames={"category", "name"}),
 		@UniqueConstraint(name="UK_ITEM_IMAGE", columnNames={"image"})
 }
 )
@@ -37,14 +36,14 @@ public class Item {
 	@NotNull
 	private String image;
 
-	@Column(name="category", length=30, nullable=false)
-	@NotNull
-	private String category;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="item_category_seq")
+	private ItemCategory itemCategory;
 
-	public void updateItem(String name, String asset, String image, String category) { // for administrator
+	public void updateItem(String name, String asset, String image, ItemCategory itemCategory) { // for administrator
 		this.name = name;
 		this.asset = asset;
 		this.image = image;
-		this.category = category;
+		this.itemCategory = itemCategory;
 	}
 }

@@ -24,14 +24,10 @@ public class ItemRes {
     @Schema(description = "아이템 이미지 파일 경로", nullable = false, maxLength = 255, example = "/upload/img/J2EeRo2d.jpg")
     private String image;
 
-    @Schema(description = "아이템 카테고리 이름", nullable = false, maxLength = 30)
-    private String category;
-
     public ItemRes(Item item) {
         itemSeq = item.getItemSeq();
         name = item.getName();
         asset = item.getAsset();
         image = item.getImage();
-        category = item.getCategory();
     }
 }

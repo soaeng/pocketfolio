@@ -1,5 +1,6 @@
 package com.ssafy.pocketfolio.api.controller;
 
+import com.ssafy.pocketfolio.api.dto.response.ItemCategoryListRes;
 import com.ssafy.pocketfolio.api.dto.response.ItemRes;
 import com.ssafy.pocketfolio.api.service.ItemService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -24,17 +25,17 @@ import java.util.List;
 public class ItemController {
     private final ItemService itemService;
 
-    @Operation(summary = "오브젝트 카테고리 리스트 조회", description = "토큰을 이용하여 회원 정보 조회", responses = {
+    @Operation(summary = "오브젝트 카테고리 리스트 조회", description = "카테고리 번호 / 카테고리 이름 / 각 카테고리 별 마지막 페이지 번호", responses = {
             @ApiResponse(responseCode = "200", description = "회원 정보 조회 성공", content = @Content(schema = @Schema(implementation = List.class))),
             @ApiResponse(responseCode = "404", description = "존재하지 않는 리소스 접근(페이지가 0 이하거나 전체 페이지를 초과할 경우 or 카테고리 이름이 잘못될 경우",
                     content = @Content(schema = @Schema(implementation = List.class))),
             @ApiResponse(responseCode = "500", description = "서버 에러", content = @Content(schema = @Schema(implementation = List.class)))
     })
     @GetMapping("/category")
-    public ResponseEntity<List<String>> findItemCategoryList() {
+    public ResponseEntity<List<ItemCategoryListRes>> findItemCategoryList() {
         log.debug("Controller: findItemCategoryList()");
         HttpStatus status;
-        List<String> result = new ArrayList<>();
+        List<ItemCategoryListRes> result = new ArrayList<>();
 
         try {
             result = itemService.findItemCategoryList();
@@ -47,14 +48,14 @@ public class ItemController {
         return new ResponseEntity<>(result, status);
     }
 
-    @Operation(summary = "오브젝트 리스트 조회", description = "토큰을 이용하여 회원 정보 조회", responses = {
+    @Operation(summary = "오브젝트 리스트 조회", description = "category는 category 번호: 0이면 전체 / page는 페이지 번호", responses = {
             @ApiResponse(responseCode = "200", description = "회원 정보 조회 성공", content = @Content(schema = @Schema(implementation = List.class))),
             @ApiResponse(responseCode = "404", description = "존재하지 않는 리소스 접근(페이지가 0 이하거나 전체 페이지를 초과할 경우 or 카테고리 이름이 잘못될 경우",
                     content = @Content(schema = @Schema(implementation = List.class))),
             @ApiResponse(responseCode = "500", description = "서버 에러", content = @Content(schema = @Schema(implementation = List.class)))
     })
     @GetMapping
-    public ResponseEntity<List<ItemRes>> findItemList(@RequestParam String category, @RequestParam int page) {
+    public ResponseEntity<List<ItemRes>> findItemList(@RequestParam long category, @RequestParam int page) {
         log.debug("Controller: findItemList()");
         HttpStatus status;
         List<ItemRes> result = new ArrayList<>();
@@ -73,7 +74,7 @@ public class ItemController {
         return new ResponseEntity<>(result, status);
     }
 
-    @Operation(summary = "오브젝트 단건 조회", description = "토큰을 이용하여 회원 정보 조회", responses = {
+    @Operation(summary = "오브젝트 단건 조회", description = "오브젝트 번호로 단건 조회", responses = {
             @ApiResponse(responseCode = "200", description = "회원 정보 조회 성공", content = @Content(schema = @Schema(implementation = ItemRes.class))),
             @ApiResponse(responseCode = "404", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = ItemRes.class))),
             @ApiResponse(responseCode = "500", description = "서버 에러", content = @Content(schema = @Schema(implementation = ItemRes.class)))
