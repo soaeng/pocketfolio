@@ -15,7 +15,7 @@ public interface RoomService {
      * @return 생성된 방 번호
      * @throws IOException 썸네일 이미지 저장 실패 시 던져짐
      */
-    long insertRoom(long userSeq, RoomReq req, MultipartFile thumbnail) throws IOException;
+    Long insertRoom(long userSeq, RoomReq req, MultipartFile thumbnail) throws IOException;
 
     /**
      * 마이룸 목록 조회
@@ -34,18 +34,20 @@ public interface RoomService {
 
     /**
      * 마이룸 수정
+     * @param userSeq 회원 번호 (로그인 유저)
      * @param req 방 정보
      * @param thumbnail 썸네일 이미지
      * @return 수정된 방 번호
      * @throws IOException 썸네일 이미지 저장 실패 시 던져짐
      */
-    long updateRoom(long roomSeq, RoomReq req, MultipartFile thumbnail) throws IOException;
+    Long updateRoom(long userSeq, long roomSeq, RoomReq req, MultipartFile thumbnail) throws IOException;
 
     /**
      * 마이룸 삭제
+     * @param userSeq 회원 번호 (로그인 유저)
      * @param roomSeq 방 번호
      */
-    void deleteRoom(long roomSeq);
+    Boolean deleteRoom(long userSeq, long roomSeq);
 
     /**
      * 방 좋아요
@@ -53,7 +55,7 @@ public interface RoomService {
      * @param roomSeq 방 번호
      * @return 좋아요 여부
      */
-    boolean insertRoomLike(long userSeq, long roomSeq);
+    Boolean insertRoomLike(long userSeq, long roomSeq);
 
     /**
      * 방 좋아요 취소
@@ -61,7 +63,7 @@ public interface RoomService {
      * @param roomSeq 방 번호
      * @return 좋아요 취소 여부
      */
-    boolean deleteRoomLike(long userSeq, long roomSeq);
+    Boolean deleteRoomLike(long userSeq, long roomSeq);
 
     /**
      * 본인이 좋아요 남긴 방 목록

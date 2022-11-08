@@ -38,12 +38,16 @@ public class MultipartFileHandler {
     private boolean checkImageType(Path filePath) {
         try {
             String contentType = Files.probeContentType(filePath);
-            return contentType.startsWith("image");
+            if(contentType.startsWith("image")) {
+                return true;
+            } else {
+                log.debug("이미지 파일이 아닙니다.");
+                return false;
+            }
         }catch(IOException e) {
             e.printStackTrace();
+            return false;
         }
-        log.debug("이미지 파일이 아닙니다.");
-        return false;
     }
 
     // 파일 저장
@@ -67,11 +71,12 @@ public class MultipartFileHandler {
         log.debug(upload.getPath());
 
         if (!upload.exists()){
-            if (!upload.mkdir()) {
+            try {
+                Files.createDirectories(Paths.get(upload.getPath()));
+                log.debug("폴더 생성 성공");
+            } catch (IOException e) {
                 log.debug("폴더 생성 실패");
                 return null;
-            } else {
-                log.debug("폴더 생성 성공");
             }
         }
 

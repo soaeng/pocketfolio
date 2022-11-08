@@ -18,7 +18,7 @@ public interface PortfolioService {
      * @return 등록된 포트폴리오 번호
      * @throws IOException 서버에 작성 실패 시 던진다.
      */
-    long insertPortfolio(PortfolioReq req, MultipartFile thumbnail, long userSeq, List<MultipartFile> files) throws IOException;
+    Long insertPortfolio(PortfolioReq req, MultipartFile thumbnail, long userSeq, List<MultipartFile> files) throws IOException;
 
     /**
      * 포트폴리오 목록 조회
@@ -36,6 +36,7 @@ public interface PortfolioService {
 
     /**
      * 포트폴리오 수정
+     * @param userSeq 회원 번호 (로그인 유저)
      * @param portSeq 수정할 포트폴리오 번호
      * @param req 포트폴리오 정보
      * @param thumbnail 프트폴리오 썸네일 이미지
@@ -43,11 +44,13 @@ public interface PortfolioService {
      * @return 수정된 포트폴리오 번호
      * @throws IOException 수정 과정 중 문제 발생 시 던져짐
      */
-    long updatePortfolio(long portSeq, PortfolioReq req, MultipartFile thumbnail, List<MultipartFile> files) throws IOException;
+    Long updatePortfolio(long userSeq, long portSeq, PortfolioReq req, MultipartFile thumbnail, List<MultipartFile> files) throws IOException;
 
     /**
      * 포트폴리오 삭제
+     * @param userSeq 회원 번호 (로그인 유저)
      * @param portSeq 삭제할 포트폴리오 번호
+     * @return 삭제 여부
      */
-    void deletePortfolio(long portSeq);
+    Boolean deletePortfolio(long userSeq, long portSeq);
 }

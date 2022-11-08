@@ -9,6 +9,7 @@ import com.ssafy.pocketfolio.db.repository.RoomHitRepository;
 import com.ssafy.pocketfolio.db.repository.RoomLikeRepository;
 import com.ssafy.pocketfolio.db.repository.RoomRepository;
 import com.ssafy.pocketfolio.db.repository.UserRepository;
+import com.ssafy.pocketfolio.db.view.RoomBestListView;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,6 +23,7 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -41,7 +43,7 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     @Transactional
-    public long insertRoom(long userSeq, RoomReq req, MultipartFile thumbnail) throws IOException {
+    public Long insertRoom(long userSeq, RoomReq req, MultipartFile thumbnail) throws IOException {
         log.debug("[POST] Service - insertRoom");
         User user = userRepository.findById(userSeq).orElseThrow(() -> new IllegalArgumentException("해당 사용자가 존재하지 않습니다."));
         // 저장된 썸네일 주소
@@ -51,7 +53,8 @@ public class RoomServiceImpl implements RoomService {
         if (thumbnail != null) {
             thumbnailUrl = fileHandler.saveThumbnail(thumbnail, "room" + File.separator + "thumbnail");
             if(thumbnailUrl == null) {
-                return -1;
+                log.error("썸네일 저장 실패");
+                return null;
             }
         }
         Room room = RoomReq.toEntity(req, thumbnailUrl, user);
@@ -67,16 +70,20 @@ public class RoomServiceImpl implements RoomService {
         List<RoomDetailRes> roomDetailResList = new ArrayList<>();
 
         User user = userRepository.findById(userSeq).orElseThrow(() -> new IllegalArgumentException("해당 사용자가 존재하지 않습니다."));
-        List<Room> rooms = roomRepository.findAllByUser(user);
-
-        for (Room room : rooms) {
-            RoomDetailRes roomDetailRes = RoomDetailRes.builder()
-                    .room(new RoomDto(room))
-                    .hitCount(roomHitRepository.countAllByRoom(room))
-                    .likeCount(roomLikeRepository.countAllByRoom(room))
-                    .userName(user.getName())
-                    .build();
-            roomDetailResList.add(roomDetailRes);
+        try {
+            List<Room> rooms = roomRepository.findAllByUser(user);
+            for (Room room : rooms) {
+                RoomDetailRes roomDetailRes = RoomDetailRes.builder()
+                        .room(new RoomDto(room))
+                        .hitCount(roomHitRepository.countAllByRoom(room))
+                        .likeCount(roomLikeRepository.countAllByRoom(room))
+                        .userName(user.getName())
+                        .build();
+                roomDetailResList.add(roomDetailRes);
+            }
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            roomDetailResList = null;
         }
 
         return roomDetailResList;
@@ -109,9 +116,15 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     @Transactional
-    public long updateRoom(long roomSeq, RoomReq req, MultipartFile thumbnail) throws IOException {
+    public Long updateRoom(long userSeq, long roomSeq, RoomReq req, MultipartFile thumbnail) throws IOException {
         log.debug("[PATCH] Service - updateRoom");
         Room room = roomRepository.findById(roomSeq).orElseThrow(() -> new IllegalArgumentException("해당 방을 찾을 수 없습니다."));
+
+        if (room.getUser().getUserSeq() != userSeq) {
+            log.error("권한 없음");
+            return null;
+        }
+
         // 저장된 썸네일 주소
         String thumbnailUrl = room.getThumbnail();
 
@@ -123,7 +136,8 @@ public class RoomServiceImpl implements RoomService {
             }
             thumbnailUrl = fileHandler.saveThumbnail(thumbnail, "room" + File.separator + "thumbnail");
             if(thumbnailUrl == null) {
-                return -1;
+                log.error("썸네일 저장 실패");
+                return null;
             }
         } else {
             // 썸네일 삭제 후 전송되고 이전에 썸네일 있었으면 썸네일 파일 삭제
@@ -144,62 +158,118 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     @Transactional
-    public void deleteRoom(long roomSeq) {
+    public Boolean deleteRoom(long userSeq, long roomSeq) {
         log.debug("[DELETE] Service - deleteRoom");
         Room room = roomRepository.findById(roomSeq).orElseThrow(() -> new IllegalArgumentException("해당 방을 찾을 수 없습니다."));
+
+        if (room.getUser().getUserSeq() != userSeq) {
+            log.error("권한 없음");
+            return false;
+        }
 
         // 썸네일 삭제
         if (room.getThumbnail() != null) {
             fileHandler.deleteFile(room.getThumbnail());
         }
         roomRepository.deleteById(roomSeq);
+        return true;
     }
 
     @Override
     @Transactional
-    public boolean insertRoomLike(long userSeq, long roomSeq) {
+    public Boolean insertRoomLike(long userSeq, long roomSeq) {
         log.debug("[POST] Service - insertRoomLike");
 
         User user = userRepository.findById(userSeq).orElseThrow(() -> new IllegalArgumentException("해당 사용자를 찾을 수 없습니다."));
         Room room = roomRepository.findById(roomSeq).orElseThrow(() -> new IllegalArgumentException("해당 방을 찾을 수 없습니다."));
 
         // 본인 방이 아닌 경우 + 좋아요 이력 없는 경우 좋아요
-        if (userSeq != room.getUser().getUserSeq() && !roomLikeRepository.existsByUser(user)) {
-            roomLikeRepository.save(RoomLike.builder().room(room).user(user).build());
-            return true;
-        }
-        return false;
-    }
-
-    @Override
-    @Transactional
-    public boolean deleteRoomLike(long userSeq, long roomSeq) {
-        log.debug("[DELETE] Service - deleteRoomLike");
-
-        User user = userRepository.findById(userSeq).orElseThrow(() -> new IllegalArgumentException("해당 사용자를 찾을 수 없습니다."));
-        Room room = roomRepository.findById(roomSeq).orElseThrow(() -> new IllegalArgumentException("해당 방을 찾을 수 없습니다."));
-
-        // 본인 방이 아닌 경우 + 좋아요 이력 있는 경우 좋아요
-        if (userSeq != room.getUser().getUserSeq() && roomLikeRepository.existsByUser(user)) {
-            try {
-                roomLikeRepository.deleteByRoomAndUser(room, user);
-                return true;
-            } catch (Exception e) {
-                log.error(e.getMessage());
+        if (userSeq != room.getUser().getUserSeq()) {
+            if (roomLikeRepository.existsByUser(user)) {
+                log.error("이미 좋아요 추가한 방");
                 return false;
+            } else {
+                try{
+                    roomLikeRepository.save(RoomLike.builder().room(room).user(user).build());
+                    return true;
+                } catch (Exception e) {
+                    log.error(e.getMessage());
+                    return false;
+                }
             }
         }
         return false;
     }
 
     @Override
+    @Transactional
+    public Boolean deleteRoomLike(long userSeq, long roomSeq) {
+        log.debug("[DELETE] Service - deleteRoomLike");
+
+        User user = userRepository.findById(userSeq).orElseThrow(() -> new IllegalArgumentException("해당 사용자를 찾을 수 없습니다."));
+        Room room = roomRepository.findById(roomSeq).orElseThrow(() -> new IllegalArgumentException("해당 방을 찾을 수 없습니다."));
+
+        // 본인 방이 아닌 경우 + 좋아요 이력 있는 경우 좋아요
+        if (userSeq != room.getUser().getUserSeq()) {
+            if (roomLikeRepository.existsByUser(user)) {
+                log.error("좋아요 이력 없음");
+                return false;
+            } else {
+                try {
+                    roomLikeRepository.deleteByRoomAndUser(room, user);
+                    return true;
+                } catch (Exception e) {
+                    log.error(e.getMessage());
+                    return false;
+                }
+            }
+        }
+        return false;
+    }
+
+    @Override
+    @Transactional(readOnly = true) // 지연 조회 시점까지 세션 유지
     public List<RoomDetailRes> findRoomLikeList(long userSeq) {
-        return null;
+        log.debug("[GET] Service - findRoomLikeList");
+        User user = userRepository.findById(userSeq).orElseThrow(() -> new IllegalArgumentException("해당 사용자를 찾을 수 없습니다."));
+        try {
+            List<Room> rooms = roomLikeRepository.findAllByUser(user).stream().map(RoomLike::getRoom).collect(Collectors.toList());
+            return getRoomDetailResList(rooms);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return null;
+        }
     }
 
     @Override
     public List<RoomDetailRes> findRoomBestList() {
-        return null;
+        log.debug("[GET] Service - findRoomBestList");
+        try {
+            List<RoomBestListView> bestList = roomLikeRepository.findRoomLikeCount();
+            log.debug(bestList.toString());
+            List<Room> rooms = new ArrayList<>();
+            for(RoomBestListView best : bestList) {
+//                Room room =
+//                rooms.add(room);
+            }
+            return getRoomDetailResList(rooms);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return null;
+        }
     }
 
+    public List<RoomDetailRes> getRoomDetailResList(List<Room> rooms) {
+        List<RoomDetailRes> roomDetailResList = new ArrayList<>();
+        for (Room room : rooms) {
+            RoomDetailRes roomDetailRes = RoomDetailRes.builder()
+                    .room(new RoomDto(room))
+                    .hitCount(roomHitRepository.countAllByRoom(room))
+                    .likeCount(roomLikeRepository.countAllByRoom(room))
+                    .userName(room.getUser().getName())
+                    .build();
+            roomDetailResList.add(roomDetailRes);
+        }
+        return roomDetailResList;
+    }
 }

@@ -43,7 +43,7 @@ public class PortfolioServiceImpl implements PortfolioService{
     // 포트폴리오 등록
     @Override
     @Transactional
-    public long insertPortfolio(PortfolioReq req, MultipartFile thumbnail, long userSeq, List<MultipartFile> files) throws IOException {
+    public Long insertPortfolio(PortfolioReq req, MultipartFile thumbnail, long userSeq, List<MultipartFile> files) throws IOException {
         log.debug("[POST] Service - insertPortfolio");
 
         // 사용자 번호를 통한 사용자 조회
@@ -56,7 +56,8 @@ public class PortfolioServiceImpl implements PortfolioService{
         if (thumbnail != null) {
             thumbnailUrl = fileHandler.saveThumbnail(thumbnail, "portfolio" + File.separator + "thumbnail");
             if(thumbnailUrl == null) {
-                return -1;
+                log.error("썸네일 저장 실패");
+                return null;
             }
         }
 
@@ -84,14 +85,19 @@ public class PortfolioServiceImpl implements PortfolioService{
         log.debug("[GET] Service - findPortfolioList");
         List<PortfolioRes> portfolioRes = new ArrayList<>();
         
-        User user = userRepository.findById(userSeq).orElseThrow(() -> new IllegalArgumentException("해당 사용자가 존재하지 않습니다."));
-        List<Portfolio> portfolios = portfolioRepository.findAllByUser(user);
+        try {
+            User user = userRepository.findById(userSeq).orElseThrow(() -> new IllegalArgumentException("해당 사용자가 존재하지 않습니다."));
+            List<Portfolio> portfolios = portfolioRepository.findAllByUser(user);
 
-        for (Portfolio portfolio : portfolios) {
-            List<PortfolioUrl> urls = portfolioUrlRepository.findAllByPortfolio(portfolio);
-            List<Tag> tags = tagRepository.findAllByPortfolio(portfolio);
-            PortfolioRes result = PortfolioRes.toDto(portfolio, urls, tags);
-            portfolioRes.add(result);
+            for (Portfolio portfolio : portfolios) {
+                List<PortfolioUrl> urls = portfolioUrlRepository.findAllByPortfolio(portfolio);
+                List<Tag> tags = tagRepository.findAllByPortfolio(portfolio);
+                PortfolioRes result = PortfolioRes.toDto(portfolio, urls, tags);
+                portfolioRes.add(result);
+            }
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            portfolioRes = null;
         }
 
         return portfolioRes;
@@ -112,11 +118,17 @@ public class PortfolioServiceImpl implements PortfolioService{
     // 포트폴리오 수정
     @Override
     @Transactional
-    public long updatePortfolio(long portSeq, PortfolioReq req, MultipartFile thumbnail, List<MultipartFile> files) throws IOException {
+    public Long updatePortfolio(long userSeq, long portSeq, PortfolioReq req, MultipartFile thumbnail, List<MultipartFile> files) throws IOException {
         log.debug("[PATCH] Service - updatePortfolio");
 
         Portfolio portfolio = portfolioRepository.findById(portSeq).orElseThrow(() -> new IllegalArgumentException("해당 포트폴리오가 존재하지 않습니다."));
-        log.debug("portfolio" + portfolio.toString());
+        
+        if (userSeq != portfolio.getUser().getUserSeq()) {
+            log.error("권한 없음");
+            return null;
+        }
+        
+        log.debug("portfolio" + portfolio);
         // 저장된 썸네일 주소
         String thumbnailUrl = portfolio.getThumbnail();
 
@@ -128,7 +140,8 @@ public class PortfolioServiceImpl implements PortfolioService{
             }
             thumbnailUrl = fileHandler.saveThumbnail(thumbnail, "portfolio" + File.separator + "thumbnail");
             if(thumbnailUrl == null) {
-                return -1;
+                log.error("썸네일 저장 실패");
+                return null;
             }
         } else {
             // 썸네일 삭제 후 전송되고 이전에 썸네일 있었으면 썸네일 파일 삭제
@@ -159,24 +172,37 @@ public class PortfolioServiceImpl implements PortfolioService{
 
     // 포트폴리오 삭제
     @Override
-    public void deletePortfolio(long portSeq) {
+    @Transactional
+    public Boolean deletePortfolio(long userSeq, long portSeq) {
         log.debug("[DELETE] Service - deletePortfolio");
-        Portfolio portfolio = portfolioRepository.findById(portSeq).orElseThrow(() -> new IllegalArgumentException("해당 포트폴리오가 존재하지 않습니다."));
-        // 썸네일 삭제
-        if (portfolio.getThumbnail() != null) {
-            fileHandler.deleteFile(portfolio.getThumbnail());
-        }
-        tagRepository.deleteAllByPortfolio(portfolio);
-        List<PortfolioUrl> urls = portfolioUrlRepository.findAllByPortfolio(portfolio);
-        // 첨부파일 삭제
-        if(!urls.isEmpty()) {
-            for (PortfolioUrl url : urls) {
-                fileHandler.deleteFile(url.getUrl());
+        try {
+            Portfolio portfolio = portfolioRepository.findById(portSeq).orElseThrow(() -> new IllegalArgumentException("해당 포트폴리오가 존재하지 않습니다."));
+
+            if (userSeq != portfolio.getUser().getUserSeq()) {
+                log.error("권한 없음");
+                return null;
             }
+
+            // 썸네일 삭제
+            if (portfolio.getThumbnail() != null) {
+                fileHandler.deleteFile(portfolio.getThumbnail());
+            }
+            tagRepository.deleteAllByPortfolio(portfolio);
+            List<PortfolioUrl> urls = portfolioUrlRepository.findAllByPortfolio(portfolio);
+            // 첨부파일 삭제
+            if(!urls.isEmpty()) {
+                for (PortfolioUrl url : urls) {
+                    fileHandler.deleteFile(url.getUrl());
+                }
+            }
+            portfolioUrlRepository.deleteAllByPortfolio(portfolio);
+            // 포트폴리오 삭제
+            portfolioRepository.deleteById(portSeq);
+            return true;
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return false;
         }
-        portfolioUrlRepository.deleteAllByPortfolio(portfolio);
-        // 포트폴리오 삭제
-        portfolioRepository.deleteById(portSeq);
     }
 
     // 태그 저장
@@ -197,7 +223,7 @@ public class PortfolioServiceImpl implements PortfolioService{
         }
     }
 
-
+    // 파일 저장
     public void saveUrls(List<MultipartFile> files, Portfolio portfolio) throws IOException {
         for (MultipartFile file : files) {
             File dest = fileHandler.saveFile(file, "portfolio");
@@ -208,5 +234,4 @@ public class PortfolioServiceImpl implements PortfolioService{
             portfolioUrlRepository.save(url);
         }
     }
-
 }

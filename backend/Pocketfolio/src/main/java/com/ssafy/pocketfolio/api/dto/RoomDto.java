@@ -1,13 +1,15 @@
 package com.ssafy.pocketfolio.api.dto;
 
 import com.ssafy.pocketfolio.db.entity.Room;
+import com.ssafy.pocketfolio.db.entity.User;
+import com.ssafy.pocketfolio.db.view.RoomBestListView;
 
 import java.time.LocalDateTime;
 
 public class RoomDto {
     private long roomSeq;
     private String name;
-    private long userSeq;
+    private User user;
     private int theme;
     private String thumbnail;
     private String isMain;
@@ -18,12 +20,26 @@ public class RoomDto {
     public RoomDto(Room room) {
         this.roomSeq = room.getRoomSeq();
         this.name = room.getName();
-        this.userSeq = room.getUser().getUserSeq();
+        this.user = room.getUser();
         this.theme = room.getTheme();
         this.thumbnail = room.getThumbnail();
         this.isMain = room.getIsMain();
         this.privacy = room.getPrivacy();
         this.created = room.getCreated();
         this.updated = room.getUpdated();
+    }
+
+    public static Room toEntity(RoomDto dto) {
+        return Room.builder()
+                .roomSeq(dto.roomSeq)
+                .name(dto.name)
+                .user(dto.user)
+                .theme(dto.theme)
+                .thumbnail(dto.thumbnail)
+                .isMain(dto.isMain)
+                .privacy(dto.privacy)
+                .created(dto.created)
+                .updated(dto.updated)
+                .build();
     }
 }
