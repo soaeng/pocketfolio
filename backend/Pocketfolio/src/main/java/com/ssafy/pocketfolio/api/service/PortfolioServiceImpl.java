@@ -14,7 +14,6 @@ import com.ssafy.pocketfolio.db.repository.TagRepository;
 import com.ssafy.pocketfolio.db.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -27,18 +26,13 @@ import java.util.List;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class PortfolioServiceImpl implements PortfolioService{
+public class PortfolioServiceImpl implements PortfolioService {
 
     private final UserRepository userRepository;
     private final PortfolioRepository portfolioRepository;
     private final PortfolioUrlRepository portfolioUrlRepository;
     private final TagRepository tagRepository;
     private final MultipartFileHandler fileHandler;
-
-    @Value("${app.fileupload.uploadPath}")
-    private String uploadPath;
-    @Value("${app.fileupload.uploadDir}")
-    private String uploadDir;
 
     // 포트폴리오 등록
     @Override
@@ -47,7 +41,6 @@ public class PortfolioServiceImpl implements PortfolioService{
         log.debug("[POST] Service - insertPortfolio");
 
         // 사용자 번호를 통한 사용자 조회
-        // TODO: 사용자 예외 처리
         User user = userRepository.findById(userSeq).orElseThrow(() -> new IllegalArgumentException("해당 사용자가 존재하지 않습니다."));
         // 저장된 썸네일 주소
         String thumbnailUrl = null;
