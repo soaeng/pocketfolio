@@ -14,6 +14,12 @@ export const Container = styled.div`
   display: flex;
   padding-left: 5%;
   padding-right: 5%;
+
+  @media screen and (max-width: 1440px) {
+    width: 80%;
+    padding-left: 10%;
+    padding-right: 10%;
+  }
 `;
 
 export const Carousel = styled.div`
@@ -28,7 +34,7 @@ export const Carousel = styled.div`
 export const Item = styled.div`
   display: flex;
   width: 22%;
-  min-width: 150px;
+  min-width: 180px;
   flex-direction: column;
   justify-content: space-between;
   margin: 8px;
@@ -36,6 +42,16 @@ export const Item = styled.div`
   border-radius: 16px;
   box-shadow: 0px 2px 5px 1px rgba(0, 0, 0, 0.25);
   flex: none;
+
+  @media screen and (max-width: 1440px) {
+    width: 21.5%;
+    min-width: 180px;
+  }
+
+  /* @media screen and (max-width: 1350px) {
+    width: 21.5%;
+    min-width: 178px;
+  } */
 `;
 
 export const Ui = styled.div`

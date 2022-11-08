@@ -14,6 +14,7 @@ import {
   FollowList,
   ProfileDiv,
   DropDownListBox,
+  FollowList1,
 } from './dropdown.style';
 
 const DropDown = () => {
@@ -44,10 +45,10 @@ const DropDown = () => {
       <ProfileList>
         <ProfileDiv>profilePic</ProfileDiv>
         <ProfileDiv>{user.name}</ProfileDiv>
-        <ProfileDiv>email</ProfileDiv>
+        <ProfileDiv>{user.email}</ProfileDiv>
         <FollowList>
-          <div>팔로워 | {user.followerTotal}</div>
-          <div>팔로잉 | {user.followingTotal}</div>
+          <FollowList1>팔로워 | {user.followerTotal}</FollowList1>
+          <FollowList1>팔로잉 | {user.followingTotal}</FollowList1>
         </FollowList>
       </ProfileList>
       <DropDownListBox>

@@ -17,9 +17,17 @@ export const ColorBox = styled.div`
   border-radius: 0 0 15% 0;
   transition: all 0.5s;
 
-  /* @media screen and (max-width: 1024px) {
-    height: 20%;
-  } */
+  @media screen and (max-width: 1024px) {
+    height: 260px;
+  }
+
+  @media screen and (max-width: 900px) {
+    height: 230px;
+  }
+
+  @media screen and (max-width: 600px) {
+    height: 180px;
+  } ;
 `;
 
 // carousel 전체 div
@@ -100,7 +108,23 @@ export const CarouselNav = styled.div`
   display: flex;
   position: absolute;
   flex-direction: column;
-  top: 40%;
+  top: 280px;
+
+  @media screen and (max-width: 1440px) {
+    top: 280px;
+  }
+
+  @media screen and (max-width: 1024px) {
+    top: 250px;
+  }
+
+  @media screen and (max-width: 900px) {
+    top: 220px;
+  }
+
+  @media screen and (max-width: 600px) {
+    top: 180px;
+  } ;
 `;
 
 // CarouselNavButton 색 변경
