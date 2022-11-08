@@ -115,7 +115,9 @@ public class UserController {
             @ApiResponse(responseCode = "500", description = "서버 에러", content = @Content(schema = @Schema(implementation = UserRes.class)))
     })
     @PatchMapping
-    public ResponseEntity<UserRes> updateUser(@RequestPart(value = "user") UserUpdateReq userUpdateReq, @RequestPart(value = "profilePic", required = false) MultipartFile profilePic, HttpServletRequest request) {
+    public ResponseEntity<UserRes> updateUser(@RequestPart(value = "user") UserUpdateReq userUpdateReq,
+                                              @RequestPart(value = "profilePic", required = false) MultipartFile profilePic,
+                                              HttpServletRequest request) {
         log.debug("Controller: updateUser()");
         HttpStatus status;
 

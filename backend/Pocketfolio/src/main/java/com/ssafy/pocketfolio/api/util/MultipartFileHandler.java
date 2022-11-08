@@ -64,6 +64,8 @@ public class MultipartFileHandler {
 
         // 파일 저장 위치 지정 (없는 경우 폴더 생성)
         File upload = new File(uploadPath + File.separator + uploadDir + File.separator + uploadDirName);
+        log.debug(upload.getPath());
+
         if (!upload.exists()){
             if (!upload.mkdir()) {
                 log.debug("폴더 생성 실패");
