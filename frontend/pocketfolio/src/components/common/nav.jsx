@@ -40,7 +40,7 @@ function Nav() {
       onSubmit(event);
     }
   };
-  
+
   // click시 navigate
   const logoClickHandler = () => {
     navigate('/main');
@@ -70,7 +70,7 @@ function Nav() {
         <NavBotton onClick={loginClickHandler}>로그인/회원가입</NavBotton>
       ) : (
         <LoginDiv>
-          <div>{user.name}님의 마이포켓</div>
+          <div>{user.name}님</div>
           <NavBotton onClick={roomClickHandler}>마이룸</NavBotton>
           <Avatar />
         </LoginDiv>
