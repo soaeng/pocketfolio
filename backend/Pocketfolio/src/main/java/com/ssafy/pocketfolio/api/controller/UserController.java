@@ -69,6 +69,7 @@ public class UserController {
 
         try {
             long userSeq = (Long) request.getAttribute("userSeq");
+            log.debug("userSeq: " + userSeq);
             if (userSeq > 0) {
                 result = userService.findUser(userSeq);
                 status = HttpStatus.OK;
