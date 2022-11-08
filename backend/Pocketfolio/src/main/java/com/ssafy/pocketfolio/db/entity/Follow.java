@@ -23,7 +23,7 @@ public class Follow {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="follow_seq", nullable=false, updatable=false)
-	private long followSeq;
+	private Long followSeq;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="user_from", nullable=false, updatable=false)
