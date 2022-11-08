@@ -93,12 +93,15 @@ const RecCarousel = () => {
               const {icon, copy, name, like, seen} = it;
               return (
                 <Item>
+                  {/* 이미지 */}
                   <RecCarImgDiv>
                     <RecCarThumbnail
                       src={process.env.PUBLIC_URL + '/assets/images/room.png'}
                     />
                   </RecCarImgDiv>
+                  {/* 1차 설명 => 필요 없으면 삭제 */}
                   <div>{copy}</div>
+                  {/* 이름, 좋아요 등 */}
                   <Item2>
                     <div>{name}</div>
                     <LikeShowDiv>

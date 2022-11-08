@@ -9,21 +9,25 @@ import {
 // 드롭다운
 export const Dropdown = styled.div`
   position: absolute;
-  width: 100%;
+  width: 60%;
   right: 10px;
   border-radius: 12px;
   box-shadow: 0px 2px 5px 1px rgba(0, 0, 0, 0.25);
+  background-color: #fff;
 `;
 
 // 드롭다운 리스트 부분
+export const DropDownListBox = styled.div`
+  background-color: #fff;
+  border-radius: 0 0 12px 12px;
+`;
+
 export const DropdownList = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #fff;
-  border-radius: 0 0 12px 12px;
   &:hover {
-    background-color: #a9957b;
+    background-color: #e2e2e2;
   }
 `;
 
@@ -43,6 +47,10 @@ export const ProfileList = styled.div`
   border-radius: 12px 12px 0 0;
   background-color: #afb4ff;
   color: #fff;
+`;
+
+export const FollowList1 = styled.div`
+  padding: 0 5px;
 `;
 
 export const ProfileDiv = styled.div`
