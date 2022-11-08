@@ -41,9 +41,9 @@ public class JWTUtil {
                 .compact();
     }
 
-    public long validateAndExtractUserSeq(String tokenStr) throws Exception {
+    public long validateAndExtractUserSeq(String tokenStr) {
 
-        long userSeq = 0L;
+        long userSeq;
 
         try {
             DefaultJws defaultJws = (DefaultJws) Jwts.parser()
@@ -60,10 +60,10 @@ public class JWTUtil {
 //            contentValue = claims.getSubject();
             userSeq = Long.parseLong((String) claims.get("uid"));
 
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             log.error(e.getMessage());
-            userSeq = 0L;
+            userSeq = -1L;
         }
         return userSeq;
     }

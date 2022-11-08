@@ -68,7 +68,8 @@ public class UserController {
         UserRes result = new UserRes();
 
         try {
-            long userSeq = (long) request.getAttribute("userSeq");
+            long userSeq = (Long) request.getAttribute("userSeq");
+            log.debug("userSeq: " + userSeq);
             if (userSeq > 0) {
                 result = userService.findUser(userSeq);
                 status = HttpStatus.OK;
@@ -123,7 +124,7 @@ public class UserController {
         UserRes result = new UserRes();
 
         try {
-            long userSeq = (long) request.getAttribute("userSeq");
+            long userSeq = (Long) request.getAttribute("userSeq");
             if (userSeq > 0) {
                 result = userService.updateUser(userSeq, userUpdateReq, profilePic);
                 status = HttpStatus.CREATED;
@@ -153,7 +154,7 @@ public class UserController {
         boolean result = false;
 
         try {
-            long userSeq = (long) request.getAttribute("userSeq");
+            long userSeq = (Long) request.getAttribute("userSeq");
             if (userSeq > 0) {
                 userService.deleteUser(userSeq);
                 result = true;
@@ -235,7 +236,7 @@ public class UserController {
 //        boolean result = false;
 //
 //        try {
-//            long userSeq = (long) request.getAttribute("userSeq");
+//            long userSeq = (Long) request.getAttribute("userSeq");
 //            if (userSeq > 0) {
 //                userService.logout(userSeq);
 //                result = true;
