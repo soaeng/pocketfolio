@@ -1,5 +1,6 @@
 package com.ssafy.pocketfolio.api.service;
 
+import com.ssafy.pocketfolio.api.dto.response.ItemCategoryListRes;
 import com.ssafy.pocketfolio.api.dto.response.ItemRes;
 
 import java.util.List;
@@ -10,14 +11,15 @@ public interface ItemService {
      * 카테고리 목록 조회
      * @return 카테고리 목록
      */
-    List<String> findItemCategoryList();
+    public List<ItemCategoryListRes> findItemCategoryList();
 
     /**
      * 카테고리별 아이템 조회
-     * @param category 카테고리
+     * @param itemCategorySeq 카테고리
+     * @param page 페이지 번호
      * @return 아이템 목록
      */
-    List<ItemRes> findItemList(String category, int page);
+    List<ItemRes> findItemList(long itemCategorySeq, int page);
 
     /**
      * 아이템 상세 조회

@@ -1,8 +1,11 @@
 package com.ssafy.pocketfolio.api.service;
 
+import com.ssafy.pocketfolio.api.dto.response.ItemCategoryListRes;
 import com.ssafy.pocketfolio.api.dto.response.ItemRes;
 import com.ssafy.pocketfolio.db.entity.Item;
+import com.ssafy.pocketfolio.db.repository.ItemCategoryRepository;
 import com.ssafy.pocketfolio.db.repository.ItemRepository;
+import com.ssafy.pocketfolio.db.view.ItemCategoryListView;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -16,16 +19,26 @@ import java.util.List;
 public class ItemServiceImpl implements ItemService {
     private final int SIZE_PER_PAGE = 24;
 
+    private final long CATEGORY_ALL = 0;
+
     private final ItemRepository itemRepository;
+
+    private final ItemCategoryRepository itemCategoryRepository;
 
 
     @Override
-    public List<String> findItemCategoryList() {
-        return itemRepository.findItemCategoryList();
+    public List<ItemCategoryListRes> findItemCategoryList() {
+        List<ItemCategoryListRes> result = new ArrayList<>();
+        List<ItemCategoryListView> list = itemCategoryRepository.findItemCategoryList(SIZE_PER_PAGE);
+        list.forEach(view -> result.add(new ItemCategoryListRes(view)));
+        return result;
     }
 
     @Override
-    public List<ItemRes> findItemList(String category, int page) {
+    public List<ItemRes> findItemList(long itemCategorySeq, int page) {
+        if (itemCategorySeq < 0) {
+            new IllegalArgumentException("카테고리 번호가 올바르지 않습니다.");
+        }
         if (page < 1) {
             new IllegalArgumentException("페이지가 올바르지 않습니다.");
         }
@@ -33,10 +46,10 @@ public class ItemServiceImpl implements ItemService {
         List<Item> itemPage;
         List<ItemRes> itemResList = new ArrayList<>();
 
-        if ("all".equalsIgnoreCase(category)) {
+        if (itemCategorySeq == CATEGORY_ALL) {
             itemPage = itemRepository.findAll(SIZE_PER_PAGE, (page - 1) * SIZE_PER_PAGE);
         } else {
-            itemPage = itemRepository.findByCategory(category, SIZE_PER_PAGE, (page - 1) * SIZE_PER_PAGE);
+            itemPage = itemRepository.findByCategorySeq(itemCategorySeq, SIZE_PER_PAGE, (page - 1) * SIZE_PER_PAGE);
         }
 
         if (itemPage.size() == 0) {
