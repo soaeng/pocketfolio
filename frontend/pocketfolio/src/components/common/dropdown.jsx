@@ -13,6 +13,8 @@ import {
   ProfileList,
   FollowList,
   ProfileDiv,
+  DropDownListBox,
+  FollowList1,
 } from './dropdown.style';
 
 const DropDown = () => {
@@ -42,25 +44,27 @@ const DropDown = () => {
     <Dropdown>
       <ProfileList>
         <ProfileDiv>profilePic</ProfileDiv>
-        <ProfileDiv>name</ProfileDiv>
-        <ProfileDiv>email</ProfileDiv>
+        <ProfileDiv>{user.name}</ProfileDiv>
+        <ProfileDiv>{user.email}</ProfileDiv>
         <FollowList>
-          <div>follower</div>
-          <div>following</div>
+          <FollowList1>팔로워 | {user.followerTotal}</FollowList1>
+          <FollowList1>팔로잉 | {user.followingTotal}</FollowList1>
         </FollowList>
       </ProfileList>
-      <DropdownList onClick={myPocketClickHandler}>
-        <HomeIcon />
-        <DropdownA>마이포켓</DropdownA>
-      </DropdownList>
-      <DropdownList onClick={profileClickHandler}>
-        <ProfileIcon />
-        <DropdownA>회원정보</DropdownA>
-      </DropdownList>
-      <DropdownList onClick={logoutClickHandler}>
-        <LogoutIcon />
-        <DropdownA>로그아웃</DropdownA>
-      </DropdownList>
+      <DropDownListBox>
+        <DropdownList onClick={myPocketClickHandler}>
+          <HomeIcon />
+          <DropdownA>마이포켓</DropdownA>
+        </DropdownList>
+        <DropdownList onClick={profileClickHandler}>
+          <ProfileIcon />
+          <DropdownA>회원정보</DropdownA>
+        </DropdownList>
+        <DropdownList onClick={logoutClickHandler}>
+          <LogoutIcon />
+          <DropdownA>로그아웃</DropdownA>
+        </DropdownList>
+      </DropDownListBox>
     </Dropdown>
   );
 };

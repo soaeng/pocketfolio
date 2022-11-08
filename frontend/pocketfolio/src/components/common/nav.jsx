@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {useNavigate} from 'react-router-dom';
+import {useSelector} from 'react-redux';
 
 import {
   NavContainer,
@@ -15,25 +16,11 @@ import Avatar from './avatar';
 function Nav() {
   const navigate = useNavigate();
 
+  // 로그인 유저 정보 가져오기
+  const user = useSelector(state => state.oauth.user);
+
   // 검색어
   const [word, setWord] = useState('');
-
-  // 로그인 표시 => 수정 필요
-  const [loginFlag, setLoginFlag] = useState(() =>
-    sessionStorage.getItem('Id'),
-  );
-
-  const logoClickHandler = () => {
-    navigate('/main');
-  };
-
-  const loginClickHandler = () => {
-    navigate('/login');
-  };
-
-  const roomClickHandler = () => {
-    navigate('/room/1');
-  };
 
   // 검색어 창 입력
   const onSubmit = async e => {
@@ -54,6 +41,19 @@ function Nav() {
     }
   };
 
+  // click시 navigate
+  const logoClickHandler = () => {
+    navigate('/main');
+  };
+
+  const loginClickHandler = () => {
+    navigate('/login');
+  };
+
+  const roomClickHandler = () => {
+    navigate('/room/1');
+  };
+
   return (
     <NavContainer>
       <NavLogoImg
@@ -66,10 +66,11 @@ function Nav() {
           onKeyDown={keyDownHandler}
         />
       ) : null}
-      {loginFlag === null ? (
+      {user === null ? (
         <NavBotton onClick={loginClickHandler}>로그인/회원가입</NavBotton>
       ) : (
         <LoginDiv>
+          <div>{user.name}님</div>
           <NavBotton onClick={roomClickHandler}>마이룸</NavBotton>
           <Avatar />
         </LoginDiv>

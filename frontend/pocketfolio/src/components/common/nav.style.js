@@ -57,13 +57,9 @@ export const NavSearchInput = styled.input`
     outline: none;
   }
 
-  /* @media screen and (max-width: 450px) {
+  @media screen and (max-width: 900px) {
     display: none;
   }
-
-  @media screen and (max-width: 320px) {
-    display: none;
-  } */
 `;
 
 // Nav Button
