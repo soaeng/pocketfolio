@@ -116,7 +116,7 @@ export const DeleteBtn = styled.button`
   font-size: 20px;
   cursor: pointer;
 
-  :hover{
+  :hover {
     background-color: #3c308a;
   }
 
@@ -125,10 +125,6 @@ export const DeleteBtn = styled.button`
   }
 `;
 
-export const DeleteIcon = styled(TbTrash)`
+export const DeleteIcon = styled(TbTrash)``;
 
-`;
-
-export const DeleteIconX = styled(TbTrashX)`
- 
-`;
+export const DeleteIconX = styled(TbTrashX)``;

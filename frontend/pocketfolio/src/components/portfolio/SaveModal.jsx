@@ -9,7 +9,7 @@ import {
 } from './SaveModal.style';
 
 const SaveModal = props => {
-  const {open, close} = props;
+  const {open, close, save} = props;
 
   // 현재 트랜지션 효과를 보여주고 있는 중이라는 상태 값
   const [animate, setAnimate] = useState(false);
@@ -41,7 +41,7 @@ const SaveModal = props => {
             <StyledBtn className="cancel" onClick={close}>
               취소
             </StyledBtn>
-            <StyledBtn className="save" onClick={close}>
+            <StyledBtn className="save" onClick={save}>
               저장
             </StyledBtn>
           </BtnDiv>
