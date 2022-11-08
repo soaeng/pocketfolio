@@ -112,7 +112,7 @@ public class RoomController {
             @ApiResponse(responseCode = "403", description = "사용 불가능 토큰", content = @Content(schema = @Schema(implementation = UserRes.class))),
             @ApiResponse(responseCode = "500", description = "서버 에러", content = @Content(schema = @Schema(implementation = Error.class)))
     })
-    @PatchMapping("/{roomSeq}")
+    @PatchMapping("/info/{roomSeq}")
     public ResponseEntity<Long> updateRoom(@PathVariable(value = "roomSeq") Long roomSeq, @RequestPart(value = "room") RoomReq roomReq, @RequestPart(value = "thumbnail", required = false) MultipartFile thumbnail, HttpServletRequest request){
         log.debug("[PATCH] Controller - updateRoom");
         Long response = null;
