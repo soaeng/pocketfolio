@@ -1,9 +1,7 @@
 import styled from 'styled-components';
-import {
-  RiHashtag,
-} from 'react-icons/ri';
+import {RiHashtag, RiFileAddLine} from 'react-icons/ri';
 
-import {FaSlackHash} from 'react-icons/fa'
+import {FaSlackHash} from 'react-icons/fa';
 
 export const Background = styled.div`
   display: flex;
@@ -62,10 +60,13 @@ export const Header = styled.div`
 
 export const Label = styled.div`
   font-weight: bold;
-  margin-bottom: 0.5rem;  
+  margin-bottom: 0.5rem;
 `;
 
 export const ContentDiv = styled.div`
+  &.hash {
+    display: flex;
+  }
 `;
 
 export const Title = styled.input`
@@ -75,7 +76,6 @@ export const Title = styled.input`
   border: 0.5px solid #bababa;
   border-radius: 0.5rem;
   padding: 0.5rem;
-
 `;
 
 export const Img = styled.img`
@@ -96,14 +96,14 @@ export const Img = styled.img`
 export const HashDiv = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  width: 20rem;
 `;
 
 export const InputDiv = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 14rem;
+  width: 12rem;
 `;
 
 export const HashInput = styled.input`
@@ -174,8 +174,20 @@ export const StyledBtn = styled.button`
   }
 `;
 
-
 export const HashIcon = styled(FaSlackHash)`
   width: 35px;
   height: 35px;
 `;
+
+export const FileAttach = styled.div``;
+
+export const FileIcon = styled(RiFileAddLine)`
+  width: 35px;
+  height: 35px;
+  cursor: pointer;
+`;
+
+
+export const Form = styled.form`
+
+`
