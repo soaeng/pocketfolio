@@ -12,7 +12,7 @@ export const ColorBox = styled.div`
   position: absolute;
   margin-top: 5%;
   width: 70%;
-  height: 40%;
+  height: 280px;
   padding: 1% 0 1% 3%;
   border-radius: 0 0 15% 0;
   transition: all 0.5s;

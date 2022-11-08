@@ -13,13 +13,14 @@ import {
   ProfileList,
   FollowList,
   ProfileDiv,
+  DropDownListBox,
 } from './dropdown.style';
 
 const DropDown = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector(state => state.oauth.user);
-  console.log(user.name, '유저 나와라');
+  console.log(user, '유저 나와라');
 
   // 마이포켓 이동 => 수정 필요
   const myPocketClickHandler = () => {
@@ -49,18 +50,20 @@ const DropDown = () => {
           <div>팔로잉 | {user.followingTotal}</div>
         </FollowList>
       </ProfileList>
-      <DropdownList onClick={myPocketClickHandler}>
-        <HomeIcon />
-        <DropdownA>마이포켓</DropdownA>
-      </DropdownList>
-      <DropdownList onClick={profileClickHandler}>
-        <ProfileIcon />
-        <DropdownA>회원정보</DropdownA>
-      </DropdownList>
-      <DropdownList onClick={logoutClickHandler}>
-        <LogoutIcon />
-        <DropdownA>로그아웃</DropdownA>
-      </DropdownList>
+      <DropDownListBox>
+        <DropdownList onClick={myPocketClickHandler}>
+          <HomeIcon />
+          <DropdownA>마이포켓</DropdownA>
+        </DropdownList>
+        <DropdownList onClick={profileClickHandler}>
+          <ProfileIcon />
+          <DropdownA>회원정보</DropdownA>
+        </DropdownList>
+        <DropdownList onClick={logoutClickHandler}>
+          <LogoutIcon />
+          <DropdownA>로그아웃</DropdownA>
+        </DropdownList>
+      </DropDownListBox>
     </Dropdown>
   );
 };
