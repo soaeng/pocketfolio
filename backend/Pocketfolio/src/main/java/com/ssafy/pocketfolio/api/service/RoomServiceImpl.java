@@ -9,7 +9,6 @@ import com.ssafy.pocketfolio.db.repository.RoomHitRepository;
 import com.ssafy.pocketfolio.db.repository.RoomLikeRepository;
 import com.ssafy.pocketfolio.db.repository.RoomRepository;
 import com.ssafy.pocketfolio.db.repository.UserRepository;
-import com.ssafy.pocketfolio.db.view.RoomBestListView;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -36,11 +35,6 @@ public class RoomServiceImpl implements RoomService {
     private final RoomLikeRepository roomLikeRepository;
     private final MultipartFileHandler fileHandler;
 
-    @Value("${app.fileupload.uploadPath}")
-    private String uploadPath;
-    @Value("${app.fileupload.uploadDir}")
-    private String uploadDir;
-
     @Override
     @Transactional
     public Long insertRoom(long userSeq, RoomReq req, MultipartFile thumbnail) throws IOException {
@@ -65,6 +59,7 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<RoomDetailRes> findRoomList(long userSeq) {
         log.debug("[GET] Service - findRoomList");
         List<RoomDetailRes> roomDetailResList = new ArrayList<>();
@@ -74,9 +69,9 @@ public class RoomServiceImpl implements RoomService {
             List<Room> rooms = roomRepository.findAllByUser(user);
             for (Room room : rooms) {
                 RoomDetailRes roomDetailRes = RoomDetailRes.builder()
-                        .room(new RoomDto(room))
-                        .hitCount(roomHitRepository.countAllByRoom(room))
-                        .likeCount(roomLikeRepository.countAllByRoom(room))
+                        .room(RoomDto.toDto(room))
+                        .hitCount(roomHitRepository.countAllByRoom_RoomSeq(room.getRoomSeq()))
+                        .likeCount(roomLikeRepository.countAllByRoom_RoomSeq(room.getRoomSeq()))
                         .userName(user.getName())
                         .build();
                 roomDetailResList.add(roomDetailRes);
@@ -90,13 +85,14 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public RoomDetailRes findRoom(long userSeq, long roomSeq) {
         log.debug("[GET] Service - findRoom");
         RoomDetailRes roomDetailRes;
 
         User user = userRepository.findById(userSeq).orElseThrow(() -> new IllegalArgumentException("해당 사용자를 찾을 수 없습니다."));
         Room room = roomRepository.findById(roomSeq).orElseThrow(() -> new IllegalArgumentException("해당 방을 찾을 수 없습니다."));
-        RoomDto roomDto = new RoomDto(room);
+        RoomDto roomDto = RoomDto.toDto(room);
 
         // 본인 방이 아닌 경우 + 당일 방문하지 않은 경우 조회수 1 증가
         if (userSeq != room.getUser().getUserSeq() && !roomHitRepository.existsRoomHitByUserAndRoomAndHitDateEquals(user, room, ZonedDateTime.now(ZoneId.of("Asia/Seoul")).toLocalDate())) {
@@ -105,9 +101,9 @@ public class RoomServiceImpl implements RoomService {
 
         roomDetailRes = RoomDetailRes.builder()
                 .room(roomDto)
-                .hitCount(roomHitRepository.countAllByRoom(room))
+                .hitCount(roomHitRepository.countAllByRoom_RoomSeq(room.getRoomSeq()))
                 .todayCount(roomHitRepository.countRoomHitToday(roomSeq))
-                .likeCount(roomLikeRepository.countAllByRoom(room))
+                .likeCount(roomLikeRepository.countAllByRoom_RoomSeq(room.getRoomSeq()))
                 .userName(user.getName())
                 .build();
 
@@ -211,7 +207,7 @@ public class RoomServiceImpl implements RoomService {
 
         // 본인 방이 아닌 경우 + 좋아요 이력 있는 경우 좋아요
         if (userSeq != room.getUser().getUserSeq()) {
-            if (roomLikeRepository.existsByUser(user)) {
+            if (!roomLikeRepository.existsByUser(user)) {
                 log.error("좋아요 이력 없음");
                 return false;
             } else {
@@ -242,16 +238,13 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<RoomDetailRes> findRoomBestList() {
         log.debug("[GET] Service - findRoomBestList");
         try {
-            List<RoomBestListView> bestList = roomLikeRepository.findRoomLikeCount();
-            log.debug(bestList.toString());
-            List<Room> rooms = new ArrayList<>();
-            for(RoomBestListView best : bestList) {
-//                Room room =
-//                rooms.add(room);
-            }
+            log.debug("roomDetailResList");
+            List<Long> roomSeqs = roomLikeRepository.findRoomBestList();
+            List<Room> rooms = roomRepository.findAllByRoomSeqIn(roomSeqs);
             return getRoomDetailResList(rooms);
         } catch (Exception e) {
             log.error(e.getMessage());
@@ -261,15 +254,21 @@ public class RoomServiceImpl implements RoomService {
 
     public List<RoomDetailRes> getRoomDetailResList(List<Room> rooms) {
         List<RoomDetailRes> roomDetailResList = new ArrayList<>();
-        for (Room room : rooms) {
-            RoomDetailRes roomDetailRes = RoomDetailRes.builder()
-                    .room(new RoomDto(room))
-                    .hitCount(roomHitRepository.countAllByRoom(room))
-                    .likeCount(roomLikeRepository.countAllByRoom(room))
-                    .userName(room.getUser().getName())
-                    .build();
-            roomDetailResList.add(roomDetailRes);
+        try {
+            for (Room room : rooms) {
+                RoomDetailRes roomDetailRes = RoomDetailRes.builder()
+                        .room(RoomDto.toDto(room))
+                        .hitCount(roomHitRepository.countAllByRoom_RoomSeq(room.getRoomSeq()))
+                        .likeCount(roomLikeRepository.countAllByRoom_RoomSeq(room.getRoomSeq()))
+                        .userName(room.getUser().getName())
+                        .build();
+                roomDetailResList.add(roomDetailRes);
+            }
+            return roomDetailResList;
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return null;
         }
-        return roomDetailResList;
+
     }
 }

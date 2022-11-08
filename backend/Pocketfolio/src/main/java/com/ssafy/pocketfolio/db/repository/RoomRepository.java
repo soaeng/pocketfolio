@@ -9,5 +9,5 @@ import java.util.List;
 public interface RoomRepository extends JpaRepository<Room, Long> {
 
     List<Room> findAllByUser(User user);
-
+    List<Room> findAllByRoomSeqIn(List<Long> roomSeqs);
 }
