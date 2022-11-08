@@ -74,6 +74,7 @@ public class PortfolioServiceImpl implements PortfolioService {
 
     // 포트폴리오 목록 조회
     @Override
+    @Transactional(readOnly = true)
     public List<PortfolioRes> findPortfolioList(long userSeq) {
         log.debug("[GET] Service - findPortfolioList");
         List<PortfolioRes> portfolioRes = new ArrayList<>();
@@ -98,6 +99,7 @@ public class PortfolioServiceImpl implements PortfolioService {
 
     // 포트폴리오 조회
     @Override
+    @Transactional(readOnly = true)
     public PortfolioRes findPortfolio(long portSeq) {
         log.debug("[GET] Service - findPortfolio");
 
