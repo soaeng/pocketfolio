@@ -1,15 +1,17 @@
 package com.ssafy.pocketfolio.api.dto;
 
 import com.ssafy.pocketfolio.db.entity.Room;
-import com.ssafy.pocketfolio.db.entity.User;
-import com.ssafy.pocketfolio.db.view.RoomBestListView;
+import lombok.Builder;
+import lombok.Getter;
 
 import java.time.LocalDateTime;
-
+@Getter
+@Builder
 public class RoomDto {
     private long roomSeq;
     private String name;
-    private User user;
+    private long userSeq;
+    private String userName;
     private int theme;
     private String thumbnail;
     private String isMain;
@@ -17,29 +19,18 @@ public class RoomDto {
     private LocalDateTime created;
     private LocalDateTime updated;
 
-    public RoomDto(Room room) {
-        this.roomSeq = room.getRoomSeq();
-        this.name = room.getName();
-        this.user = room.getUser();
-        this.theme = room.getTheme();
-        this.thumbnail = room.getThumbnail();
-        this.isMain = room.getIsMain();
-        this.privacy = room.getPrivacy();
-        this.created = room.getCreated();
-        this.updated = room.getUpdated();
-    }
-
-    public static Room toEntity(RoomDto dto) {
-        return Room.builder()
-                .roomSeq(dto.roomSeq)
-                .name(dto.name)
-                .user(dto.user)
-                .theme(dto.theme)
-                .thumbnail(dto.thumbnail)
-                .isMain(dto.isMain)
-                .privacy(dto.privacy)
-                .created(dto.created)
-                .updated(dto.updated)
+    public static RoomDto toDto(Room entity) {
+        return RoomDto.builder()
+                .roomSeq(entity.getRoomSeq())
+                .name(entity.getName())
+                .userSeq(entity.getUser().getUserSeq())
+                .userName(entity.getUser().getName())
+                .theme(entity.getTheme())
+                .thumbnail(entity.getThumbnail())
+                .isMain(entity.getIsMain())
+                .privacy(entity.getPrivacy())
+                .created(entity.getCreated())
+                .updated(entity.getUpdated())
                 .build();
     }
 }

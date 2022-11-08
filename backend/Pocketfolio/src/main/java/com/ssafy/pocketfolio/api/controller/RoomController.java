@@ -224,6 +224,7 @@ public class RoomController {
     })
     @GetMapping("/like")
     public ResponseEntity<List<RoomDetailRes>> findRoomLikeList(HttpServletRequest request) {
+        log.debug("[GET] Controller - findRoomLikeList");
         List<RoomDetailRes> response = null;
         HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
 
@@ -231,7 +232,7 @@ public class RoomController {
             long userSeq = (Long) request.getAttribute("userSeq");
             if (userSeq > 0) {
                 response = roomService.findRoomLikeList(userSeq);
-                status = HttpStatus.OK;
+                status = response != null ? HttpStatus.OK : HttpStatus.INTERNAL_SERVER_ERROR;
             } else {
                 log.error("사용 불가능 토큰");
                 status = HttpStatus.FORBIDDEN;
@@ -249,6 +250,7 @@ public class RoomController {
     })
     @GetMapping("/best")
     public ResponseEntity<List<RoomDetailRes>> findRoomBestList(HttpServletRequest request) {
+        log.debug("[GET] Controller - findRoomBestList");
         List<RoomDetailRes> response = null;
         HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
 
@@ -256,7 +258,7 @@ public class RoomController {
             long userSeq = (Long) request.getAttribute("userSeq");
             if (userSeq > 0) {
                 response = roomService.findRoomBestList();
-                status = HttpStatus.OK;
+                status = response != null ? HttpStatus.OK : HttpStatus.INTERNAL_SERVER_ERROR;
             } else {
                 log.error("사용 불가능 토큰");
                 status = HttpStatus.FORBIDDEN;
