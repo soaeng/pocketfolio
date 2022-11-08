@@ -23,7 +23,7 @@ public class Item {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="item_seq", nullable=false, updatable=false)
-	private long itemSeq;
+	private Long itemSeq;
 	
 	@Column(name="name", length=20, nullable=false)
 	@NotNull

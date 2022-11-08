@@ -1,6 +1,7 @@
 package com.ssafy.pocketfolio.api.dto.response;
 
 import com.ssafy.pocketfolio.db.entity.User;
+import com.ssafy.pocketfolio.db.view.FollowListView;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.*;
@@ -12,12 +13,11 @@ import lombok.*;
 @ToString
 @Tag(name = "FollowListRes", description = "팔로우 목록 Response")
 public class FollowListRes {
-
     @Schema(description = "팔로우 번호: 0이면 팔로우하지 않았음", nullable = false)
-    private long followSeq;
+    private Long followSeq;
 
     @Schema(description = "유저 번호", nullable = false)
-    private long userSeq;
+    private Long userSeq;
 
     @Schema(description = "이름", nullable = false, maxLength = 12)
     private String name;
@@ -29,5 +29,12 @@ public class FollowListRes {
         userSeq = user.getUserSeq();
         name = user.getName();
         profilePic = user.getProfilePic();
+    }
+
+    public FollowListRes(FollowListView followListView) {
+        followSeq = followListView.getFollowSeq();
+        userSeq = followListView.getUserSeq();
+        name = followListView.getName();
+        profilePic = followListView.getProfilePic();
     }
 }

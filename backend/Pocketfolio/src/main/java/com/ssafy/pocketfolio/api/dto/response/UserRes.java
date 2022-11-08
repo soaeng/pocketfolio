@@ -16,6 +16,9 @@ import java.time.LocalDate;
 @ToString
 @Tag(name = "UserRes", description = "유저 Response")
 public class UserRes {
+    @Schema(description = "유저 번호", nullable = false)
+    private Long userSeq;
+
     @Email
     @Schema(description = "이메일", nullable = false, maxLength = 50, example = "test@test.com")
     private String email;
@@ -23,7 +26,7 @@ public class UserRes {
     @Schema(description = "이름", nullable = false, maxLength = 12)
     private String name;
 
-    @Schema(description = "프로필 사진 파일 url", maxLength = 255, example = "/img/J2EeRo2d.jpg")
+    @Schema(description = "프로필 사진 파일 url", maxLength = 255, example = "/upload/img/J2EeRo2d.jpg")
     private String profilePic;
 
     @Schema(description = "생년월일", example = "birth.year=2001 / birth.month=1 / birth.day=1")
@@ -43,6 +46,7 @@ public class UserRes {
 //    private List<RoomRes> rooms;
 
     public UserRes(User user) {
+        userSeq = user.getUserSeq();
         email = user.getEmail();
         name = user.getName();
         String userProfilePic = user.getProfilePic();
@@ -55,6 +59,7 @@ public class UserRes {
     }
 
     public UserRes(UserView userView) {
+        userSeq = userView.getUserSeq();
         email = userView.getEmail();
         name = userView.getName();
         profilePic = userView.getProfilePic();

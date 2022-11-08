@@ -12,13 +12,13 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
 	Optional<User> findByEmail(String email);
 
-	@Query(value = "select u.email, u.name, ifnull(u.profile_pic, \"/upload/profile/default.jpg\") as profile_pic, u.birth," +
+	@Query(value = "select u.user_seq, u.email, u.name, ifnull(u.profile_pic, \"/upload/profile/default.jpg\") as profile_pic, u.birth," +
 			"(select count(*) from follow where user_to = u.user_seq) as followerTotal," +
 			"(select count(*) from follow where user_from = u.user_seq) as followingTotal," +
 			"u.describe from user as u where user_seq = ?1", nativeQuery = true)
 	Optional<UserView> findProfileById(long userSeq);
 
-	@Query(value = "select u.email, u.name, ifnull(u.profile_pic, \"/upload/profile/default.jpg\") as profile_pic, u.birth," +
+	@Query(value = "select u.user_seq, u.email, u.name, ifnull(u.profile_pic, \"/upload/profile/default.jpg\") as profile_pic, u.birth," +
 			"(select count(*) from follow where user_to = u.user_seq) as followerTotal," +
 			"(select count(*) from follow where user_from = u.user_seq) as followingTotal," +
 			"u.describe from user as u", nativeQuery = true)
