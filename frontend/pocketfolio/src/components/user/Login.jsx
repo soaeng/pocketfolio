@@ -1,10 +1,7 @@
 import {useNavigate} from 'react-router-dom';
 import {
   Container,
-  SelfContainer,
-  IntroText,
-  RoomImgDiv,
-  RoomImg,
+  CanvasWrapper,
   LoginContainer,
   LogoDiv,
   LogoImg,
@@ -14,6 +11,8 @@ import {
   LoginText,
   CommentText,
 } from './Login.style';
+import {Canvas} from '@react-three/fiber';
+import {OrbitControls} from '@react-three/drei';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -29,13 +28,17 @@ const Login = () => {
 
   return (
     <Container>
-      <SelfContainer>
-        <IntroText>손쉽게 만드는</IntroText>
-        <IntroText>나만의 포트폴리오 전시장</IntroText>
-        <RoomImgDiv>
-          <RoomImg src={process.env.PUBLIC_URL + '/assets/images/room.png'} />
-        </RoomImgDiv>
-      </SelfContainer>
+      <CanvasWrapper>
+        <Canvas camera={{position: [-15, 10, -20], fov: 25}}>
+          <OrbitControls autoRotate={true} />
+          <mesh>
+            <ambientLight intensity={1} castShadow />
+            <directionalLight position={[10, 10, 10]} intensity={1} castShadow />
+            <boxGeometry args={[5, 5, 5]} />
+            <meshStandardMaterial attach="material" color={0xffffff} />
+          </mesh>
+        </Canvas>
+      </CanvasWrapper>
 
       <LoginContainer>
         <LogoDiv onClick={moveToMain}>
@@ -69,7 +72,7 @@ const Login = () => {
           <LoginText>페이스북으로 시작하기</LoginText>
         </LoginDiv>
 
-        <LoginDiv className="github" onClick={() => loginFunc('github')} >
+        <LoginDiv className="github" onClick={() => loginFunc('github')}>
           <LoginIconDiv className="github">
             <LoginIcon
               src={process.env.PUBLIC_URL + '/assets/images/logo_github.png'}

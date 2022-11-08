@@ -66,7 +66,6 @@ export const Label = styled.div`
 `;
 
 export const ContentDiv = styled.div`
-  /* display: flex; */
 `;
 
 export const Title = styled.input`
