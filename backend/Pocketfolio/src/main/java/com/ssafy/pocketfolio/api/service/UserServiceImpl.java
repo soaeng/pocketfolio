@@ -41,7 +41,7 @@ public class UserServiceImpl implements UserService {
 
         String profilePicUrl = user.getProfilePic();
 
-        log.info("multipartFile is null: " + multipartFile == null);
+        log.info("multipartFile is null: " + (multipartFile == null));
 
         // 저장할 프로필 사진 파일이 있다면 profilePic 수정
         if (multipartFile != null) {
