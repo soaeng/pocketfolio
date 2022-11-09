@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import {RiHashtag, RiFileAddLine} from 'react-icons/ri';
+import {RiHashtag, RiFileAddLine, RiAddCircleLine, RiCloseLine} from 'react-icons/ri';
 
 import {FaSlackHash} from 'react-icons/fa';
 
@@ -8,12 +8,12 @@ export const Background = styled.div`
   align-items: center;
   width: 100vw;
   height: 100vh;
-  background-color: #f7f7f7;
   flex-direction: column;
 
   .ck.ck-editor__editable:not(.ck-editor__nested-editable) {
-    height: 400px;
+    height: 300px;
     background-color: white;
+    border: 0.5px solid #bababa;
     &::-webkit-scrollbar {
       width: 10px;
       height: 10px;
@@ -48,7 +48,7 @@ export const Wrapper = styled.div`
   justify-content: space-around;
   margin-top: 3rem;
   width: 60%;
-  height: 75%;
+  /* height: 75%; */
 `;
 
 export const Header = styled.div`
@@ -61,18 +61,23 @@ export const Header = styled.div`
 export const Label = styled.div`
   font-weight: bold;
   margin-bottom: 0.5rem;
+
+  &.attachLabel{
+    margin: 0;
+  }
 `;
 
 export const ContentDiv = styled.div`
-  &.hash {
+  &.bottom   {
     display: flex;
   }
+  margin-bottom: 1.5rem;
 `;
 
 export const Title = styled.input`
   width: 98%;
-  height: 2.5rem;
-  font-size: 1.5rem;
+  height: 2rem;
+  font-size: 1rem;
   border: 0.5px solid #bababa;
   border-radius: 0.5rem;
   padding: 0.5rem;
@@ -93,11 +98,6 @@ export const Img = styled.img`
   }
 `;
 
-export const HashDiv = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 20rem;
-`;
 
 export const InputDiv = styled.div`
   display: flex;
@@ -108,7 +108,6 @@ export const InputDiv = styled.div`
 
 export const HashInput = styled.input`
   width: auto;
-  background-color: #f7f7f7;
   line-height: 2rem;
   min-width: 8rem;
   border: none;
@@ -117,13 +116,14 @@ export const HashInput = styled.input`
 
 export const HashList = styled.div`
   display: flex;
-  width: 50rem;
+  width: 90%;
+  flex-wrap: wrap;
   margin-top: 1rem;
 `;
 
 export const HashOutter = styled.div`
   background: #ffeee7;
-  border-radius: 56px;
+  border-radius: 0.5rem;
   padding: 8px 12px;
   color: #ff6e35;
   display: flex;
@@ -141,6 +141,9 @@ export const BtnDiv = styled.div`
 `;
 
 export const StyledBtn = styled.button`
+  :hover{
+    box-shadow: 0px 2px 5px 1px rgba(0, 0, 0, 0.25);
+  }
   p {
     margin: 0;
   }
@@ -179,15 +182,61 @@ export const HashIcon = styled(FaSlackHash)`
   height: 35px;
 `;
 
-export const FileAttach = styled.div``;
+export const BottomBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 20rem;
+`;
 
 export const FileIcon = styled(RiFileAddLine)`
-  width: 35px;
-  height: 35px;
+  width: 30px;
+  height: 30px;
   cursor: pointer;
 `;
 
+export const IconDiv = styled.div`
+  &.file{
+   display: flex;
+   align-items : center;
+   
+   /* margin-bottom: 0.5rem; */
+  }
+`;
 
-export const Form = styled.form`
+export const ItemList = styled.div`
+  height: 5rem;
+  width: 90%;
+  overflow-y: auto;
+  &::-webkit-scrollbar {
+    width: 5px;
+    height: 10px;
+    
+  }
 
+  &::-webkit-scrollbar-thumb {
+    background-color: #3c2e9b;
+    border-radius: 2rem;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: #d7dcff;
+    border-radius: 2rem;
+  }
+`;
+
+export const Item = styled.div`
+  display: flex;
+  align-items: center;
+  
+`;
+
+export const Cancel = styled(RiCloseLine)`
+  cursor: pointer;
+`;
+
+export const Add = styled(RiAddCircleLine)`
+  font-size: 25px;
+  color: #e75452;
+  /* margin-bottom: 0.5rem; */
+  cursor: pointer;
 `
