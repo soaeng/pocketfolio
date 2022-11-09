@@ -20,7 +20,7 @@ import {
   FileIcon,
   Form,
 } from './AddPort.style';
-import Nav from '../common/nav';
+import Nav from '../common/Nav';
 import Editor from './Editor.test';
 import {Body1} from '../../styles/styles.style';
 import SaveModal from './SaveModal';
@@ -106,7 +106,6 @@ const AddPort = () => {
   };
 
   const handleChange = e => {
-
     setAttachList(attachList => [...attachList, e.target.files[0]]);
     // const formData = new FormData()
     // formData.append('file', e.target.files[0])
@@ -118,17 +117,15 @@ const AddPort = () => {
   // 포트폴리오 제출 함수
   const savePortFolio = () => {
     const formData = new FormData();
-    let files = attachList
+    let files = attachList;
     for (let i = 0; i < files.length; i++) {
-      formData.append("files", files[i]);
+      formData.append('files', files[i]);
     }
-
 
     // 폼 데이터 value 확인
     for (let key of formData.values()) {
       console.log(key);
     }
-
 
     const data = {
       portfolio: {
@@ -163,7 +160,6 @@ const AddPort = () => {
     ></div>
   );
 
- 
   return (
     <Background>
       <Nav></Nav>
@@ -212,7 +208,7 @@ const AddPort = () => {
             <Label>파일첨부</Label>
 
             <FileIcon onClick={handleButtonClick}>파일 업로드</FileIcon>
-            <Form >
+            <Form>
               <input
                 type="file"
                 name="port_files"

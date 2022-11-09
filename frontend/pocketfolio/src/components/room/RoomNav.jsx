@@ -7,7 +7,7 @@ import {
   NavBotton,
   LoginDiv,
 } from './RoomNav.style';
-import Avatar from '../common/avatar';
+import Avatar from '../common/Avatar';
 
 // 마이룸 네브바
 const RoomNav = ({sidebar, edit}) => {

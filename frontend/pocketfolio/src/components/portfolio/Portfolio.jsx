@@ -1,5 +1,5 @@
 import {useState} from 'react';
-import Nav from '../common/nav';
+import Nav from '../common/Nav';
 import {useNavigate} from 'react-router-dom';
 import {
   Container,
@@ -26,7 +26,7 @@ const Portfolio = () => {
   const delClick = () => {
     setIsDelete(!isDelete);
   };
-  
+
   const addPortfolio = () => {
     navigate('/main');
   };
