@@ -1,15 +1,13 @@
 package com.ssafy.pocketfolio.api.service;
 
 import com.ssafy.pocketfolio.api.dto.request.RoomReq;
+import com.ssafy.pocketfolio.api.dto.response.CategoryRes;
 import com.ssafy.pocketfolio.api.dto.response.RoomDetailRes;
 import com.ssafy.pocketfolio.api.dto.RoomDto;
 import com.ssafy.pocketfolio.api.dto.response.RoomListRes;
 import com.ssafy.pocketfolio.api.util.MultipartFileHandler;
 import com.ssafy.pocketfolio.db.entity.*;
-import com.ssafy.pocketfolio.db.repository.RoomHitRepository;
-import com.ssafy.pocketfolio.db.repository.RoomLikeRepository;
-import com.ssafy.pocketfolio.db.repository.RoomRepository;
-import com.ssafy.pocketfolio.db.repository.UserRepository;
+import com.ssafy.pocketfolio.db.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -29,6 +27,7 @@ import java.util.stream.Collectors;
 public class RoomServiceImpl implements RoomService {
 
     private final UserRepository userRepository;
+    private final CategoryRepository categoryRepository;
     private final RoomRepository roomRepository;
     private final RoomHitRepository roomHitRepository;
     private final RoomLikeRepository roomLikeRepository;
@@ -59,7 +58,7 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<RoomListRes> findRoomList(long userSeq) {
+    public List<RoomListRes> findMyRoomList(long userSeq) {
         log.debug("[GET] Service - findRoomList");
         List<RoomListRes> roomsResList;
 
@@ -73,6 +72,11 @@ public class RoomServiceImpl implements RoomService {
         }
 
         return roomsResList;
+    }
+
+    @Override
+    public List<RoomListRes> findRoomList(long userSeq) {
+        return null;
     }
 
     @Override
@@ -233,7 +237,6 @@ public class RoomServiceImpl implements RoomService {
     public List<RoomListRes> findRoomBestList() {
         log.debug("[GET] Service - findRoomBestList");
         try {
-            log.debug("roomDetailResList");
             List<Long> roomSeqs = roomLikeRepository.findRoomBestList();
             List<Room> rooms = roomRepository.findAllByRoomSeqIn(roomSeqs);
             return getRoomListRes(rooms);
