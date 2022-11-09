@@ -20,7 +20,6 @@ import java.io.File;
 import java.io.IOException;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -246,18 +245,10 @@ public class RoomServiceImpl implements RoomService {
     }
 
     public List<RoomListRes> getRoomListRes(List<Room> rooms) {
-        List<RoomListRes> roomListResList = new ArrayList<>();
-        try {
-            for (Room room : rooms) {
-                int hit = roomHitRepository.countAllByRoom_RoomSeq(room.getRoomSeq()).intValue();
-                int like = roomLikeRepository.countAllByRoom_RoomSeq(room.getRoomSeq()).intValue();
-                roomListResList.add(RoomListRes.toDto(room, like, hit));
-            }
-            return roomListResList;
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            return null;
-        }
-
+        return rooms.stream().map(room -> {
+            int like = roomLikeRepository.countAllByRoom_RoomSeq(room.getRoomSeq()).intValue();
+            int hit = roomHitRepository.countAllByRoom_RoomSeq(room.getRoomSeq()).intValue();
+            return RoomListRes.toDto(room, like, hit);
+        }).collect(Collectors.toList());
     }
 }
