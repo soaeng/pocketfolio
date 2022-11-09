@@ -9,7 +9,6 @@ import {
 // 드롭다운
 export const Dropdown = styled.div`
   position: absolute;
-  /* width: 80%; */
   right: 10px;
   border-radius: 12px;
   box-shadow: 0px 2px 5px 1px rgba(0, 0, 0, 0.25);
@@ -27,14 +26,14 @@ export const DropdownList = styled.div`
   justify-content: center;
   align-items: center;
   &:hover {
-    background-color: #e2e2e2;
+    background-color: #ffe4de;
   }
 `;
 
 export const DropdownA = styled.p`
   display: block;
-  padding: 0 15px;
   line-height: inherit;
+  padding-right: 7%;
   cursor: pointer;
 `;
 
@@ -45,7 +44,7 @@ export const ProfileList = styled.div`
   justify-content: center;
   align-items: center;
   border-radius: 12px 12px 0 0;
-  background-color: #afb4ff;
+  background-color: #ff6b69;
   color: #fff;
 `;
 

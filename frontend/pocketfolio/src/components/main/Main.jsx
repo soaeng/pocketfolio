@@ -87,6 +87,7 @@ function Main() {
     <>
       {/* Navbar */}
       <Nav />
+
       {/* Main Carousel */}
       <Container>
         <ColorBox style={_style} />
