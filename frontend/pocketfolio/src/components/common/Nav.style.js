@@ -10,7 +10,7 @@ export const NavContainer = styled.div`
   justify-content: space-between;
   padding: 0.5rem;
   height: 3.5rem;
-  /* width: 100%; */
+  width: calc(100% - 1rem);
   z-index: 999;
   top: 0;
 `;
@@ -21,18 +21,6 @@ export const NavLogoImg = styled.img`
   top: 1.5rem;
   height: 100%;
   cursor: pointer;
-
-  /* @media screen and (max-width: 1024px) {
-    min-height: 70%;
-  }
-
-  @media screen and (max-width: 450px) {
-    min-height: 50%;
-  }
-
-  @media screen and (max-width: 320px) {
-    min-height: 30%;
-  } */
 `;
 
 // Nav Search
@@ -68,17 +56,17 @@ export const NavBotton = styled.button`
   margin: 15px;
   border-radius: 16px;
   border: none;
-  background-color: #1f2dac;
+  background-color: #e75452;
   color: #fff;
   cursor: pointer;
 
   &:hover {
-    background-color: #1f2dac;
+    background-color: #ff6b69;
     box-shadow: 0px 2px 5px 1px rgba(0, 0, 0, 0.25);
   }
 
   &:active {
-    background-color: #1f2dac;
+    background-color: #ff6b69;
     box-shadow: 0.5px 0.5px 0.5px #333;
   }
 `;

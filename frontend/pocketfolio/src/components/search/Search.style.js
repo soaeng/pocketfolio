@@ -61,10 +61,13 @@ export const TagContainer = styled.div`
 
 //Tag 하나하나
 export const Tag = styled(Body3)`
+  display: flex;
+  justify-content: center;
   background-color: lightgrey;
   padding: 5px 10px;
-  margin: 10px;
+  margin: 5px;
   border-radius: 8px;
+  min-width: 50px;
   cursor: pointer;
 
   &:hover {

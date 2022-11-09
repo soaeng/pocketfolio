@@ -15,7 +15,7 @@ import {
   ProfileDiv,
   DropDownListBox,
   FollowList1,
-} from './dropdown.style';
+} from './Dropdown.style';
 
 const DropDown = () => {
   const navigate = useNavigate();

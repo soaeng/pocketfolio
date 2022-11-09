@@ -9,7 +9,7 @@ import {
 // 드롭다운
 export const Dropdown = styled.div`
   position: absolute;
-  width: 60%;
+  /* width: 80%; */
   right: 10px;
   border-radius: 12px;
   box-shadow: 0px 2px 5px 1px rgba(0, 0, 0, 0.25);
