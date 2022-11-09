@@ -1,6 +1,7 @@
 package com.ssafy.pocketfolio.api.controller;
 
 import com.ssafy.pocketfolio.api.dto.request.PortfolioReq;
+import com.ssafy.pocketfolio.api.dto.response.PortfolioListRes;
 import com.ssafy.pocketfolio.api.dto.response.PortfolioRes;
 import com.ssafy.pocketfolio.api.dto.response.UserRes;
 import com.ssafy.pocketfolio.api.service.PortfolioServiceImpl;
@@ -61,9 +62,9 @@ public class PortfolioController {
             @ApiResponse(responseCode = "500", description = "서버 에러", content = @Content(schema = @Schema(implementation = Error.class)))
     })
     @GetMapping
-    private ResponseEntity<List<PortfolioRes>> findPortfolioList(HttpServletRequest request){
+    private ResponseEntity<List<PortfolioListRes>> findPortfolioList(HttpServletRequest request){
         log.debug("[GET] Controller - findPortfolioList");
-        List<PortfolioRes> response = null;
+        List<PortfolioListRes> response = null;
         HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
 
         try{

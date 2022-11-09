@@ -1,6 +1,7 @@
 package com.ssafy.pocketfolio.api.service;
 
 import com.ssafy.pocketfolio.api.dto.request.PortfolioReq;
+import com.ssafy.pocketfolio.api.dto.response.PortfolioListRes;
 import com.ssafy.pocketfolio.api.dto.response.PortfolioRes;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -25,7 +26,7 @@ public interface PortfolioService {
      * @param userSeq 작성자 회원 번호
      * @return 포트폴리오 목록
      */
-    List<PortfolioRes> findPortfolioList(long userSeq);
+    List<PortfolioListRes> findPortfolioList(long userSeq);
 
     /**
      * 포트폴리오 상세 조회

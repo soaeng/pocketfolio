@@ -1,8 +1,8 @@
 package com.ssafy.pocketfolio.api.controller;
 
 import com.ssafy.pocketfolio.api.dto.request.RoomReq;
-import com.ssafy.pocketfolio.api.dto.response.RoomDetailRes;
-import com.ssafy.pocketfolio.api.dto.response.UserRes;
+import com.ssafy.pocketfolio.api.dto.response.*;
+import com.ssafy.pocketfolio.api.service.PortfolioServiceImpl;
 import com.ssafy.pocketfolio.api.service.RoomServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -17,7 +17,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RestController
@@ -27,6 +29,7 @@ import java.util.List;
 public class RoomController {
 
     private final RoomServiceImpl roomService;
+    private final PortfolioServiceImpl portfolioService;
 
     @Operation(summary = "마이룸 등록", description = "마이룸 등록", responses = {
             @ApiResponse(responseCode = "201", description = "마이룸 등록 성공", content = @Content(schema = @Schema(implementation = Long.class))),
@@ -63,14 +66,21 @@ public class RoomController {
             @ApiResponse(responseCode = "500", description = "서버 에러", content = @Content(schema = @Schema(implementation = Error.class)))
     })
     @GetMapping
-    public ResponseEntity<List<RoomDetailRes>> findRoomList(HttpServletRequest request) {
+    public ResponseEntity<Map<String, Object>> findRoomList(HttpServletRequest request) {
         log.debug("[GET] Controller - findRoomList");
-        List<RoomDetailRes> response = null;
+        List<RoomListRes> rooms;
+        List<PortfolioListRes> portfolios;
         HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
+        Map<String, Object> response = new HashMap<>();
 
         try{
             long userSeq = (Long) request.getAttribute("userSeq");
-            response = roomService.findRoomList(userSeq);
+            // 마이룸 목록
+            rooms = roomService.findRoomList(userSeq);
+            // 포트폴리오 목록
+            portfolios = portfolioService.findPortfolioList(userSeq);
+            response.put("rooms", rooms);
+            response.put("portfolios", portfolios);
             status = HttpStatus.OK;
         } catch (Exception e) {
             log.error(e.getMessage());
