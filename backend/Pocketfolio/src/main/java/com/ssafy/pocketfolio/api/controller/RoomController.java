@@ -276,7 +276,7 @@ public class RoomController {
     }
 
     @Operation(summary = "베스트 마이룸 목록 조회", description = "마이룸 좋아요 순 목록 조회", responses = {
-            @ApiResponse(responseCode = "201", description = "마이룸 좋아요 순 목록 조회 성공", content = @Content(schema = @Schema(implementation = RoomListRes.class))),
+            @ApiResponse(responseCode = "200", description = "마이룸 좋아요 순 목록 조회 성공", content = @Content(schema = @Schema(implementation = RoomListRes.class))),
             @ApiResponse(responseCode = "403", description = "사용 불가능 토큰", content = @Content(schema = @Schema(implementation = UserRes.class))),
             @ApiResponse(responseCode = "500", description = "서버 에러", content = @Content(schema = @Schema(implementation = Error.class)))
     })
