@@ -42,6 +42,9 @@ public class UserRes {
     @Schema(description = "자기소개", maxLength = 200)
     private String describe;
 
+    @Schema(description = "블로그 주소", maxLength = 1000)
+    private String blogUrl;
+
 //    @Schema(description = "마이룸 목록")
 //    private List<RoomRes> rooms;
 
@@ -56,6 +59,7 @@ public class UserRes {
         profilePic = userProfilePic;
         birth = user.getBirth();
         describe = user.getDescribe();
+        blogUrl = user.getBlogUrl();
     }
 
     public UserRes(UserView userView) {
@@ -67,5 +71,6 @@ public class UserRes {
         followerTotal = userView.getFollowerTotal();
         followingTotal = userView.getFollowingTotal();
         describe = userView.getDescribe();
+        blogUrl = userView.getBlogUrl();
     }
 }

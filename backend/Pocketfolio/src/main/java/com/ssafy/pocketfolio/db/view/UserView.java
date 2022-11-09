@@ -11,4 +11,5 @@ public interface UserView {
     public Long getFollowerTotal();
     public Long getFollowingTotal();
     public String getDescribe();
+    public String getBlogUrl();
 }
