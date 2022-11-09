@@ -67,11 +67,14 @@ export const ImgDiv = styled.div`
   height: 10rem;
   width: 10rem;
   overflow: hidden;
+
+  display: flex;
+  align-items: center;
 `;
 
 export const Img = styled.img`
-  height: 100%;
-  object-fit: cover;
+  width: 100%;
+  object-fit: contain;
 `;
 
 export const ImgInputDiv = styled.div`

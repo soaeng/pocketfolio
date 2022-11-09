@@ -20,6 +20,7 @@ import {
   ImgInputDiv,
   BtnContainer,
   SignOutText,
+  ImgBox,
 } from './Profile.style';
 import {useDispatch, useSelector} from 'react-redux';
 import {useState} from 'react';
@@ -39,6 +40,11 @@ const Profile = () => {
   const [name, setName] = useState(user && user.name ? user.name : null);
   const [profilePic, setProfilePic] = useState(
     user && user.profilePic ? user.profilePic : null,
+  );
+  const [preview, setPreview] = useState(
+    user && user.profilePic
+      ? user.profilePic
+      : process.env.PUBLIC_URL + '/assets/images/logo3.png',
   );
   const [blogURL, setBlogUrl] = useState(
     user && user.blogUrl ? user.blogUrl : '',
@@ -64,6 +70,7 @@ const Profile = () => {
 
     const res = await dispatch(updateProfile(form));
     if (res.payload.request.status === 201)
+      console.log(res)
       toast.success('회원정보가 성공적으로 수정되었습니다.');
   }
 
@@ -73,6 +80,20 @@ const Profile = () => {
     if (res) {
       navigate('/main');
     }
+  }
+
+  // 파일 미리보기
+  function changeImg(e) {
+    setProfilePic(e.target.files[0]);
+
+    const reader = new FileReader();
+    reader.readAsDataURL(e.target.files[0]);
+    return new Promise(resolve => {
+      reader.onload = () => {
+        setPreview(reader.result);
+        resolve();
+      };
+    });
   }
 
   return (
@@ -91,19 +112,12 @@ const Profile = () => {
         <Div>
           <ImgContainer>
             <ImgDiv>
-              <Img
-                id="preview-image"
-                src={
-                  profilePic
-                    ? profilePic
-                    : process.env.PUBLIC_URL + '/assets/images/logo.png'
-                }
-              />
+              <Img id="preview-image" src={preview} />
             </ImgDiv>
             <ImgInputDiv>
               <ImgInput
                 type="file"
-                onChange={e => setProfilePic(e.target.files[0])}
+                onChange={e => changeImg(e)}
                 accept="image/*"
               />
             </ImgInputDiv>
