@@ -3,6 +3,7 @@ import styled from 'styled-components';
 export const Container = styled.div`
   height: 100vh;
   width: 100vw;
+  margin: 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -13,6 +14,13 @@ export const Container = styled.div`
     padding: 3rem 0;
     height: auto;
   }
+`;
+
+export const NavContainer = styled.div`
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
 `;
 
 export const Title = styled.h1`
@@ -144,7 +152,7 @@ export const BIBox = styled.div`
 `;
 
 export const TextArea = styled.textarea`
-  font-size: 1.2rem;
+  font-size: 1rem;
   padding: 0.8rem 1rem;
   border-radius: 0.5rem;
   border: 1.4px solid #a5a5a5;
@@ -162,9 +170,27 @@ export const TextArea = styled.textarea`
   }
 `;
 
+export const BtnContainer = styled.div`
+  width: 100%;
+
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+`;
+
+export const SignOutText = styled.p`
+  margin: 0;
+  color: #626262;
+  text-decoration: underline;
+
+  &:hover {
+    color: #313131;
+  }
+`;
+
 export const Btnbox = styled.div`
   margin-top: 3rem;
-  width: 100%;
+  width: 45%;
 `;
 
 export const Btn = styled.button`
@@ -181,22 +207,22 @@ export const Btn = styled.button`
 
   &.cancel {
     background-color: white;
-    color: #3c2e9b;
+    color: #e75452;
     border: 0.5px solid #a5a5a5;
 
     &:hover {
       background-color: #eeeeee;
-      color: #312582;
+      color: #c13136;
     }
   }
 
   &.save {
-    background-color: #3c2e9b;
+    background-color: #e75452;
     color: white;
 
     &:hover {
-      background-color: #312582;
-      color: #dcdcdc;
+      background-color: #c13136;
+      color: #eeeeee;
     }
   }
 `;

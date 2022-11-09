@@ -5,7 +5,16 @@ const http = axios.create({
   baseURL: 'https://k7e101.p.ssafy.io/api/',
   // baseURL: 'http://localhost:8081/api/',
   headers: {
-    'Content-type': 'application/json',
+    'Content-Type': 'application/json',
+  },
+});
+
+const postAxios = axios.create({
+  baseURL: 'https://k7e101.p.ssafy.io/api/',
+  // baseURL: 'http://localhost:8081/api/',
+  headers: {
+    'Content-Type': 'multipart/form-data',
+    Authorization: `Bearer ${getToken()}`,
   },
 });
 
@@ -21,4 +30,4 @@ http.interceptors.response.use(
   },
 );
 
-export {http};
+export {http, postAxios};
