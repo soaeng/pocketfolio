@@ -43,6 +43,9 @@ public class User {
 	
 	@Column(name="describe", length=200)
 	private String describe;
+
+	@Column(name="blog_url", length=1000)
+	private String blogUrl;
 	
 	@Column(name="created", nullable=false, updatable=false, columnDefinition = "datetime DEFAULT (current_time)")
 	private LocalDateTime created;
@@ -54,11 +57,12 @@ public class User {
 //	@ColumnDefault("0")
 //	private int userPoint;
 
-	public void updateUser(String name, String profilePic, LocalDate birth, String describe) {
+	public void updateUser(String name, String profilePic, LocalDate birth, String describe, String blogUrl) {
 		this.name = name;
 		this.profilePic = profilePic;
 		this.birth = birth;
 		this.describe = describe;
+		this.blogUrl = blogUrl;
 	}
 
 	public void updateToken(String token) {
