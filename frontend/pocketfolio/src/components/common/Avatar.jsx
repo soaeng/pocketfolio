@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useRef} from 'react';
-import {AvatarImg, AvatarContainer} from './avatar.style';
-import DropDown from './dropdown';
+import {AvatarImg, AvatarContainer} from './Avatar.style';
+import DropDown from './Dropdown';
 
 function Avatar() {
   const [visible, setVisible] = useState(false);

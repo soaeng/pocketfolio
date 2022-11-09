@@ -73,6 +73,7 @@ export const ImageContainer = styled.img`
 export const RoomButton = styled.button`
   z-index: 9;
   width: 200px;
+  height: 35px;
   margin-top: 1rem;
   padding: 0.5rem 1rem;
   border-radius: 16px;

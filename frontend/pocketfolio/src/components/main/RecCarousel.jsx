@@ -14,7 +14,10 @@ import {
   RecCarImgDiv,
   RecCarThumbnail,
   RecCaTitle,
+  TestButton,
 } from './RecCarousel.style';
+
+import {BiChevronLeft} from 'react-icons/bi';
 
 // 임시데이터
 const items = [
@@ -71,16 +74,22 @@ const items = [
 
 const RecCarousel = () => {
   const [item, setItem] = useState(items);
+
+  const [index, setIndex] = useState(0);
   const carousel = useRef(null);
 
   const handleLeft = e => {
     e.preventDefault();
     carousel.current.scrollLeft -= carousel.current.offsetWidth;
+    setIndex(index - 1);
+    console.log('hi');
   };
 
   const handleRight = e => {
     e.preventDefault();
     carousel.current.scrollLeft += carousel.current.offsetWidth;
+    setIndex(index + 1);
+    console.log('bye');
   };
 
   return (
@@ -90,7 +99,7 @@ const RecCarousel = () => {
         <Container>
           <Carousel ref={carousel}>
             {item.map(it => {
-              const {icon, copy, name, like, seen} = it;
+              const {copy, name, like, seen} = it;
               return (
                 <Item>
                   {/* 이미지 */}
@@ -117,8 +126,24 @@ const RecCarousel = () => {
           </Carousel>
         </Container>
         <Ui>
-          <button onClick={handleLeft}>{'<'}</button>
-          <button onClick={handleRight}>{'>'}</button>
+          <button
+            onClick={e => {
+              if (index !== 0) {
+                handleLeft(e);
+              }
+            }}
+          >
+            {'<'}
+          </button>
+          <button
+            onClick={e => {
+              if (index === 0) {
+                handleRight(e);
+              }
+            }}
+          >
+            {'>'}
+          </button>
         </Ui>
       </RecCaContainer>
     </>

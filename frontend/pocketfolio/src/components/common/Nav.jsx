@@ -8,9 +8,9 @@ import {
   NavBotton,
   NavSearchInput,
   LoginDiv,
-} from './nav.style';
+} from './Nav.style';
 
-import Avatar from './avatar';
+import Avatar from './Avatar';
 
 /** 네비게이션 페이지 */
 function Nav() {
