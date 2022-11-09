@@ -26,7 +26,7 @@ export const Carousel = styled.div`
   }
 `;
 
-// 포트폴리오 각각
+// 추천 포트폴리오 각각
 export const Item = styled.div`
   display: flex;
   width: calc(84% / 4);
@@ -39,7 +39,8 @@ export const Item = styled.div`
   flex: none;
 `;
 
-export const Ui = styled.div`
+// 캐러셀 버튼
+export const ButtonDiv = styled.div`
   position: absolute;
   top: 60%;
   transform: translateY(-50%);
@@ -47,44 +48,74 @@ export const Ui = styled.div`
   width: 90%;
   justify-content: space-between;
   z-index: 100;
+`;
 
-  button {
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #999;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    color: #fff;
-    box-shadow: 0px 2px 5px 1px rgba(0, 0, 0, 0.25);
-    border: 0;
-    transition: all 0.2s cubic-bezier(0.39, 0.575, 0.565, 1);
+// 캐러셀 왼쪽 버튼
+export const LeftButton = styled.a`
+  position: absolute;
+  top: 50%;
+  width: 3vmin;
+  height: 3vmin;
+  background: transparent;
+  border-top: 1vmin solid #333;
+  border-right: 1vmin solid #333;
+  transition: all 200ms ease;
+  left: 0;
+  transform: translate3d(0, -50%, 0) rotate(-135deg);
+  cursor: pointer;
 
-    &:hover {
-      background: #666;
-    }
-
-    &:focus {
-      outline: none;
-      border: 1px solid rgba(255, 255, 255, 1);
-    }
+  &:hover {
+    border-color: #e75452;
+    box-shadow: 0.5vmin -0.5vmin 0 #383838;
   }
 `;
 
-export const TestButton = styled.button`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #999;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  color: #fff;
-  box-shadow: 0px 2px 5px 1px rgba(0, 0, 0, 0.25);
-  border: 0;
-  transition: all 0.2s cubic-bezier(0.39, 0.575, 0.565, 1);
+export const NoneLeftButton = styled.a`
+  position: absolute;
+  top: 50%;
+  width: 3vmin;
+  height: 3vmin;
+  background: transparent;
+  border-top: 1vmin solid lightgray;
+  border-right: 1vmin solid lightgray;
+  transition: all 200ms ease;
+  left: 0;
+  transform: translate3d(0, -50%, 0) rotate(-135deg);
+  cursor: not-allowed;
+`;
+
+// 캐러셀 오른쪽 버튼
+export const RightButton = styled.a`
+  position: absolute;
+  top: 50%;
+  width: 3vmin;
+  height: 3vmin;
+  background: transparent;
+  border-top: 1vmin solid #333;
+  border-right: 1vmin solid #333;
+  transition: all 200ms ease;
+  right: 0;
+  transform: translate3d(0, -50%, 0) rotate(45deg);
+  cursor: pointer;
+
+  &:hover {
+    border-color: #e75452;
+    box-shadow: 0.5vmin -0.5vmin 0 #383838;
+  }
+`;
+
+export const NoneRightButton = styled.a`
+  position: absolute;
+  top: 50%;
+  width: 3vmin;
+  height: 3vmin;
+  background: transparent;
+  border-top: 1vmin solid lightgray;
+  border-right: 1vmin solid lightgray;
+  transition: all 200ms ease;
+  right: 0;
+  transform: translate3d(0, -50%, 0) rotate(45deg);
+  cursor: not-allowed;
 `;
 
 export const Item2 = styled.div`
