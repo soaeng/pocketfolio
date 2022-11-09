@@ -10,6 +10,7 @@ export const NavContainer = styled.div`
   justify-content: space-between;
   padding: 0.5rem;
   height: 3.5rem;
+  width: calc(100% - 1rem);
   z-index: 999;
   top: 0;
 `;
