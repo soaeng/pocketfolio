@@ -1,4 +1,5 @@
-import React, {useState, useCallback, useEffect} from 'react';
+import React, {useState} from 'react';
+import {useDispatch} from 'react-redux';
 import {useNavigate} from 'react-router-dom';
 import {
   Wrapper,
@@ -15,22 +16,30 @@ import {
   BtnDiv,
   StyledBtn,
   HashIcon,
+  FileAttach,
+  FileIcon,
+  Form,
 } from './AddPort.style';
 import Nav from '../common/nav';
 import Editor from './Editor.test';
 import {Body1} from '../../styles/styles.style';
 import SaveModal from './SaveModal';
 import ReactHtmlParser from 'html-react-parser';
+import {registPortfolio} from '../../store/portSlice';
 
 const AddPort = () => {
   const navigate = useNavigate();
-
+  const dispatch = useDispatch();
+  // 저장 모달 오픈 변수
   const [isOpen, setIsOpen] = useState(false);
+
+  // 첨부 파일 리스트
+  const [attachList, setAttachList] = useState([]);
+
   // 포트폴리오 제목, 내용 변수
   const [portContent, setPortContent] = useState({
-    title: '',
-    content: '',
-    hashtag: [],
+    name: '',
+    summary: '',
   });
 
   // 해시태그 인풋값
@@ -59,12 +68,8 @@ const AddPort = () => {
     // 해시태그 배열에 추가 후 입력 창 초기화 (공백값 제외)
     if (e.keyCode === 13 && e.target.value.trim() !== '') {
       setHashArr(hashArr => [...hashArr, hashtag]);
-      setPortContent({
-        ...portContent,
-        [name]: hashArr,
-      });
+
       setHashtag('');
-      console.log('엔터 눌렀는데 추가됐냐?', hashArr);
     }
   };
 
@@ -74,14 +79,6 @@ const AddPort = () => {
     const result = hashArr.filter(content => content !== selected);
     setHashArr(result);
   };
-
-  // 태그가 적용된 뷰어
-  const Viewer = ({content}) => (
-    <div
-      className="ck-content"
-      dangerouslySetInnerHTML={{__html: content}}
-    ></div>
-  );
 
   // 취소 버튼 클릭 시 /port 로 이동
   const clickCancel = () => {
@@ -93,17 +90,80 @@ const AddPort = () => {
     setIsOpen(true);
   };
 
-  console.log(hashArr);
-
   // 추가
   const [modalOpen, setModalOpen] = useState(false);
   const openModal = () => {
     setModalOpen(true);
-    
   };
   const closeModal = () => {
     setModalOpen(false);
   };
+
+  // 파일 첨부
+  const fileInput = React.useRef(null);
+  const handleButtonClick = e => {
+    fileInput.current.click();
+  };
+
+  const handleChange = e => {
+
+    setAttachList(attachList => [...attachList, e.target.files[0]]);
+    // const formData = new FormData()
+    // formData.append('file', e.target.files[0])
+    // for (let value of formData.values()) {
+    //   console.log(value);
+    // }
+  };
+
+  // 포트폴리오 제출 함수
+  const savePortFolio = () => {
+    const formData = new FormData();
+    let files = attachList
+    for (let i = 0; i < files.length; i++) {
+      formData.append("files", files[i]);
+    }
+
+
+    // 폼 데이터 value 확인
+    for (let key of formData.values()) {
+      console.log(key);
+    }
+
+
+    const data = {
+      portfolio: {
+        name: portContent.name,
+        summary: portContent.summary,
+        tags: hashArr,
+      },
+      thumbnail: 'string',
+      files: formData,
+    };
+
+    dispatch(registPortfolio(data))
+      .unwrap()
+      .then(res => {
+        console.log(res);
+      });
+
+    // 폼데이터는 헤더 설정 해줘야 함.
+    // axios({
+    //   method: "post",
+    //   url: STREAMING_COMMENT_URL,
+    //   data: formData,
+    //   headers: { "Content-Type": "multipart/form-data", Authorization: localStorage.getItem("access_token") }
+    // });
+  };
+
+  // 태그가 적용된 뷰어
+  const Viewer = ({content}) => (
+    <div
+      className="ck-content"
+      dangerouslySetInnerHTML={{__html: content}}
+    ></div>
+  );
+
+ 
   return (
     <Background>
       <Nav></Nav>
@@ -125,9 +185,9 @@ const AddPort = () => {
           <Editor portContent={portContent} setPortContent={setPortContent} />
         </ContentDiv>
 
-        <ContentDiv>
-          <Label>해시태그</Label>
+        <ContentDiv className="hash">
           <HashDiv className="HashWrap">
+            <Label>해시태그</Label>
             <InputDiv>
               <HashIcon />
               <HashInput
@@ -147,6 +207,22 @@ const AddPort = () => {
               ))}
             </HashList>
           </HashDiv>
+
+          <FileAttach>
+            <Label>파일첨부</Label>
+
+            <FileIcon onClick={handleButtonClick}>파일 업로드</FileIcon>
+            <Form >
+              <input
+                type="file"
+                name="port_files"
+                ref={fileInput}
+                onChange={handleChange}
+                multiple="multiple"
+                style={{display: 'none'}}
+              />
+            </Form>
+          </FileAttach>
         </ContentDiv>
       </Wrapper>
       <BtnDiv>
@@ -158,13 +234,14 @@ const AddPort = () => {
         </StyledBtn>
       </BtnDiv>
 
-        <SaveModal
-          onClose={() => {
-            setIsOpen(false);
-          }}
-          open={modalOpen} 
-          close={closeModal}
-        ></SaveModal>
+      <SaveModal
+        onClose={() => {
+          setIsOpen(false);
+        }}
+        open={modalOpen}
+        close={closeModal}
+        save={savePortFolio}
+      ></SaveModal>
 
       {/* 포트폴리오 로우 데이터 */}
       {/* <div>
