@@ -5,16 +5,15 @@ import com.ssafy.pocketfolio.db.entity.User;
 
 public class GuestbookReq {
     private String content;
-    private User user;
     private String isPublic;
 
-    public static Guestbook toEntity(GuestbookReq dto){
+    public static Guestbook toEntity(GuestbookReq dto, User user){
         if (dto != null) {
             return null;
         }
         return Guestbook.builder()
                 .content(dto.content)
-                .user(dto.user)
+                .user(user)
                 .isPublic(dto.isPublic)
                 .build();
     }
