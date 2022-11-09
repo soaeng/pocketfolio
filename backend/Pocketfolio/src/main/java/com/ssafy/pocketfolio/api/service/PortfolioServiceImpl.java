@@ -2,6 +2,7 @@ package com.ssafy.pocketfolio.api.service;
 
 import com.ssafy.pocketfolio.api.dto.PortfolioUrlDto;
 import com.ssafy.pocketfolio.api.dto.request.PortfolioReq;
+import com.ssafy.pocketfolio.api.dto.response.PortfolioListRes;
 import com.ssafy.pocketfolio.api.dto.response.PortfolioRes;
 import com.ssafy.pocketfolio.api.util.MultipartFileHandler;
 import com.ssafy.pocketfolio.db.entity.Portfolio;
@@ -14,7 +15,6 @@ import com.ssafy.pocketfolio.db.repository.TagRepository;
 import com.ssafy.pocketfolio.db.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -34,11 +34,6 @@ public class PortfolioServiceImpl implements PortfolioService{
     private final PortfolioUrlRepository portfolioUrlRepository;
     private final TagRepository tagRepository;
     private final MultipartFileHandler fileHandler;
-
-    @Value("${app.fileupload.uploadPath}")
-    private String uploadPath;
-    @Value("${app.fileupload.uploadDir}")
-    private String uploadDir;
 
     // 포트폴리오 등록
     @Override
@@ -81,26 +76,24 @@ public class PortfolioServiceImpl implements PortfolioService{
 
     // 포트폴리오 목록 조회
     @Override
-    public List<PortfolioRes> findPortfolioList(long userSeq) {
+    public List<PortfolioListRes> findPortfolioList(long userSeq) {
         log.debug("[GET] Service - findPortfolioList");
-        List<PortfolioRes> portfolioRes = new ArrayList<>();
+        List<PortfolioListRes> portfolioListRes = new ArrayList<>();
         
         try {
             User user = userRepository.findById(userSeq).orElseThrow(() -> new IllegalArgumentException("해당 사용자가 존재하지 않습니다."));
             List<Portfolio> portfolios = portfolioRepository.findAllByUser(user);
-
             for (Portfolio portfolio : portfolios) {
-                List<PortfolioUrl> urls = portfolioUrlRepository.findAllByPortfolio(portfolio);
                 List<Tag> tags = tagRepository.findAllByPortfolio(portfolio);
-                PortfolioRes result = PortfolioRes.toDto(portfolio, urls, tags);
-                portfolioRes.add(result);
+                PortfolioListRes result = PortfolioListRes.toDto(portfolio, tags);
+                portfolioListRes.add(result);
             }
         } catch (Exception e) {
             log.error(e.getMessage());
-            portfolioRes = null;
+            portfolioListRes = null;
         }
 
-        return portfolioRes;
+        return portfolioListRes;
     }
 
     // 포트폴리오 조회
