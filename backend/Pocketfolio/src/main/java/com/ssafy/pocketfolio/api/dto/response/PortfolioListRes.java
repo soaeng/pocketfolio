@@ -5,12 +5,13 @@ import com.ssafy.pocketfolio.db.entity.Tag;
 import lombok.Builder;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Builder
 public class PortfolioListRes {
     private Long portSeq;       // 포트폴리오 번호
     private String name;        // 포트폴리오 제목
-    private String[] tags;      // 포트폴리오 태그 목록
+    private List<String> tags;      // 포트폴리오 태그 목록
 
     public static PortfolioListRes toDto(Portfolio entity, List<Tag> tags) {
         if (entity == null) {
@@ -19,7 +20,7 @@ public class PortfolioListRes {
         return PortfolioListRes.builder()
                 .portSeq(entity.getPortSeq())
                 .name(entity.getName())
-                .tags((String[]) tags.stream().map(Tag::getName).toArray())
+                .tags(tags.stream().map(Tag::getName).collect(Collectors.toList()))
                 .build();
     }
 }

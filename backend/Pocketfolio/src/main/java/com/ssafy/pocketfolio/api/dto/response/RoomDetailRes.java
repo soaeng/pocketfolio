@@ -14,5 +14,4 @@ public class RoomDetailRes {
     private long hitCount;
     private long todayCount;
     private long likeCount;
-    private String userName;
 }
