@@ -32,22 +32,30 @@ const Profile = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  // 기존 유저 정보
   const user = useSelector(state => state.oauth.user);
-  const [name, setName] = useState(user.name);
-  const [profilePic, setProfilePic] = useState(
-    user.profilePic ? user.profilePic : null,
-  );
-  const [blogURL, setBlogUrl] = useState(user.blogUrl ? user.blogUrl : '');
-  const [birth, setBirth] = useState(user.birth ? user.birth : '');
-  const [describe, setDescribe] = useState(user.describe);
 
+  // 변경된 유저 정보
+  const [name, setName] = useState(user && user.name ? user.name : null);
+  const [profilePic, setProfilePic] = useState(
+    user && user.profilePic ? user.profilePic : null,
+  );
+  const [blogURL, setBlogUrl] = useState(
+    user && user.blogUrl ? user.blogUrl : '',
+  );
+  const [birth, setBirth] = useState(user && user.birth ? user.birth : '');
+  const [describe, setDescribe] = useState(
+    user && user.describe ? user.describe : '',
+  );
+
+  // 회원정보수정
   async function sendData() {
     const form = new FormData();
     const json = JSON.stringify({
       name: name ? name : user.name,
       birth: birth ? birth : null,
       describe:
-        describe !== user.discribe && describe ? describe : user.discribe,
+        describe && describe !== user.discribe ? describe : user.discribe,
     });
 
     form.append('user', new Blob([json], {type: 'application/json'}));
@@ -59,6 +67,7 @@ const Profile = () => {
       toast.success('회원정보가 성공적으로 수정되었습니다.');
   }
 
+  // 회원탈퇴
   async function deleteUser() {
     const res = await dispatch(signOut());
     if (res) {
