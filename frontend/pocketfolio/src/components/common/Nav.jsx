@@ -72,7 +72,7 @@ function Nav() {
         <LoginDiv>
           <div>{user.name}님</div>
           <NavBotton onClick={roomClickHandler}>마이룸</NavBotton>
-          <Avatar />
+          <Avatar user={user} />
         </LoginDiv>
       )}
     </NavContainer>

@@ -108,7 +108,7 @@ const RecCarousel = () => {
                     />
                   </RecCarImgDiv>
                   {/* 1차 설명 => 필요 없으면 삭제 */}
-                  <div>{copy}</div>
+                  {/* <div>{copy}</div> */}
                   {/* 이름, 좋아요 등 */}
                   <Item2>
                     <div>{name}</div>

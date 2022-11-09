@@ -17,15 +17,15 @@ import {
   FollowList1,
 } from './Dropdown.style';
 
-const DropDown = () => {
+const DropDown = ({user}) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const user = useSelector(state => state.oauth.user);
+  // const user = useSelector(state => state.oauth.user);
   console.log(user, '유저 나와라');
 
   // 마이포켓 이동 => 수정 필요
   const myPocketClickHandler = () => {
-    navigate('/room/1');
+    navigate('/port');
   };
 
   // 프로필 이동
