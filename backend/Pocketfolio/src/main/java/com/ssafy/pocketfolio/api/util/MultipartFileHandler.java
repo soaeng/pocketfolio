@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.UUID;
 
 @Slf4j
@@ -83,18 +84,11 @@ public class MultipartFileHandler {
         File dest = new File(upload.getPath() + File.separator + saveName);
         log.debug(dest.getPath());
 
-        if (uploadDirName.contains("thumbnail")) {
-            log.debug("thumbnail 파일 확장자 확인");
+        String[] dirList = {"thumbnail","profile"};
+        if (dirNameContainsStringList(uploadDirName, dirList)) {
+            log.debug(uploadDirName + " 파일 확장자 확인...");
             if(!checkImageType(Paths.get(dest.getPath()))){
                 log.error("thumbnail 파일은 이미지 파일만 허용됨");
-                return null;
-            }
-        }
-
-        if (uploadDirName.contains("profile")) {
-            log.debug("profile 파일 확장자 확인");
-            if(!checkImageType(Paths.get(dest.getPath()))){
-                log.error("profile 파일은 이미지 파일만 허용됨");
                 return null;
             }
         }
@@ -102,6 +96,11 @@ public class MultipartFileHandler {
         file.transferTo(dest);
         log.debug("파일 저장 완료");
         return dest;
+    }
+
+    // 해당 폴더 포함 여부를 확인
+    public static boolean dirNameContainsStringList(String dirName, String[] list) {
+        return Arrays.stream(list).anyMatch(dirName::contains);
     }
 
     // 파일 삭제
