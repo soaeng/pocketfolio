@@ -49,7 +49,7 @@ public class UserServiceImpl implements UserService {
             if (profilePicUrl != null) {
                 fileHandler.deleteFile(profilePicUrl);
             }
-            profilePicUrl = fileHandler.saveThumbnail(multipartFile, "profile");
+            profilePicUrl = fileHandler.saveFile(multipartFile, "profile");
             if(profilePicUrl == null) {
                 log.error("프로필 사진이 저장되지 않았습니다.");
 //                throw new IOException("프로필 사진이 저장되지 않았습니다.");

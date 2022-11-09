@@ -25,47 +25,25 @@ import java.util.UUID;
 public class MultipartFileHandler {
 
     private final AmazonS3Client amazonS3Client;
-
     @Value("${cloud.aws.s3.bucket}")
-    private String S3Bucket; // Bucket 이름
-    @Value("${app.fileupload.uploadPath}")
-    private String uploadPath;
-    @Value("${app.fileupload.uploadDir}")
-    private String uploadDir;
-
-    // 썸네일 저장
-    public String saveThumbnail(MultipartFile thumbnail, String uploadDirName) throws IOException {
-        // 파일 저장
-        String dest = saveFile(thumbnail, uploadDirName);
-        if (dest != null) {
-            log.debug("썸네일 이미지 저장 성공");
-            return dest;
-        } else {
-            log.error("썸네일 이미지 저장 실패");
-            return null;
-        }
-    }
-
-    // 이미지 파일 체크
-    private boolean checkImageType(Path filePath) {
-        try {
-            String contentType = Files.probeContentType(filePath);
-            if(contentType.startsWith("image")) {
-                return true;
-            } else {
-                log.debug("이미지 파일이 아닙니다.");
-                return false;
-            }
-        }catch(IOException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
+    private String S3Bucket;
 
     // 파일 저장
     public String saveFile(MultipartFile file, String uploadDirName) throws IOException {
         // 저장되는 파일 경로
         String filePath;
+
+        // 파일 확인
+        String[] dirList = {"thumbnail","profile"};
+        if (dirNameContainsStringList(uploadDirName, dirList)) {
+            log.debug(uploadDirName + " 파일 확장자 확인...");
+            // MultipartFile의 ContentType 확인을 위해 Tike 라이브러리 사용
+            Tika tika = new Tika();
+            if(!tika.detect(file.getInputStream()).contains("image")) {
+                log.error("thumbnail 파일은 이미지 파일만 허용됨");
+                return null;
+            }
+        }
 
         // Random uuid
         UUID uuid = UUID.randomUUID();
@@ -81,6 +59,8 @@ public class MultipartFileHandler {
         String saveName = uuid + "." + fileExt;
         log.debug("saveName: " + saveName);
 
+        String uploadPath = uploadDirName + "/" + saveName;
+
         ObjectMetadata objectMetaData = new ObjectMetadata();
         objectMetaData.setContentType(file.getContentType());
         log.debug("objectMetaDate ContentType: " + objectMetaData.getContentType());
@@ -88,20 +68,13 @@ public class MultipartFileHandler {
 
         // S3에 업로드
         amazonS3Client.putObject(
-            new PutObjectRequest(S3Bucket, saveName, file.getInputStream(), objectMetaData)
-                .withCannedAcl(CannedAccessControlList.PublicRead)
+                new PutObjectRequest(S3Bucket, uploadPath, file.getInputStream(), objectMetaData)
+                        .withCannedAcl(CannedAccessControlList.PublicRead)
         );
 
         filePath = amazonS3Client.getUrl(S3Bucket, saveName).toString(); // 접근가능한 URL 가져오기
-
-        String[] dirList = {"thumbnail","profile"};
-        if (dirNameContainsStringList(uploadDirName, dirList)) {
-            log.debug(uploadDirName + " 파일 확장자 확인...");
-            Tika tika = new Tika();
-            if(!tika.detect(file.getInputStream()).contains("image")) {
-                log.error("thumbnail 파일은 이미지 파일만 허용됨");
-                return null;
-            }
+        if (filePath != null ) {
+            log.debug("파일 저장 성공");
         }
         return filePath;
     }

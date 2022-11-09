@@ -49,7 +49,7 @@ public class PortfolioServiceImpl implements PortfolioService{
 
         // 저장할 썸네일 파일이 있다면
         if (thumbnail != null) {
-            thumbnailUrl = fileHandler.saveThumbnail(thumbnail, "portfolio" + File.separator + "thumbnail");
+            thumbnailUrl = fileHandler.saveFile(thumbnail, "portfolio/thumbnail");
             if(thumbnailUrl == null) {
                 log.error("썸네일 저장 실패");
                 return null;
@@ -131,7 +131,7 @@ public class PortfolioServiceImpl implements PortfolioService{
             if (thumbnailUrl != null) {
                 fileHandler.deleteFile(thumbnailUrl);
             }
-            thumbnailUrl = fileHandler.saveThumbnail(thumbnail, "portfolio" + File.separator + "thumbnail");
+            thumbnailUrl = fileHandler.saveFile(thumbnail, "portfolio/thumbnail");
             if(thumbnailUrl == null) {
                 log.error("썸네일 저장 실패");
                 return null;
