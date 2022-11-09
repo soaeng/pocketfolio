@@ -2,6 +2,7 @@ package com.ssafy.pocketfolio.api.util;
 
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import lombok.RequiredArgsConstructor;
@@ -85,14 +86,9 @@ public class MultipartFileHandler {
     }
 
     // 파일 삭제
-    public void deleteFile(String filePath) {
-        File file = new File(filePath);
-        if (file.exists()){
-            boolean result = file.delete();
-            if (!result) {
-                log.debug("파일 삭제 실패");
-            }
-            log.debug("파일 삭제 성공");
-        }
+    public void deleteFile(String url, String uploadDirName) {
+        String key = uploadDirName + url.substring(url.lastIndexOf(".com/") + 4);
+        log.debug("delete key: " + key);
+        amazonS3Client.deleteObject(new DeleteObjectRequest(S3Bucket, key));
     }
 }

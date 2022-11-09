@@ -47,7 +47,7 @@ public class UserServiceImpl implements UserService {
         if (multipartFile != null) {
             // 저장된 프로필 사진 주소가 있으면 해당 프로필 사진 삭제 후 새로 저장
             if (profilePicUrl != null) {
-                fileHandler.deleteFile(profilePicUrl);
+                fileHandler.deleteFile(profilePicUrl, "portfolio/thumbnail");
             }
             profilePicUrl = fileHandler.saveFile(multipartFile, "profile");
             if(profilePicUrl == null) {
@@ -57,7 +57,7 @@ public class UserServiceImpl implements UserService {
         } else {
             // 프로필 사진 삭제 후 전송되고 이전에 프로필 사진 있었으면 프로필 사진 파일 삭제
             if (profilePicUrl != null) {
-                fileHandler.deleteFile(profilePicUrl);
+                fileHandler.deleteFile(profilePicUrl, "portfolio/thumbnail");
             }
         }
 

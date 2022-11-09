@@ -129,7 +129,7 @@ public class PortfolioServiceImpl implements PortfolioService{
         if (thumbnail != null) {
             // 저장된 썸네일 주소가 있으면 해당 썸네일 삭제 후 새로 저장
             if (thumbnailUrl != null) {
-                fileHandler.deleteFile(thumbnailUrl);
+                fileHandler.deleteFile(thumbnailUrl, "portfolio/thumbnail");
             }
             thumbnailUrl = fileHandler.saveFile(thumbnail, "portfolio/thumbnail");
             if(thumbnailUrl == null) {
@@ -139,7 +139,7 @@ public class PortfolioServiceImpl implements PortfolioService{
         } else {
             // 썸네일 삭제 후 전송되고 이전에 썸네일 있었으면 썸네일 파일 삭제
             if (thumbnailUrl != null) {
-                fileHandler.deleteFile(thumbnailUrl);
+                fileHandler.deleteFile(thumbnailUrl, "portfolio/thumbnail");
             }
         }
 
@@ -155,7 +155,7 @@ public class PortfolioServiceImpl implements PortfolioService{
         // 파일이 있다면 기존 파일 DB, 물리적 삭제 후 새로 저장
         if (files != null){
             for (PortfolioUrl url : urls) {
-                fileHandler.deleteFile(url.getUrl());
+                fileHandler.deleteFile(url.getUrl(), "portfolio");
             }
             portfolioUrlRepository.deleteAllByPortfolio(portfolio);
             saveUrls(files, portfolio);
@@ -178,14 +178,14 @@ public class PortfolioServiceImpl implements PortfolioService{
 
             // 썸네일 삭제
             if (portfolio.getThumbnail() != null) {
-                fileHandler.deleteFile(portfolio.getThumbnail());
+                fileHandler.deleteFile(portfolio.getThumbnail(), "portfolio/thumbnail");
             }
             tagRepository.deleteAllByPortfolio(portfolio);
             List<PortfolioUrl> urls = portfolioUrlRepository.findAllByPortfolio(portfolio);
             // 첨부파일 삭제
             if(!urls.isEmpty()) {
                 for (PortfolioUrl url : urls) {
-                    fileHandler.deleteFile(url.getUrl());
+                    fileHandler.deleteFile(url.getUrl(), "portfolio");
                 }
             }
             portfolioUrlRepository.deleteAllByPortfolio(portfolio);

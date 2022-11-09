@@ -139,7 +139,7 @@ public class RoomServiceImpl implements RoomService {
         if (thumbnail != null) {
             // 저장된 썸네일 주소가 있으면 해당 썸네일 삭제 후 새로 저장
             if (thumbnailUrl != null) {
-                fileHandler.deleteFile(thumbnailUrl);
+                fileHandler.deleteFile(thumbnailUrl, "portfolio/thumbnail");
             }
             thumbnailUrl = fileHandler.saveFile(thumbnail, "room/thumbnail");
             if(thumbnailUrl == null) {
@@ -149,7 +149,7 @@ public class RoomServiceImpl implements RoomService {
         } else {
             // 썸네일 삭제 후 전송되고 이전에 썸네일 있었으면 썸네일 파일 삭제
             if (thumbnailUrl != null) {
-                fileHandler.deleteFile(thumbnailUrl);
+                fileHandler.deleteFile(thumbnailUrl, "portfolio/thumbnail");
             }
         }
 
@@ -176,7 +176,7 @@ public class RoomServiceImpl implements RoomService {
 
         // 썸네일 삭제
         if (room.getThumbnail() != null) {
-            fileHandler.deleteFile(room.getThumbnail());
+            fileHandler.deleteFile(room.getThumbnail(), "portfolio/thumbnail");
         }
 
         roomRepository.deleteById(roomSeq);
