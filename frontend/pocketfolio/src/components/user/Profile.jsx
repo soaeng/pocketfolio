@@ -20,6 +20,8 @@ import {
   ImgInputDiv,
   BtnContainer,
   SignOutText,
+  DelBox,
+  DelIcon,
 } from './Profile.style';
 import {useDispatch, useSelector} from 'react-redux';
 import {useState} from 'react';
@@ -32,22 +34,35 @@ const Profile = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  // 기존 유저 정보
   const user = useSelector(state => state.oauth.user);
-  const [name, setName] = useState(user.name);
-  const [profilePic, setProfilePic] = useState(
-    user.profilePic ? user.profilePic : null,
-  );
-  const [blogURL, setBlogUrl] = useState(user.blogUrl ? user.blogUrl : '');
-  const [birth, setBirth] = useState(user.birth ? user.birth : '');
-  const [describe, setDescribe] = useState(user.describe);
 
+  // 변경된 유저 정보
+  const [name, setName] = useState(user && user.name ? user.name : null);
+  const [profilePic, setProfilePic] = useState(
+    user && user.profilePic ? user.profilePic : null,
+  );
+  const [preview, setPreview] = useState(
+    user && user.profilePic
+      ? user.profilePic
+      : process.env.PUBLIC_URL + '/assets/images/logo3.png',
+  );
+  const [blogURL, setBlogUrl] = useState(
+    user && user.blogUrl ? user.blogUrl : '',
+  );
+  const [birth, setBirth] = useState(user && user.birth ? user.birth : '');
+  const [describe, setDescribe] = useState(
+    user && user.describe ? user.describe : '',
+  );
+
+  // 회원정보수정
   async function sendData() {
     const form = new FormData();
     const json = JSON.stringify({
       name: name ? name : user.name,
       birth: birth ? birth : null,
       describe:
-        describe !== user.discribe && describe ? describe : user.discribe,
+        describe && describe !== user.discribe ? describe : user.discribe,
     });
 
     form.append('user', new Blob([json], {type: 'application/json'}));
@@ -55,15 +70,30 @@ const Profile = () => {
     form.append('profilePic', profilePic);
 
     const res = await dispatch(updateProfile(form));
-    if (res.payload.request.status === 201)
-      toast.success('회원정보가 성공적으로 수정되었습니다.');
+    if (res.payload.request.status === 201) console.log(res);
+    toast.success('회원정보가 성공적으로 수정되었습니다.');
   }
 
+  // 회원탈퇴
   async function deleteUser() {
     const res = await dispatch(signOut());
     if (res) {
       navigate('/main');
     }
+  }
+
+  // 파일 미리보기
+  function changeImg(e) {
+    setProfilePic(e.target.files[0]);
+
+    const reader = new FileReader();
+    reader.readAsDataURL(e.target.files[0]);
+    return new Promise(resolve => {
+      reader.onload = () => {
+        setPreview(reader.result);
+        resolve();
+      };
+    });
   }
 
   return (
@@ -82,21 +112,24 @@ const Profile = () => {
         <Div>
           <ImgContainer>
             <ImgDiv>
-              <Img
-                id="preview-image"
-                src={
-                  profilePic
-                    ? profilePic
-                    : process.env.PUBLIC_URL + '/assets/images/logo.png'
-                }
-              />
+              <Img id="preview-image" src={preview} />
             </ImgDiv>
             <ImgInputDiv>
               <ImgInput
                 type="file"
-                onChange={e => setProfilePic(e.target.files[0])}
+                onChange={e => changeImg(e)}
                 accept="image/*"
               />
+              {profilePic ? (
+                <DelBox
+                  onClick={() => {
+                    setProfilePic(null);
+                    setPreview(null);
+                  }}
+                >
+                  <DelIcon />
+                </DelBox>
+              ) : null}
             </ImgInputDiv>
           </ImgContainer>
 
