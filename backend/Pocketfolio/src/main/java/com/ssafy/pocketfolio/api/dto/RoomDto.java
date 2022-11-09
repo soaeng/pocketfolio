@@ -4,7 +4,8 @@ import com.ssafy.pocketfolio.db.entity.Room;
 import lombok.Builder;
 import lombok.Getter;
 
-import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 @Getter
 @Builder
 public class RoomDto {
@@ -16,8 +17,8 @@ public class RoomDto {
     private String thumbnail;
     private String isMain;
     private String privacy;
-    private LocalDateTime created;
-    private LocalDateTime updated;
+    private String created;
+    private String updated;
 
     public static RoomDto toDto(Room entity) {
         return RoomDto.builder()
@@ -29,8 +30,8 @@ public class RoomDto {
                 .thumbnail(entity.getThumbnail())
                 .isMain(entity.getIsMain())
                 .privacy(entity.getPrivacy())
-                .created(entity.getCreated())
-                .updated(entity.getUpdated())
+                .created(entity.getCreated().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
+                .updated(entity.getUpdated().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
                 .build();
     }
 }

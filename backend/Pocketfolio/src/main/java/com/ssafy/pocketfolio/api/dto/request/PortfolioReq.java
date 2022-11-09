@@ -1,17 +1,10 @@
 package com.ssafy.pocketfolio.api.dto.request;
 
-import com.ssafy.pocketfolio.api.dto.PortfolioUrlDto;
-import com.ssafy.pocketfolio.api.dto.TagDto;
 import com.ssafy.pocketfolio.db.entity.Portfolio;
-import com.ssafy.pocketfolio.db.entity.Tag;
 import com.ssafy.pocketfolio.db.entity.User;
 import lombok.Getter;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.time.LocalDateTime;
-import java.util.List;
 
 @Slf4j
 @Getter

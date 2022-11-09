@@ -83,7 +83,6 @@ public class PortfolioServiceImpl implements PortfolioService{
         try {
             User user = userRepository.findById(userSeq).orElseThrow(() -> new IllegalArgumentException("해당 사용자가 존재하지 않습니다."));
             List<Portfolio> portfolios = portfolioRepository.findAllByUser(user);
-
             for (Portfolio portfolio : portfolios) {
                 List<Tag> tags = tagRepository.findAllByPortfolio(portfolio);
                 PortfolioListRes result = PortfolioListRes.toDto(portfolio, tags);
