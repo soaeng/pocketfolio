@@ -54,7 +54,7 @@ public class UserRes {
         name = user.getName();
         String userProfilePic = user.getProfilePic();
         if (userProfilePic == null) {
-            userProfilePic = "/upload/profile/default.jpg";
+            userProfilePic = "";
         }
         profilePic = userProfilePic;
         birth = user.getBirth();
