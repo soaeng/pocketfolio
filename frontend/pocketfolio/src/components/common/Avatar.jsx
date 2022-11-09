@@ -2,7 +2,7 @@ import React, {useState, useEffect, useRef} from 'react';
 import {AvatarImg, AvatarContainer} from './Avatar.style';
 import DropDown from './Dropdown';
 
-function Avatar() {
+function Avatar({user}) {
   const [visible, setVisible] = useState(false);
 
   // dropdown 외부 클릭시 dropdown창 꺼지게 하기(modal 같은 기능 구현)
@@ -34,7 +34,7 @@ function Avatar() {
           setVisible(!visible);
         }}
       />
-      {visible && <DropDown />}
+      {visible && <DropDown user={user} />}
     </AvatarContainer>
   );
 }
