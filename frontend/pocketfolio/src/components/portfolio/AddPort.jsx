@@ -14,8 +14,6 @@ import {
   HashList,
   BtnDiv,
   StyledBtn,
-  HashIcon,
-  FileAttach,
   IconDiv,  
   ItemList,
   Item,
@@ -28,6 +26,7 @@ import {Body1} from '../../styles/styles.style';
 import SaveModal from './SaveModal';
 import ReactHtmlParser from 'html-react-parser';
 import {registPortfolio} from '../../store/portSlice';
+import PortfolioEdit from './PortfolioEdit';
 
 const AddPort = () => {
   const navigate = useNavigate();
@@ -262,6 +261,7 @@ const AddPort = () => {
 
       {/* 유저에게 보여져야 할 포트폴리오 */}
       {/* <Viewer content={portContent.content} /> */}
+
     </Background>
   );
 };

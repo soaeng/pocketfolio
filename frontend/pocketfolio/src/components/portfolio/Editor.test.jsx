@@ -1,13 +1,13 @@
 // import React, {useState} from 'react';
 // import {CKEditor} from '@ckeditor/ckeditor5-react';
-// // import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 // import DecoupledEditor from '@ckeditor/ckeditor5-build-decoupled-document';
-// // const API_URL = 'https://k7e101.p.ssafy.io/.';
-// const UPLOAD_ENDPOINT = 'upload_files';
 
-// export default function MyEditor({portContent, setPortContent, ...props}) {
+
+// export default function PortEdit({portContent, setPortContent}) {
 //   const [imgUrl, setImgUrl] = useState('');
+//   const [newContent, setNewContent] = useState('')
 
+//   console.log('에디터 테스트',portContent)
 //   // 이미지 업로드 함수
 //   function uploadAdapter(loader) {
 //     return {
@@ -52,6 +52,7 @@
 //   return (
 //     <div className="Editor">
 //       <CKEditor
+//         data={portContent.summary}
 //         editor={DecoupledEditor}
 //         onReady={editor => {
 //           editor.ui
@@ -87,9 +88,9 @@
 //         }}
 //         onChange={(event, editor) => {
 //           const data = editor.getData();
-//           setPortContent({
-//             ...portContent,
-//             content: data,
+//           setNewContent({
+//             ...newContent,
+//             summary: data,
 //           });
 //         }}
 //       />
