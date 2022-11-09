@@ -3,6 +3,7 @@ package com.ssafy.pocketfolio.api.service;
 import com.ssafy.pocketfolio.api.dto.request.RoomReq;
 import com.ssafy.pocketfolio.api.dto.response.RoomDetailRes;
 import com.ssafy.pocketfolio.api.dto.RoomDto;
+import com.ssafy.pocketfolio.api.dto.response.RoomListRes;
 import com.ssafy.pocketfolio.api.util.MultipartFileHandler;
 import com.ssafy.pocketfolio.db.entity.*;
 import com.ssafy.pocketfolio.db.repository.RoomHitRepository;
@@ -11,7 +12,6 @@ import com.ssafy.pocketfolio.db.repository.RoomRepository;
 import com.ssafy.pocketfolio.db.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -60,21 +60,23 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<RoomDetailRes> findRoomList(long userSeq) {
+    public List<RoomListRes> findRoomList(long userSeq) {
         log.debug("[GET] Service - findRoomList");
-        List<RoomDetailRes> roomDetailResList = new ArrayList<>();
+        List<RoomListRes> roomDetailResList = new ArrayList<>();
 
         User user = userRepository.findById(userSeq).orElseThrow(() -> new IllegalArgumentException("해당 사용자가 존재하지 않습니다."));
         try {
             List<Room> rooms = roomRepository.findAllByUser(user);
             for (Room room : rooms) {
-                RoomDetailRes roomDetailRes = RoomDetailRes.builder()
-                        .room(RoomDto.toDto(room))
-                        .hitCount(roomHitRepository.countAllByRoom_RoomSeq(room.getRoomSeq()))
-                        .likeCount(roomLikeRepository.countAllByRoom_RoomSeq(room.getRoomSeq()))
-                        .userName(user.getName())
+                RoomListRes roomListRes = RoomListRes.builder()
+                        .roomSeq(room.getRoomSeq())
+                        .thumbnail(room.getThumbnail())
+                        .name(room.getName())
+                        .user(user.getName())
+                        .hit(roomHitRepository.countAllByRoom_RoomSeq(room.getRoomSeq()).intValue())
+                        .like(roomLikeRepository.countAllByRoom_RoomSeq(room.getRoomSeq()).intValue())
                         .build();
-                roomDetailResList.add(roomDetailRes);
+                roomDetailResList.add(roomListRes);
             }
         } catch (Exception e) {
             log.error(e.getMessage());
