@@ -18,7 +18,9 @@ import java.io.File;
 import java.io.IOException;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -59,7 +61,7 @@ public class RoomServiceImpl implements RoomService {
     @Override
     @Transactional(readOnly = true)
     public List<RoomListRes> findMyRoomList(long userSeq) {
-        log.debug("[GET] Service - findRoomList");
+        log.debug("[GET] Service - findMyRoomList");
         List<RoomListRes> roomsResList;
 
         User user = userRepository.findById(userSeq).orElseThrow(() -> new IllegalArgumentException("해당 사용자가 존재하지 않습니다."));
@@ -75,8 +77,23 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public List<RoomListRes> findRoomList(long userSeq) {
-        return null;
+    @Transactional(readOnly = true)
+    public Map<String, Object> findRoomList(long userSeq) {
+        log.debug("[GET] Service - findRoomList");
+        Map<String, Object> map = new HashMap<>();
+
+        try {
+            List<Room> rooms = roomRepository.findAll();
+            List<RoomListRes> roomListResList = getRoomListRes(rooms);
+            List<CategoryRes> categories = categoryRepository.findAll().stream().map(CategoryRes::toDto).collect(Collectors.toList());
+
+            map.put("rooms", roomListResList);
+            map.put("categories", categories);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            map = null;
+        }
+        return map;
     }
 
     @Override

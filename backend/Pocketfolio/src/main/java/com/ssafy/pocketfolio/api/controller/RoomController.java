@@ -60,27 +60,21 @@ public class RoomController {
         return new ResponseEntity<>(response, status);
     }
 
-    @Operation(summary = "마이룸 목록 조회", description = "마이룸 목록 조회", responses = {
-            @ApiResponse(responseCode = "200", description = "마이룸 목록 조회 성공", content = @Content(schema = @Schema(implementation = RoomDetailRes.class))),
+    @Operation(summary = "마이룸 전체 목록 조회", description = "마이룸 전체 목록 조회", responses = {
+            @ApiResponse(responseCode = "200", description = "마이룸 목록 조회 성공", content = @Content(schema = @Schema(implementation = RoomListRes.class))),
             @ApiResponse(responseCode = "403", description = "사용 불가능 토큰", content = @Content(schema = @Schema(implementation = UserRes.class))),
             @ApiResponse(responseCode = "500", description = "서버 에러", content = @Content(schema = @Schema(implementation = Error.class)))
     })
     @GetMapping
     public ResponseEntity<Map<String, Object>> findRoomList(HttpServletRequest request) {
         log.debug("[GET] Controller - findRoomList");
-        List<RoomListRes> rooms;
-        List<PortfolioListRes> portfolios;
         HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
         Map<String, Object> response = new HashMap<>();
 
         try{
             long userSeq = (Long) request.getAttribute("userSeq");
-            // 마이룸 목록
-            rooms = roomService.findMyRoomList(userSeq);
-            // 포트폴리오 목록
-            portfolios = portfolioService.findPortfolioList(userSeq);
-            response.put("rooms", rooms);
-            response.put("portfolios", portfolios);
+
+            response = roomService.findRoomList(userSeq);
             status = HttpStatus.OK;
         } catch (Exception e) {
             log.error(e.getMessage());
@@ -88,7 +82,6 @@ public class RoomController {
 
         return new ResponseEntity<>(response, status);
     }
-
     @Operation(summary = "마이룸 조회", description = "마이룸 조회", responses = {
             @ApiResponse(responseCode = "200", description = "마이룸 조회 성공", content = @Content(schema = @Schema(implementation = RoomDetailRes.class))),
             @ApiResponse(responseCode = "403", description = "사용 불가능 토큰", content = @Content(schema = @Schema(implementation = UserRes.class))),
@@ -227,8 +220,37 @@ public class RoomController {
         return new ResponseEntity<>(response, status);
     }
 
+    @Operation(summary = "내 마이룸 및 포트폴리오 목록 조회", description = "내 마이룸 및 포트폴리오 목록 조회", responses = {
+            @ApiResponse(responseCode = "200", description = "마이룸 목록 조회 성공", content = @Content(schema = @Schema(implementation = RoomListRes.class))),
+            @ApiResponse(responseCode = "403", description = "사용 불가능 토큰", content = @Content(schema = @Schema(implementation = UserRes.class))),
+            @ApiResponse(responseCode = "500", description = "서버 에러", content = @Content(schema = @Schema(implementation = Error.class)))
+    })
+    @GetMapping("/my")
+    public ResponseEntity<Map<String, Object>> findMyRoomList(HttpServletRequest request) {
+        log.debug("[GET] Controller - findMyRoomList");
+        List<RoomListRes> rooms;
+        List<PortfolioListRes> portfolios;
+        HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
+        Map<String, Object> response = new HashMap<>();
+
+        try{
+            long userSeq = (Long) request.getAttribute("userSeq");
+            // 마이룸 목록
+            rooms = roomService.findMyRoomList(userSeq);
+            // 포트폴리오 목록
+            portfolios = portfolioService.findPortfolioList(userSeq);
+            response.put("rooms", rooms);
+            response.put("portfolios", portfolios);
+            status = HttpStatus.OK;
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
+
+        return new ResponseEntity<>(response, status);
+    }
+
     @Operation(summary = "마이룸 좋아요 목록", description = "마이룸 좋아요 목록", responses = {
-            @ApiResponse(responseCode = "200", description = "마이룸 좋아요 목록 조회 완료", content = @Content(schema = @Schema(implementation = RoomDetailRes.class))),
+            @ApiResponse(responseCode = "200", description = "마이룸 좋아요 목록 조회 완료", content = @Content(schema = @Schema(implementation = RoomListRes.class))),
             @ApiResponse(responseCode = "403", description = "사용 불가능 토큰", content = @Content(schema = @Schema(implementation = UserRes.class))),
             @ApiResponse(responseCode = "500", description = "서버 에러", content = @Content(schema = @Schema(implementation = Error.class)))
     })
@@ -253,8 +275,8 @@ public class RoomController {
         return new ResponseEntity<>(response, status);
     }
 
-    @Operation(summary = "마이룸 좋아요 순 목록 조회", description = "마이룸 좋아요 순 목록 조회", responses = {
-            @ApiResponse(responseCode = "201", description = "마이룸 좋아요 순 목록 조회 성공", content = @Content(schema = @Schema(implementation = RoomDetailRes.class))),
+    @Operation(summary = "베스트 마이룸 목록 조회", description = "마이룸 좋아요 순 목록 조회", responses = {
+            @ApiResponse(responseCode = "201", description = "마이룸 좋아요 순 목록 조회 성공", content = @Content(schema = @Schema(implementation = RoomListRes.class))),
             @ApiResponse(responseCode = "403", description = "사용 불가능 토큰", content = @Content(schema = @Schema(implementation = UserRes.class))),
             @ApiResponse(responseCode = "500", description = "서버 에러", content = @Content(schema = @Schema(implementation = Error.class)))
     })

@@ -8,6 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 public interface RoomService {
     /**
@@ -26,7 +27,7 @@ public interface RoomService {
      */
     List<RoomListRes> findMyRoomList(long userSeq);
 
-    List<RoomListRes> findRoomList(long userSeq);
+    Map<String, Object> findRoomList(long userSeq);
 
     /**
      * 방 조회
