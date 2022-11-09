@@ -233,9 +233,9 @@ public class RoomController {
             @ApiResponse(responseCode = "500", description = "서버 에러", content = @Content(schema = @Schema(implementation = Error.class)))
     })
     @GetMapping("/like")
-    public ResponseEntity<List<RoomDetailRes>> findRoomLikeList(HttpServletRequest request) {
+    public ResponseEntity<List<RoomListRes>> findRoomLikeList(HttpServletRequest request) {
         log.debug("[GET] Controller - findRoomLikeList");
-        List<RoomDetailRes> response = null;
+        List<RoomListRes> response = null;
         HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
 
         try{
@@ -259,9 +259,9 @@ public class RoomController {
             @ApiResponse(responseCode = "500", description = "서버 에러", content = @Content(schema = @Schema(implementation = Error.class)))
     })
     @GetMapping("/best")
-    public ResponseEntity<List<RoomDetailRes>> findRoomBestList(HttpServletRequest request) {
+    public ResponseEntity<List<RoomListRes>> findRoomBestList(HttpServletRequest request) {
         log.debug("[GET] Controller - findRoomBestList");
-        List<RoomDetailRes> response = null;
+        List<RoomListRes> response = null;
         HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
 
         try{

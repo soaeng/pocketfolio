@@ -62,32 +62,22 @@ public class RoomServiceImpl implements RoomService {
     @Transactional(readOnly = true)
     public List<RoomListRes> findRoomList(long userSeq) {
         log.debug("[GET] Service - findRoomList");
-        List<RoomListRes> roomDetailResList = new ArrayList<>();
+        List<RoomListRes> roomsResList;
 
         User user = userRepository.findById(userSeq).orElseThrow(() -> new IllegalArgumentException("해당 사용자가 존재하지 않습니다."));
         try {
             List<Room> rooms = roomRepository.findAllByUser(user);
-            for (Room room : rooms) {
-                RoomListRes roomListRes = RoomListRes.builder()
-                        .roomSeq(room.getRoomSeq())
-                        .thumbnail(room.getThumbnail())
-                        .name(room.getName())
-                        .user(user.getName())
-                        .hit(roomHitRepository.countAllByRoom_RoomSeq(room.getRoomSeq()).intValue())
-                        .like(roomLikeRepository.countAllByRoom_RoomSeq(room.getRoomSeq()).intValue())
-                        .build();
-                roomDetailResList.add(roomListRes);
-            }
+            roomsResList = getRoomListRes(rooms);
         } catch (Exception e) {
             log.error(e.getMessage());
-            roomDetailResList = null;
+            roomsResList = null;
         }
 
-        return roomDetailResList;
+        return roomsResList;
     }
 
     @Override
-    @Transactional(readOnly = true)
+    @Transactional
     public RoomDetailRes findRoom(long userSeq, long roomSeq) {
         log.debug("[GET] Service - findRoom");
         RoomDetailRes roomDetailRes;
@@ -169,6 +159,7 @@ public class RoomServiceImpl implements RoomService {
         if (room.getThumbnail() != null) {
             fileHandler.deleteFile(room.getThumbnail());
         }
+
         roomRepository.deleteById(roomSeq);
         return true;
     }
@@ -227,12 +218,12 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     @Transactional(readOnly = true) // 지연 조회 시점까지 세션 유지
-    public List<RoomDetailRes> findRoomLikeList(long userSeq) {
+    public List<RoomListRes> findRoomLikeList(long userSeq) {
         log.debug("[GET] Service - findRoomLikeList");
         User user = userRepository.findById(userSeq).orElseThrow(() -> new IllegalArgumentException("해당 사용자를 찾을 수 없습니다."));
         try {
             List<Room> rooms = roomLikeRepository.findAllByUser(user).stream().map(RoomLike::getRoom).collect(Collectors.toList());
-            return getRoomDetailResList(rooms);
+            return getRoomListRes(rooms);
         } catch (Exception e) {
             log.error(e.getMessage());
             return null;
@@ -241,32 +232,28 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<RoomDetailRes> findRoomBestList() {
+    public List<RoomListRes> findRoomBestList() {
         log.debug("[GET] Service - findRoomBestList");
         try {
             log.debug("roomDetailResList");
             List<Long> roomSeqs = roomLikeRepository.findRoomBestList();
             List<Room> rooms = roomRepository.findAllByRoomSeqIn(roomSeqs);
-            return getRoomDetailResList(rooms);
+            return getRoomListRes(rooms);
         } catch (Exception e) {
             log.error(e.getMessage());
             return null;
         }
     }
 
-    public List<RoomDetailRes> getRoomDetailResList(List<Room> rooms) {
-        List<RoomDetailRes> roomDetailResList = new ArrayList<>();
+    public List<RoomListRes> getRoomListRes(List<Room> rooms) {
+        List<RoomListRes> roomListResList = new ArrayList<>();
         try {
             for (Room room : rooms) {
-                RoomDetailRes roomDetailRes = RoomDetailRes.builder()
-                        .room(RoomDto.toDto(room))
-                        .hitCount(roomHitRepository.countAllByRoom_RoomSeq(room.getRoomSeq()))
-                        .likeCount(roomLikeRepository.countAllByRoom_RoomSeq(room.getRoomSeq()))
-                        .userName(room.getUser().getName())
-                        .build();
-                roomDetailResList.add(roomDetailRes);
+                int hit = roomHitRepository.countAllByRoom_RoomSeq(room.getRoomSeq()).intValue();
+                int like = roomLikeRepository.countAllByRoom_RoomSeq(room.getRoomSeq()).intValue();
+                roomListResList.add(RoomListRes.toDto(room, like, hit));
             }
-            return roomDetailResList;
+            return roomListResList;
         } catch (Exception e) {
             log.error(e.getMessage());
             return null;

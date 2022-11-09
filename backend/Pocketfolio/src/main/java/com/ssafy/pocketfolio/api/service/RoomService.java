@@ -71,11 +71,11 @@ public interface RoomService {
      * @param userSeq 회원 번호 (현재 접속한 회원)
      * @return 해당 방 목록
      */
-    List<RoomDetailRes> findRoomLikeList(long userSeq);
+    List<RoomListRes> findRoomLikeList(long userSeq);
 
     /**
      * 베스트 방 목록
      * @return 좋아요 내림차순 방 목록
      */
-    List<RoomDetailRes> findRoomBestList();
+    List<RoomListRes> findRoomBestList();
 }
