@@ -58,7 +58,7 @@ function Nav() {
     <NavContainer>
       <NavLogoImg
         onClick={logoClickHandler}
-        src={process.env.PUBLIC_URL + '/assets/images/logo2.png'}
+        src={process.env.PUBLIC_URL + '/assets/images/logo4.png'}
       />
       {window.location.pathname === '/main' ? (
         <NavSearchInput
