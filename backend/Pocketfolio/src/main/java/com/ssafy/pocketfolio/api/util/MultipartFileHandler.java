@@ -1,6 +1,12 @@
 package com.ssafy.pocketfolio.api.util;
 
+import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.amazonaws.services.s3.model.PutObjectRequest;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.tika.Tika;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
@@ -10,12 +16,18 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.UUID;
 
 @Slf4j
 @Component
+@RequiredArgsConstructor
 public class MultipartFileHandler {
 
+    private final AmazonS3Client amazonS3Client;
+
+    @Value("${cloud.aws.s3.bucket}")
+    private String S3Bucket; // Bucket 이름
     @Value("${app.fileupload.uploadPath}")
     private String uploadPath;
     @Value("${app.fileupload.uploadDir}")
@@ -24,10 +36,10 @@ public class MultipartFileHandler {
     // 썸네일 저장
     public String saveThumbnail(MultipartFile thumbnail, String uploadDirName) throws IOException {
         // 파일 저장
-        File dest = saveFile(thumbnail, uploadDirName);
+        String dest = saveFile(thumbnail, uploadDirName);
         if (dest != null) {
             log.debug("썸네일 이미지 저장 성공");
-            return dest.getPath();
+            return dest;
         } else {
             log.error("썸네일 이미지 저장 실패");
             return null;
@@ -51,7 +63,10 @@ public class MultipartFileHandler {
     }
 
     // 파일 저장
-    public File saveFile(MultipartFile file, String uploadDirName) throws IOException {
+    public String saveFile(MultipartFile file, String uploadDirName) throws IOException {
+        // 저장되는 파일 경로
+        String filePath;
+
         // Random uuid
         UUID uuid = UUID.randomUUID();
         // 원래 파일명
@@ -66,42 +81,34 @@ public class MultipartFileHandler {
         String saveName = uuid + "." + fileExt;
         log.debug("saveName: " + saveName);
 
-        // 파일 저장 위치 지정 (없는 경우 폴더 생성)
-        File upload = new File(uploadPath + File.separator + uploadDir + File.separator + uploadDirName);
-        log.debug(upload.getPath());
+        ObjectMetadata objectMetaData = new ObjectMetadata();
+        objectMetaData.setContentType(file.getContentType());
+        log.debug("objectMetaDate ContentType: " + objectMetaData.getContentType());
+        objectMetaData.setContentLength(file.getSize());
 
-        if (!upload.exists()){
-            try {
-                Files.createDirectories(Paths.get(upload.getPath()));
-                log.debug("폴더 생성 성공");
-            } catch (IOException e) {
-                log.debug("폴더 생성 실패");
-                return null;
-            }
-        }
+        // S3에 업로드
+        amazonS3Client.putObject(
+            new PutObjectRequest(S3Bucket, saveName, file.getInputStream(), objectMetaData)
+                .withCannedAcl(CannedAccessControlList.PublicRead)
+        );
 
-        File dest = new File(upload.getPath() + File.separator + saveName);
-        log.debug(dest.getPath());
+        filePath = amazonS3Client.getUrl(S3Bucket, saveName).toString(); // 접근가능한 URL 가져오기
 
-        if (uploadDirName.contains("thumbnail")) {
-            log.debug("thumbnail 파일 확장자 확인");
-            if(!checkImageType(Paths.get(dest.getPath()))){
+        String[] dirList = {"thumbnail","profile"};
+        if (dirNameContainsStringList(uploadDirName, dirList)) {
+            log.debug(uploadDirName + " 파일 확장자 확인...");
+            Tika tika = new Tika();
+            if(!tika.detect(file.getInputStream()).contains("image")) {
                 log.error("thumbnail 파일은 이미지 파일만 허용됨");
                 return null;
             }
         }
+        return filePath;
+    }
 
-        if (uploadDirName.contains("profile")) {
-            log.debug("profile 파일 확장자 확인");
-            if(!checkImageType(Paths.get(dest.getPath()))){
-                log.error("profile 파일은 이미지 파일만 허용됨");
-                return null;
-            }
-        }
-
-        file.transferTo(dest);
-        log.debug("파일 저장 완료");
-        return dest;
+    // 해당 폴더 포함 여부를 확인
+    public static boolean dirNameContainsStringList(String dirName, String[] list) {
+        return Arrays.stream(list).anyMatch(dirName::contains);
     }
 
     // 파일 삭제

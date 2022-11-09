@@ -6,6 +6,7 @@ import com.ssafy.pocketfolio.db.entity.PortfolioUrl;
 import com.ssafy.pocketfolio.db.entity.Tag;
 import lombok.Builder;
 import lombok.ToString;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -14,6 +15,10 @@ import java.util.stream.Collectors;
 @Builder
 @ToString
 public class PortfolioRes {
+
+    @Value("${spring.web.resources.static-locations}")
+    private static String uploadPath;
+
     private long portSeq;               // 포트폴리오 번호
     private String name;                // 제목
     private String summary;             // 개요
@@ -28,7 +33,7 @@ public class PortfolioRes {
                 .portSeq(entity.getPortSeq())
                 .name(entity.getName())
                 .summary(entity.getSummary())
-                .thumbnail(entity.getThumbnail())
+                .thumbnail(uploadPath + entity.getThumbnail())
                 .created(entity.getCreated().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
                 .updated(entity.getUpdated().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
                 .urls(urls.stream().map(PortfolioUrlDto::toDto).collect(Collectors.toList()))

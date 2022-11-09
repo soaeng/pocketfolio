@@ -219,8 +219,10 @@ public class PortfolioServiceImpl implements PortfolioService{
     // 파일 저장
     public void saveUrls(List<MultipartFile> files, Portfolio portfolio) throws IOException {
         for (MultipartFile file : files) {
-            File dest = fileHandler.saveFile(file, "portfolio");
-            PortfolioUrlDto urlDto = PortfolioUrlDto.toDto(file.getOriginalFilename(), dest.getPath(), portfolio);
+//            File dest = fileHandler.saveFile(file, "portfolio");
+//            PortfolioUrlDto urlDto = PortfolioUrlDto.toDto(file.getOriginalFilename(), dest.getPath(), portfolio);
+            String dest = fileHandler.saveFile(file, "portfolio");
+            PortfolioUrlDto urlDto = PortfolioUrlDto.toDto(file.getOriginalFilename(), dest, portfolio);
             PortfolioUrl url = PortfolioUrlDto.toEntity(urlDto);
 
             assert url != null;

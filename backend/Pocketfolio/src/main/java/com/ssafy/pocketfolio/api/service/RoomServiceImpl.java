@@ -1,15 +1,13 @@
 package com.ssafy.pocketfolio.api.service;
 
 import com.ssafy.pocketfolio.api.dto.request.RoomReq;
+import com.ssafy.pocketfolio.api.dto.response.CategoryRes;
 import com.ssafy.pocketfolio.api.dto.response.RoomDetailRes;
 import com.ssafy.pocketfolio.api.dto.RoomDto;
 import com.ssafy.pocketfolio.api.dto.response.RoomListRes;
 import com.ssafy.pocketfolio.api.util.MultipartFileHandler;
 import com.ssafy.pocketfolio.db.entity.*;
-import com.ssafy.pocketfolio.db.repository.RoomHitRepository;
-import com.ssafy.pocketfolio.db.repository.RoomLikeRepository;
-import com.ssafy.pocketfolio.db.repository.RoomRepository;
-import com.ssafy.pocketfolio.db.repository.UserRepository;
+import com.ssafy.pocketfolio.db.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -20,7 +18,9 @@ import java.io.File;
 import java.io.IOException;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -29,6 +29,7 @@ import java.util.stream.Collectors;
 public class RoomServiceImpl implements RoomService {
 
     private final UserRepository userRepository;
+    private final CategoryRepository categoryRepository;
     private final RoomRepository roomRepository;
     private final RoomHitRepository roomHitRepository;
     private final RoomLikeRepository roomLikeRepository;
@@ -59,8 +60,8 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<RoomListRes> findRoomList(long userSeq) {
-        log.debug("[GET] Service - findRoomList");
+    public List<RoomListRes> findMyRoomList(long userSeq) {
+        log.debug("[GET] Service - findMyRoomList");
         List<RoomListRes> roomsResList;
 
         User user = userRepository.findById(userSeq).orElseThrow(() -> new IllegalArgumentException("해당 사용자가 존재하지 않습니다."));
@@ -73,6 +74,26 @@ public class RoomServiceImpl implements RoomService {
         }
 
         return roomsResList;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Map<String, Object> findRoomList(long userSeq) {
+        log.debug("[GET] Service - findRoomList");
+        Map<String, Object> map = new HashMap<>();
+
+        try {
+            List<Room> rooms = roomRepository.findAll();
+            List<RoomListRes> roomListResList = getRoomListRes(rooms);
+            List<CategoryRes> categories = categoryRepository.findAll().stream().map(CategoryRes::toDto).collect(Collectors.toList());
+
+            map.put("rooms", roomListResList);
+            map.put("categories", categories);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            map = null;
+        }
+        return map;
     }
 
     @Override
@@ -233,7 +254,6 @@ public class RoomServiceImpl implements RoomService {
     public List<RoomListRes> findRoomBestList() {
         log.debug("[GET] Service - findRoomBestList");
         try {
-            log.debug("roomDetailResList");
             List<Long> roomSeqs = roomLikeRepository.findRoomBestList();
             List<Room> rooms = roomRepository.findAllByRoomSeqIn(roomSeqs);
             return getRoomListRes(rooms);
