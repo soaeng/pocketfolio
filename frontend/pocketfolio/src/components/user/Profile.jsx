@@ -18,23 +18,27 @@ import {
   Btnbox,
   Btn,
   ImgInputDiv,
+  BtnContainer,
+  SignOutText,
 } from './Profile.style';
 import {useDispatch, useSelector} from 'react-redux';
 import {useState} from 'react';
 import Nav from '../common/Nav';
-import {updateProfile} from '../../store/oauthSlice';
+import {updateProfile, signOut} from '../../store/oauthSlice';
 import toast, {Toaster} from 'react-hot-toast';
+import {useNavigate} from 'react-router-dom';
 
 const Profile = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const user = useSelector(state => state.oauth.user);
   const [name, setName] = useState(user.name);
   const [profilePic, setProfilePic] = useState(
     user.profilePic ? user.profilePic : null,
   );
-  const [blogURL, setBlogUrl] = useState(user.blogUrl ? user.blogUrl : "");
-  const [birth, setBirth] = useState(user.birth ? user.birth : "");
+  const [blogURL, setBlogUrl] = useState(user.blogUrl ? user.blogUrl : '');
+  const [birth, setBirth] = useState(user.birth ? user.birth : '');
   const [describe, setDescribe] = useState(user.describe);
 
   async function sendData() {
@@ -53,6 +57,13 @@ const Profile = () => {
     const res = await dispatch(updateProfile(form));
     if (res.payload.request.status === 201)
       toast.success('회원정보가 성공적으로 수정되었습니다.');
+  }
+
+  async function deleteUser() {
+    const res = await dispatch(signOut());
+    if (res) {
+      navigate('/main');
+    }
   }
 
   return (
@@ -120,7 +131,7 @@ const Profile = () => {
               type="text"
               placeholder="개인 블로그나 github주소를 입력해주세요"
               value={blogURL}
-              onChange={(e) => setBlogUrl(e.target.value.trim())}
+              onChange={e => setBlogUrl(e.target.value.trim())}
             />
           </BIBox>
           <BIBox>
@@ -135,14 +146,17 @@ const Profile = () => {
           </BIBox>
         </BlogIntroDiv>
 
-        <Btnbox>
-          <Btn type="reset" className="cancel">
-            취소
-          </Btn>
-          <Btn type="submit" className="save">
-            저장
-          </Btn>
-        </Btnbox>
+        <BtnContainer>
+          <SignOutText onClick={deleteUser}>회원탈퇴</SignOutText>
+          <Btnbox>
+            <Btn type="reset" className="cancel">
+              취소
+            </Btn>
+            <Btn type="submit" className="save">
+              저장
+            </Btn>
+          </Btnbox>
+        </BtnContainer>
       </Form>
 
       <Toaster
