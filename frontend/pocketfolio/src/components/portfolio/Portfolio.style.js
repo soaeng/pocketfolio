@@ -2,7 +2,6 @@ import styled from 'styled-components';
 import {TbTrash, TbTrashX} from 'react-icons/tb';
 
 export const Background = styled.div`
-  background-color: #f7f7f7;
   width: 100vw;
   height: 100vh;
   display: flex;

@@ -1,10 +1,18 @@
-import {useParams} from 'react-router-dom';
+import React, {useState} from 'react';
+import MyEditor from './Editor';
+import {Background} from './PortfolioEdit.style';
+import AddPort from './AddPort';
+const PortfolioEdit = props => {
+  const [portContent, setPortContent] = useState({
+    name: '',
+    summary: '',
+  });
 
-const PortfolioEdit = () => {
-  const params = useParams();
-  const port_id = parseInt(params.port_id);
-
-  return <>PortDetail</>;
+  return (
+    <AddPort>
+      
+    </AddPort>
+  );
 };
 
 export default PortfolioEdit;

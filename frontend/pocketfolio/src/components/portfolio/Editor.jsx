@@ -1,13 +1,11 @@
 import React, {useState} from 'react';
 import {CKEditor} from '@ckeditor/ckeditor5-react';
-// import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import DecoupledEditor from '@ckeditor/ckeditor5-build-decoupled-document';
-// const API_URL = 'https://k7e101.p.ssafy.io/.';
-const UPLOAD_ENDPOINT = 'upload_files';
+
 
 export default function MyEditor({portContent, setPortContent, ...props}) {
   const [imgUrl, setImgUrl] = useState('');
-
+  console.log(portContent)
   // 이미지 업로드 함수
   function uploadAdapter(loader) {
     return {
@@ -52,6 +50,7 @@ export default function MyEditor({portContent, setPortContent, ...props}) {
   return (
     <div className="Editor">
       <CKEditor
+        data={portContent.summary}
         editor={DecoupledEditor}
         onReady={editor => {
           editor.ui
@@ -89,7 +88,7 @@ export default function MyEditor({portContent, setPortContent, ...props}) {
           const data = editor.getData();
           setPortContent({
             ...portContent,
-            content: data,
+            summary: data,
           });
         }}
       />
