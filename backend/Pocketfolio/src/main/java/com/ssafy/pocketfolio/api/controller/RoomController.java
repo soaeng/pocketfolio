@@ -76,7 +76,7 @@ public class RoomController {
         try{
             long userSeq = (Long) request.getAttribute("userSeq");
             // 마이룸 목록
-            rooms = roomService.findRoomList(userSeq);
+            rooms = roomService.findMyRoomList(userSeq);
             // 포트폴리오 목록
             portfolios = portfolioService.findPortfolioList(userSeq);
             response.put("rooms", rooms);
