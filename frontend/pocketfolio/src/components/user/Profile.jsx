@@ -20,7 +20,8 @@ import {
   ImgInputDiv,
   BtnContainer,
   SignOutText,
-  ImgBox,
+  DelBox,
+  DelIcon,
 } from './Profile.style';
 import {useDispatch, useSelector} from 'react-redux';
 import {useState} from 'react';
@@ -69,9 +70,8 @@ const Profile = () => {
     form.append('profilePic', profilePic);
 
     const res = await dispatch(updateProfile(form));
-    if (res.payload.request.status === 201)
-      console.log(res)
-      toast.success('회원정보가 성공적으로 수정되었습니다.');
+    if (res.payload.request.status === 201) console.log(res);
+    toast.success('회원정보가 성공적으로 수정되었습니다.');
   }
 
   // 회원탈퇴
@@ -120,6 +120,16 @@ const Profile = () => {
                 onChange={e => changeImg(e)}
                 accept="image/*"
               />
+              {profilePic ? (
+                <DelBox
+                  onClick={() => {
+                    setProfilePic(null);
+                    setPreview(null);
+                  }}
+                >
+                  <DelIcon />
+                </DelBox>
+              ) : null}
             </ImgInputDiv>
           </ImgContainer>
 

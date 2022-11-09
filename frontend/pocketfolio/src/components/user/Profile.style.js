@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import {RiCloseCircleLine} from 'react-icons/ri';
 
 export const Container = styled.div`
   height: 100vh;
@@ -8,6 +9,7 @@ export const Container = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  color: #333333;
 
   @media screen and (max-width: 660px) {
     justify-content: flex-start;
@@ -79,11 +81,13 @@ export const Img = styled.img`
 
 export const ImgInputDiv = styled.div`
   width: fit-content;
+  position: relative;
 `;
 
 export const ImgInput = styled.input`
   margin-top: 0.5rem;
   margin-left: 1rem;
+  padding-right: 1.2rem;
 
   &::file-selector-button {
     display: inline-block;
@@ -96,6 +100,23 @@ export const ImgInput = styled.input`
       background-color: #dddddd;
     }
   }
+`;
+
+export const DelBox = styled.div`
+  position: absolute;
+  top: 1rem;
+  right: 0;
+  width: 1.2rem;
+  height: 1.2rem;
+
+  &:hover {
+    scale: 1.1;
+  }
+`;
+
+export const DelIcon = styled(RiCloseCircleLine)`
+  width: 100%;
+  height: 100%;
 `;
 
 export const NickBirth = styled.div`
