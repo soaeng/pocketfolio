@@ -1,5 +1,5 @@
 import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
-import {http} from '../api/axios';
+import {http, postAxios} from '../api/axios';
 
 // 본인 정보 조회
 export const getMyInfo = createAsyncThunk(
@@ -18,21 +18,18 @@ export const getMyInfo = createAsyncThunk(
 
 // 회원정보수정
 export const updateProfile = createAsyncThunk(
-  'getMyInfo',
+  'updateProfile',
   async (data, {rejectWithValue}) => {
     try {
-      const res = await http.get('users');
-
-      console.log(res)
-      return res
+      const res = await postAxios.patch('users', data);
+      
+      if (res.status === 201) return res;
     } catch (error) {
       console.log('회원정보수정 에러', error);
       return rejectWithValue(error);
     }
   },
 );
-
-
 
 const initialState = {
   user: null,
@@ -43,15 +40,19 @@ const oauthSlice = createSlice({
   initialState,
   reducers: {
     logout(state) {
-      state.user = null
-    }
+      state.user = null;
+    },
   },
   extraReducers: builder => {
-    builder.addCase(getMyInfo.fulfilled, (state, action) => {
-      state.user = action.payload
-    });
+    builder
+      .addCase(getMyInfo.fulfilled, (state, action) => {
+        state.user = action.payload;
+      })
+      .addCase(updateProfile.fulfilled, (state, action) => {
+        state.user = action.payload.data;
+      });
   },
 });
 
-export const { logout } = oauthSlice.actions;
+export const {logout} = oauthSlice.actions;
 export default oauthSlice.reducer;
