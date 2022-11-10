@@ -2,6 +2,7 @@ package com.ssafy.pocketfolio.api.service;
 
 import com.ssafy.pocketfolio.api.dto.request.RoomArrangeReq;
 import com.ssafy.pocketfolio.api.dto.request.RoomReq;
+import com.ssafy.pocketfolio.api.dto.response.CategoryRes;
 import com.ssafy.pocketfolio.api.dto.response.RoomListRes;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -103,4 +104,10 @@ public interface RoomService {
      * @return 최근 방문자 5인 목록 및 오늘의 방문자 수
      */
     Map<String, Object> findGuestList(long roomSeq);
+
+    /**
+     * 카테고리 목록 조회
+     * @return 카테고리 목록
+     */
+    List<CategoryRes> findCategoryList();
 }

@@ -3,12 +3,10 @@ package com.ssafy.pocketfolio.api.controller;
 import com.ssafy.pocketfolio.api.dto.RoomDto;
 import com.ssafy.pocketfolio.api.dto.request.RoomArrangeReq;
 import com.ssafy.pocketfolio.api.dto.request.RoomReq;
-import com.ssafy.pocketfolio.api.dto.response.ItemRes;
-import com.ssafy.pocketfolio.api.dto.response.PortfolioListRes;
-import com.ssafy.pocketfolio.api.dto.response.RoomListRes;
-import com.ssafy.pocketfolio.api.dto.response.UserRes;
+import com.ssafy.pocketfolio.api.dto.response.*;
 import com.ssafy.pocketfolio.api.service.PortfolioService;
 import com.ssafy.pocketfolio.api.service.RoomService;
+import com.ssafy.pocketfolio.db.entity.Category;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -101,8 +99,6 @@ public class RoomController {
             log.debug("userSeq: " + userSeq);
             if (userSeq > 0) {
                 response = roomService.findRoom(userSeq, roomSeq);
-                // response.put 포트폴리오 목록 조회
-                // response.put 최근 방문자 이름/방 번호
                 status = HttpStatus.OK;
             } else {
                 log.error("사용 불가능 토큰");
@@ -373,7 +369,7 @@ public class RoomController {
         Map<String, Object> response = new HashMap<>();
         HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
 
-        try{
+        try {
             long userSeq = (Long) request.getAttribute("userSeq");
             if (userSeq > 0) {
                 response = roomService.findGuestList(roomSeq);
@@ -382,6 +378,26 @@ public class RoomController {
                 log.error("사용 불가능 토큰");
                 status = HttpStatus.FORBIDDEN;
             }
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
+        return new ResponseEntity<>(response, status);
+    }
+
+    @Operation(summary = "카테고리 목록", description = "카테고리 목록 조회", responses = {
+            @ApiResponse(responseCode = "200", description = "카테고리 목록 조회 성공", content = @Content(schema = @Schema(implementation = CategoryRes.class))),
+            @ApiResponse(responseCode = "403", description = "사용 불가능 토큰", content = @Content(schema = @Schema(implementation = UserRes.class))),
+            @ApiResponse(responseCode = "500", description = "서버 에러", content = @Content(schema = @Schema(implementation = Error.class)))
+    })
+    @GetMapping("/category")
+    public ResponseEntity<List<CategoryRes>> findCategoryList(HttpServletRequest request) {
+        log.debug("[GET] Controller - findCategoryList");
+        List<CategoryRes> response = null;
+        HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
+
+        try {
+            response = roomService.findCategoryList();
+            status = response != null ? HttpStatus.OK : HttpStatus.INTERNAL_SERVER_ERROR;
         } catch (Exception e) {
             log.error(e.getMessage());
         }

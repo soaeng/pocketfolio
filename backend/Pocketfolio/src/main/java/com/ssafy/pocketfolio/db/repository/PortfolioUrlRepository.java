@@ -8,8 +8,8 @@ import java.util.List;
 
 public interface PortfolioUrlRepository extends JpaRepository<PortfolioUrl, Long> {
     // 포트폴리오 첨부파일 목록 조회
-    List<PortfolioUrl> findAllByPortfolio(Portfolio portfolio);
+    List<PortfolioUrl> findAllByPortfolio_PortSeq(long portSeq);
 
     // 포트폴리오 첨부파일 삭제
-    void deleteAllByPortfolio(Portfolio portfolio);
+    void deleteAllByPortfolio_PortSeq(long portSeq);
 }

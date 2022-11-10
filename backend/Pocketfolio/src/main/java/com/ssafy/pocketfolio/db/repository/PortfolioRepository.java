@@ -9,5 +9,5 @@ import java.util.Optional;
 
 public interface PortfolioRepository extends JpaRepository<Portfolio, Long> {
     // 포트폴리오 목록 조회
-    List<Portfolio> findAllByUser(User user);
+    List<Portfolio> findAllByUser_UserSeq(long userSeq);
 }

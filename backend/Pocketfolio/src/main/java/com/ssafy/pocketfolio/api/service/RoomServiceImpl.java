@@ -20,10 +20,7 @@ import javax.persistence.EntityNotFoundException;
 import java.io.IOException;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -47,7 +44,6 @@ public class RoomServiceImpl implements RoomService {
     @Transactional
     public Long insertRoom(long userSeq, RoomReq req, MultipartFile thumbnail) throws IOException {
         log.debug("[POST] Service - insertRoom");
-        User user = userRepository.findById(userSeq).orElseThrow(() -> new IllegalArgumentException("해당 사용자가 존재하지 않습니다."));
         // 저장된 썸네일 주소
         String thumbnailUrl = null;
 
@@ -59,7 +55,7 @@ public class RoomServiceImpl implements RoomService {
                 return null;
             }
         }
-        Room room = RoomReq.toEntity(req, thumbnailUrl, user);
+        Room room = RoomReq.toEntity(req, thumbnailUrl, userRepository.getReferenceById(userSeq));
         long roomSeq = roomRepository.save(room).getRoomSeq();
         log.debug("저장된 방 번호: " + roomSeq);
         RoomCategory roomCategory = RoomCategory.builder()
@@ -76,9 +72,8 @@ public class RoomServiceImpl implements RoomService {
         log.debug("[GET] Service - findMyRoomList");
         List<RoomListRes> roomsResList;
 
-        User user = userRepository.findById(userSeq).orElseThrow(() -> new IllegalArgumentException("해당 사용자가 존재하지 않습니다."));
         try {
-            List<Room> rooms = roomRepository.findAllByUser(user);
+            List<Room> rooms = roomRepository.findAllByUser_UserSeq(userSeq);
             roomsResList = getRoomListRes(rooms);
         } catch (Exception e) {
             log.error(e.getMessage());
@@ -95,8 +90,7 @@ public class RoomServiceImpl implements RoomService {
         Map<String, Object> map = new HashMap<>();
 
         try {
-            List<Room> rooms = roomRepository.findAll();
-            List<RoomListRes> roomListResList = getRoomListRes(rooms);
+            List<RoomListRes> roomListResList = getRoomListRes(roomRepository.findAll());
             List<CategoryRes> categories = categoryRepository.findAll().stream().map(CategoryRes::toDto).collect(Collectors.toList());
 
             map.put("rooms", roomListResList);
@@ -120,7 +114,7 @@ public class RoomServiceImpl implements RoomService {
         log.debug("roomCategory: " + roomCategory);
 
         // 본인 방이 아닌 경우 + 당일 방문하지 않은 경우 조회수 1 증가
-        if (userSeq != room.getUser().getUserSeq() && !roomHitRepository.existsRoomHitByUserAndRoomAndHitDateEquals(user, room, ZonedDateTime.now(ZoneId.of("Asia/Seoul")).toLocalDate())) {
+        if (userSeq != room.getUser().getUserSeq() && !roomHitRepository.existsRoomHitByUser_UserSeqAndRoom_RoomSeqAndHitDateEquals(userSeq, roomSeq, ZonedDateTime.now(ZoneId.of("Asia/Seoul")).toLocalDate())) {
             roomHitRepository.save(RoomHit.builder().room(room).user(user).build());
         }
 
@@ -128,10 +122,11 @@ public class RoomServiceImpl implements RoomService {
         // 방 정보
         map.put("room", RoomDto.toDto(room, CategoryRes.toDto(roomCategory.getCategory())));
         // 조회수
-        map.put("hit", roomHitRepository.countAllByRoom_RoomSeq(room.getRoomSeq()));
-        map.put("like", roomLikeRepository.countAllByRoom_RoomSeq(room.getRoomSeq()));
+        map.put("hitCount", roomHitRepository.countAllByRoom_RoomSeq(roomSeq));
+        map.put("likeCount", roomLikeRepository.countAllByRoom_RoomSeq(roomSeq));
         // Item
-        map.put("follow", followRepository.existsByUserFrom_UserSeqAndUserTo_UserSeq(user.getUserSeq(), room.getUser().getUserSeq()));
+        map.put("follow", followRepository.existsByUserFrom_UserSeqAndUserTo_UserSeq(userSeq, room.getUser().getUserSeq()));
+        map.put("like", roomLikeRepository.existsByUser_UserSeqAndRoom_RoomSeq(userSeq, roomSeq));
 
         List<ArrangeDto> arranges = new ArrayList<>();
         List<Arrange> arrangeList = arrangeRepository.findByRoom_RoomSeq(roomSeq);
@@ -258,7 +253,7 @@ public class RoomServiceImpl implements RoomService {
 
         // 본인 방이 아닌 경우 + 좋아요 이력 없는 경우 좋아요
         if (userSeq != room.getUser().getUserSeq()) {
-            if (roomLikeRepository.existsByUser(user)) {
+            if (roomLikeRepository.existsByUser_UserSeq(userSeq)) {
                 log.error("이미 좋아요 추가한 방");
                 return false;
             } else {
@@ -279,17 +274,16 @@ public class RoomServiceImpl implements RoomService {
     public Boolean deleteRoomLike(long userSeq, long roomSeq) {
         log.debug("[DELETE] Service - deleteRoomLike");
 
-        User user = userRepository.findById(userSeq).orElseThrow(() -> new IllegalArgumentException("해당 사용자를 찾을 수 없습니다."));
         Room room = roomRepository.findById(roomSeq).orElseThrow(() -> new IllegalArgumentException("해당 방을 찾을 수 없습니다."));
 
         // 본인 방이 아닌 경우 + 좋아요 이력 있는 경우 좋아요
         if (userSeq != room.getUser().getUserSeq()) {
-            if (!roomLikeRepository.existsByUser(user)) {
+            if (!roomLikeRepository.existsByUser_UserSeq(userSeq)) {
                 log.error("좋아요 이력 없음");
                 return false;
             } else {
                 try {
-                    roomLikeRepository.deleteByRoomAndUser(room, user);
+                    roomLikeRepository.deleteByRoom_RoomSeqAndUser_UserSeq(roomSeq, userSeq);
                     return true;
                 } catch (Exception e) {
                     log.error(e.getMessage());
@@ -304,9 +298,8 @@ public class RoomServiceImpl implements RoomService {
     @Transactional(readOnly = true) // 지연 조회 시점까지 세션 유지
     public List<RoomListRes> findRoomLikeList(long userSeq) {
         log.debug("[GET] Service - findRoomLikeList");
-        User user = userRepository.findById(userSeq).orElseThrow(() -> new IllegalArgumentException("해당 사용자를 찾을 수 없습니다."));
         try {
-            List<Room> rooms = roomLikeRepository.findAllByUser(user).stream().map(RoomLike::getRoom).collect(Collectors.toList());
+            List<Room> rooms = roomLikeRepository.findAllByUser_UserSeq(userSeq).stream().map(RoomLike::getRoom).collect(Collectors.toList());
             return getRoomListRes(rooms);
         } catch (Exception e) {
             log.error(e.getMessage());
@@ -338,6 +331,7 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Map<String, Object> findGuestList(long roomSeq) {
         log.debug("[GET] Service - findGuestList");
         try {
@@ -350,6 +344,18 @@ public class RoomServiceImpl implements RoomService {
             map.put("guests", guests);
             map.put("today", roomHitRepository.countRoomHitToday(roomSeq));
             return map;
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return null;
+        }
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<CategoryRes> findCategoryList() {
+        log.debug("[GET] Service - findCategoryList");
+        try {
+            return categoryRepository.findAll().stream().map(CategoryRes::toDto).collect(Collectors.toList());
         } catch (Exception e) {
             log.error(e.getMessage());
             return null;

@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface RoomRepository extends JpaRepository<Room, Long> {
 
-    List<Room> findAllByUser(User user);
+    List<Room> findAllByUser_UserSeq(long userSeq);
     List<Room> findAllByRoomSeqIn(List<Long> roomSeqs);
     @Query(value = "SELECT room_seq FROM room WHERE privacy = 'O'", nativeQuery = true)
     List<Long> findAllByPrivacy();

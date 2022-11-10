@@ -79,10 +79,9 @@ public class PortfolioServiceImpl implements PortfolioService {
         List<PortfolioListRes> portfolioListRes = new ArrayList<>();
 
         try {
-            User user = userRepository.findById(userSeq).orElseThrow(() -> new IllegalArgumentException("해당 사용자가 존재하지 않습니다."));
-            List<Portfolio> portfolios = portfolioRepository.findAllByUser(user);
+            List<Portfolio> portfolios = portfolioRepository.findAllByUser_UserSeq(userSeq);
             for (Portfolio portfolio : portfolios) {
-                List<Tag> tags = tagRepository.findAllByPortfolio(portfolio);
+                List<Tag> tags = tagRepository.findAllByPortfolio_PortSeq(portfolio.getPortSeq());
                 PortfolioListRes result = PortfolioListRes.toDto(portfolio, tags);
                 portfolioListRes.add(result);
             }
@@ -100,8 +99,8 @@ public class PortfolioServiceImpl implements PortfolioService {
         log.debug("[GET] Service - findPortfolio");
 
         Portfolio portfolio = portfolioRepository.findById(portSeq).orElseThrow(() -> new IllegalArgumentException("해당 포트폴리오가 존재하지 않습니다."));
-        List<PortfolioUrl> urls = portfolioUrlRepository.findAllByPortfolio(portfolio);
-        List<Tag> tags = tagRepository.findAllByPortfolio(portfolio);
+        List<PortfolioUrl> urls = portfolioUrlRepository.findAllByPortfolio_PortSeq(portSeq);
+        List<Tag> tags = tagRepository.findAllByPortfolio_PortSeq(portSeq);
 
         return PortfolioRes.toDto(portfolio, urls, tags);
     }
@@ -145,17 +144,17 @@ public class PortfolioServiceImpl implements PortfolioService {
 
         // 태그가 있다면 기존 태그 삭제 후 새로 저장
         if (req.getTags() != null) {
-            tagRepository.deleteAllByPortfolio(portfolio);
+            tagRepository.deleteAllByPortfolio_PortSeq(portSeq);
             saveTags(req.getTags(), portfolio);
         }
 
-        List<PortfolioUrl> urls = portfolioUrlRepository.findAllByPortfolio(portfolio);
+        List<PortfolioUrl> urls = portfolioUrlRepository.findAllByPortfolio_PortSeq(portSeq);
         // 파일이 있다면 기존 파일 DB, 물리적 삭제 후 새로 저장
         if (files != null){
             for (PortfolioUrl url : urls) {
                 fileHandler.deleteFile(url.getUrl(), "portfolio");
             }
-            portfolioUrlRepository.deleteAllByPortfolio(portfolio);
+            portfolioUrlRepository.deleteAllByPortfolio_PortSeq(portSeq);
             saveUrls(files, portfolio);
         }
         return portSeq;
@@ -178,15 +177,15 @@ public class PortfolioServiceImpl implements PortfolioService {
             if (portfolio.getThumbnail() != null) {
                 fileHandler.deleteFile(portfolio.getThumbnail(), "portfolio/thumbnail");
             }
-            tagRepository.deleteAllByPortfolio(portfolio);
-            List<PortfolioUrl> urls = portfolioUrlRepository.findAllByPortfolio(portfolio);
+            tagRepository.deleteAllByPortfolio_PortSeq(portSeq);
+            List<PortfolioUrl> urls = portfolioUrlRepository.findAllByPortfolio_PortSeq(portSeq);
             // 첨부파일 삭제
             if(!urls.isEmpty()) {
                 for (PortfolioUrl url : urls) {
                     fileHandler.deleteFile(url.getUrl(), "portfolio");
                 }
             }
-            portfolioUrlRepository.deleteAllByPortfolio(portfolio);
+            portfolioUrlRepository.deleteAllByPortfolio_PortSeq(portSeq);
             // 포트폴리오 삭제
             portfolioRepository.deleteById(portSeq);
             return true;

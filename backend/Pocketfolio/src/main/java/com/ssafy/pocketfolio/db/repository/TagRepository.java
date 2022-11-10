@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface TagRepository extends JpaRepository<Tag, Long> {
     // 태그 목록 조회
-    List<Tag> findAllByPortfolio(Portfolio portfolio);
+    List<Tag> findAllByPortfolio_PortSeq(long portSeq);
     // Tag 삭제
-    void deleteAllByPortfolio(Portfolio portfolio);
+    void deleteAllByPortfolio_PortSeq(long portSeq);
 }
