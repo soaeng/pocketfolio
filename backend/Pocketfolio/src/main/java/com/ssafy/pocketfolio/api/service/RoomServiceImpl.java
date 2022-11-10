@@ -1,5 +1,6 @@
 package com.ssafy.pocketfolio.api.service;
 
+import com.ssafy.pocketfolio.api.dto.request.ArrangeReq;
 import com.ssafy.pocketfolio.api.dto.request.RoomReq;
 import com.ssafy.pocketfolio.api.dto.response.CategoryRes;
 import com.ssafy.pocketfolio.api.dto.RoomDto;
@@ -33,6 +34,7 @@ public class RoomServiceImpl implements RoomService {
     private final RoomCategoryRepository roomCategoryRepository;
     private final RoomHitRepository roomHitRepository;
     private final RoomLikeRepository roomLikeRepository;
+    private final ArrangeRepository arrangeRepository;
     private final MultipartFileHandler fileHandler;
 
     @Override
@@ -102,7 +104,7 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     @Transactional
-    public Map<String, Object> findRoom(long userSeq, long roomSeq) {
+    public Map<String, Object> findRoom(long userSeq, long roomSeq) { // TODO: 게스트 로직 추가
         log.debug("[GET] Service - findRoom");
         Map<String, Object> map = new HashMap<>();
 
@@ -126,6 +128,11 @@ public class RoomServiceImpl implements RoomService {
         map.put("hit", roomHitRepository.countAllByRoom_RoomSeq(room.getRoomSeq()));
         map.put("today", roomHitRepository.countRoomHitToday(roomSeq));
         map.put("like", roomLikeRepository.countAllByRoom_RoomSeq(room.getRoomSeq()));
+
+        List<Arrange> arrangeList = arrangeRepository.findByRoom_RoomSeq(roomSeq);
+
+        // 12345
+
 
         return map;
     }
@@ -182,6 +189,14 @@ public class RoomServiceImpl implements RoomService {
         }
 
         return roomSeq;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Long updateRoom(long userSeq, long roomSeq, ArrangeReq arrangeReq) {
+
+
+        return null;
     }
 
     @Override
