@@ -2,34 +2,43 @@
 import styled from 'styled-components';
 import {Body3} from '../../styles/styles.style';
 
-export const Container = styled.div`
+import {AiOutlineSearch} from 'react-icons/ai';
+import {CiCircleChevUp} from 'react-icons/ci';
+
+export const Container1 = styled.div`
   display: flex;
   justify-content: center;
 `;
 
-// SearchInput
-export const SearchInput = styled.input`
-  width: 50%;
-  min-width: 200px;
-  height: 25px;
+export const Container = styled.div`
+  display: flex;
+  align-items: center;
   border-radius: 16px;
   border: 1px solid #bbb;
-  padding: 6px 0 6px 20px;
-  margin: 6px;
+  width: 50%;
+  min-width: 200px;
+  padding: 5px 30px;
+`;
 
-  &::-webkit-input-placeholder {
-    background-image: url(https://cdn1.iconfinder.com/data/icons/hawcons/32/698627-icon-111-search-256.png);
-    background-size: contain;
-    background-position: 1px center;
-    background-repeat: no-repeat;
-    padding-left: 30px;
+// SearchInput
+export const SearchInput = styled.input`
+  width: 100%;
+  height: 25px;
+  border: none;
+  padding: 0 10px;
+
+  &::placeholder {
+    font-size: 15px;
   }
 
   &:focus {
-    border: 1px solid #333333;
+    border: none;
     outline: none;
+    padding: 0 10px;
   }
 `;
+
+export const SearchIcon = styled(AiOutlineSearch)``;
 
 // Card 모양
 export const Card = styled.div`
@@ -38,13 +47,14 @@ export const Card = styled.div`
   flex-wrap: wrap;
   overflow-x: auto;
   scroll-behavior: smooth;
+  padding: 0 5%;
 `;
 
 export const Item = styled.div`
   margin: 10px;
   padding: 10px;
   width: 20%;
-  min-width: 305px;
+  min-width: 280px;
   border-radius: 16px;
   box-shadow: 0px 2px 5px 1px rgba(0, 0, 0, 0.25);
   flex: none;
@@ -55,8 +65,6 @@ export const Item = styled.div`
 export const TagContainer = styled.div`
   display: flex;
   justify-content: center;
-  /* padding-left: 25vw; */
-  /* padding-right: 20vw; */
 `;
 
 //Tag 하나하나
@@ -85,3 +93,7 @@ export const RecCarImgDiv = styled.div`
 export const RecCarThumbnail = styled.img`
   width: 90%;
 `;
+
+export const TopButton = styled.div``;
+
+export const TopButtonIcon = styled(CiCircleChevUp)``;

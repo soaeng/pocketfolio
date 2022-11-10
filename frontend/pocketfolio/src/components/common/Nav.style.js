@@ -1,6 +1,8 @@
 // styled Component
 import styled from 'styled-components';
 
+import {AiOutlineSearch} from 'react-icons/ai';
+
 // Navbar
 export const NavContainer = styled.div`
   position: sticky;
@@ -24,31 +26,42 @@ export const NavLogoImg = styled.img`
 `;
 
 // Nav Search
-export const NavSearchInput = styled.input`
-  width: 30%;
-  min-width: 200px;
-  height: 22px;
+export const NavSearchContainer = styled.div`
+  display: flex;
+  align-items: center;
   border-radius: 16px;
   border: 1px solid #bbb;
-  padding: 6px 0 6px 20px;
+  width: 50%;
+  min-width: 200px;
+  padding: 5px 30px;
 
-  &::-webkit-input-placeholder {
-    background-image: url(https://cdn1.iconfinder.com/data/icons/hawcons/32/698627-icon-111-search-256.png);
-    background-size: contain;
-    background-position: 10px center;
-    background-repeat: no-repeat;
-    padding-left: 40px;
+  @media screen and (max-width: 900px) {
+    display: none;
+  }
+`;
+
+export const NavSearchInput = styled.input`
+  width: 100%;
+  height: 25px;
+  border: none;
+  padding: 0 10px;
+
+  &::placeholder {
+    font-size: 15px;
   }
 
   &:focus {
-    border: 1px solid #333333;
+    border: none;
     outline: none;
+    padding: 0 10px;
   }
 
   @media screen and (max-width: 900px) {
     display: none;
   }
 `;
+
+export const NavSearchIcon = styled(AiOutlineSearch)``;
 
 // Nav Button
 export const NavBotton = styled.button`
@@ -76,4 +89,8 @@ export const LoginDiv = styled.div`
   display: flex;
   align-items: center;
   position: relative;
+`;
+
+export const UserName = styled.p`
+  padding-right: 10px;
 `;
