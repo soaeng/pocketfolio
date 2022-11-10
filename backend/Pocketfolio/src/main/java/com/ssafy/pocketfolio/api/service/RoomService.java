@@ -1,8 +1,6 @@
 package com.ssafy.pocketfolio.api.service;
 
 import com.ssafy.pocketfolio.api.dto.request.RoomReq;
-import com.ssafy.pocketfolio.api.dto.response.CategoryRes;
-import com.ssafy.pocketfolio.api.dto.response.RoomDetailRes;
 import com.ssafy.pocketfolio.api.dto.response.RoomListRes;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -35,7 +33,7 @@ public interface RoomService {
      * @param roomSeq 방 번호
      * @return 마이룸(포트폴리오 목록, 마이룸 정보: 썸네일, 제목, 좋아요 수, 조회수), 방 주인 이름
      */
-    RoomDetailRes findRoom(long userSeq, long roomSeq);
+    Map<String, Object> findRoom(long userSeq, long roomSeq) ;
 
     /**
      * 마이룸 수정

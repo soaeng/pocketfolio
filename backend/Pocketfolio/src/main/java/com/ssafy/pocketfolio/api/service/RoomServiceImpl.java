@@ -2,7 +2,6 @@ package com.ssafy.pocketfolio.api.service;
 
 import com.ssafy.pocketfolio.api.dto.request.RoomReq;
 import com.ssafy.pocketfolio.api.dto.response.CategoryRes;
-import com.ssafy.pocketfolio.api.dto.response.RoomDetailRes;
 import com.ssafy.pocketfolio.api.dto.RoomDto;
 import com.ssafy.pocketfolio.api.dto.response.RoomListRes;
 import com.ssafy.pocketfolio.api.util.MultipartFileHandler;
@@ -14,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -98,27 +96,26 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     @Transactional
-    public RoomDetailRes findRoom(long userSeq, long roomSeq) {
+    public Map<String, Object> findRoom(long userSeq, long roomSeq) {
         log.debug("[GET] Service - findRoom");
-        RoomDetailRes roomDetailRes;
+        Map<String, Object> map = new HashMap<>();
 
         User user = userRepository.findById(userSeq).orElseThrow(() -> new IllegalArgumentException("해당 사용자를 찾을 수 없습니다."));
         Room room = roomRepository.findById(roomSeq).orElseThrow(() -> new IllegalArgumentException("해당 방을 찾을 수 없습니다."));
-        RoomDto roomDto = RoomDto.toDto(room);
 
         // 본인 방이 아닌 경우 + 당일 방문하지 않은 경우 조회수 1 증가
         if (userSeq != room.getUser().getUserSeq() && !roomHitRepository.existsRoomHitByUserAndRoomAndHitDateEquals(user, room, ZonedDateTime.now(ZoneId.of("Asia/Seoul")).toLocalDate())) {
             roomHitRepository.save(RoomHit.builder().room(room).user(user).build());
         }
 
-        roomDetailRes = RoomDetailRes.builder()
-                .room(roomDto)
-                .hitCount(roomHitRepository.countAllByRoom_RoomSeq(room.getRoomSeq()))
-                .todayCount(roomHitRepository.countRoomHitToday(roomSeq))
-                .likeCount(roomLikeRepository.countAllByRoom_RoomSeq(room.getRoomSeq()))
-                .build();
+        // 방 정보
+        map.put("room", RoomDto.toDto(room));
+        // 조회수
+        map.put("hit", roomHitRepository.countAllByRoom_RoomSeq(room.getRoomSeq()));
+        map.put("today", roomHitRepository.countRoomHitToday(roomSeq));
+        map.put("like", roomLikeRepository.countAllByRoom_RoomSeq(room.getRoomSeq()));
 
-        return roomDetailRes;
+        return map;
     }
 
     @Override

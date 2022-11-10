@@ -19,7 +19,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +41,6 @@ public class PortfolioServiceImpl implements PortfolioService{
         log.debug("[POST] Service - insertPortfolio");
 
         // 사용자 번호를 통한 사용자 조회
-        // TODO: 사용자 예외 처리
         User user = userRepository.findById(userSeq).orElseThrow(() -> new IllegalArgumentException("해당 사용자가 존재하지 않습니다."));
         // 저장된 썸네일 주소
         String thumbnailUrl = null;
@@ -219,8 +217,6 @@ public class PortfolioServiceImpl implements PortfolioService{
     // 파일 저장
     public void saveUrls(List<MultipartFile> files, Portfolio portfolio) throws IOException {
         for (MultipartFile file : files) {
-//            File dest = fileHandler.saveFile(file, "portfolio");
-//            PortfolioUrlDto urlDto = PortfolioUrlDto.toDto(file.getOriginalFilename(), dest.getPath(), portfolio);
             String dest = fileHandler.saveFile(file, "portfolio");
             PortfolioUrlDto urlDto = PortfolioUrlDto.toDto(file.getOriginalFilename(), dest, portfolio);
             PortfolioUrl url = PortfolioUrlDto.toEntity(urlDto);

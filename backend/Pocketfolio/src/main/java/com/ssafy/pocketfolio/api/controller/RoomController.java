@@ -88,9 +88,9 @@ public class RoomController {
             @ApiResponse(responseCode = "500", description = "서버 에러", content = @Content(schema = @Schema(implementation = Error.class)))
     })
     @GetMapping("/{roomSeq}")
-    public ResponseEntity<RoomDetailRes> findRoom(@PathVariable(value = "roomSeq") Long roomSeq, HttpServletRequest request){
+    public ResponseEntity<Map<String, Object>> findRoom(@PathVariable(value = "roomSeq") Long roomSeq, HttpServletRequest request){
         log.debug("[GET] Controller - findRoom");
-        RoomDetailRes response = null;
+        Map<String, Object> response = new HashMap<>();
         HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
 
         try{
@@ -98,6 +98,8 @@ public class RoomController {
             log.debug("userSeq: " + userSeq);
             if (userSeq > 0) {
                 response = roomService.findRoom(userSeq, roomSeq);
+                // response.put 포트폴리오 목록 조회
+                // response.put 최근 방문자 이름/방 번호
                 status = HttpStatus.OK;
             } else {
                 log.error("사용 불가능 토큰");
