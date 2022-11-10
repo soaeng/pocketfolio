@@ -28,7 +28,7 @@ function Avatar({user}) {
   console.log(user.profilePic, 123);
   return (
     <AvatarContainer ref={modalRef}>
-      {user.profilePic === '' ? (
+      {user.profilePic === undefined ? (
         <AvatarImg
           src="./assets/images/user.png"
           onClick={() => {
