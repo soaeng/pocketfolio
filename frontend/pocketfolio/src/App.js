@@ -6,7 +6,6 @@ import Landing from './components/landing/Landing';
 import Main from './components/main/Main';
 import Search from './components/search/Search';
 import Room from './components/room/Room';
-import RoomEdit from './components/roomEdit/RoomEdit';
 import Login from './components/user/Login';
 import Oauth from './components/user/Oauth';
 import Profile from './components/user/Profile';
@@ -25,7 +24,6 @@ function App() {
 
         {/* Room */}
         <Route path="/room/:room_id" element={<Room />} />
-        <Route path="/room/edit/:room_id" element={<RoomEdit />} />
 
         {/* User */}
         <Route path="/login" element={<Login />} />
