@@ -52,8 +52,13 @@ public class Arrange {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="port_seq")
 	private Portfolio portfolio;
+
+	public void updateArrangeAll(Double[] locations, double rotation, Portfolio portfolio) {
+		this.updateArrange(locations[0], locations[1], locations[2], rotation);
+		this.updatePortfolio(portfolio);
+	}
 	
-	public void updateArrange(int locationX, int locationY, int locationZ, int rotation) {
+	public void updateArrange(double locationX, double locationY, double locationZ, double rotation) {
 		this.locationX = locationX;
 		this.locationY = locationY;
 		this.locationZ = locationZ;

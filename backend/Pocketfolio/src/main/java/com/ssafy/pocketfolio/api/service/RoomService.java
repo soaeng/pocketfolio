@@ -1,6 +1,6 @@
 package com.ssafy.pocketfolio.api.service;
 
-import com.ssafy.pocketfolio.api.dto.request.ArrangeReq;
+import com.ssafy.pocketfolio.api.dto.request.RoomArrangeReq;
 import com.ssafy.pocketfolio.api.dto.request.RoomReq;
 import com.ssafy.pocketfolio.api.dto.response.RoomListRes;
 import org.springframework.web.multipart.MultipartFile;
@@ -51,10 +51,10 @@ public interface RoomService {
      * 마이룸 꾸미기
      * @param userSeq 회원 번호 (로그인 유저)
      * @param roomSeq 방 번호
-     * @param arrangeReq 배치 요청
+     * @param roomArrangeReq 배치 및 테마 수정 요청
      * @return 수정된 방 번호
      */
-    Long updateRoom(long userSeq, long roomSeq, ArrangeReq arrangeReq);
+    Long updateRoom(long userSeq, long roomSeq, RoomArrangeReq roomArrangeReq);
 
     /**
      * 마이룸 삭제

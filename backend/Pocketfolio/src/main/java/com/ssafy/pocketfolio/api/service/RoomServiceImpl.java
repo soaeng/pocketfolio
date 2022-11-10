@@ -1,9 +1,10 @@
 package com.ssafy.pocketfolio.api.service;
 
-import com.ssafy.pocketfolio.api.dto.request.ArrangeReq;
+import com.ssafy.pocketfolio.api.dto.ArrangeDto;
+import com.ssafy.pocketfolio.api.dto.RoomDto;
+import com.ssafy.pocketfolio.api.dto.request.RoomArrangeReq;
 import com.ssafy.pocketfolio.api.dto.request.RoomReq;
 import com.ssafy.pocketfolio.api.dto.response.CategoryRes;
-import com.ssafy.pocketfolio.api.dto.RoomDto;
 import com.ssafy.pocketfolio.api.dto.response.RoomListRes;
 import com.ssafy.pocketfolio.api.util.MultipartFileHandler;
 import com.ssafy.pocketfolio.db.entity.*;
@@ -14,13 +15,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.persistence.EntityNotFoundException;
 import java.io.IOException;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -34,6 +33,8 @@ public class RoomServiceImpl implements RoomService {
     private final RoomCategoryRepository roomCategoryRepository;
     private final RoomHitRepository roomHitRepository;
     private final RoomLikeRepository roomLikeRepository;
+    private final PortfolioRepository portfolioRepository;
+    private final ItemRepository itemRepository;
     private final ArrangeRepository arrangeRepository;
     private final MultipartFileHandler fileHandler;
 
@@ -129,10 +130,10 @@ public class RoomServiceImpl implements RoomService {
         map.put("today", roomHitRepository.countRoomHitToday(roomSeq));
         map.put("like", roomLikeRepository.countAllByRoom_RoomSeq(room.getRoomSeq()));
 
+        List<ArrangeDto> arranges = new ArrayList<>();
         List<Arrange> arrangeList = arrangeRepository.findByRoom_RoomSeq(roomSeq);
-
-        // 12345
-
+        arrangeList.forEach(arrange -> arranges.add(new ArrangeDto(arrange)));
+        map.put("arranges", arranges);
 
         return map;
     }
@@ -192,11 +193,36 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    @Transactional(readOnly = true)
-    public Long updateRoom(long userSeq, long roomSeq, ArrangeReq arrangeReq) {
+    @Transactional
+    public Long updateRoom(long userSeq, long roomSeq, RoomArrangeReq roomArrangeReq) {
+        // 수정하는 메소드. 성능 상 삭제 후 삽입도 고려해 볼 만함.
+        Room room = roomRepository.findById(roomSeq).orElseThrow(() -> new IllegalArgumentException("해당 포켓이 존재하지 않습니다."));
 
+        HashSet<Long> arrangeSeqSet = arrangeRepository.findArrangeSeqByRoom_RoomSeq(roomSeq); // 리스트만 되면 변환 필요
 
-        return null;
+        room.updateTheme(roomArrangeReq.getTheme());
+
+        roomArrangeReq.getArranges().forEach(arrangeDto -> {
+            Portfolio portfolio;
+            try {
+                portfolio = portfolioRepository.getReferenceById(arrangeDto.getPortSeq());
+            } catch (EntityNotFoundException e) {
+                log.error("포트폴리오 번호 없어서 포트폴리오 연결 없이 진행");
+                portfolio = null;
+            }
+            long arrangeSeq = arrangeDto.getArrangeSeq();
+            if (arrangeSeqSet.contains(arrangeSeq)) { // 원래 있던 Arrange (UPDATE)
+                arrangeRepository.findById(arrangeSeq).get().updateArrangeAll(arrangeDto.getLocation(), arrangeDto.getRotation(), portfolio);
+                arrangeSeqSet.remove(arrangeSeq);
+            } else { // 기존에 없던 Arrange (INSERT)
+                Arrange arrange = arrangeDto.toEntity(room, itemRepository.getReferenceById(arrangeDto.getItemSeq()), portfolio);
+                arrangeRepository.save(arrange);
+            }
+        });
+
+        arrangeSeqSet.forEach(arrangeSeq -> arrangeRepository.deleteById(arrangeSeq));
+
+        return room.getRoomSeq();
     }
 
     @Override

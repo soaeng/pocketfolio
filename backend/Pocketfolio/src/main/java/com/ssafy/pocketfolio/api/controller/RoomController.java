@@ -1,8 +1,12 @@
 package com.ssafy.pocketfolio.api.controller;
 
 import com.ssafy.pocketfolio.api.dto.RoomDto;
+import com.ssafy.pocketfolio.api.dto.request.RoomArrangeReq;
 import com.ssafy.pocketfolio.api.dto.request.RoomReq;
-import com.ssafy.pocketfolio.api.dto.response.*;
+import com.ssafy.pocketfolio.api.dto.response.ItemRes;
+import com.ssafy.pocketfolio.api.dto.response.PortfolioListRes;
+import com.ssafy.pocketfolio.api.dto.response.RoomListRes;
+import com.ssafy.pocketfolio.api.dto.response.UserRes;
 import com.ssafy.pocketfolio.api.service.PortfolioService;
 import com.ssafy.pocketfolio.api.service.RoomService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -149,7 +153,7 @@ public class RoomController {
             @ApiResponse(responseCode = "500", description = "서버 에러", content = @Content(schema = @Schema(implementation = Long.class)))
     })
     @PatchMapping("/{roomSeq}")
-    public ResponseEntity<Long> updateRoom(@PathVariable(value = "roomSeq") Long roomSeq, @RequestPart(value = "room") RoomReq roomReq, @RequestPart(value = "thumbnail", required = false) MultipartFile thumbnail, HttpServletRequest request){
+    public ResponseEntity<Long> updateRoom(@PathVariable Long roomSeq, @RequestBody RoomArrangeReq roomArrangeReq, HttpServletRequest request){
         log.debug("[PATCH] Controller - updateRoom");
         Long response = null;
         HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
@@ -157,7 +161,7 @@ public class RoomController {
         try{
             long userSeq = (Long) request.getAttribute("userSeq");
             if (userSeq > 0) {
-                response = roomService.updateRoomInfo(userSeq, roomSeq, roomReq, thumbnail);
+                response = roomService.updateRoom(userSeq, roomSeq, roomArrangeReq);
                 if (response > 0) {
                     status = HttpStatus.CREATED;
                 }
