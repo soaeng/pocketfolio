@@ -3,9 +3,11 @@ package com.ssafy.pocketfolio.api.dto.request;
 import com.ssafy.pocketfolio.db.entity.Room;
 import com.ssafy.pocketfolio.db.entity.User;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.Getter;
 
 @Getter
+@Tag(name = "RoomReq", description = "포켓 Request DTO")
 public class RoomReq {
     @Schema(description = "방 이름", example = "소앵이 방")
     private String name;

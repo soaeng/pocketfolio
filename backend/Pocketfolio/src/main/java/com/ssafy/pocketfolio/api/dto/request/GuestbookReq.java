@@ -1,20 +1,14 @@
 package com.ssafy.pocketfolio.api.dto.request;
 
-import com.ssafy.pocketfolio.db.entity.Guestbook;
-import com.ssafy.pocketfolio.db.entity.User;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.Getter;
 
+@Getter
+@Tag(name = "GuestbookReq", description = "방명록 Request DTO")
 public class GuestbookReq {
+    @Schema(description = "방명록 내용", example = "하이루욤")
     private String content;
+    @Schema(description = "공개 여부", example = "T")
     private String isPublic;
-
-    public static Guestbook toEntity(GuestbookReq dto, User user){
-        if (dto != null) {
-            return null;
-        }
-        return Guestbook.builder()
-                .content(dto.content)
-                .user(user)
-                .isPublic(dto.isPublic)
-                .build();
-    }
 }

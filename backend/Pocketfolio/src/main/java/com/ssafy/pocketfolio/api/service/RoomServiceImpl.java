@@ -113,15 +113,12 @@ public class RoomServiceImpl implements RoomService {
         Room room = roomRepository.findById(roomSeq).orElseThrow(() -> new IllegalArgumentException("해당 방을 찾을 수 없습니다."));
         RoomCategory roomCategory = roomCategoryRepository.findCategorySeqByRoom_RoomSeq(room.getRoomSeq());
         log.debug("roomCategory: " + roomCategory);
-//        Category category = categoryRepository.findById(roomCategory).orElseThrow(() -> new IllegalArgumentException("해당 카테고리 없음"));
-//        log.debug("category: " + category);
 
         // 본인 방이 아닌 경우 + 당일 방문하지 않은 경우 조회수 1 증가
         if (userSeq != room.getUser().getUserSeq() && !roomHitRepository.existsRoomHitByUserAndRoomAndHitDateEquals(user, room, ZonedDateTime.now(ZoneId.of("Asia/Seoul")).toLocalDate())) {
             roomHitRepository.save(RoomHit.builder().room(room).user(user).build());
         }
 
-        log.debug("-----------------------");
         log.debug(roomCategory.getCategory().toString());
         // 방 정보
         map.put("room", RoomDto.toDto(room, CategoryRes.toDto(roomCategory.getCategory())));
