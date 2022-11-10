@@ -9,7 +9,7 @@ import {combineReducers, configureStore} from '@reduxjs/toolkit';
 import oauthReducer from './oauthSlice'
 import roomReducer from './roomSlice'
 import portReducer from './portSlice'
-
+import itemReducer from './itemSlice'
 
 
 // persist
@@ -22,6 +22,7 @@ const rootReducers = combineReducers({
   oauth: oauthReducer,
   room: roomReducer,
   port: portReducer,
+  item: itemReducer,
 });
 
 const persistedReducer = persistReducer(rootPersistConfig, rootReducers);
