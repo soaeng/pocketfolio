@@ -14,7 +14,7 @@ import {
   HashList,
   BtnDiv,
   StyledBtn,
-  IconDiv,  
+  IconDiv,
   ItemList,
   Item,
   Cancel,
@@ -26,7 +26,6 @@ import {Body1} from '../../styles/styles.style';
 import SaveModal from './SaveModal';
 import ReactHtmlParser from 'html-react-parser';
 import {registPortfolio} from '../../store/portSlice';
-import PortfolioEdit from './PortfolioEdit';
 
 const AddPort = () => {
   const navigate = useNavigate();
@@ -114,40 +113,37 @@ const AddPort = () => {
     setAttachList(result);
   };
 
-  // 썸네일 추가
+  // 썸네일 첨부
+  const thumbNailInput = React.useRef(null);
+  const thumbButtonClick = e => {
+    thumbNailInput.current.click();
+  };
   const uploadThumbnail = e => {
-    const file = e.target.files;
+    const file = e.target.files[0];
     setThumbNail(file);
   };
 
-  // 포트폴리오 제출 함수
+  // 썸네일 첨부 취소
+  const cancelThumb = () => {
+    setThumbNail('');
+  };
+
+  // 포트폴리오 제출
   const savePortFolio = () => {
-    const fileData = new FormData();
+    const form = new FormData();
+    const json = JSON.stringify({
+      name: portContent.name,
+      summary: portContent.summary,
+      tags: hashArr,
+    });
+    form.append('portfolio', new Blob([json], {type: 'application/json'}));
     let files = attachList;
     for (let i = 0; i < files.length; i++) {
-      fileData.append('files', files[i]);
+      form.append('files', files[i]);
     }
+    form.append('thumbnail', thumbNail);
 
-    const imageData = new FormData();
-    imageData.append('thumbnail', thumbNail);
-
-    // 폼 데이터 value 확인
-    for (let key of imageData.values()) {
-      console.log(key);
-    }
-
-    // POST 할 parameter
-    const data = {
-      portfolio: {
-        name: portContent.name,
-        summary: portContent.summary,
-        tags: hashArr,
-      },
-      thumbnail: imageData,
-      files: fileData,
-    };
-
-    dispatch(registPortfolio(data))
+    dispatch(registPortfolio(form))
       .unwrap()
       .then(res => {
         console.log(res);
@@ -162,6 +158,7 @@ const AddPort = () => {
     ></div>
   );
 
+  console.log(thumbNail);
   return (
     <Background>
       <Nav></Nav>
@@ -172,7 +169,7 @@ const AddPort = () => {
             autoComplete="off"
             placeholder="포트폴리오 제목"
             onBlur={getValue}
-            name="title"
+            name="name"
           ></Title>
         </ContentDiv>
 
@@ -206,7 +203,7 @@ const AddPort = () => {
 
           <BottomBox className="attachWrap">
             <Label className="attachLabel">파일첨부</Label>
-            <IconDiv className="file">
+            <IconDiv>
               <Add onClick={handleButtonClick}></Add>
             </IconDiv>
             <input
@@ -230,11 +227,24 @@ const AddPort = () => {
 
           <BottomBox>
             <Label>썸네일</Label>
+            <IconDiv>
+              <Add onClick={thumbButtonClick}></Add>
+            </IconDiv>
             <input
               type="file"
+              ref={thumbNailInput}
               accept="image/*"
               onChange={uploadThumbnail}
+              style={{display: 'none'}}
             />
+            {thumbNail.length !== 0 ? (
+              <Item>
+                {thumbNail.name}
+                <IconDiv>
+                  <Cancel onClick={cancelThumb} />
+                </IconDiv>
+              </Item>
+            ) : null}
           </BottomBox>
         </ContentDiv>
       </Wrapper>
@@ -261,7 +271,6 @@ const AddPort = () => {
 
       {/* 유저에게 보여져야 할 포트폴리오 */}
       {/* <Viewer content={portContent.content} /> */}
-
     </Background>
   );
 };

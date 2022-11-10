@@ -134,14 +134,14 @@ export const StyledBtn = styled.button`
       0px 1px 3px 1px rgba(0, 0, 0, 0.15);
     border: 0;
     border-radius: 100px;
-    color: #2c2365;
+    color: #e75452;
     font-weight: 1000;
     font-size: 20px;
     margin-right: 0.5rem;
     cursor: pointer;
 
     &:hover {
-      background-color: #f2f2f2;
+      background-color: #f6f1f1;
       
     }
   }
@@ -149,7 +149,7 @@ export const StyledBtn = styled.button`
   &.save {
     width: 5.5rem;
     height: 2.5rem;
-    background-color: #2c2365;
+    background-color: #e75452;
     box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.3),
       0px 1px 3px 1px rgba(0, 0, 0, 0.15);
     border: 0;
@@ -160,7 +160,7 @@ export const StyledBtn = styled.button`
     cursor: pointer;
 
     &:hover {
-      background-color: #3c3288;
+      background-color: #fb706d;
       
     }
   }

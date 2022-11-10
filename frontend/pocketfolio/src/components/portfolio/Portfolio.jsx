@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import Nav from '../common/Nav';
 import {useNavigate} from 'react-router-dom';
 import {
@@ -17,9 +17,11 @@ import {
 import Card from './Card';
 import AddMyRoom from './AddMyRoom';
 import PortList from './PortList';
-
+import {getMyPort} from '../../store/portSlice';
+import {useDispatch} from 'react-redux';
 const Portfolio = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const [isDelete, setIsDelete] = useState(false);
 
@@ -34,6 +36,13 @@ const Portfolio = () => {
   const moveMyRoom = () => {
     navigate('/room/1');
   };
+
+  useEffect(() => {
+    dispatch(getMyPort())
+    .then((res) => {
+      console.log(res.payload.data);
+    });
+  }, []);
 
   return (
     <Background>
