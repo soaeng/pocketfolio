@@ -20,7 +20,10 @@ import javax.persistence.EntityNotFoundException;
 import java.io.IOException;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -117,10 +120,8 @@ public class RoomServiceImpl implements RoomService {
         log.debug("roomCategory: " + roomCategory);
 
         // 본인 방이 아닌 경우 + 당일 방문하지 않은 경우 조회수 1 증가
-        if (userSeq != room.getUser().getUserSeq()) {
-            if (!roomHitRepository.existsRoomHitByUserAndRoomAndHitDateEquals(user, room, ZonedDateTime.now(ZoneId.of("Asia/Seoul")).toLocalDate())) {
-                roomHitRepository.save(RoomHit.builder().room(room).user(user).build());
-            }
+        if (userSeq != room.getUser().getUserSeq() && !roomHitRepository.existsRoomHitByUserAndRoomAndHitDateEquals(user, room, ZonedDateTime.now(ZoneId.of("Asia/Seoul")).toLocalDate())) {
+            roomHitRepository.save(RoomHit.builder().room(room).user(user).build());
         }
 
         log.debug(roomCategory.getCategory().toString());
