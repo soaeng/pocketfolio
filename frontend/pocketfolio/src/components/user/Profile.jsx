@@ -48,7 +48,7 @@ const Profile = () => {
       ? user.profilePic
       : process.env.PUBLIC_URL + '/assets/images/logo3.png',
   );
-  const [blogURL, setBlogUrl] = useState(
+  const [blogUrl, setBlogUrl] = useState(
     user && user.blogUrl ? user.blogUrl : '',
   );
   const [birth, setBirth] = useState(user && user.birth ? user.birth : '');
@@ -72,6 +72,7 @@ const Profile = () => {
       birth: birth ? birth : null,
       describe:
         describe && describe !== user.discribe ? describe : user.discribe,
+      blogUrl: blogUrl ? blogUrl : null,
     });
 
     form.append('user', new Blob([json], {type: 'application/json'}));
@@ -172,7 +173,7 @@ const Profile = () => {
             <Input
               type="text"
               placeholder="개인 블로그나 github주소를 입력해주세요"
-              value={blogURL}
+              value={blogUrl}
               onChange={e => setBlogUrl(e.target.value.trim())}
             />
           </BIBox>
@@ -214,7 +215,11 @@ const Profile = () => {
       />
 
       {modal ? (
-        <DelUserModal modal={modal} toggleModal={toggleModal} deleteUser={deleteUser}/>
+        <DelUserModal
+          modal={modal}
+          toggleModal={toggleModal}
+          deleteUser={deleteUser}
+        />
       ) : null}
     </Container>
   );
