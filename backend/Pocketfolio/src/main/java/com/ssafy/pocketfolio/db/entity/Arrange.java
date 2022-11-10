@@ -33,21 +33,21 @@ public class Arrange {
 	private Item item;
 	
 //	@Column(name="location_x", nullable=false, columnDefinition = "int CHECK (location_x >= 0)")
-	@Column(name="location_x", nullable=false)
+	@Column(name="location_x", nullable=false, columnDefinition = "decimal(15,8)")
 	@NotNull
-	private int locationX;
+	private double locationX;
 	
-	@Column(name="location_y", nullable=false)
+	@Column(name="location_y", nullable=false, columnDefinition = "decimal(15,8)")
 	@NotNull
-	private int locationY;
+	private double locationY;
 	
-	@Column(name="location_z", nullable=false)
+	@Column(name="location_z", nullable=false, columnDefinition = "decimal(15,8)")
 	@NotNull
-	private int locationZ;
+	private double locationZ;
 
-	@Column(name="rotation", nullable=false)
+	@Column(name="rotation", nullable=false, columnDefinition = "decimal(15,8)")
 	@NotNull
-	private int rotation;
+	private double rotation;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="port_seq")

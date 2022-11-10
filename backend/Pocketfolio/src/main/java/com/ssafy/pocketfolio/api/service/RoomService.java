@@ -1,5 +1,6 @@
 package com.ssafy.pocketfolio.api.service;
 
+import com.ssafy.pocketfolio.api.dto.request.ArrangeReq;
 import com.ssafy.pocketfolio.api.dto.request.RoomReq;
 import com.ssafy.pocketfolio.api.dto.response.RoomListRes;
 import org.springframework.web.multipart.MultipartFile;
@@ -38,12 +39,22 @@ public interface RoomService {
     /**
      * 마이룸 수정
      * @param userSeq 회원 번호 (로그인 유저)
+     * @param roomSeq 방 번호
      * @param req 방 정보
      * @param thumbnail 썸네일 이미지
      * @return 수정된 방 번호
      * @throws IOException 썸네일 이미지 저장 실패 시 던져짐
      */
     Long updateRoomInfo(long userSeq, long roomSeq, RoomReq req, MultipartFile thumbnail) throws IOException;
+
+    /**
+     * 마이룸 꾸미기
+     * @param userSeq 회원 번호 (로그인 유저)
+     * @param roomSeq 방 번호
+     * @param arrangeReq 배치 요청
+     * @return 수정된 방 번호
+     */
+    Long updateRoom(long userSeq, long roomSeq, ArrangeReq arrangeReq);
 
     /**
      * 마이룸 삭제
