@@ -1,5 +1,6 @@
 package com.ssafy.pocketfolio.api.controller;
 
+import com.ssafy.pocketfolio.api.dto.RoomDto;
 import com.ssafy.pocketfolio.api.dto.request.RoomReq;
 import com.ssafy.pocketfolio.api.dto.response.*;
 import com.ssafy.pocketfolio.api.service.PortfolioService;
@@ -83,7 +84,7 @@ public class RoomController {
         return new ResponseEntity<>(response, status);
     }
     @Operation(summary = "마이룸 조회", description = "마이룸 조회", responses = {
-            @ApiResponse(responseCode = "200", description = "마이룸 조회 성공", content = @Content(schema = @Schema(implementation = RoomDetailRes.class))),
+            @ApiResponse(responseCode = "200", description = "마이룸 조회 성공", content = @Content(schema = @Schema(implementation = RoomDto.class))),
             @ApiResponse(responseCode = "403", description = "사용 불가능 토큰", content = @Content(schema = @Schema(implementation = UserRes.class))),
             @ApiResponse(responseCode = "500", description = "서버 에러", content = @Content(schema = @Schema(implementation = Error.class)))
     })

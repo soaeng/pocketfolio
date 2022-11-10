@@ -7,7 +7,7 @@ import lombok.Getter;
 @Getter
 public class RoomReq {
     private String name;            // 방 이름
-    private int theme;              // 테마
+    private String theme;              // 테마
     private String isMain;         // 대표 방 여부 (T/F)
     private String privacy;         // 공개 여부 (O/S/C)
 

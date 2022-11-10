@@ -13,7 +13,7 @@ public class RoomDto {
     private String name;
     private long userSeq;
     private String userName;
-    private int theme;
+    private String theme;
     private String thumbnail;
     private String isMain;
     private String privacy;

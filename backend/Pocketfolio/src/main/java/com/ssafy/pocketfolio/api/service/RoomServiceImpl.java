@@ -153,6 +153,12 @@ public class RoomServiceImpl implements RoomService {
 
         try {
             room.updateRoom(req.getName(), thumbnailUrl);
+            room.updateTheme(req.getTheme());
+            room.updatePrivacy(req.getPrivacy());
+            if(room.getIsMain().equals("F")) {
+                // update (다른 T를 F로 변경하고 T로 해야)
+                room.changeIsMain(req.getIsMain());
+            }
             log.debug("저장된 방 번호: " + roomSeq);
         } catch (Exception e) {
             log.error(e.getMessage());

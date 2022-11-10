@@ -38,7 +38,7 @@ public class Room {
 	private User user;
 	
 	@Column(name="theme")
-	private int theme;
+	private String theme;
 	
 	@Column(name="thumbnail", length=255)
 	private String thumbnail;
@@ -65,7 +65,7 @@ public class Room {
 		this.thumbnail = thumbnail;
 	}
 	
-	public void updateTheme(int theme) { // update room theme only
+	public void updateTheme(String theme) { // update room theme only
 		this.theme = theme;
 	}
 
