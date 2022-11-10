@@ -214,7 +214,7 @@ export const SignOutText = styled.p`
 
 export const Btnbox = styled.div`
   margin-top: 3rem;
-  width: 45%;
+  width: 40%;
 `;
 
 export const Btn = styled.button`
@@ -226,13 +226,13 @@ export const Btn = styled.button`
   padding: 0.5rem 0;
 
   & + & {
-    margin-left: 1rem;
+    margin-left: 0.5rem;
   }
 
   &.cancel {
     background-color: white;
     color: #e75452;
-    border: 0.5px solid #a5a5a5;
+    border: 0.5px solid #e75452;
 
     &:hover {
       background-color: #eeeeee;
