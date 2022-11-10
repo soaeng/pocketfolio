@@ -5,6 +5,7 @@ import com.ssafy.pocketfolio.api.dto.RoomDto;
 import com.ssafy.pocketfolio.api.dto.request.RoomArrangeReq;
 import com.ssafy.pocketfolio.api.dto.request.RoomReq;
 import com.ssafy.pocketfolio.api.dto.response.CategoryRes;
+import com.ssafy.pocketfolio.api.dto.response.GuestRoomRes;
 import com.ssafy.pocketfolio.api.dto.response.RoomListRes;
 import com.ssafy.pocketfolio.api.util.MultipartFileHandler;
 import com.ssafy.pocketfolio.db.entity.*;
@@ -37,6 +38,7 @@ public class RoomServiceImpl implements RoomService {
     private final ItemRepository itemRepository;
     private final ArrangeRepository arrangeRepository;
     private final MultipartFileHandler fileHandler;
+    private final FollowRepository followRepository;
 
     @Override
     @Transactional
@@ -115,8 +117,10 @@ public class RoomServiceImpl implements RoomService {
         log.debug("roomCategory: " + roomCategory);
 
         // 본인 방이 아닌 경우 + 당일 방문하지 않은 경우 조회수 1 증가
-        if (userSeq != room.getUser().getUserSeq() && !roomHitRepository.existsRoomHitByUserAndRoomAndHitDateEquals(user, room, ZonedDateTime.now(ZoneId.of("Asia/Seoul")).toLocalDate())) {
-            roomHitRepository.save(RoomHit.builder().room(room).user(user).build());
+        if (userSeq != room.getUser().getUserSeq()) {
+            if (!roomHitRepository.existsRoomHitByUserAndRoomAndHitDateEquals(user, room, ZonedDateTime.now(ZoneId.of("Asia/Seoul")).toLocalDate())) {
+                roomHitRepository.save(RoomHit.builder().room(room).user(user).build());
+            }
         }
 
         log.debug(roomCategory.getCategory().toString());
@@ -124,8 +128,9 @@ public class RoomServiceImpl implements RoomService {
         map.put("room", RoomDto.toDto(room, CategoryRes.toDto(roomCategory.getCategory())));
         // 조회수
         map.put("hit", roomHitRepository.countAllByRoom_RoomSeq(room.getRoomSeq()));
-        map.put("today", roomHitRepository.countRoomHitToday(roomSeq));
         map.put("like", roomLikeRepository.countAllByRoom_RoomSeq(room.getRoomSeq()));
+        // Item
+        map.put("follow", followRepository.existsByUserFrom_UserSeqAndUserTo_UserSeq(user.getUserSeq(), room.getUser().getUserSeq()));
 
         List<ArrangeDto> arranges = new ArrayList<>();
         List<Arrange> arrangeList = arrangeRepository.findByRoom_RoomSeq(roomSeq);
@@ -329,6 +334,25 @@ public class RoomServiceImpl implements RoomService {
         List<Long> roomSeqs = roomRepository.findAllByPrivacy();
         Random rand = new Random();
         return roomSeqs.get(rand.nextInt(roomSeqs.size()));
+    }
+
+    @Override
+    public Map<String, Object> findGuestList(long roomSeq) {
+        log.debug("[GET] Service - findGuestList");
+        try {
+            Map<String, Object> map = new HashMap<>();
+            List<GuestRoomRes> guests = roomHitRepository.findGuest(roomSeq).stream().map(x -> {
+                int like = roomLikeRepository.countAllByRoom_RoomSeq(roomSeq).intValue();
+                int hit = roomHitRepository.countAllByRoom_RoomSeq(roomSeq).intValue();
+                return GuestRoomRes.toDto(x, like, hit);
+            }).collect(Collectors.toList());
+            map.put("guests", guests);
+            map.put("today", roomHitRepository.countRoomHitToday(roomSeq));
+            return map;
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return null;
+        }
     }
 
     public List<RoomListRes> getRoomListRes(List<Room> rooms) {

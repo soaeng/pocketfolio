@@ -24,5 +24,5 @@ public interface FollowRepository extends JpaRepository<Follow, Long> {
 	List<FollowListView> findFollowingListByUser(long myUserSeq, long targetUserSeq);
 
 	void deleteByUserFrom_UserSeqAndUserTo_UserSeq(long userFrom, long userTo);
-
+	Boolean existsByUserFrom_UserSeqAndUserTo_UserSeq(long userFrom, long userTo);
 }

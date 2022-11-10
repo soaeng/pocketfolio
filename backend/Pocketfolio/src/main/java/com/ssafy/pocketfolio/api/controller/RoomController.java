@@ -51,9 +51,7 @@ public class RoomController {
             long userSeq = (Long) request.getAttribute("userSeq");
             if (userSeq > 0) {
                 response = roomService.insertRoom(userSeq, roomReq, thumbnail);
-                if (response > 0) {
-                    status = HttpStatus.CREATED;
-                }
+                status = (response > 0) ? HttpStatus.CREATED : HttpStatus.INTERNAL_SERVER_ERROR;
             } else {
                 log.error("사용 불가능 토큰");
                 status = HttpStatus.FORBIDDEN;
@@ -353,6 +351,32 @@ public class RoomController {
             long userSeq = (Long) request.getAttribute("userSeq");
             if (userSeq > 0) {
                 response = roomService.findRandomRoom();
+                status = response != null ? HttpStatus.OK : HttpStatus.INTERNAL_SERVER_ERROR;
+            } else {
+                log.error("사용 불가능 토큰");
+                status = HttpStatus.FORBIDDEN;
+            }
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
+        return new ResponseEntity<>(response, status);
+    }
+
+    @Operation(summary = "최근 방문자 목록", description = "최근 방문자 목록 조회", responses = {
+            @ApiResponse(responseCode = "200", description = "최근 방문자 목록 조회 성공", content = @Content(schema = @Schema(implementation = RoomListRes.class))),
+            @ApiResponse(responseCode = "403", description = "사용 불가능 토큰", content = @Content(schema = @Schema(implementation = UserRes.class))),
+            @ApiResponse(responseCode = "500", description = "서버 에러", content = @Content(schema = @Schema(implementation = Error.class)))
+    })
+    @GetMapping("/guests/{roomSeq}")
+    public ResponseEntity<Map<String, Object>> findGuestList(@PathVariable("roomSeq") Long roomSeq, HttpServletRequest request) {
+        log.debug("[GET] Controller - findGuestList");
+        Map<String, Object> response = new HashMap<>();
+        HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
+
+        try{
+            long userSeq = (Long) request.getAttribute("userSeq");
+            if (userSeq > 0) {
+                response = roomService.findGuestList(roomSeq);
                 status = response != null ? HttpStatus.OK : HttpStatus.INTERNAL_SERVER_ERROR;
             } else {
                 log.error("사용 불가능 토큰");
