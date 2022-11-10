@@ -94,9 +94,11 @@ public class GuestbookServiceImpl implements GuestbookService {
     public Long insertGuestbookComment(GuestbookCommentReq req, long guestbookSeq, long userSeq) {
         log.debug("[POST] Service - insertGuestbookComment");
         try {
+            Guestbook guestbook = guestbookRepository.findById(guestbookSeq).orElseThrow(() -> new IllegalArgumentException("해당 방명록이 존재하지 않습니다."));
             GuestbookComment comment = GuestbookComment.builder()
                     .content(req.getContent())
-                    .isPublic(req.getIsPublic())
+                    // 방명록이 비공개인 경우에는 댓글도 항상 비공개
+                    .isPublic(guestbook.getIsPublic().equals("F") ? "F" : req.getIsPublic())
                     .guestbook(guestbookRepository.getReferenceById(guestbookSeq))
                     .user(userRepository.getReferenceById(userSeq))
                     .build();
@@ -114,7 +116,7 @@ public class GuestbookServiceImpl implements GuestbookService {
     public Boolean deleteGuestbookComment(long commentSeq, long userSeq) {
         log.debug("[POST] Service - deleteGuestbookComment");
         User user = userRepository.findById(userSeq).orElseThrow(() -> new IllegalArgumentException("해당 사용자가 존재하지 않습니다."));
-        GuestbookComment comment = guestbookCommentRepository.findById(user.getUserSeq()).orElseThrow(() -> new IllegalArgumentException("해당 댓글이 존재하지 않습니다."));
+        GuestbookComment comment = guestbookCommentRepository.findById(commentSeq).orElseThrow(() -> new IllegalArgumentException("해당 댓글이 존재하지 않습니다."));
         if (comment.getUser().getUserSeq() != userSeq) {
             log.error("권한 없음");
             return false;
