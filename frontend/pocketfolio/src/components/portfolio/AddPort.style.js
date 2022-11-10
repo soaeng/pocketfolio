@@ -1,5 +1,10 @@
 import styled from 'styled-components';
-import {RiHashtag, RiFileAddLine, RiAddCircleLine, RiCloseLine} from 'react-icons/ri';
+import {
+  RiHashtag,
+  RiFileAddLine,
+  RiAddCircleLine,
+  RiCloseLine,
+} from 'react-icons/ri';
 
 import {FaSlackHash} from 'react-icons/fa';
 
@@ -62,13 +67,13 @@ export const Label = styled.div`
   font-weight: bold;
   margin-bottom: 0.5rem;
 
-  &.attachLabel{
-    margin: 0;
+  &.attachLabel {
+    /* margin: 0; */
   }
 `;
 
 export const ContentDiv = styled.div`
-  &.bottom   {
+  &.bottom {
     display: flex;
   }
   margin-bottom: 1.5rem;
@@ -98,7 +103,6 @@ export const Img = styled.img`
   }
 `;
 
-
 export const InputDiv = styled.div`
   display: flex;
   align-items: center;
@@ -111,7 +115,7 @@ export const HashInput = styled.input`
   line-height: 2rem;
   min-width: 8rem;
   border: none;
-  border-bottom: 1px solid;
+  border-bottom: 1px solid #b9b9b9;
 `;
 
 export const HashList = styled.div`
@@ -141,9 +145,6 @@ export const BtnDiv = styled.div`
 `;
 
 export const StyledBtn = styled.button`
-  :hover{
-    box-shadow: 0px 2px 5px 1px rgba(0, 0, 0, 0.25);
-  }
   p {
     margin: 0;
   }
@@ -155,17 +156,21 @@ export const StyledBtn = styled.button`
       0px 1px 3px 1px rgba(0, 0, 0, 0.15);
     border: 0;
     border-radius: 100px;
-    color: #2c2365;
+    color: #e75452;
     font-weight: 1000;
     font-size: 20px;
     cursor: pointer;
+
+    &:hover {
+      box-shadow: 0px 2px 5px 1px rgba(0, 0, 0, 0.25);
+    }
   }
 
   &.save {
     width: 6rem;
     height: 2.8rem;
     margin-left: 1rem;
-    background-color: #2c2365;
+    background-color: #e75452;
     box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.3),
       0px 1px 3px 1px rgba(0, 0, 0, 0.15);
     border: 0;
@@ -174,6 +179,9 @@ export const StyledBtn = styled.button`
     font-weight: 1000;
     font-size: 20px;
     cursor: pointer;
+    &:hover {
+      box-shadow: 0px 2px 5px 1px rgba(0, 0, 0, 0.25);
+    }
   }
 `;
 
@@ -195,12 +203,8 @@ export const FileIcon = styled(RiFileAddLine)`
 `;
 
 export const IconDiv = styled.div`
-  &.file{
-   display: flex;
-   align-items : center;
-   
-   /* margin-bottom: 0.5rem; */
-  }
+  display: flex;
+  align-items: center;
 `;
 
 export const ItemList = styled.div`
@@ -210,7 +214,6 @@ export const ItemList = styled.div`
   &::-webkit-scrollbar {
     width: 5px;
     height: 10px;
-    
   }
 
   &::-webkit-scrollbar-thumb {
@@ -227,7 +230,6 @@ export const ItemList = styled.div`
 export const Item = styled.div`
   display: flex;
   align-items: center;
-  
 `;
 
 export const Cancel = styled(RiCloseLine)`
@@ -239,4 +241,4 @@ export const Add = styled(RiAddCircleLine)`
   color: #e75452;
   /* margin-bottom: 0.5rem; */
   cursor: pointer;
-`
+`;
