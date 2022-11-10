@@ -35,11 +35,12 @@ public interface GuestbookService {
     /**
      * 방명록 댓글 등록
      * @param req 방명록 댓글 내용
+     * @param roomSeq 방 번호
      * @param guestbookSeq 방명록 번호
      * @param userSeq 댓글 작성자 번호 (현재 접속한 회원 번호)
      * @return 방명록 댓글 등록 여부
      */
-    Long insertGuestbookComment(GuestbookCommentReq req, long guestbookSeq, long userSeq);
+    Long insertGuestbookComment(GuestbookCommentReq req, long roomSeq, long guestbookSeq, long userSeq);
 
     /**
      * 방명록 댓글 삭제

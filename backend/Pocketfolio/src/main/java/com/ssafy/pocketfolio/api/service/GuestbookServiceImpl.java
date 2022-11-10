@@ -6,6 +6,7 @@ import com.ssafy.pocketfolio.api.dto.response.GuestbookCommentRes;
 import com.ssafy.pocketfolio.api.dto.response.GuestbookRes;
 import com.ssafy.pocketfolio.db.entity.Guestbook;
 import com.ssafy.pocketfolio.db.entity.GuestbookComment;
+import com.ssafy.pocketfolio.db.entity.Room;
 import com.ssafy.pocketfolio.db.entity.User;
 import com.ssafy.pocketfolio.db.repository.GuestbookCommentRepository;
 import com.ssafy.pocketfolio.db.repository.GuestbookRepository;
@@ -91,9 +92,14 @@ public class GuestbookServiceImpl implements GuestbookService {
 
     @Override
     @Transactional
-    public Long insertGuestbookComment(GuestbookCommentReq req, long guestbookSeq, long userSeq) {
+    public Long insertGuestbookComment(GuestbookCommentReq req, long roomSeq, long guestbookSeq, long userSeq) {
         log.debug("[POST] Service - insertGuestbookComment");
         try {
+            Room room = roomRepository.findById(roomSeq).orElseThrow(() -> new IllegalArgumentException("해당 방이 존재하지 않습니다."));
+            if (room.getUser().getUserSeq() != userSeq) {
+                log.error("권한 없음");
+                return null;
+            }
             Guestbook guestbook = guestbookRepository.findById(guestbookSeq).orElseThrow(() -> new IllegalArgumentException("해당 방명록이 존재하지 않습니다."));
             GuestbookComment comment = GuestbookComment.builder()
                     .content(req.getContent())
@@ -115,7 +121,6 @@ public class GuestbookServiceImpl implements GuestbookService {
     @Transactional
     public Boolean deleteGuestbookComment(long commentSeq, long userSeq) {
         log.debug("[POST] Service - deleteGuestbookComment");
-        User user = userRepository.findById(userSeq).orElseThrow(() -> new IllegalArgumentException("해당 사용자가 존재하지 않습니다."));
         GuestbookComment comment = guestbookCommentRepository.findById(commentSeq).orElseThrow(() -> new IllegalArgumentException("해당 댓글이 존재하지 않습니다."));
         if (comment.getUser().getUserSeq() != userSeq) {
             log.error("권한 없음");

@@ -111,15 +111,15 @@ public class GuestController {
             @ApiResponse(responseCode = "403", description = "사용 불가능 토큰", content = @Content(schema = @Schema(implementation = UserRes.class))),
             @ApiResponse(responseCode = "500", description = "서버 에러", content = @Content(schema = @Schema(implementation = Error.class)))
     })
-    @PostMapping("/comment/{guestbookSeq}")
-    public ResponseEntity<Long> insertGuestbookComment(@PathVariable("guestbookSeq") Long guestbookSeq, @RequestBody GuestbookCommentReq comment, HttpServletRequest request) {
+    @PostMapping("/comment/{roomSeq}/{guestbookSeq}")
+    public ResponseEntity<Long> insertGuestbookComment(@PathVariable("roomSeq") Long roomSeq, @PathVariable("guestbookSeq") Long guestbookSeq, @RequestBody GuestbookCommentReq comment, HttpServletRequest request) {
         Long response = null;
         HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
 
         try{
             long userSeq = (Long) request.getAttribute("userSeq");
             if (userSeq > 0) {
-                response = guestbookService.insertGuestbookComment(comment, guestbookSeq, userSeq);
+                response = guestbookService.insertGuestbookComment(comment, roomSeq, guestbookSeq, userSeq);
                 status = (response > 0) ? HttpStatus.CREATED : HttpStatus.INTERNAL_SERVER_ERROR;
             } else {
                 log.error("사용 불가능 토큰");
