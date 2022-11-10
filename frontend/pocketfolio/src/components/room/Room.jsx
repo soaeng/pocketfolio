@@ -2,9 +2,8 @@ import RoomNav from './RoomNav';
 import RoomInfo from './RoomInfo';
 import Sidebar from './Sidebar';
 import Menu from './Menu';
+import RoomCanvas from '../roomCanvas/RoomCanvas';
 import {Container, CanvasWrapper, EditBox, Btn} from './Room.style';
-import {Canvas} from '@react-three/fiber';
-import {OrbitControls} from '@react-three/drei';
 import toast, {Toaster} from 'react-hot-toast';
 import {useParams} from 'react-router-dom';
 import {useState} from 'react';
@@ -44,21 +43,7 @@ const Room = () => {
       <RoomNav sidebar={sidebar} edit={edit} />
       <RoomInfo sidebar={sidebar} edit={edit} />
       <CanvasWrapper className={sidebar ? 'active' : ''}>
-        <Canvas camera={{position: [20, 20, 20], fov: 25}}>
-          <OrbitControls autoRotate={false} />
-          <gridHelper />
-          <axesHelper />
-          <mesh>
-            <ambientLight intensity={1} castShadow />
-            <directionalLight
-              position={[10, 10, 10]}
-              intensity={1}
-              castShadow
-            />
-            <boxGeometry args={[5, 5, 5]} />
-            <meshStandardMaterial attach="material" color={0xa3b18a} />
-          </mesh>
-        </Canvas>
+        <RoomCanvas />
         <Toaster
           position="bottom-left"
           containerStyle={{
