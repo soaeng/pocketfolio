@@ -1,11 +1,11 @@
 import { Container, TitleDiv, Title } from "./PortList.style"
 
-const PortList = () => {
+const PortList = ({title}) => {
 
   return(
     <Container>
       <TitleDiv>
-        <Title>아이링크</Title>
+        <Title>{title}</Title>
       </TitleDiv>
     </Container>
   )

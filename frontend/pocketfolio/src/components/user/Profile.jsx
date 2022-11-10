@@ -23,12 +23,13 @@ import {
   DelBox,
   DelIcon,
 } from './Profile.style';
-import {useDispatch, useSelector} from 'react-redux';
+import DelUserModal from './DelUserModal';
 import {useState} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
+import {useNavigate} from 'react-router-dom';
 import Nav from '../common/Nav';
 import {updateProfile, signOut} from '../../store/oauthSlice';
 import toast, {Toaster} from 'react-hot-toast';
-import {useNavigate} from 'react-router-dom';
 
 const Profile = () => {
   const dispatch = useDispatch();
@@ -47,13 +48,21 @@ const Profile = () => {
       ? user.profilePic
       : process.env.PUBLIC_URL + '/assets/images/logo3.png',
   );
-  const [blogURL, setBlogUrl] = useState(
+  const [blogUrl, setBlogUrl] = useState(
     user && user.blogUrl ? user.blogUrl : '',
   );
   const [birth, setBirth] = useState(user && user.birth ? user.birth : '');
   const [describe, setDescribe] = useState(
     user && user.describe ? user.describe : '',
   );
+
+  // 회원탈퇴모달
+  const [modal, setModal] = useState(false);
+
+  // 회원탈퇴모달 on/off
+  const toggleModal = () => {
+    setModal(!modal);
+  };
 
   // 회원정보수정
   async function sendData() {
@@ -63,6 +72,7 @@ const Profile = () => {
       birth: birth ? birth : null,
       describe:
         describe && describe !== user.discribe ? describe : user.discribe,
+      blogUrl: blogUrl ? blogUrl : null,
     });
 
     form.append('user', new Blob([json], {type: 'application/json'}));
@@ -163,7 +173,7 @@ const Profile = () => {
             <Input
               type="text"
               placeholder="개인 블로그나 github주소를 입력해주세요"
-              value={blogURL}
+              value={blogUrl}
               onChange={e => setBlogUrl(e.target.value.trim())}
             />
           </BIBox>
@@ -180,7 +190,7 @@ const Profile = () => {
         </BlogIntroDiv>
 
         <BtnContainer>
-          <SignOutText onClick={deleteUser}>회원탈퇴</SignOutText>
+          <SignOutText onClick={toggleModal}>회원탈퇴</SignOutText>
           <Btnbox>
             <Btn type="reset" className="cancel">
               취소
@@ -203,6 +213,14 @@ const Profile = () => {
           },
         }}
       />
+
+      {modal ? (
+        <DelUserModal
+          modal={modal}
+          toggleModal={toggleModal}
+          deleteUser={deleteUser}
+        />
+      ) : null}
     </Container>
   );
 };
