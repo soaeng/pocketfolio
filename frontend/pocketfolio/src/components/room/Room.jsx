@@ -16,7 +16,7 @@ const Room = () => {
   const room_id = parseInt(params.room_id);
 
   const [sidebar, setSidebar] = useState('');
-  const [edit, setEdit] = useState(true);
+  const [edit, setEdit] = useState(false);
 
   const changeSidebar = state => {
     setSidebar(state);
@@ -90,11 +90,7 @@ const Room = () => {
         />
       )}
 
-      <Sidebar
-        sidebar={sidebar}
-        changeSidebar={changeSidebar}
-        edit={edit}
-      />
+      <Sidebar sidebar={sidebar} changeSidebar={changeSidebar} edit={edit} />
     </Container>
   );
 };
