@@ -180,6 +180,7 @@ const tags = [
   '순수미술',
   '작곡',
 ];
+console.log(tags[0], '오잉')
 
 const Search = () => {
   const navigate = useNavigate();
@@ -188,10 +189,16 @@ const Search = () => {
 
   // 검색어
   const [word, setWord] = useState('');
+  console.log(word, '검색어')
+
+  // 입력창 변화 감지
+  const onChange = (e) => {
+    setWord(e.target.value);
+  };
 
   // 검색어 창 입력
-  const onSubmit = async e => {
-    e.preventDefault();
+  const onSubmit = async event => {
+    event.preventDefault();
     navigate('/search', {
       state: {
         search: word,
@@ -199,14 +206,16 @@ const Search = () => {
     });
     setWord(''); //submit 후 창 비우기
   };
-
+  
   // 검색어 창 엔터시 입력
   const keyDownHandler = event => {
     if (event.key === 'Enter') {
       setWord(word);
       onSubmit(event);
-    }
+    };
   };
+
+  // const clickHandlerTag = 
 
   // 최상단 이동 버튼
   const clickHandlerTop = e => {
@@ -254,6 +263,8 @@ const Search = () => {
           <SearchInput
             placeholder="검색어를 입력해주세요"
             onKeyDown={keyDownHandler}
+            onChange={onChange}
+            value={word}
           />
         </Container>
       </Container1>

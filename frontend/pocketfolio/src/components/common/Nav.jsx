@@ -24,6 +24,12 @@ function Nav() {
 
   // 검색어
   const [word, setWord] = useState('');
+  console.log(word, '네브검색')
+
+  // 입력창 변화 감지
+  const onChange = (e) => {
+    setWord(e.target.value);
+  };
 
   // 검색어 창 입력
   const onSubmit = async e => {
@@ -69,6 +75,8 @@ function Nav() {
           <NavSearchInput
             placeholder="검색어를 입력해주세요"
             onKeyDown={keyDownHandler}
+            onChange={onChange}
+            value={word}
           />
         </NavSearchContainer>
       ) : null}
