@@ -86,4 +86,10 @@ public interface RoomService {
      * @return 랜덤 방 번호
      */
     Long findRandomRoom();
+
+    /**
+     * 방문 내역
+     * @return 최근 방문자 5인 목록 및 오늘의 방문자 수
+     */
+    Map<String, Object> findGuestList(long roomSeq);
 }
