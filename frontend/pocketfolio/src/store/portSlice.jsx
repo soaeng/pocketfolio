@@ -18,9 +18,9 @@ export const getMyPort = createAsyncThunk(
 // 포트폴리오 상세조회
 export const getportDetail = createAsyncThunk(
   'getportDetail',
-  async (uid, {rejectWithValue}) => {
+  async (portSeq, {rejectWithValue}) => {
     try {
-      const res = await http.get(`portfolios/${uid}`)
+      const res = await http.get(`portfolios/${portSeq}`)
       return res.data
     } catch (err) {
       console.log('포트폴리오 상세 조회 실패')
