@@ -142,6 +142,36 @@ public class RoomController {
         return new ResponseEntity<>(response, status);
     }
 
+    @Operation(summary = "마이룸 꾸미기", description = "마이룸 꾸미기", responses = { // TODO: 마이룸 꾸미기
+            @ApiResponse(responseCode = "201", description = "마이룸 꾸미기 성공", content = @Content(schema = @Schema(implementation = Long.class))),
+            @ApiResponse(responseCode = "403", description = "사용 불가능 토큰", content = @Content(schema = @Schema(implementation = Long.class))),
+            @ApiResponse(responseCode = "404", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = ItemRes.class))),
+            @ApiResponse(responseCode = "500", description = "서버 에러", content = @Content(schema = @Schema(implementation = Long.class)))
+    })
+    @PatchMapping("/{roomSeq}")
+    public ResponseEntity<Long> updateRoom(@PathVariable(value = "roomSeq") Long roomSeq, @RequestPart(value = "room") RoomReq roomReq, @RequestPart(value = "thumbnail", required = false) MultipartFile thumbnail, HttpServletRequest request){
+        log.debug("[PATCH] Controller - updateRoom");
+        Long response = null;
+        HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
+
+        try{
+            long userSeq = (Long) request.getAttribute("userSeq");
+            if (userSeq > 0) {
+                response = roomService.updateRoomInfo(userSeq, roomSeq, roomReq, thumbnail);
+                if (response > 0) {
+                    status = HttpStatus.CREATED;
+                }
+            } else {
+                log.error("사용 불가능 토큰");
+                status = HttpStatus.FORBIDDEN;
+            }
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
+
+        return new ResponseEntity<>(response, status);
+    }
+
     @Operation(summary = "마이룸 삭제", description = "마이룸 삭제", responses = {
             @ApiResponse(responseCode = "200", description = "마이룸 삭제 성공", content = @Content(schema = @Schema(implementation = Boolean.class))),
             @ApiResponse(responseCode = "403", description = "사용 불가능 토큰", content = @Content(schema = @Schema(implementation = UserRes.class))),
