@@ -52,11 +52,7 @@ public class UserRes {
         userSeq = user.getUserSeq();
         email = user.getEmail();
         name = user.getName();
-        String userProfilePic = user.getProfilePic();
-        if (userProfilePic == null) {
-            userProfilePic = "";
-        }
-        profilePic = userProfilePic;
+        profilePic = user.getProfilePic();
         birth = user.getBirth();
         describe = user.getDescribe();
         blogUrl = user.getBlogUrl();

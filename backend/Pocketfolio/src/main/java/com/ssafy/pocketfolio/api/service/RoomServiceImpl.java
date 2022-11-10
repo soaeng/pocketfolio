@@ -133,8 +133,8 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     @Transactional
-    public Long updateRoom(long userSeq, long roomSeq, RoomReq req, MultipartFile thumbnail) throws IOException {
-        log.debug("[PATCH] Service - updateRoom");
+    public Long updateRoomInfo(long userSeq, long roomSeq, RoomReq req, MultipartFile thumbnail) throws IOException {
+        log.debug("[PATCH] Service - updateRoomInfo");
         Room room = roomRepository.findById(roomSeq).orElseThrow(() -> new IllegalArgumentException("해당 방을 찾을 수 없습니다."));
         RoomCategory roomCategory = roomCategoryRepository.findByRoom_RoomSeqAndCategory_CategorySeq(roomSeq, req.getCategory());
 
@@ -275,7 +275,7 @@ public class RoomServiceImpl implements RoomService {
     public List<RoomListRes> findRoomBestList() {
         log.debug("[GET] Service - findRoomBestList");
         try {
-            List<Long> roomSeqs = roomLikeRepository.findRoomBestList();
+            List<Long> roomSeqs = roomLikeRepository.findRoomBestList(); // TODO: JOIN으로 한 번에 처리하기
             List<Room> rooms = roomRepository.findAllByRoomSeqIn(roomSeqs);
             return getRoomListRes(rooms);
         } catch (Exception e) {

@@ -43,7 +43,7 @@ public interface RoomService {
      * @return 수정된 방 번호
      * @throws IOException 썸네일 이미지 저장 실패 시 던져짐
      */
-    Long updateRoom(long userSeq, long roomSeq, RoomReq req, MultipartFile thumbnail) throws IOException;
+    Long updateRoomInfo(long userSeq, long roomSeq, RoomReq req, MultipartFile thumbnail) throws IOException;
 
     /**
      * 마이룸 삭제
