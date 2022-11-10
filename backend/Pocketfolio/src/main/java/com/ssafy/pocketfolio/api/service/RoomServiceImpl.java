@@ -19,6 +19,7 @@ import java.time.ZonedDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -258,6 +259,15 @@ public class RoomServiceImpl implements RoomService {
             log.error(e.getMessage());
             return null;
         }
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Long findRandomRoom() {
+        log.debug("[GET] Service - findRandomRoom");
+        List<Long> roomSeqs = roomRepository.findAllByPrivacy();
+        Random rand = new Random();
+        return roomSeqs.get(rand.nextInt(roomSeqs.size()));
     }
 
     public List<RoomListRes> getRoomListRes(List<Room> rooms) {

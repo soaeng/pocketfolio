@@ -4,7 +4,7 @@ import com.ssafy.pocketfolio.api.dto.request.PortfolioReq;
 import com.ssafy.pocketfolio.api.dto.response.PortfolioListRes;
 import com.ssafy.pocketfolio.api.dto.response.PortfolioRes;
 import com.ssafy.pocketfolio.api.dto.response.UserRes;
-import com.ssafy.pocketfolio.api.service.PortfolioServiceImpl;
+import com.ssafy.pocketfolio.api.service.PortfolioService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -27,7 +27,7 @@ import java.util.List;
 @Tag(name = "PortfolioController", description = "포트폴리오 API")
 public class PortfolioController {
 
-    private final PortfolioServiceImpl portfolioService;
+    private final PortfolioService portfolioService;
 
     @Operation(summary = "포트폴리오 등록", description = "포트폴리오 등록 시 포트폴리오 정보는 application/json 형식, thumbnail은 이미지 파일, files은 첨부파일(다중 첨부 가능)", responses = {
             @ApiResponse(responseCode = "201", description = "포트폴리오 등록 성공", content = @Content(schema = @Schema(implementation = Long.class))),

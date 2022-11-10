@@ -2,8 +2,8 @@ package com.ssafy.pocketfolio.api.controller;
 
 import com.ssafy.pocketfolio.api.dto.request.RoomReq;
 import com.ssafy.pocketfolio.api.dto.response.*;
-import com.ssafy.pocketfolio.api.service.PortfolioServiceImpl;
-import com.ssafy.pocketfolio.api.service.RoomServiceImpl;
+import com.ssafy.pocketfolio.api.service.PortfolioService;
+import com.ssafy.pocketfolio.api.service.RoomService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -28,8 +28,8 @@ import java.util.Map;
 @Tag(name = "RoomController", description = "마이룸 API")
 public class RoomController {
 
-    private final RoomServiceImpl roomService;
-    private final PortfolioServiceImpl portfolioService;
+    private final RoomService roomService;
+    private final PortfolioService portfolioService;
 
     @Operation(summary = "마이룸 등록", description = "마이룸 등록", responses = {
             @ApiResponse(responseCode = "201", description = "마이룸 등록 성공", content = @Content(schema = @Schema(implementation = Long.class))),
@@ -292,6 +292,32 @@ public class RoomController {
             long userSeq = (Long) request.getAttribute("userSeq");
             if (userSeq > 0) {
                 response = roomService.findRoomBestList();
+                status = response != null ? HttpStatus.OK : HttpStatus.INTERNAL_SERVER_ERROR;
+            } else {
+                log.error("사용 불가능 토큰");
+                status = HttpStatus.FORBIDDEN;
+            }
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
+        return new ResponseEntity<>(response, status);
+    }
+
+    @Operation(summary = "파도타기", description = "privacy=O인 마이룸 랜덤 조회", responses = {
+            @ApiResponse(responseCode = "200", description = "랜덤 방 번호 조회 완료", content = @Content(schema = @Schema(implementation = Long.class))),
+            @ApiResponse(responseCode = "403", description = "사용 불가능 토큰", content = @Content(schema = @Schema(implementation = UserRes.class))),
+            @ApiResponse(responseCode = "500", description = "서버 에러", content = @Content(schema = @Schema(implementation = Error.class)))
+    })
+    @GetMapping("/random")
+    public ResponseEntity<Long> findRandomRoom(HttpServletRequest request) {
+        log.debug("[GET] Controller - findRandomRoom");
+        Long response = null;
+        HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
+
+        try{
+            long userSeq = (Long) request.getAttribute("userSeq");
+            if (userSeq > 0) {
+                response = roomService.findRandomRoom();
                 status = response != null ? HttpStatus.OK : HttpStatus.INTERNAL_SERVER_ERROR;
             } else {
                 log.error("사용 불가능 토큰");
