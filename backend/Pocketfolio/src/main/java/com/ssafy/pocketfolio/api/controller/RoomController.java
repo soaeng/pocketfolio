@@ -119,7 +119,7 @@ public class RoomController {
             @ApiResponse(responseCode = "500", description = "서버 에러", content = @Content(schema = @Schema(implementation = Error.class)))
     })
     @PatchMapping("/info/{roomSeq}")
-    public ResponseEntity<Long> updateRoom(@PathVariable(value = "roomSeq") Long roomSeq, @RequestPart(value = "room") RoomReq roomReq, @RequestPart(value = "thumbnail", required = false) MultipartFile thumbnail, HttpServletRequest request){
+    public ResponseEntity<Long> updateRoomInfo(@PathVariable(value = "roomSeq") Long roomSeq, @RequestPart(value = "room") RoomReq roomReq, @RequestPart(value = "thumbnail", required = false) MultipartFile thumbnail, HttpServletRequest request){
         log.debug("[PATCH] Controller - updateRoom");
         Long response = null;
         HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
@@ -127,7 +127,7 @@ public class RoomController {
         try{
             long userSeq = (Long) request.getAttribute("userSeq");
             if (userSeq > 0) {
-                response = roomService.updateRoom(userSeq, roomSeq, roomReq, thumbnail);
+                response = roomService.updateRoomInfo(userSeq, roomSeq, roomReq, thumbnail);
                 if (response > 0) {
                     status = HttpStatus.CREATED;
                 }
