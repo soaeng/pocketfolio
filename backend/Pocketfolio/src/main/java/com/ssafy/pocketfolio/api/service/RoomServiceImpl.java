@@ -131,6 +131,8 @@ public class RoomServiceImpl implements RoomService {
         map.put("like", roomLikeRepository.countAllByRoom_RoomSeq(room.getRoomSeq()));
         // Item
         map.put("follow", followRepository.existsByUserFrom_UserSeqAndUserTo_UserSeq(user.getUserSeq(), room.getUser().getUserSeq()));
+        // Item
+        map.put("follow", followRepository.existsByUserFrom_UserSeqAndUserTo_UserSeq(user.getUserSeq(), room.getUser().getUserSeq()));
 
         List<ArrangeDto> arranges = new ArrayList<>();
         List<Arrange> arrangeList = arrangeRepository.findByRoom_RoomSeq(roomSeq);
