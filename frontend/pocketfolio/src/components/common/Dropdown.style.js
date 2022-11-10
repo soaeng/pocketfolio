@@ -16,10 +16,10 @@ export const Dropdown = styled.div`
 `;
 
 // 드롭다운 리스트 부분
-export const DropDownListBox = styled.div`
-  background-color: #fff;
-  border-radius: 0 0 12px 12px;
-`;
+// export const DropDownListBox = styled.div`
+//   /* background-color: #fff; */
+//   /* border-radius: 0 0 12px 12px; */
+// `;
 
 export const DropdownList = styled.div`
   display: flex;
@@ -30,7 +30,17 @@ export const DropdownList = styled.div`
   }
 `;
 
-export const DropdownA = styled.p`
+export const DropdownListLast = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 0 0 12px 12px;
+  &:hover {
+    background-color: #ffe4de;
+  }
+`;
+
+export const DropdownP = styled.p`
   display: block;
   line-height: inherit;
   padding-right: 7%;
@@ -46,6 +56,7 @@ export const ProfileList = styled.div`
   border-radius: 12px 12px 0 0;
   background-color: #ff6b69;
   color: #fff;
+  padding: 10px;
 `;
 
 export const FollowList1 = styled.div`
@@ -53,6 +64,11 @@ export const FollowList1 = styled.div`
 `;
 
 export const ProfileDiv = styled.div`
+  padding: 10px;
+`;
+
+export const ProfileImg = styled.img`
+  height: 50px;
   padding: 10px;
 `;
 
@@ -79,4 +95,9 @@ export const ProfileIcon = styled(RiContactsLine)`
   width: 12%;
   height: 12%;
   padding: 0 15px;
+`;
+
+export const ProfileLine = styled.hr`
+  border-top: 1px solid lightgray;
+  margin: 0;
 `;
