@@ -19,6 +19,7 @@ export const getMyPort = createAsyncThunk(
 export const getportDetail = createAsyncThunk(
   'getportDetail',
   async (portSeq, {rejectWithValue}) => {
+    
     try {
       const res = await http.get(`portfolios/${portSeq}`)
       return res.data

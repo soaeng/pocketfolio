@@ -5,7 +5,6 @@ import DecoupledEditor from '@ckeditor/ckeditor5-build-decoupled-document';
 
 export default function MyEditor({portContent, setPortContent, ...props}) {
   const [imgUrl, setImgUrl] = useState('');
-  console.log(portContent)
   // 이미지 업로드 함수
   function uploadAdapter(loader) {
     return {

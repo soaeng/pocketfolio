@@ -30,20 +30,19 @@ import {registPortfolio, getportDetail} from '../../store/portSlice';
 const PortfolioEdit = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const {portSeq} = useParams();
+  const portSeq = useParams();
   const port_id = parseInt(portSeq.port_id);
 
-  // 랜더링 시 포트폴리오 상세 내용 get
-  useEffect(() => {
-    dispatch(getportDetail(portSeq));
-  });
+
+  const [portDetail, setPortDetail] = useState();
+
   // 저장 모달 오픈 변수
   const [modalOpen, setModalOpen] = useState(false);
   // 첨부 파일 리스트
   const [attachList, setAttachList] = useState([]);
   // 포트폴리오 제목, 내용 변수
   const [portContent, setPortContent] = useState({
-    name: '',
+    name: '포트폴리오 제목',
     summary: '',
   });
   // 해시태그 인풋값
@@ -56,12 +55,33 @@ const PortfolioEdit = () => {
   // 포트폴리오 제목 저장
   const getValue = e => {
     const {name, value} = e.target;
+    console.log(name, value)
     setPortContent({
       ...portContent,
       [name]: value,
     });
   };
 
+  // 랜더링 시 포트폴리오 상세 내용 get
+  useEffect(() => {
+    dispatch(getportDetail(port_id))
+      .then(res => {
+        const data = res.payload;
+        setHashArr(data.tags)
+        setAttachList(data.urls)
+        setPortContent({
+          ...portContent,
+          name: data.name,
+          summary: data.summary
+        });
+        setThumbNail(data.thumbnail)
+      })
+      .catch(err => {
+        alert('목록 불러오기 실패');
+      });
+  }, []);
+
+  
   // 해시태그 입력
   const onChangeHashtag = e => {
     setHashtag(e.target.value);
@@ -97,6 +117,7 @@ const PortfolioEdit = () => {
     setModalOpen(false);
   };
 
+  console.log('첨부파일 목록',attachList)
   // 파일 첨부
   const fileInput = React.useRef(null);
   const handleButtonClick = e => {
@@ -120,10 +141,19 @@ const PortfolioEdit = () => {
     setAttachList(result);
   };
 
-  // 썸네일 추가
+  // 썸네일 첨부
+  const thumbNailInput = React.useRef(null);
+  const thumbButtonClick = e => {
+    thumbNailInput.current.click();
+  };
   const uploadThumbnail = e => {
-    const file = e.target.files;
+    const file = e.target.files[0];
     setThumbNail(file);
+  };
+
+  // 썸네일 첨부 취소
+  const cancelThumb = () => {
+    setThumbNail('');
   };
 
   // 포트폴리오 제출 함수
@@ -160,14 +190,6 @@ const PortfolioEdit = () => {
       });
   };
 
-  // 태그가 적용된 뷰어
-  const Viewer = ({content}) => (
-    <div
-      className="ck-content"
-      dangerouslySetInnerHTML={{__html: content}}
-    ></div>
-  );
-
   return (
     <Background>
       <Nav></Nav>
@@ -176,9 +198,9 @@ const PortfolioEdit = () => {
           <Label>제목</Label>
           <Title
             autoComplete="off"
-            placeholder="포트폴리오 제목"
-            onBlur={getValue}
-            name="title"
+            placeholder={portContent.name}
+            onChange={getValue}
+            name="name"
           ></Title>
         </ContentDiv>
 
@@ -236,7 +258,24 @@ const PortfolioEdit = () => {
 
           <BottomBox>
             <Label>썸네일</Label>
-            <input type="file" accept="image/*" onChange={uploadThumbnail} />
+            <IconDiv>
+              <Add onClick={thumbButtonClick}></Add>
+            </IconDiv>
+            <input
+              type="file"
+              ref={thumbNailInput}
+              accept="image/*"
+              onChange={uploadThumbnail}
+              style={{display: 'none'}}
+            />
+            {thumbNail.length !== 0 ? (
+              <Item>
+                {thumbNail.name}
+                <IconDiv>
+                  <Cancel onClick={cancelThumb} />
+                </IconDiv>
+              </Item>
+            ) : null}
           </BottomBox>
         </ContentDiv>
       </Wrapper>
