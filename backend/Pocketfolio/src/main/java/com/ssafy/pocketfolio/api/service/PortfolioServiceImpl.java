@@ -68,7 +68,7 @@ public class PortfolioServiceImpl implements PortfolioService {
         if (files != null){
             saveUrls(files, portfolio);
         }
-        
+
         return portSeq;
     }
 
@@ -77,7 +77,7 @@ public class PortfolioServiceImpl implements PortfolioService {
     public List<PortfolioListRes> findPortfolioList(long userSeq) {
         log.debug("[GET] Service - findPortfolioList");
         List<PortfolioListRes> portfolioListRes = new ArrayList<>();
-        
+
         try {
             User user = userRepository.findById(userSeq).orElseThrow(() -> new IllegalArgumentException("해당 사용자가 존재하지 않습니다."));
             List<Portfolio> portfolios = portfolioRepository.findAllByUser(user);
@@ -113,12 +113,12 @@ public class PortfolioServiceImpl implements PortfolioService {
         log.debug("[PATCH] Service - updatePortfolio");
 
         Portfolio portfolio = portfolioRepository.findById(portSeq).orElseThrow(() -> new IllegalArgumentException("해당 포트폴리오가 존재하지 않습니다."));
-        
+
         if (userSeq != portfolio.getUser().getUserSeq()) {
             log.error("권한 없음");
             return null;
         }
-        
+
         log.debug("portfolio" + portfolio);
         // 저장된 썸네일 주소
         String thumbnailUrl = portfolio.getThumbnail();
