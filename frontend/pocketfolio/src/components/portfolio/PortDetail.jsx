@@ -1,8 +1,10 @@
 import {useParams} from 'react-router-dom';
 import {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
+import {useNavigate} from 'react-router-dom';
 import {getportDetail} from '../../store/portSlice';
 import Nav from '../common/Nav';
+
 import {
   Background,
   Container,
@@ -21,7 +23,7 @@ import {
 
 const PortDetail = () => {
   const dispatch = useDispatch();
-
+  const navigate = useNavigate();
   // portSeq
   const params = useParams();
   const port_id = parseInt(params.port_id);
@@ -51,6 +53,9 @@ const PortDetail = () => {
       });
   }, []);
 
+  const moveEdit = () => {
+    navigate(`/port/edit/${portDetail.portSeq}`)
+  };
   console.log(portDetail);
   const image =
     'https://yd21.go.kr/_prog/download/index.php?func_gbn_cd=tourist&site_dvs_cd=tour&atch=atch_img&mng_no=57';
@@ -75,7 +80,7 @@ const PortDetail = () => {
               : null}
           </HashDiv>
           <BtnDiv>
-            <Btn>글 수정</Btn>
+            <Btn onClick={moveEdit}>글 수정</Btn>
           </BtnDiv>
         </Content>
       </Container>
