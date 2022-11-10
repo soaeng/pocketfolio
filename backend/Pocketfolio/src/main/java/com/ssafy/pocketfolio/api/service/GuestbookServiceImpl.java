@@ -2,6 +2,7 @@ package com.ssafy.pocketfolio.api.service;
 
 import com.ssafy.pocketfolio.api.dto.request.GuestbookCommentReq;
 import com.ssafy.pocketfolio.api.dto.request.GuestbookReq;
+import com.ssafy.pocketfolio.api.dto.response.GuestbookCommentRes;
 import com.ssafy.pocketfolio.api.dto.response.GuestbookRes;
 import com.ssafy.pocketfolio.db.entity.Guestbook;
 import com.ssafy.pocketfolio.db.entity.GuestbookComment;
@@ -54,7 +55,12 @@ public class GuestbookServiceImpl implements GuestbookService {
         log.debug("[POST] Service - findGuestbookList");
         List<GuestbookRes> guestbookResList;
         try {
-            guestbookResList = guestbookRepository.findAllByRoom_RoomSeq(roomSeq).stream().map(GuestbookRes::toDto).collect(Collectors.toList());
+            guestbookResList = guestbookRepository.findAllByRoom_RoomSeq(roomSeq).stream().map(guest -> {
+                List<GuestbookCommentRes> commentResList =
+                        guestbookCommentRepository.findAllByGuestbook_GuestbookSeq(guest.getGuestbookSeq())
+                                .stream().map(GuestbookCommentRes::toDto).collect(Collectors.toList());
+                return GuestbookRes.toDto(guest, commentResList);
+            }).collect(Collectors.toList());
             log.debug("guestbooks size: " + guestbookResList.size());
         } catch (Exception e) {
             log.error(e.getMessage());
@@ -68,9 +74,9 @@ public class GuestbookServiceImpl implements GuestbookService {
     public Boolean deleteGuestbook(long guestbookSeq, long userSeq) {
         log.debug("[POST] Service - deleteGuestbook");
         Guestbook guestbook = guestbookRepository.findById(guestbookSeq).orElseThrow(() -> new IllegalArgumentException("해당 방명록이 존재하지 않습니다."));
-        User user = userRepository.findById(userSeq).orElseThrow(() -> new IllegalArgumentException("해당 사용자가 존재하지 않습니다."));
         if (guestbook.getUser().getUserSeq() != userSeq) {
             log.error("권한 없음");
+            log.debug("writer: " + guestbook.getUser().getUserSeq() + ", access: " + userSeq);
             return false;
         }
         try {
