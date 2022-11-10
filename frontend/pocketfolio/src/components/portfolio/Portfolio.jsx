@@ -24,6 +24,7 @@ const Portfolio = () => {
   const dispatch = useDispatch();
 
   const [isDelete, setIsDelete] = useState(false);
+  const [portList, setPortList] = useState('');
 
   const delClick = () => {
     setIsDelete(!isDelete);
@@ -37,10 +38,13 @@ const Portfolio = () => {
     navigate('/room/1');
   };
 
+  const movePortDetail = ({item}) => {
+    console.log(item);
+    navigate(`/port/${item.portSeq}`)
+  };
   useEffect(() => {
-    dispatch(getMyPort())
-    .then((res) => {
-      console.log(res.payload.data);
+    dispatch(getMyPort()).then(res => {
+      setPortList(res.payload.data);
     });
   }, []);
 
@@ -70,10 +74,13 @@ const Portfolio = () => {
         <CardWrapper>
           <Text className="portfolios">나의 소중한 포트폴리오들</Text>
           <CardList>
-            <PortList></PortList>
-            <PortList></PortList>
-            <PortList></PortList>
-            <PortList></PortList>
+            {portList.length > 0
+              ? portList.map((item, idx) => (
+                  <div onClick={()=> movePortDetail({item})}>
+                    <PortList key={idx} title={item.name} />
+                  </div>
+                ))
+              : null}
           </CardList>
         </CardWrapper>
       </Container>

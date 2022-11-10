@@ -7,9 +7,7 @@ export const getMyPort = createAsyncThunk(
   async (uid, {rejectWithValue}) => {
     try {
       const res = await http.get(`portfolios`)
-      console.log(res)
-      console.log('포트폴리오 목록 조회 성공')
-      if (res.status === 200) return res.data;
+      if (res.status === 200) return res;
     } catch (err) {
       console.log('포트폴리오 목록 조회 실패')
       return rejectWithValue(err.response)
@@ -37,11 +35,10 @@ export const registPortfolio = createAsyncThunk(
   'registPortfolio',
   async (data, {rejectWithValue}) => {
     console.log('슬라이스: ', data);
-    for (let key of data.values()) {
-      console.log(key);
-    }
+
     try {
       const res = await postAxios.post('portfolios', data);
+      console.log('포트폴리오 등록 성공')
     } catch (err) {
       console.log('포트폴리오 등록 실패', err);
       return rejectWithValue(err.response);

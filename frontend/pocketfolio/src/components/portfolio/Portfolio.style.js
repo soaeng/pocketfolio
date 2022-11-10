@@ -15,7 +15,7 @@ export const Background = styled.div`
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
-  margin: auto;
+  margin: 5rem auto;
   justify-content: space-evenly;
   width: 50rem;
 `;
@@ -92,6 +92,8 @@ export const CardList = styled.div`
     }
   }
 `;
+
+
 
 export const BtnDiv = styled.div`
   display: flex;
