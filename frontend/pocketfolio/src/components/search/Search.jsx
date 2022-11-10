@@ -243,7 +243,10 @@ const Search = () => {
     <>
       {/* 네브바 */}
       <Nav />
-
+      {/* top 버튼 */}
+      <TopButton onClick={clickHandlerTop}>
+        <TopButtonIcon />
+      </TopButton>
       {/* 검색창 */}
       <Container1>
         <Container>
@@ -260,10 +263,7 @@ const Search = () => {
           return <Tag>{tag}</Tag>;
         })}
       </TagContainer>
-      {/* top 버튼 */}
-      <TopButton onClick={clickHandlerTop}>
-        <TopButtonIcon />
-      </TopButton>
+
       {/* 검색 리스트 목록 */}
       <Card ref={carousel}>
         {item.map(it => {

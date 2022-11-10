@@ -45,6 +45,7 @@ export const NavSearchInput = styled.input`
   height: 25px;
   border: none;
   padding: 0 10px;
+  font-size: 15px;
 
   &::placeholder {
     font-size: 15px;

@@ -26,6 +26,7 @@ export const SearchInput = styled.input`
   height: 25px;
   border: none;
   padding: 0 10px;
+  font-size: 15px;
 
   &::placeholder {
     font-size: 15px;
@@ -94,6 +95,18 @@ export const RecCarThumbnail = styled.img`
   width: 90%;
 `;
 
-export const TopButton = styled.div``;
+export const TopButton = styled.div`
+  position: fixed;
+  z-index: 999;
+  width: 5%;
+  height: 5%;
+  bottom: 3%;
+  right: 1%;
+  color: #e75452;
+  cursor: pointer;
+`;
 
-export const TopButtonIcon = styled(CiCircleChevUp)``;
+export const TopButtonIcon = styled(CiCircleChevUp)`
+  width: 100%;
+  height: 100%;
+`;
