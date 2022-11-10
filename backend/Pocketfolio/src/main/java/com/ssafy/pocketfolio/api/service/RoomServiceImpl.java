@@ -30,6 +30,7 @@ public class RoomServiceImpl implements RoomService {
     private final UserRepository userRepository;
     private final CategoryRepository categoryRepository;
     private final RoomRepository roomRepository;
+    private final RoomCategoryRepository roomCategoryRepository;
     private final RoomHitRepository roomHitRepository;
     private final RoomLikeRepository roomLikeRepository;
     private final MultipartFileHandler fileHandler;
@@ -53,7 +54,11 @@ public class RoomServiceImpl implements RoomService {
         Room room = RoomReq.toEntity(req, thumbnailUrl, user);
         long roomSeq = roomRepository.save(room).getRoomSeq();
         log.debug("저장된 방 번호: " + roomSeq);
-
+        RoomCategory roomCategory = RoomCategory.builder()
+                .category(categoryRepository.getReferenceById(req.getCategory()))
+                .room(roomRepository.getReferenceById(roomSeq))
+                .build();
+        roomCategoryRepository.save(roomCategory);
         return roomSeq;
     }
 
@@ -103,14 +108,20 @@ public class RoomServiceImpl implements RoomService {
 
         User user = userRepository.findById(userSeq).orElseThrow(() -> new IllegalArgumentException("해당 사용자를 찾을 수 없습니다."));
         Room room = roomRepository.findById(roomSeq).orElseThrow(() -> new IllegalArgumentException("해당 방을 찾을 수 없습니다."));
+        RoomCategory roomCategory = roomCategoryRepository.findCategorySeqByRoom_RoomSeq(room.getRoomSeq());
+        log.debug("roomCategory: " + roomCategory);
+//        Category category = categoryRepository.findById(roomCategory).orElseThrow(() -> new IllegalArgumentException("해당 카테고리 없음"));
+//        log.debug("category: " + category);
 
         // 본인 방이 아닌 경우 + 당일 방문하지 않은 경우 조회수 1 증가
         if (userSeq != room.getUser().getUserSeq() && !roomHitRepository.existsRoomHitByUserAndRoomAndHitDateEquals(user, room, ZonedDateTime.now(ZoneId.of("Asia/Seoul")).toLocalDate())) {
             roomHitRepository.save(RoomHit.builder().room(room).user(user).build());
         }
 
+        log.debug("-----------------------");
+        log.debug(roomCategory.getCategory().toString());
         // 방 정보
-        map.put("room", RoomDto.toDto(room));
+        map.put("room", RoomDto.toDto(room, CategoryRes.toDto(roomCategory.getCategory())));
         // 조회수
         map.put("hit", roomHitRepository.countAllByRoom_RoomSeq(room.getRoomSeq()));
         map.put("today", roomHitRepository.countRoomHitToday(roomSeq));
@@ -119,11 +130,13 @@ public class RoomServiceImpl implements RoomService {
         return map;
     }
 
+
     @Override
     @Transactional
     public Long updateRoom(long userSeq, long roomSeq, RoomReq req, MultipartFile thumbnail) throws IOException {
         log.debug("[PATCH] Service - updateRoom");
         Room room = roomRepository.findById(roomSeq).orElseThrow(() -> new IllegalArgumentException("해당 방을 찾을 수 없습니다."));
+        RoomCategory roomCategory = roomCategoryRepository.findByRoom_RoomSeqAndCategory_CategorySeq(roomSeq, req.getCategory());
 
         if (room.getUser().getUserSeq() != userSeq) {
             log.error("권한 없음");
@@ -153,10 +166,14 @@ public class RoomServiceImpl implements RoomService {
 
         try {
             room.updateRoom(req.getName(), thumbnailUrl);
-            room.updateTheme(req.getTheme());
-            room.updatePrivacy(req.getPrivacy());
-            if(room.getIsMain().equals("F")) {
+            roomCategory.updateCategory(categoryRepository.getReferenceById(req.getCategory()));
+            if (req.getPrivacy() != null) {
+                room.updatePrivacy(req.getPrivacy());
+            }
+            if(req.getIsMain() != null && req.getIsMain().equals("T") && room.getIsMain().equals("F")) {
                 // update (다른 T를 F로 변경하고 T로 해야)
+                Room originMain = roomRepository.findRoomByUser_UserSeqAndIsMain(userSeq, "T");
+                originMain.changeIsMain("F");
                 room.changeIsMain(req.getIsMain());
             }
             log.debug("저장된 방 번호: " + roomSeq);

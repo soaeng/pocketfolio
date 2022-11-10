@@ -13,4 +13,5 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
     List<Room> findAllByRoomSeqIn(List<Long> roomSeqs);
     @Query(value = "SELECT room_seq FROM room WHERE privacy = 'O'", nativeQuery = true)
     List<Long> findAllByPrivacy();
+    Room findRoomByUser_UserSeqAndIsMain(long userSeq, String isMain);
 }

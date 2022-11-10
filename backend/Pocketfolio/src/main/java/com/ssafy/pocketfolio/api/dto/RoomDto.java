@@ -1,5 +1,6 @@
 package com.ssafy.pocketfolio.api.dto;
 
+import com.ssafy.pocketfolio.api.dto.response.CategoryRes;
 import com.ssafy.pocketfolio.db.entity.Room;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,19 +15,21 @@ public class RoomDto {
     private long userSeq;
     private String userName;
     private String theme;
+    private CategoryRes category;
     private String thumbnail;
     private String isMain;
     private String privacy;
     private String created;
     private String updated;
 
-    public static RoomDto toDto(Room entity) {
+    public static RoomDto toDto(Room entity, CategoryRes category) {
         return RoomDto.builder()
                 .roomSeq(entity.getRoomSeq())
                 .name(entity.getName())
                 .userSeq(entity.getUser().getUserSeq())
                 .userName(entity.getUser().getName())
                 .theme(entity.getTheme())
+                .category(category)
                 .thumbnail(entity.getThumbnail())
                 .isMain(entity.getIsMain())
                 .privacy(entity.getPrivacy())
