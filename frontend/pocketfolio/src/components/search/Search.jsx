@@ -11,6 +11,10 @@ import {
   TagContainer,
   RecCarImgDiv,
   RecCarThumbnail,
+  SearchIcon,
+  Container1,
+  TopButtonIcon,
+  TopButton,
 } from './Search.style';
 
 // 임시데이터(card)
@@ -204,6 +208,14 @@ const Search = () => {
     }
   };
 
+  // 최상단 이동 버튼
+  const clickHandlerTop = e => {
+    // 이미 최상단일 경우 그냥 return
+    if (!window.scrollY) return;
+
+    window.scrollTo({top: 0, behavior: 'smooth'});
+  };
+
   const [page, setPage] = useState(1);
 
   // 스크롤 test
@@ -231,18 +243,27 @@ const Search = () => {
     <>
       {/* 네브바 */}
       <Nav />
+      {/* top 버튼 */}
+      <TopButton onClick={clickHandlerTop}>
+        <TopButtonIcon />
+      </TopButton>
       {/* 검색창 */}
-      <Container>
-        <SearchInput
-          placeholder="검색어를 입력해주세요"
-          onKeyDown={keyDownHandler}
-        />
-      </Container>
+      <Container1>
+        <Container>
+          <SearchIcon />
+          <SearchInput
+            placeholder="검색어를 입력해주세요"
+            onKeyDown={keyDownHandler}
+          />
+        </Container>
+      </Container1>
+      {/* 태그 */}
       <TagContainer>
         {tags.map(tag => {
           return <Tag>{tag}</Tag>;
         })}
       </TagContainer>
+
       {/* 검색 리스트 목록 */}
       <Card ref={carousel}>
         {item.map(it => {

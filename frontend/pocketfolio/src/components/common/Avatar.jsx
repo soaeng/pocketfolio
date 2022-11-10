@@ -25,15 +25,24 @@ function Avatar({user}) {
       document.removeEventListener('mousedown', handler);
     };
   });
-
+  console.log(user.profilePic, 123);
   return (
     <AvatarContainer ref={modalRef}>
-      <AvatarImg
-        src="./assets/images/user.png"
-        onClick={() => {
-          setVisible(!visible);
-        }}
-      />
+      {user.profilePic === '' ? (
+        <AvatarImg
+          src="./assets/images/user.png"
+          onClick={() => {
+            setVisible(!visible);
+          }}
+        />
+      ) : (
+        <AvatarImg
+          src={user.profilePic}
+          onClick={() => {
+            setVisible(!visible);
+          }}
+        />
+      )}
       {visible && <DropDown user={user} />}
     </AvatarContainer>
   );

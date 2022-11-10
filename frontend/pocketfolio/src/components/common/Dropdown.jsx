@@ -6,15 +6,17 @@ import {deleteAllToken} from '../../api/jwt';
 import {
   Dropdown,
   DropdownList,
-  DropdownA,
+  DropdownP,
   HomeIcon,
   LogoutIcon,
   ProfileIcon,
   ProfileList,
   FollowList,
   ProfileDiv,
-  DropDownListBox,
+  ProfileImg,
+  DropdownListLast,
   FollowList1,
+  ProfileLine,
 } from './Dropdown.style';
 
 const DropDown = ({user}) => {
@@ -43,28 +45,30 @@ const DropDown = ({user}) => {
   return (
     <Dropdown>
       <ProfileList>
-        <ProfileDiv>profilePic</ProfileDiv>
-        <ProfileDiv>{user.name}</ProfileDiv>
+        {user.profilePic === '' ? (
+          <ProfileImg src="./assets/images/user.png" />
+        ) : (
+          <ProfileImg>{user.profilePic}</ProfileImg>
+        )}
         <ProfileDiv>{user.email}</ProfileDiv>
         <FollowList>
           <FollowList1>팔로워 | {user.followerTotal}</FollowList1>
           <FollowList1>팔로잉 | {user.followingTotal}</FollowList1>
         </FollowList>
       </ProfileList>
-      <DropDownListBox>
-        <DropdownList onClick={myPocketClickHandler}>
-          <HomeIcon />
-          <DropdownA>마이포켓</DropdownA>
-        </DropdownList>
-        <DropdownList onClick={profileClickHandler}>
-          <ProfileIcon />
-          <DropdownA>회원정보</DropdownA>
-        </DropdownList>
-        <DropdownList onClick={logoutClickHandler}>
-          <LogoutIcon />
-          <DropdownA>로그아웃</DropdownA>
-        </DropdownList>
-      </DropDownListBox>
+      <DropdownList onClick={myPocketClickHandler}>
+        <HomeIcon />
+        <DropdownP>마이포켓</DropdownP>
+      </DropdownList>
+      <DropdownList onClick={profileClickHandler}>
+        <ProfileIcon />
+        <DropdownP>회원정보</DropdownP>
+      </DropdownList>
+      <ProfileLine />
+      <DropdownListLast onClick={logoutClickHandler}>
+        <LogoutIcon />
+        <DropdownP>로그아웃</DropdownP>
+      </DropdownListLast>
     </Dropdown>
   );
 };

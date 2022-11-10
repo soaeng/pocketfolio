@@ -8,6 +8,9 @@ import {
   NavBotton,
   NavSearchInput,
   LoginDiv,
+  UserName,
+  NavSearchContainer,
+  NavSearchIcon,
 } from './Nav.style';
 
 import Avatar from './Avatar';
@@ -61,17 +64,20 @@ function Nav() {
         src={process.env.PUBLIC_URL + '/assets/images/logo4.png'}
       />
       {window.location.pathname === '/main' ? (
-        <NavSearchInput
-          placeholder="검색어를 입력해주세요"
-          onKeyDown={keyDownHandler}
-        />
+        <NavSearchContainer>
+          <NavSearchIcon />
+          <NavSearchInput
+            placeholder="검색어를 입력해주세요"
+            onKeyDown={keyDownHandler}
+          />
+        </NavSearchContainer>
       ) : null}
       {user === null ? (
         <NavBotton onClick={loginClickHandler}>로그인/회원가입</NavBotton>
       ) : (
         <LoginDiv>
-          <div>{user.name}님</div>
-          <NavBotton onClick={roomClickHandler}>마이룸</NavBotton>
+          <UserName>{user.name}님</UserName>
+          {/* <NavBotton onClick={roomClickHandler}>마이룸</NavBotton> */}
           <Avatar user={user} />
         </LoginDiv>
       )}
