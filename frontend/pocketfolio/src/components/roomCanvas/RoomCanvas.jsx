@@ -13,6 +13,7 @@ import {
   Bounds,
   useBounds,
 } from '@react-three/drei';
+import Capture from '../room/Capture';
 
 softShadows();
 
@@ -24,6 +25,7 @@ const RoomCanvas = ({}) => {
       raycaster={{params: {Line: {threshold: 0.15}}}}
       camera={{position: [-20, 20, 20], fov: 20}}
     >
+      {/* <Capture /> */}
       <ambientLight intensity={0.5} />
       <directionalLight
         castShadow
