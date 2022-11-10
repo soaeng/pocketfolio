@@ -45,7 +45,7 @@ const DropDown = ({user}) => {
   return (
     <Dropdown>
       <ProfileList>
-        {user.profilePic === '' ? (
+        {user.profilePic === undefined ? (
           <ProfileImg src="./assets/images/user.png" />
         ) : (
           <ProfileImg>{user.profilePic}</ProfileImg>
