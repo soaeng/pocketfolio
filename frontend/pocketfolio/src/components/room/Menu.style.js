@@ -115,7 +115,7 @@ export const MenuDiv = styled.div`
     bottom: calc(7.2rem + 150px);
   }
 
-  &.visit {
+  &.guest {
     visibility: visible;
     bottom: calc(6.5rem + 100px);
   }

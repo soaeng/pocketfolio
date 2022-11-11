@@ -48,8 +48,8 @@ const Menu = ({roomSeq, changeSidebar, copyURL, onEdit}) => {
       </MenuDiv>
 
       <MenuDiv
-        className={toggle ? 'visit' : ''}
-        onClick={() => changeSidebar('visit')}
+        className={toggle ? 'guest' : ''}
+        onClick={() => changeSidebar('guest')}
       >
         <VisitIcon />
         <ToolTip className="tooltip">
