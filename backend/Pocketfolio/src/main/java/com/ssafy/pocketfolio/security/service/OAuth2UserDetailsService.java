@@ -150,6 +150,7 @@ public class OAuth2UserDetailsService extends DefaultOAuth2UserService {
         Room room = Room.builder()
                 .name(user.getName() + "님의 포켓")
                 .user(user)
+                .theme("room_01")
                 .isMain("T")
                 .privacy("O")
                 .build();

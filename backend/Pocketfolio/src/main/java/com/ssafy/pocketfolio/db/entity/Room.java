@@ -37,7 +37,8 @@ public class Room {
 	@NotNull
 	private User user;
 	
-	@Column(name="theme", length=20)
+	@Column(name="theme", length=20, nullable=false)
+	@NotNull
 	private String theme;
 	
 	@Column(name="thumbnail", length=255)
