@@ -73,7 +73,7 @@ public class MultipartFileHandler {
                         .withCannedAcl(CannedAccessControlList.PublicRead)
         );
 
-        filePath = amazonS3Client.getUrl(S3Bucket, saveName).toString(); // 접근가능한 URL 가져오기
+        filePath = amazonS3Client.getUrl(S3Bucket, uploadPath).toString(); // 접근가능한 URL 가져오기
         if (filePath != null ) {
             log.debug("파일 저장 성공");
         }
