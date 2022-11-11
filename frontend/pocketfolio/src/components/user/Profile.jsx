@@ -24,7 +24,7 @@ import {
   DelIcon,
 } from './Profile.style';
 import DelUserModal from './DelUserModal';
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {useNavigate} from 'react-router-dom';
 import Nav from '../common/Nav';
@@ -51,7 +51,14 @@ const Profile = () => {
   const [blogUrl, setBlogUrl] = useState(
     user && user.blogUrl ? user.blogUrl : '',
   );
-  const [birth, setBirth] = useState(user && user.birth ? user.birth : '');
+
+  const [birth, setBirth] = useState(
+    user && user.birth
+      ? `${user.birth.year}-${user.birth.month}-${user.birth.day}`
+      : '',
+  );
+  console.log(birth);
+  // const [birth, setBirth] = useState('2000-01-01');
   const [describe, setDescribe] = useState(
     user && user.describe ? user.describe : '',
   );
@@ -105,6 +112,17 @@ const Profile = () => {
       };
     });
   }
+
+  useEffect(() => {
+    if (user && user.birth) {
+      const year = user.birth.year;
+      const month =
+        user.birth.month < 10 ? `0${user.birth.month}` : user.birth.month;
+      const day = user.birth.day < 10 ? `0${user.birth.day}` : user.birth.day;
+
+      setBirth(`${year}-${month}-${day}`)
+    }
+  }, [user]);
 
   return (
     <Container>
