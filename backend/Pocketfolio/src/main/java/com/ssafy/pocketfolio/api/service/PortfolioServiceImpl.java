@@ -1,5 +1,6 @@
 package com.ssafy.pocketfolio.api.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.pocketfolio.api.dto.PortfolioUrlDto;
 import com.ssafy.pocketfolio.api.dto.request.PortfolioReq;
 import com.ssafy.pocketfolio.api.dto.response.PortfolioListRes;
@@ -22,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -108,10 +110,14 @@ public class PortfolioServiceImpl implements PortfolioService {
     // 포트폴리오 수정
     @Override
     @Transactional
-    public Long updatePortfolio(long userSeq, long portSeq, PortfolioReq req, MultipartFile thumbnail, List<MultipartFile> files) throws IOException {
+    public Long updatePortfolio(long userSeq, long portSeq, PortfolioReq req, List<PortfolioUrlDto> urls, MultipartFile thumbnail, List<MultipartFile> files) throws IOException {
         log.debug("[PATCH] Service - updatePortfolio");
-
+        // req(json)를 String으로 보기 위해
+        ObjectMapper mapper = new ObjectMapper();
+        log.debug("req: " + mapper.writeValueAsString(req));
+        log.debug("urls: " + mapper.writeValueAsString(urls));
         Portfolio portfolio = portfolioRepository.findById(portSeq).orElseThrow(() -> new IllegalArgumentException("해당 포트폴리오가 존재하지 않습니다."));
+        log.debug("portfolio: " + portfolio.toString());
 
         if (userSeq != portfolio.getUser().getUserSeq()) {
             log.error("권한 없음");
@@ -148,13 +154,23 @@ public class PortfolioServiceImpl implements PortfolioService {
             saveTags(req.getTags(), portfolio);
         }
 
-        List<PortfolioUrl> urls = portfolioUrlRepository.findAllByPortfolio_PortSeq(portSeq);
-        // 파일이 있다면 기존 파일 DB, 물리적 삭제 후 새로 저장
-        if (files != null){
-            for (PortfolioUrl url : urls) {
-                fileHandler.deleteFile(url.getUrl(), "portfolio");
+        if (urls != null) {
+            List<PortfolioUrlDto> originUrls = portfolioUrlRepository.findAllByPortfolio_PortSeq(portSeq).stream().map(PortfolioUrlDto::toDto).collect(Collectors.toList());
+            // 원래의 첨부파일에서 변경된 내용 있는지 확인
+            if (!originUrls.equals(urls)) {
+                // 원래 첨부파일에서 삭제된 url의 seq 기준으로 삭제
+                List<Long> deleteUrlSeqs = compareOriginFile(originUrls, urls);
+                log.debug("deleteUrlSeq: " + deleteUrlSeqs);
+                // 삭제할 db의
+                List<PortfolioUrl> deleteUrlList = portfolioUrlRepository.findAllByPortUrlSeqIn(compareOriginFile(originUrls, urls));
+                for (PortfolioUrl url : deleteUrlList) {
+                    fileHandler.deleteFile(url.getUrl(), "portfolio");
+                }
+                portfolioUrlRepository.deleteAllByPortUrlSeqIn(compareOriginFile(originUrls, urls));
             }
-            portfolioUrlRepository.deleteAllByPortfolio_PortSeq(portSeq);
+        }
+        // 새로 첨부된 파일이 있다면 기존 파일 DB, 물리적 삭제 후 새로 저장
+        if (files != null){
             saveUrls(files, portfolio);
         }
         return portSeq;
@@ -223,5 +239,13 @@ public class PortfolioServiceImpl implements PortfolioService {
             assert url != null;
             portfolioUrlRepository.save(url);
         }
+    }
+
+    // 기존에 저장된 파일 변경될 경우 -> 삭제했을 때의 처리
+    private static List<Long> compareOriginFile(List<PortfolioUrlDto> origin, List<PortfolioUrlDto> latest) {
+        List<Long> originSeq = origin.stream().map(PortfolioUrlDto::getPortUrlSeq).collect(Collectors.toList());
+        List<Long> latestSeq = latest.stream().map(PortfolioUrlDto::getPortUrlSeq).collect(Collectors.toList());
+        originSeq.removeAll(latestSeq);
+        return originSeq;
     }
 }

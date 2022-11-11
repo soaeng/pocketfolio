@@ -87,7 +87,7 @@ public class MultipartFileHandler {
 
     // 파일 삭제
     public void deleteFile(String url, String uploadDirName) {
-        String key = uploadDirName + url.substring(url.lastIndexOf(".com/") + 4);
+        String key = url.substring(url.lastIndexOf(".com/") + 5);
         log.debug("delete key: " + key);
         amazonS3Client.deleteObject(new DeleteObjectRequest(S3Bucket, key));
     }
