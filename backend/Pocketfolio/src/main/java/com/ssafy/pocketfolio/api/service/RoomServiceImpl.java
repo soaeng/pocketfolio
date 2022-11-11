@@ -234,6 +234,11 @@ public class RoomServiceImpl implements RoomService {
             return false;
         }
 
+        if (roomRepository.countRoomsByUser_UserSeq(userSeq) == 1) {
+            log.error("최소 1개의 방은 있어야 함");
+            return false;
+        }
+
         // 썸네일 삭제
         if (room.getThumbnail() != null) {
             fileHandler.deleteFile(room.getThumbnail(), "portfolio/thumbnail");
