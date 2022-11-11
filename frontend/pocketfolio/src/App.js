@@ -23,7 +23,7 @@ function App() {
         <Route path="/search" element={<Search />} />
 
         {/* Room */}
-        <Route path="/room/:room_id" element={<Room />} />
+        <Route path="/room/:roomSeq" element={<Room />} />
 
         {/* User */}
         <Route path="/login" element={<Login />} />

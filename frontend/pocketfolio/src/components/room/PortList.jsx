@@ -1,13 +1,14 @@
 import PortItem from './PortItem';
 import {Container, Title, BtnBox, IconBox, AddIcon} from './PortList.style';
 
-const PortList = () => {
-
+const PortList = ({roomSeq}) => {
   return (
     <Container>
       <Title>포트폴리오 목록</Title>
       <BtnBox>
-        <IconBox><AddIcon /></IconBox>
+        <IconBox>
+          <AddIcon />
+        </IconBox>
       </BtnBox>
       <PortItem />
       <PortItem />

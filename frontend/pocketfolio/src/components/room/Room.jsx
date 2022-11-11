@@ -10,9 +10,9 @@ import {useState} from 'react';
 
 // 마이룸
 const Room = () => {
-  // url로 받아온 room_id
+  // url로 받아온 roomSeq
   const params = useParams();
-  const room_id = parseInt(params.room_id);
+  const roomSeq = parseInt(params.roomSeq);
 
   const [sidebar, setSidebar] = useState('');
   const [edit, setEdit] = useState(false);
@@ -33,7 +33,7 @@ const Room = () => {
   // copy to clipboard
   const copyURL = () => {
     window.navigator.clipboard.writeText(
-      `https://k7e101.p.ssafy.io/room/${room_id}`,
+      `https://k7e101.p.ssafy.io/room/${roomSeq}`,
     );
     toast.success('URL이 복사되었습니다.');
   };
@@ -68,14 +68,19 @@ const Room = () => {
 
       {sidebar | edit ? null : (
         <Menu
-          room_id={room_id}
+          roomSeq={roomSeq}
           changeSidebar={changeSidebar}
           copyURL={copyURL}
           onEdit={onEdit}
         />
       )}
 
-      <Sidebar sidebar={sidebar} changeSidebar={changeSidebar} edit={edit} />
+      <Sidebar
+        sidebar={sidebar}
+        changeSidebar={changeSidebar}
+        edit={edit}
+        roomSeq={roomSeq}
+      />
     </Container>
   );
 };
