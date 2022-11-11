@@ -59,19 +59,13 @@ public class GuestController {
             @ApiResponse(responseCode = "500", description = "서버 에러", content = @Content(schema = @Schema(implementation = Error.class)))
     })
     @GetMapping("/{roomSeq}")
-    public ResponseEntity<List<GuestbookRes>> findGuestbookList(@PathVariable("roomSeq") Long roomSeq, HttpServletRequest request) {
+    public ResponseEntity<List<GuestbookRes>> findGuestbookList(@PathVariable("roomSeq") Long roomSeq) {
         List<GuestbookRes> response = null;
         HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
 
         try{
-            long userSeq = (Long) request.getAttribute("userSeq");
-            if (userSeq > 0) {
-                response = guestbookService.findGuestbookList(roomSeq, userSeq);
-                status = response != null ? HttpStatus.OK : HttpStatus.INTERNAL_SERVER_ERROR;
-            } else {
-                log.error("사용 불가능 토큰");
-                status = HttpStatus.FORBIDDEN;
-            }
+            response = guestbookService.findGuestbookList(roomSeq);
+            status = response != null ? HttpStatus.OK : HttpStatus.INTERNAL_SERVER_ERROR;
         } catch (Exception e) {
             log.error(e.getMessage());
         }

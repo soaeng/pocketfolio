@@ -19,10 +19,9 @@ public interface GuestbookService {
     /**
      * 방명록 목록 조회
      * @param roomSeq 방명록을 조회할 방 번호
-     * @param userSeq 현재 접속한 회원 번호
      * @return 방명록 목록
      */
-    List<GuestbookRes> findGuestbookList(long roomSeq, long userSeq);
+    List<GuestbookRes> findGuestbookList(long roomSeq);
 
     /**
      * 방명록 삭제

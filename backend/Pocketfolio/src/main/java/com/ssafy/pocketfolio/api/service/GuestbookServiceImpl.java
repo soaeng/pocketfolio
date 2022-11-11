@@ -7,7 +7,6 @@ import com.ssafy.pocketfolio.api.dto.response.GuestbookRes;
 import com.ssafy.pocketfolio.db.entity.Guestbook;
 import com.ssafy.pocketfolio.db.entity.GuestbookComment;
 import com.ssafy.pocketfolio.db.entity.Room;
-import com.ssafy.pocketfolio.db.entity.User;
 import com.ssafy.pocketfolio.db.repository.GuestbookCommentRepository;
 import com.ssafy.pocketfolio.db.repository.GuestbookRepository;
 import com.ssafy.pocketfolio.db.repository.RoomRepository;
@@ -52,7 +51,7 @@ public class GuestbookServiceImpl implements GuestbookService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<GuestbookRes> findGuestbookList(long roomSeq, long userSeq) {
+    public List<GuestbookRes> findGuestbookList(long roomSeq) {
         log.debug("[POST] Service - findGuestbookList");
         List<GuestbookRes> guestbookResList;
         try {
