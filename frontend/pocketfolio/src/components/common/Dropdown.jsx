@@ -14,6 +14,7 @@ import {
   FollowList,
   ProfileDiv,
   ProfileImg,
+  ProfileimgBox,
   DropdownListLast,
   FollowList1,
   ProfileLine,
@@ -46,9 +47,13 @@ const DropDown = ({user}) => {
     <Dropdown>
       <ProfileList>
         {user.profilePic === undefined ? (
-          <ProfileImg src="./assets/images/user.png" />
+          <ProfileimgBox>
+            <ProfileImg src="./assets/images/user.png" />
+          </ProfileimgBox>
         ) : (
-          <ProfileImg>{user.profilePic}</ProfileImg>
+          <ProfileimgBox>
+            <ProfileImg>{user.profilePic}</ProfileImg>
+          </ProfileimgBox>
         )}
         <ProfileDiv>{user.email}</ProfileDiv>
         <FollowList>

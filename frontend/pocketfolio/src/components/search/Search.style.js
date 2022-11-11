@@ -66,13 +66,15 @@ export const Item = styled.div`
 export const TagContainer = styled.div`
   display: flex;
   justify-content: center;
+  padding: 1%;
 `;
 
 //Tag 하나하나
 export const Tag = styled(Body3)`
   display: flex;
   justify-content: center;
-  background-color: lightgrey;
+  background-color: #e75452;
+  color: white;
   padding: 5px 10px;
   margin: 5px;
   border-radius: 8px;
@@ -80,8 +82,8 @@ export const Tag = styled(Body3)`
   cursor: pointer;
 
   &:hover {
-    background-color: lightgrey;
-    box-shadow: 0px 1px 2px 1px rgba(0, 0, 0, 0.25);
+    background-color: #c13136;
+    color: #eeeeee;
   }
 `;
 
