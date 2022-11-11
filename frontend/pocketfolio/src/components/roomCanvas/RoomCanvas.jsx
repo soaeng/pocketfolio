@@ -1,24 +1,42 @@
 import React, {useState, useEffect, useRef} from 'react';
 import {Canvas} from '@react-three/fiber';
 import {
-  useGLTF,
   OrbitControls,
   softShadows,
-  PivotControls,
   GizmoHelper,
   GizmoViewcube,
   GizmoViewport,
-  useCursor,
-  meshBounds,
-  Bounds,
-  useBounds,
 } from '@react-three/drei';
+import RoomTheme from './theme/RoomTheme';
+import Items from './Items';
 import Capture from '../room/Capture';
 
 softShadows();
+const range = 2;
+const datas = [
+  {
+    name: 'Husky',
+    position: [
+      Math.random() * range * 2 - range,
+      0,
+      Math.random() * range * 2 - range,
+    ],
+    rotateY: Math.random() * Math.PI * 2,
+  },
+  {
+    name: 'Husky',
+    position: [
+      Math.random() * range * 2 - range,
+      0,
+      Math.random() * range * 2 - range,
+    ],
+    rotateY: Math.random() * Math.PI * 2,
+  },
+];
 
-const RoomCanvas = ({}) => {
+const RoomCanvas = ({edit}) => {
   const cntRef = useRef();
+  const boundaryRef = useRef();
   return (
     <Canvas
       shadows
@@ -45,11 +63,36 @@ const RoomCanvas = ({}) => {
         regress={false}
         ref={cntRef}
       />
-      <mesh>
-        <directionalLight position={[10, 10, 10]} intensity={1} castShadow />
-        <boxGeometry args={[5, 5, 5]} />
-        <meshStandardMaterial attach="material" color={0xa3b18a} />
-      </mesh>
+      <RoomTheme boundaryRef={boundaryRef} name="Room_1">
+        <Items cntRef={cntRef} boundaryRef={boundaryRef} datas={datas} />
+      </RoomTheme>
+
+      {edit && (
+        <GizmoHelper alignment="top-right" margin={[100, 100]}>
+          <group scale={0.85}>
+            <GizmoViewcube />
+          </group>
+          <group
+            scale={1.75}
+            position={[30, -30, -30]}
+            rotation={[0, -Math.PI / 2, 0]}
+          >
+            <GizmoViewport
+              labelColor="white"
+              axisHeadScale={0.525}
+              hideNegativeAxes
+            />
+          </group>
+        </GizmoHelper>
+      )}
+
+      <OrbitControls
+        makeDefault
+        screenSpacePanning={true}
+        regress={false}
+        ref={cntRef}
+        maxPolarAngle={Math.PI / 2.2}
+      />
     </Canvas>
   );
 };
