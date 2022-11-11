@@ -9,9 +9,10 @@ export const getGuestList = createAsyncThunk(
   async (roomSeq, {rejectWithValue}) => {
     try {
       const res = await http.get(`guests/${roomSeq}`);
+      console.log(res)
       if (res.status === 200) return res.data;
     } catch (error) {
-      console.log('오브젝트 상세 조회 에러', error);
+      console.log('방명록 조회 에러', error);
       return rejectWithValue(error);
     }
   },

@@ -17,7 +17,7 @@ import {
 const Sidebar = ({sidebar, changeSidebar, edit, roomSeq}) => {
   const controlSide = () => {
     if (sidebar === 'port') return changeSidebar('');
-    if (sidebar === 'visit') return changeSidebar('');
+    if (sidebar === 'guest') return changeSidebar('');
     if (sidebar === 'edit') return changeSidebar('');
     if (!sidebar) return changeSidebar('edit');
   };
@@ -30,8 +30,8 @@ const Sidebar = ({sidebar, changeSidebar, edit, roomSeq}) => {
             <CloseIcon />
           </CloseBox>
         )}
-        {sidebar === 'port' ? <PortList roomSeq={roomSeq}/> : null}
-        {sidebar === 'visit' ? <GuestList roomSeq={roomSeq} /> : null}
+        {sidebar === 'port' ? <PortList /> : null}
+        {sidebar === 'guest' ? <GuestList /> : null}
         {sidebar === 'edit' ? <ObjectList /> : null}
       </SideContainer>
       {edit ? (

@@ -15,7 +15,7 @@ import {
   Btn,
 } from './GuestList.style';
 
-const GuestList = ({roomSeq}) => {
+const GuestList = () => {
   const [lock, setLock] = useState(false);
 
   return (

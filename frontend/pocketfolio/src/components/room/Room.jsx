@@ -6,13 +6,16 @@ import RoomCanvas from '../roomCanvas/RoomCanvas';
 import {Container, CanvasWrapper, EditBox, Btn} from './Room.style';
 import toast, {Toaster} from 'react-hot-toast';
 import {useParams} from 'react-router-dom';
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
+import {useDispatch} from 'react-redux';
+import { getGuestList } from '../../store/guestSlice';
 
 // 마이룸
 const Room = () => {
   // url로 받아온 roomSeq
   const params = useParams();
   const roomSeq = parseInt(params.roomSeq);
+  const dispatch = useDispatch();
 
   const [sidebar, setSidebar] = useState('');
   const [edit, setEdit] = useState(false);
@@ -37,6 +40,15 @@ const Room = () => {
     );
     toast.success('URL이 복사되었습니다.');
   };
+
+  const guestList = async () => {
+    const res = await dispatch(getGuestList(roomSeq));
+  };
+
+  useEffect(() => {
+    if (sidebar === 'guest') guestList();
+    console.log(sidebar);
+  }, [sidebar]);
 
   return (
     <Container className={sidebar ? 'active' : ''}>
