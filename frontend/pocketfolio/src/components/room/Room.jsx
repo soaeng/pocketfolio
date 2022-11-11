@@ -43,7 +43,7 @@ const Room = () => {
       <RoomNav sidebar={sidebar} edit={edit} />
       <RoomInfo sidebar={sidebar} edit={edit} />
       <CanvasWrapper className={sidebar ? 'active' : ''}>
-        <RoomCanvas />
+        <RoomCanvas edit={edit} />
         <Toaster
           position="bottom-left"
           containerStyle={{
