@@ -8,12 +8,9 @@ export const AvatarContainer = styled.div`
   /* align-items: center; */
 `;
 
-export const AvatarImgBox = styled.div`
-  border-radius: 50%;
-`;
-
 // Avatar Img
 export const AvatarImg = styled.img`
   height: 50px;
+  border-radius: 50%;
   cursor: pointer;
 `;

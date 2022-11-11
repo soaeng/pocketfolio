@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useRef} from 'react';
-import {AvatarImg, AvatarContainer, AvatarImgBox} from './Avatar.style';
+import {AvatarImg, AvatarContainer} from './Avatar.style';
 import DropDown from './Dropdown';
 
 function Avatar({user}) {
@@ -29,23 +29,19 @@ function Avatar({user}) {
   return (
     <AvatarContainer ref={modalRef}>
       {user.profilePic === undefined ? (
-        <AvatarImgBox>
           <AvatarImg
             src="./assets/images/user.png"
             onClick={() => {
               setVisible(!visible);
             }}
           />
-        </AvatarImgBox>
       ) : (
-        <AvatarImgBox>
           <AvatarImg
             src={user.profilePic}
             onClick={() => {
               setVisible(!visible);
             }}
           />
-        </AvatarImgBox>
       )}
       {visible && <DropDown user={user} />}
     </AvatarContainer>
