@@ -31,7 +31,7 @@ export const NavSearchContainer = styled.div`
   align-items: center;
   border-radius: 16px;
   border: 1px solid #bbb;
-  width: 50%;
+  width: 40%;
   min-width: 200px;
   padding: 5px 30px;
 
