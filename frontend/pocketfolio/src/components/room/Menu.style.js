@@ -21,7 +21,7 @@ export const MenuButton = styled.button`
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  background-color: #1f2dac;
+  background-color: #e75452;
   border: none;
   cursor: pointer;
 
@@ -37,13 +37,13 @@ export const MenuButton = styled.button`
     background-color: #fff;
 
     &&:hover {
-      background-color: #1f2dac57;
+      background-color: #e7545265;
     }
   }
 
   &.is-active .bar:nth-child(1) {
     transform: translateY(7.3px) rotate(45deg);
-    background-color: #1f2dac;
+    background-color: #e75452;
   }
 
   &.is-active .bar:nth-child(2) {
@@ -52,7 +52,7 @@ export const MenuButton = styled.button`
 
   &.is-active .bar:nth-child(3) {
     transform: translateY(-7.3px) rotate(-45deg);
-    background-color: #1f2dac;
+    background-color: #e75452;
   }
 `;
 
@@ -74,7 +74,7 @@ export const MenuDiv = styled.div`
   height: 50px;
   width: 50px;
   border-radius: 50%;
-  background-color: #1f2dac;
+  background-color: #e75452;
   color: white;
   font-size: 2rem;
   border: none;
@@ -97,8 +97,8 @@ export const MenuDiv = styled.div`
   }
 
   &:hover {
-    background-color: #e4e6f8;
-    color: #1f2dac;
+    background-color: #fff4f1;
+    color: #e75452;
 
     .tooltip {
       visibility: visible;
@@ -156,7 +156,7 @@ export const ToolTipText = styled.p`
   width: fit-content;
   margin: 0;
   font-size: 1rem;
-  background-color: #172491;
+  background-color: #e75452;
   color: #fff;
   border-radius: 6px;
   padding: 4px 6px;

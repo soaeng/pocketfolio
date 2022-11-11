@@ -36,7 +36,7 @@ const RoomNav = ({sidebar, edit}) => {
   return (
     <Container className={sidebar ? 'side' : null}>
       <LogoContainer onClick={logoClickHandler}>
-        <LogoImg src={process.env.PUBLIC_URL + '/assets/images/logo2.png'} />
+        <LogoImg src={process.env.PUBLIC_URL + '/assets/images/logo4.png'} />
       </LogoContainer>
       {edit ? null : loginFlag === null ? (
         <NavBotton onClick={loginClickHandler}>로그인/회원가입</NavBotton>
