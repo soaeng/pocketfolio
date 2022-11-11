@@ -14,7 +14,6 @@ import java.time.ZonedDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 @Entity
 @Table(name="portfolio")
 public class Portfolio {
@@ -28,10 +27,13 @@ public class Portfolio {
 
 	@Column(name="summary", length=2000)
 	private String summary;
-	
+
 	@Column(name="thumbnail", length=255) // remove if not needed
 	private String thumbnail;
-	
+
+	@Column(name="thumbnail_name", length=50) // remove if not needed
+	private String thumbnailName;
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="user_seq", nullable=false, updatable=false)
 	@OnDelete(action = OnDeleteAction.CASCADE)

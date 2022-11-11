@@ -46,10 +46,12 @@ public class PortfolioServiceImpl implements PortfolioService {
         User user = userRepository.findById(userSeq).orElseThrow(() -> new IllegalArgumentException("해당 사용자가 존재하지 않습니다."));
         // 저장된 썸네일 주소
         String thumbnailUrl = null;
+        String thumbnailName = null;
 
         // 저장할 썸네일 파일이 있다면
         if (thumbnail != null) {
             thumbnailUrl = fileHandler.saveFile(thumbnail, "portfolio/thumbnail");
+            thumbnailName = thumbnail.getOriginalFilename();
             if(thumbnailUrl == null) {
                 log.error("썸네일 저장 실패");
                 return null;
@@ -57,7 +59,7 @@ public class PortfolioServiceImpl implements PortfolioService {
         }
 
         // 포트폴리오 저장
-        Portfolio portfolio = PortfolioReq.toEntity(req, thumbnailUrl, user);
+        Portfolio portfolio = PortfolioReq.toEntity(req, thumbnailUrl, thumbnailName, user);
         long portSeq = portfolioRepository.save(portfolio).getPortSeq();
         log.debug("저장된 포트폴리오 번호: " + portSeq);
 
