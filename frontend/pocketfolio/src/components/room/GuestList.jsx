@@ -1,5 +1,5 @@
 import {useState} from 'react';
-import VisitItem from './VisitItem';
+import VisitItem from './GuestItem';
 import {
   Container,
   ImgTextDiv,
@@ -13,9 +13,9 @@ import {
   UnlockIcon,
   LockText,
   Btn,
-} from './VisitList.style';
+} from './GuestList.style';
 
-const VisitList = () => {
+const GuestList = ({roomSeq}) => {
   const [lock, setLock] = useState(false);
 
   return (
@@ -42,4 +42,4 @@ const VisitList = () => {
   );
 };
 
-export default VisitList;
+export default GuestList;

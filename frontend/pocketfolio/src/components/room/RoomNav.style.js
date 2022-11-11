@@ -25,6 +25,7 @@ export const Container = styled.div`
   @media screen and (max-width: 1200px) {
     &.side {
       width: calc(100vw - 1rem);
+      transition: all 0.25s ease;
     } 
   }
 `;
@@ -33,7 +34,7 @@ export const Container = styled.div`
 export const LogoContainer = styled.div`
   left: 1.5rem;
   top: 1.5rem;
-  height: 85%;
+  height: 90%;
   cursor: pointer;
 `
 export const LogoImg = styled.img`
@@ -46,16 +47,18 @@ export const NavBotton = styled.button`
   padding: 0.5rem 1rem;
   border-radius: 16px;
   border: none;
-  background-color: #3c2e9b;
+  background-color: #e75452;
   color: #fff;
   cursor: pointer;
 
   &:hover {
-    background-color: #35297e;
+    background-color: #d14745;
+    color: #eee;
   }
 
   &:active {
-    background-color: #35297e;
+    background-color: #c03f3c;
+    color: #ddd;
     box-shadow: 0.5px 0.5px 0.5px #333;
   }
 `;

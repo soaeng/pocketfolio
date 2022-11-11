@@ -14,7 +14,7 @@ import {
 import {useState} from 'react';
 import {useNavigate} from 'react-router-dom';
 
-const Menu = ({room_id, changeSidebar, copyURL, onEdit}) => {
+const Menu = ({roomSeq, changeSidebar, copyURL, onEdit}) => {
   const [toggle, setToggle] = useState(false);
   const navigate = useNavigate();
 

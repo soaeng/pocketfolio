@@ -1,5 +1,5 @@
 import PortList from './PortList';
-import VisitList from './VisitList';
+import GuestList from './GuestList';
 import ObjectList from './ObjectList';
 import {
   Container,
@@ -14,7 +14,7 @@ import {
   ToggleOpenIcon2,
 } from './Sidebar.style';
 
-const Sidebar = ({sidebar, changeSidebar, edit}) => {
+const Sidebar = ({sidebar, changeSidebar, edit, roomSeq}) => {
   const controlSide = () => {
     if (sidebar === 'port') return changeSidebar('');
     if (sidebar === 'visit') return changeSidebar('');
@@ -30,8 +30,8 @@ const Sidebar = ({sidebar, changeSidebar, edit}) => {
             <CloseIcon />
           </CloseBox>
         )}
-        {sidebar === 'port' ? <PortList /> : null}
-        {sidebar === 'visit' ? <VisitList /> : null}
+        {sidebar === 'port' ? <PortList roomSeq={roomSeq}/> : null}
+        {sidebar === 'visit' ? <GuestList roomSeq={roomSeq} /> : null}
         {sidebar === 'edit' ? <ObjectList /> : null}
       </SideContainer>
       {edit ? (
