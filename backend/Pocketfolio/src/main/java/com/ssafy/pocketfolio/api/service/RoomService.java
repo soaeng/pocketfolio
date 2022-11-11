@@ -27,7 +27,7 @@ public interface RoomService {
      */
     List<RoomListRes> findMyRoomList(long userSeq);
 
-    Map<String, Object> findRoomList(long userSeq);
+//    Map<String, Object> findRoomAll(long userSeq);
 
     /**
      * 방 조회
@@ -38,7 +38,7 @@ public interface RoomService {
     Map<String, Object> findRoom(long userSeq, long roomSeq) ;
 
     /**
-     * 마이룸 수정
+     * 마이룸 정보 수정
      * @param userSeq 회원 번호 (로그인 유저)
      * @param roomSeq 방 번호
      * @param req 방 정보

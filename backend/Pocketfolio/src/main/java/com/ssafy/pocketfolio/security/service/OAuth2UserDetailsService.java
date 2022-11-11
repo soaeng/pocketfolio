@@ -1,11 +1,7 @@
 package com.ssafy.pocketfolio.security.service;
 
-import com.ssafy.pocketfolio.db.entity.Oauth;
-import com.ssafy.pocketfolio.db.entity.Room;
-import com.ssafy.pocketfolio.db.entity.User;
-import com.ssafy.pocketfolio.db.repository.OauthRepository;
-import com.ssafy.pocketfolio.db.repository.RoomRepository;
-import com.ssafy.pocketfolio.db.repository.UserRepository;
+import com.ssafy.pocketfolio.db.entity.*;
+import com.ssafy.pocketfolio.db.repository.*;
 import com.ssafy.pocketfolio.security.dto.UserAuthDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -28,11 +24,10 @@ import java.util.Set;
 public class OAuth2UserDetailsService extends DefaultOAuth2UserService {
 
     private final UserRepository userRepository;
-
     private final OauthRepository oauthRepository;
-
     private final RoomRepository roomRepository;
-
+    private final CategoryRepository categoryRepository;
+    private final RoomCategoryRepository roomCategoryRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Override
@@ -154,7 +149,9 @@ public class OAuth2UserDetailsService extends DefaultOAuth2UserService {
                 .isMain("T")
                 .privacy("O")
                 .build();
-        roomRepository.save(room);
+        room = roomRepository.save(room);
+        roomCategoryRepository.save(RoomCategory.builder().room(room).category(categoryRepository.getReferenceById(1L)).build());
+        log.debug("유저 생성 -> 포켓 생성 -> 포켓 카테고리 매핑 성공");
     }
 
 }

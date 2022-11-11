@@ -45,7 +45,7 @@ public class UserRes {
     @Schema(description = "블로그 주소", maxLength = 1000)
     private String blogUrl;
 
-//    @Schema(description = "마이룸 목록")
+//    @Schema(description = "마이룸 목록") // TODO: 1. 마이룸 목록 주기
 //    private List<RoomRes> rooms;
 
     public UserRes(User user) {
