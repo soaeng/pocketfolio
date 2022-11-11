@@ -14,8 +14,12 @@ const postAxios = axios.create({
   // baseURL: 'http://localhost:8081/api/',
   headers: {
     'Content-Type': 'multipart/form-data',
-    'Authorization': `Bearer ${getToken()}`,
   },
+});
+
+postAxios.interceptors.request.use(function (config) {
+  config.headers['Authorization'] = `Bearer ${getToken()}`;
+  return config;
 });
 
 http.interceptors.request.use(function (config) {
