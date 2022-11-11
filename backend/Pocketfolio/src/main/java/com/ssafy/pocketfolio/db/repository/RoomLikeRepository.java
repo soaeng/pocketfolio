@@ -1,8 +1,6 @@
 package com.ssafy.pocketfolio.db.repository;
 
-import com.ssafy.pocketfolio.db.entity.Room;
 import com.ssafy.pocketfolio.db.entity.RoomLike;
-import com.ssafy.pocketfolio.db.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -14,6 +12,6 @@ public interface RoomLikeRepository extends JpaRepository<RoomLike, Long> {
     void deleteByRoom_RoomSeqAndUser_UserSeq(long roomSeq, long userSeq);
     Long countAllByRoom_RoomSeq(Long roomSeq);
     List<RoomLike> findAllByUser_UserSeq(long userSeq);
-    @Query(value = "SELECT room_seq FROM room_like GROUP BY room_seq ORDER BY count(user_seq) DESC;", nativeQuery = true)
-    List<Long> findRoomBestList();
+    @Query(value = "SELECT room_seq FROM room_like GROUP BY room_seq ORDER BY count(user_seq) DESC LIMIT ?1;", nativeQuery = true)
+    List<Long> findRoomBestList(int limit);
 }

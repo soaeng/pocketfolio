@@ -6,7 +6,6 @@ import com.ssafy.pocketfolio.api.dto.request.RoomReq;
 import com.ssafy.pocketfolio.api.dto.response.*;
 import com.ssafy.pocketfolio.api.service.PortfolioService;
 import com.ssafy.pocketfolio.api.service.RoomService;
-import com.ssafy.pocketfolio.db.entity.Category;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -18,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.webjars.NotFoundException;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
@@ -61,31 +61,32 @@ public class RoomController {
         return new ResponseEntity<>(response, status);
     }
 
-    @Operation(summary = "마이룸 전체 목록 조회", description = "마이룸 전체 목록 조회", responses = {
-            @ApiResponse(responseCode = "200", description = "마이룸 목록 조회 성공", content = @Content(schema = @Schema(implementation = RoomListRes.class))),
-            @ApiResponse(responseCode = "403", description = "사용 불가능 토큰", content = @Content(schema = @Schema(implementation = UserRes.class))),
-            @ApiResponse(responseCode = "500", description = "서버 에러", content = @Content(schema = @Schema(implementation = Error.class)))
-    })
-    @GetMapping
-    public ResponseEntity<Map<String, Object>> findRoomList(HttpServletRequest request) {
-        log.debug("[GET] Controller - findRoomList");
-        HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
-        Map<String, Object> response = new HashMap<>();
-
-        try{
-            long userSeq = (Long) request.getAttribute("userSeq");
-
-            response = roomService.findRoomList(userSeq);
-            status = HttpStatus.OK;
-        } catch (Exception e) {
-            log.error(e.getMessage());
-        }
-
-        return new ResponseEntity<>(response, status);
-    }
+//    @Operation(summary = "마이룸 전체 목록 조회", description = "마이룸 전체 목록 조회", responses = {
+//            @ApiResponse(responseCode = "200", description = "마이룸 목록 조회 성공", content = @Content(schema = @Schema(implementation = RoomListRes.class))),
+//            @ApiResponse(responseCode = "403", description = "사용 불가능 토큰", content = @Content(schema = @Schema(implementation = UserRes.class))),
+//            @ApiResponse(responseCode = "500", description = "서버 에러", content = @Content(schema = @Schema(implementation = Error.class)))
+//    })
+//    @GetMapping
+//    public ResponseEntity<Map<String, Object>> findRoomAll(HttpServletRequest request) {
+//        log.debug("[GET] Controller - findRoomList");
+//        HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
+//        Map<String, Object> response = new HashMap<>();
+//
+//        try{
+//            long userSeq = (Long) request.getAttribute("userSeq");
+//
+//            response = roomService.findRoomAll(userSeq);
+//            status = HttpStatus.OK;
+//        } catch (Exception e) {
+//            log.error(e.getMessage());
+//        }
+//
+//        return new ResponseEntity<>(response, status);
+//    }
     @Operation(summary = "마이룸 조회", description = "마이룸 조회", responses = {
             @ApiResponse(responseCode = "200", description = "마이룸 조회 성공", content = @Content(schema = @Schema(implementation = RoomDto.class))),
-            @ApiResponse(responseCode = "403", description = "사용 불가능 토큰", content = @Content(schema = @Schema(implementation = UserRes.class))),
+            @ApiResponse(responseCode = "403", description = "사용 불가능 토큰", content = @Content(schema = @Schema(implementation = Error.class))),
+            @ApiResponse(responseCode = "404", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = Error.class))),
             @ApiResponse(responseCode = "500", description = "서버 에러", content = @Content(schema = @Schema(implementation = Error.class)))
     })
     @GetMapping("/{roomSeq}")
@@ -104,6 +105,8 @@ public class RoomController {
                 log.error("사용 불가능 토큰");
                 status = HttpStatus.FORBIDDEN;
             }
+        } catch (NotFoundException e) {
+            log.error(e.getMessage());
         } catch (Exception e) {
             log.error(e.getMessage());
         }
@@ -111,14 +114,14 @@ public class RoomController {
         return new ResponseEntity<>(response, status);
     }
 
-    @Operation(summary = "마이룸 수정", description = "마이룸 수정", responses = {
+    @Operation(summary = "마이룸 정보 수정", description = "마이룸 정보 수정", responses = {
             @ApiResponse(responseCode = "201", description = "마이룸 수정 성공", content = @Content(schema = @Schema(implementation = Long.class))),
             @ApiResponse(responseCode = "403", description = "사용 불가능 토큰", content = @Content(schema = @Schema(implementation = UserRes.class))),
             @ApiResponse(responseCode = "500", description = "서버 에러", content = @Content(schema = @Schema(implementation = Error.class)))
     })
     @PatchMapping("/info/{roomSeq}")
     public ResponseEntity<Long> updateRoomInfo(@PathVariable(value = "roomSeq") Long roomSeq, @RequestPart(value = "room") RoomReq roomReq, @RequestPart(value = "thumbnail", required = false) MultipartFile thumbnail, HttpServletRequest request){
-        log.debug("[PATCH] Controller - updateRoom");
+        log.debug("[PATCH] Controller - updateRoomInfo");
         Long response = null;
         HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
 
@@ -140,7 +143,7 @@ public class RoomController {
         return new ResponseEntity<>(response, status);
     }
 
-    @Operation(summary = "마이룸 꾸미기", description = "마이룸 꾸미기", responses = { // TODO: 마이룸 꾸미기
+    @Operation(summary = "마이룸 꾸미기", description = "마이룸 꾸미기", responses = {
             @ApiResponse(responseCode = "201", description = "마이룸 꾸미기 성공", content = @Content(schema = @Schema(implementation = Long.class))),
             @ApiResponse(responseCode = "403", description = "사용 불가능 토큰", content = @Content(schema = @Schema(implementation = Long.class))),
             @ApiResponse(responseCode = "404", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = ItemRes.class))),
@@ -163,6 +166,8 @@ public class RoomController {
                 log.error("사용 불가능 토큰");
                 status = HttpStatus.FORBIDDEN;
             }
+        } catch (IllegalArgumentException e) {
+            log.error(e.getMessage());
         } catch (Exception e) {
             log.error(e.getMessage());
         }

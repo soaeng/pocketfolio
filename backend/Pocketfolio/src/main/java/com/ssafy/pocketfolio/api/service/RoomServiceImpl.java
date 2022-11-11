@@ -15,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import org.webjars.NotFoundException;
 
 import javax.persistence.EntityNotFoundException;
 import java.io.IOException;
@@ -40,6 +41,8 @@ public class RoomServiceImpl implements RoomService {
     private final MultipartFileHandler fileHandler;
     private final FollowRepository followRepository;
 
+    private final int BEST_LIMIT = 12;
+
     @Override
     @Transactional
     public Long insertRoom(long userSeq, RoomReq req, MultipartFile thumbnail) throws IOException {
@@ -55,6 +58,16 @@ public class RoomServiceImpl implements RoomService {
                 return null;
             }
         }
+
+        if(req.getIsMain() != null && req.getIsMain().equals("T")) {
+            // 저장: 다른 T를 F로 변경하고 T로 해야
+            List<Room> originMainList = roomRepository.findRoomByUser_UserSeqAndIsMain(userSeq, "T");
+            // 로직 상 하나지만 혹시 모를 에러를 방지해 여러 개 체크
+            if (!originMainList.isEmpty()) {
+                originMainList.forEach(e -> e.changeIsMain("F"));
+            }
+        }
+
         Room room = RoomReq.toEntity(req, thumbnailUrl, userRepository.getReferenceById(userSeq));
         long roomSeq = roomRepository.save(room).getRoomSeq();
         log.debug("저장된 방 번호: " + roomSeq);
@@ -83,24 +96,24 @@ public class RoomServiceImpl implements RoomService {
         return roomsResList;
     }
 
-    @Override
-    @Transactional(readOnly = true)
-    public Map<String, Object> findRoomList(long userSeq) {
-        log.debug("[GET] Service - findRoomList");
-        Map<String, Object> map = new HashMap<>();
-
-        try {
-            List<RoomListRes> roomListResList = getRoomListRes(roomRepository.findAll());
-            List<CategoryRes> categories = categoryRepository.findAll().stream().map(CategoryRes::toDto).collect(Collectors.toList());
-
-            map.put("rooms", roomListResList);
-            map.put("categories", categories);
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            map = null;
-        }
-        return map;
-    }
+//    @Override
+//    @Transactional(readOnly = true)
+//    public Map<String, Object> findRoomAll(long userSeq) {
+//        log.debug("[GET] Service - findRoomAll");
+//        Map<String, Object> map = new HashMap<>();
+//
+//        try {
+//            List<RoomListRes> roomListResList = getRoomListRes(roomRepository.findAll());
+//            List<CategoryRes> categories = categoryRepository.findAll().stream().map(CategoryRes::toDto).collect(Collectors.toList());
+//
+//            map.put("rooms", roomListResList);
+//            map.put("categories", categories);
+//        } catch (Exception e) {
+//            log.error(e.getMessage());
+//            map = null;
+//        }
+//        return map;
+//    }
 
     @Override
     @Transactional
@@ -110,11 +123,25 @@ public class RoomServiceImpl implements RoomService {
 
         User user = userRepository.findById(userSeq).orElseThrow(() -> new IllegalArgumentException("해당 사용자를 찾을 수 없습니다."));
         Room room = roomRepository.findById(roomSeq).orElseThrow(() -> new IllegalArgumentException("해당 방을 찾을 수 없습니다."));
-        RoomCategory roomCategory = roomCategoryRepository.findCategorySeqByRoom_RoomSeq(room.getRoomSeq());
+        Optional<RoomCategory> roomCategoryO = roomCategoryRepository.findCategorySeqByRoom_RoomSeq(room.getRoomSeq());
+
+        RoomCategory roomCategory;
+        if (roomCategoryO.isPresent()) {
+            roomCategory = roomCategoryO.get();
+        } else {
+            roomCategory = createRoomCategoryIfNotExist(room); // 카테고리가 비어 있으면 기타 카테고리로 하나 만들어 줌
+        }
+
         log.debug("roomCategory: " + roomCategory);
 
+        boolean isMyRoom = userSeq == room.getUser().getUserSeq(); // 본인 방 여부
+
+        if ("C".equals(room.getPrivacy()) && !isMyRoom) {
+            throw new NotFoundException("비공개인 포켓은 본인 말고는 열람할 수 없습니다.");
+        }
+
         // 본인 방이 아닌 경우 + 당일 방문하지 않은 경우 조회수 1 증가
-        if (userSeq != room.getUser().getUserSeq() && !roomHitRepository.existsRoomHitByUser_UserSeqAndRoom_RoomSeqAndHitDateEquals(userSeq, roomSeq, ZonedDateTime.now(ZoneId.of("Asia/Seoul")).toLocalDate())) {
+        if (!isMyRoom && !roomHitRepository.existsRoomHitByUser_UserSeqAndRoom_RoomSeqAndHitDateEquals(userSeq, roomSeq, ZonedDateTime.now(ZoneId.of("Asia/Seoul")).toLocalDate())) {
             roomHitRepository.save(RoomHit.builder().room(room).user(user).build());
         }
 
@@ -178,10 +205,14 @@ public class RoomServiceImpl implements RoomService {
             }
             if(req.getIsMain() != null && req.getIsMain().equals("T") && room.getIsMain().equals("F")) {
                 // update (다른 T를 F로 변경하고 T로 해야)
-                Room originMain = roomRepository.findRoomByUser_UserSeqAndIsMain(userSeq, "T");
-                originMain.changeIsMain("F");
+                List<Room> originMainList = roomRepository.findRoomByUser_UserSeqAndIsMain(userSeq, "T");
+                // 로직 상 하나지만 혹시 모를 에러를 방지해 여러 개 체크
+                if (!originMainList.isEmpty()) {
+                    originMainList.forEach(e -> e.changeIsMain("F"));
+                }
                 room.changeIsMain(req.getIsMain());
             }
+
             log.debug("저장된 방 번호: " + roomSeq);
         } catch (Exception e) {
             log.error(e.getMessage());
@@ -195,7 +226,9 @@ public class RoomServiceImpl implements RoomService {
     public Long updateRoom(long userSeq, long roomSeq, RoomArrangeReq roomArrangeReq) {
         // 수정하는 메소드. 성능 상 삭제 후 삽입도 고려해 볼 만함.
         Room room = roomRepository.findById(roomSeq).orElseThrow(() -> new IllegalArgumentException("해당 포켓이 존재하지 않습니다."));
-
+        if (room.getUser().getUserSeq() != userSeq) {
+            throw new IllegalArgumentException("요청한 유저와 수정하려는 포켓의 주인이 일치하지 않습니다.");
+        }
         HashSet<Long> arrangeSeqSet = arrangeRepository.findArrangeSeqByRoom_RoomSeq(roomSeq); // 리스트만 되면 변환 필요
 
         room.updateTheme(roomArrangeReq.getTheme());
@@ -312,7 +345,7 @@ public class RoomServiceImpl implements RoomService {
     public List<RoomListRes> findRoomBestList() {
         log.debug("[GET] Service - findRoomBestList");
         try {
-            List<Long> roomSeqs = roomLikeRepository.findRoomBestList(); // TODO: JOIN으로 한 번에 처리하기
+            List<Long> roomSeqs = roomLikeRepository.findRoomBestList(BEST_LIMIT); // TODO: JOIN으로 한 번에 처리하기
             List<Room> rooms = roomRepository.findAllByRoomSeqIn(roomSeqs);
             return getRoomListRes(rooms);
         } catch (Exception e) {
@@ -325,14 +358,13 @@ public class RoomServiceImpl implements RoomService {
     @Transactional(readOnly = true)
     public Long findRandomRoom() {
         log.debug("[GET] Service - findRandomRoom");
-        List<Long> roomSeqs = roomRepository.findAllByPrivacy();
-        Random rand = new Random();
-        return roomSeqs.get(rand.nextInt(roomSeqs.size()));
+
+        return roomRepository.findRoomSeqByPrivacyOrderByRandom();
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Map<String, Object> findGuestList(long roomSeq) {
+    public Map<String, Object> findGuestList(long roomSeq) { // TODO: 방문자 목록 room에서 user로 바꾸기
         log.debug("[GET] Service - findGuestList");
         try {
             Map<String, Object> map = new HashMap<>();
@@ -362,11 +394,15 @@ public class RoomServiceImpl implements RoomService {
         }
     }
 
-    public List<RoomListRes> getRoomListRes(List<Room> rooms) {
+    private List<RoomListRes> getRoomListRes(List<Room> rooms) {
         return rooms.stream().map(room -> {
             int like = roomLikeRepository.countAllByRoom_RoomSeq(room.getRoomSeq()).intValue();
             int hit = roomHitRepository.countAllByRoom_RoomSeq(room.getRoomSeq()).intValue();
             return RoomListRes.toDto(room, like, hit);
         }).collect(Collectors.toList());
+    }
+
+    private RoomCategory createRoomCategoryIfNotExist(Room room) {
+        return roomCategoryRepository.save(RoomCategory.builder().room(room).category(categoryRepository.getReferenceById(1L)).build());
     }
 }
