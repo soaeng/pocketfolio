@@ -6,20 +6,22 @@ import {
   ImgBox,
   Img,
   TextBox,
-} from './VisitItem.style';
+} from './GuestItem.style';
 
-const VisitItem = () => {
+const GuestItem = () => {
   return (
     <Container>
       <Header>
         <Name>User</Name>
       </Header>
       <ImgTextDiv>
-        <ImgBox><Img /></ImgBox>
+        <ImgBox>
+          <Img />
+        </ImgBox>
         <TextBox>에베ㅔ베베</TextBox>
       </ImgTextDiv>
     </Container>
   );
 };
 
-export default VisitItem;
+export default GuestItem;

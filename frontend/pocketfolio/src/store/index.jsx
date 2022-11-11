@@ -10,6 +10,7 @@ import oauthReducer from './oauthSlice'
 import roomReducer from './roomSlice'
 import portReducer from './portSlice'
 import itemReducer from './itemSlice'
+import guestReducer from './guestSlice'
 
 
 // persist
@@ -23,6 +24,7 @@ const rootReducers = combineReducers({
   room: roomReducer,
   port: portReducer,
   item: itemReducer,
+  guest: guestReducer,
 });
 
 const persistedReducer = persistReducer(rootPersistConfig, rootReducers);
