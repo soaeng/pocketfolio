@@ -3,8 +3,9 @@ package com.ssafy.pocketfolio.api.dto;
 import com.ssafy.pocketfolio.db.entity.Portfolio;
 import com.ssafy.pocketfolio.db.entity.PortfolioUrl;
 import lombok.Builder;
+import lombok.Getter;
 
-
+@Getter
 @Builder
 public class PortfolioUrlDto {
 

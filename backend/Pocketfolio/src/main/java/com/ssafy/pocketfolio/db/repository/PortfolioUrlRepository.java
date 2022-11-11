@@ -1,6 +1,5 @@
 package com.ssafy.pocketfolio.db.repository;
 
-import com.ssafy.pocketfolio.db.entity.Portfolio;
 import com.ssafy.pocketfolio.db.entity.PortfolioUrl;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -12,4 +11,6 @@ public interface PortfolioUrlRepository extends JpaRepository<PortfolioUrl, Long
 
     // 포트폴리오 첨부파일 삭제
     void deleteAllByPortfolio_PortSeq(long portSeq);
+    List<PortfolioUrl> findAllByPortUrlSeqIn(List<Long> urlSeq);
+    void deleteAllByPortUrlSeqIn(List<Long> urlSeqs);
 }

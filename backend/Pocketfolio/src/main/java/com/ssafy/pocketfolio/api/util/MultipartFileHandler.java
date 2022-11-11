@@ -73,7 +73,7 @@ public class MultipartFileHandler {
                         .withCannedAcl(CannedAccessControlList.PublicRead)
         );
 
-        filePath = amazonS3Client.getUrl(S3Bucket, saveName).toString(); // 접근가능한 URL 가져오기
+        filePath = amazonS3Client.getUrl(S3Bucket, uploadPath).toString(); // 접근가능한 URL 가져오기
         if (filePath != null ) {
             log.debug("파일 저장 성공");
         }
@@ -87,7 +87,7 @@ public class MultipartFileHandler {
 
     // 파일 삭제
     public void deleteFile(String url, String uploadDirName) {
-        String key = uploadDirName + url.substring(url.lastIndexOf(".com/") + 4);
+        String key = url.substring(url.lastIndexOf(".com/") + 5);
         log.debug("delete key: " + key);
         amazonS3Client.deleteObject(new DeleteObjectRequest(S3Bucket, key));
     }

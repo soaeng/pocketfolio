@@ -1,5 +1,6 @@
 package com.ssafy.pocketfolio.api.controller;
 
+import com.ssafy.pocketfolio.api.dto.PortfolioUrlDto;
 import com.ssafy.pocketfolio.api.dto.request.PortfolioReq;
 import com.ssafy.pocketfolio.api.dto.response.PortfolioListRes;
 import com.ssafy.pocketfolio.api.dto.response.PortfolioRes;
@@ -109,7 +110,7 @@ public class PortfolioController {
             @ApiResponse(responseCode = "500", description = "서버 에러", content = @Content(schema = @Schema(implementation = Error.class)))
     })
     @PatchMapping("/{portSeq}")
-    private ResponseEntity<Long> updatePortfolio(@PathVariable(value="portSeq") long portSeq, @RequestPart(value="portfolio") PortfolioReq portfolio, @RequestPart(value = "thumbnail", required = false) MultipartFile thumbnail, @RequestPart(value = "files", required = false) List<MultipartFile> files, HttpServletRequest request) {
+    private ResponseEntity<Long> updatePortfolio(@PathVariable(value="portSeq") long portSeq, @RequestPart(value="portfolio") PortfolioReq portfolio, @RequestPart(value="urls") List<PortfolioUrlDto> urls, @RequestPart(value = "thumbnail", required = false) MultipartFile thumbnail, @RequestPart(value = "files", required = false) List<MultipartFile> files, HttpServletRequest request) {
         log.debug("[PATCH] Controller - Portfolio");
         // 포트폴리오 저장 후 해당 포트폴리오 번호 반환
         Long response = null;
@@ -119,7 +120,7 @@ public class PortfolioController {
 
         try {
             if (userSeq > 0) {
-                response = portfolioService.updatePortfolio(userSeq, portSeq, portfolio, thumbnail, files);
+                response = portfolioService.updatePortfolio(userSeq, portSeq, portfolio, urls, thumbnail, files);
                 status = response != null ? HttpStatus.CREATED : HttpStatus.INTERNAL_SERVER_ERROR;
             } else {
                 log.error("사용 불가능 토큰");
