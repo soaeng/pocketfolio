@@ -25,7 +25,8 @@ import Editor from './Editor';
 import {Body1} from '../../styles/styles.style';
 import SaveModal from './SaveModal';
 import ReactHtmlParser from 'html-react-parser';
-import {registPortfolio, getportDetail} from '../../store/portSlice';
+import {getportDetail, modifiedPort} from '../../store/portSlice';
+import toast, {Toaster} from 'react-hot-toast';
 
 const PortfolioEdit = () => {
   const navigate = useNavigate();
@@ -33,13 +34,17 @@ const PortfolioEdit = () => {
   const portSeq = useParams();
   const port_id = parseInt(portSeq.port_id);
 
-
   const [portDetail, setPortDetail] = useState();
 
   // 저장 모달 오픈 변수
   const [modalOpen, setModalOpen] = useState(false);
   // 첨부 파일 리스트
   const [attachList, setAttachList] = useState([]);
+  // 기존 파일 url
+  const [existFile, setExistFile] = useState([]);
+  // 새로 추가한 파일
+  const [newFile, setNewFile] = useState([]);
+
   // 포트폴리오 제목, 내용 변수
   const [portContent, setPortContent] = useState({
     name: '포트폴리오 제목',
@@ -55,7 +60,7 @@ const PortfolioEdit = () => {
   // 포트폴리오 제목 저장
   const getValue = e => {
     const {name, value} = e.target;
-    console.log(name, value)
+    // console.log(name, value);
     setPortContent({
       ...portContent,
       [name]: value,
@@ -67,21 +72,21 @@ const PortfolioEdit = () => {
     dispatch(getportDetail(port_id))
       .then(res => {
         const data = res.payload;
-        setHashArr(data.tags)
-        setAttachList(data.urls)
+        setHashArr(data.tags);
+        setAttachList(data.urls);
+        setExistFile(data.urls);
         setPortContent({
           ...portContent,
           name: data.name,
-          summary: data.summary
+          summary: data.summary,
         });
-        setThumbNail(data.thumbnail)
+        setThumbNail(data.thumbnail);
       })
       .catch(err => {
         alert('목록 불러오기 실패');
       });
   }, []);
 
-  
   // 해시태그 입력
   const onChangeHashtag = e => {
     setHashtag(e.target.value);
@@ -117,8 +122,7 @@ const PortfolioEdit = () => {
     setModalOpen(false);
   };
 
-  console.log('첨부파일 목록',attachList)
-  // 파일 첨부
+  // 파일 첨부 함수
   const fileInput = React.useRef(null);
   const handleButtonClick = e => {
     fileInput.current.click();
@@ -126,19 +130,19 @@ const PortfolioEdit = () => {
   const handleChange = e => {
     if (e.target.files[0] !== undefined) {
       setAttachList(attachList => [...attachList, e.target.files[0]]);
+      setNewFile(newFile => [...newFile, e.target.files[0]]);
     }
-    // const formData = new FormData()
-    // formData.append('file', e.target.files[0])
-    // for (let value of formData.values()) {
-    //   console.log(value);
-    // }
   };
 
   // 파일 첨부 취소
   const cancelAttach = e => {
     let selected = e.target.getAttribute('value');
     const result = attachList.filter(content => content.name !== selected);
+    const newResult = newFile.filter(content => content.name !== selected);
+    const oldResult = existFile.filter(content => content.name !== selected);
     setAttachList(result);
+    setExistFile(oldResult);
+    setNewFile(newResult);
   };
 
   // 썸네일 첨부
@@ -156,43 +160,57 @@ const PortfolioEdit = () => {
     setThumbNail('');
   };
 
+  console.log('썸넬', thumbNail);
   // 포트폴리오 제출 함수
   const savePortFolio = () => {
-    const fileData = new FormData();
-    let files = attachList;
+    const form = new FormData();
+
+    const port = JSON.stringify({
+      name: portContent.name,
+      summary: portContent.summary,
+      tags: hashArr,
+    });
+    form.append('portfolio', new Blob([port], {type: 'application/json'}));
+
+    const existfile = JSON.stringify(existFile);
+    form.append('urls', new Blob([existfile], {type: 'application/json'}));
+
+    let files = newFile;
     for (let i = 0; i < files.length; i++) {
-      fileData.append('files', files[i]);
+      form.append('files', files[i]);
     }
+    form.append('thumbnail', thumbNail);
 
-    const imageData = new FormData();
-    imageData.append('thumbnail', thumbNail);
-
-    // 폼 데이터 value 확인
-    for (let key of imageData.values()) {
-      console.log(key);
-    }
-
-    // POST 할 parameter
-    const data = {
-      portfolio: {
-        name: portContent.name,
-        summary: portContent.summary,
-        tags: hashArr,
-      },
-      thumbnail: imageData,
-      files: fileData,
-    };
-
-    dispatch(registPortfolio(data))
+    dispatch(modifiedPort({form, port_id}))
       .unwrap()
       .then(res => {
-        console.log(res);
+        closeModal();
+        toast.success('포트폴리오가 수정 되었습니다.');
+        const move = setTimeout(() => {
+          navigate(`/port/${port_id}`);
+        }, 1500);
+        move();
       });
   };
 
+  console.log('썸네일', thumbNail);
   return (
     <Background>
       <Nav></Nav>
+      <Toaster
+        position="top-center"
+        containerStyle={{
+          position: 'absolute',
+        }}
+        toastOptions={{
+          duration: 3000,
+          style: {
+            background: '#fff',
+            color: '#333333',
+            fontSize: '0.85rem',
+          },
+        }}
+      />
       <Wrapper className="wrapper">
         <ContentDiv>
           <Label>제목</Label>

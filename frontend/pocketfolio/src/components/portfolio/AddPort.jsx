@@ -158,7 +158,6 @@ const AddPort = () => {
     ></div>
   );
 
-  console.log(thumbNail);
   return (
     <Background>
       <Nav></Nav>
