@@ -3,13 +3,18 @@ import {RiLockUnlockLine, RiLockFill} from 'react-icons/ri';
 
 export const Container = styled.div`
   width: 100%;
+  height: 100%;
   color: #333;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 `;
 
 export const WriteForm = styled.form`
-  border-bottom: 1px solid #333;
-  padding: 1rem 0;
-  width: 100%;
+  /* border-bottom: 2px solid #333; */
+  padding: 0.5rem 0;
+  width: 96%;
   margin-bottom: 1rem;
 `;
 
@@ -22,13 +27,17 @@ export const ImgBox = styled.div`
   width: 6.25rem;
   height: 6.25rem;
   border-radius: 0.4rem;
-  object-fit: cover;
-  background-color: purple;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 export const Img = styled.img`
+  object-fit: cover;
   width: 100%;
   height: 100%;
+  border-radius: 0.4rem;
 `;
 
 export const TextArea = styled.textarea`
@@ -37,11 +46,12 @@ export const TextArea = styled.textarea`
   width: calc(100% - 9.25rem);
   resize: none;
   height: 4.25rem;
+  border-radius: 0.3rem;
 `;
 
 export const BottomBox = styled.div`
   width: 100%;
-  margin-top: 0.5rem;
+  margin: 0.6rem 0;
 
   display: flex;
   align-items: center;
@@ -65,4 +75,44 @@ export const LockText = styled.p`
   font-size: 0.85rem;
 `;
 
-export const Btn = styled.button``;
+export const Btn = styled.button`
+  background-color: #e75452;
+  color: white;
+  border: none;
+  border-radius: 0.2rem;
+  padding: 0.35rem 0.45rem;
+
+  &:hover {
+    background-color: #c13136;
+    color: #eeeeee;
+  }
+`;
+
+export const ScrollDiv = styled.div`
+  width: 96%;
+  height: 70%;
+  overflow: auto;
+
+  &::-webkit-scrollbar {
+    width: 8px; /* 세로축 스크롤바 길이 */
+    height: 15px; /* 가로축 스크롤바 길이 */
+  }
+
+  &::-webkit-scrollbar-track {
+    border-radius: 8px;
+    background-color: #eeeeee; /*스크롤 바 배경 색상*/
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: 8px;
+    background-color: #c6c6c6; /*스크롤 바 색상*/
+  }
+`;
+
+export const ItemContainer = styled.div`
+  width: 98%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`;

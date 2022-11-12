@@ -71,6 +71,8 @@ const Profile = () => {
 
   // 회원정보수정
   async function sendData() {
+
+    // form 생성
     const form = new FormData();
     const json = JSON.stringify({
       name: name ? name : user.name,
@@ -84,7 +86,10 @@ const Profile = () => {
 
     form.append('profilePic', profilePic);
 
+
+    // 회원정보 수정 axios
     const res = await dispatch(updateProfile(form));
+    
     if (res.payload.request.status === 201) {
       toast.success('회원정보가 성공적으로 수정되었습니다.');
     } else {
@@ -105,6 +110,7 @@ const Profile = () => {
     setProfilePic(e.target.files[0]);
 
     const reader = new FileReader();
+    
     reader.readAsDataURL(e.target.files[0]);
     return new Promise(resolve => {
       reader.onload = () => {
