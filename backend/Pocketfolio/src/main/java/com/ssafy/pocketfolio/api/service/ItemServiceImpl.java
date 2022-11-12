@@ -125,10 +125,10 @@ public class ItemServiceImpl implements ItemService {
                 Item item = itemRepository.findByNameEngEquals(filename);
                 item.updateImage(dest);
             }
-            return null;
+            return true;
         } catch (Exception e) {
             log.error(e.getMessage());
-            return null;
+            return false;
         }
     }
 
