@@ -9,7 +9,21 @@ export const getGuestList = createAsyncThunk(
   async (roomSeq, {rejectWithValue}) => {
     try {
       const res = await http.get(`guests/${roomSeq}`);
-      console.log(res)
+      console.log(res);
+      if (res.status === 200) return res.data;
+    } catch (error) {
+      console.log('방명록 조회 에러', error);
+      return rejectWithValue(error);
+    }
+  },
+);
+
+/** 파도타기 */
+export const getRandom = createAsyncThunk(
+  'getRandom',
+  async (roomSeq, {rejectWithValue}) => {
+    try {
+      const res = await http.get(`rooms/random`);
       if (res.status === 200) return res.data;
     } catch (error) {
       console.log('방명록 조회 에러', error);
