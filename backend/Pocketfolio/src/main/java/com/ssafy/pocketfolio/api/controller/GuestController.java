@@ -32,16 +32,16 @@ public class GuestController {
             @ApiResponse(responseCode = "500", description = "서버 에러", content = @Content(schema = @Schema(implementation = Error.class)))
     })
     @PostMapping("/{roomSeq}")
-    public ResponseEntity<Long> insertGuestbook(@PathVariable("roomSeq") Long roomSeq, @RequestBody GuestbookReq guestbook, HttpServletRequest request) {
+    public ResponseEntity<GuestbookRes> insertGuestbook(@PathVariable("roomSeq") Long roomSeq, @RequestBody GuestbookReq guestbook, HttpServletRequest request) {
         log.debug("[POST] Controller - insertGuestbook");
-        Long response = null;
+        GuestbookRes response = null;
         HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
 
         try{
             long userSeq = (Long) request.getAttribute("userSeq");
             if (userSeq > 0) {
                 response = guestbookService.insertGuestbook(guestbook, roomSeq, userSeq);
-                status = (response > 0) ? HttpStatus.CREATED : HttpStatus.INTERNAL_SERVER_ERROR;
+                status = response != null ? HttpStatus.CREATED : HttpStatus.INTERNAL_SERVER_ERROR;
             } else {
                 log.error("사용 불가능 토큰");
                 status = HttpStatus.FORBIDDEN;

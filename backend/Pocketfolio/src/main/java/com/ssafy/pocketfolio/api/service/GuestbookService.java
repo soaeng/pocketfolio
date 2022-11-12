@@ -14,7 +14,7 @@ public interface GuestbookService {
      * @param userSeq 방명록 작성자
      * @return 등록한 방명록 번호
      */
-    Long insertGuestbook(GuestbookReq req, long roomSeq, long userSeq);
+    GuestbookRes insertGuestbook(GuestbookReq req, long roomSeq, long userSeq);
 
     /**
      * 방명록 목록 조회
