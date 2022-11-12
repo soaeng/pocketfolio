@@ -69,8 +69,9 @@ export const ProfileDiv = styled.div`
 
 export const ProfileImg = styled.img`
   height: 60px;
+  width: 60px;
   border-radius: 50%;
-  background-color:#fff;
+  object-fit: cover;
 `;
 
 export const FollowList = styled.div`
