@@ -16,4 +16,6 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
 
 //	@Query(value = "select category from item group by category order by count(*) desc", nativeQuery = true)
 //	List<String> findItemCategoryList();
+
+	Item findByNameEngEquals(String nameEng);
 }

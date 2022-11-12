@@ -115,4 +115,20 @@ public class ItemController {
 
         return new ResponseEntity<>(response, status);
     }
+
+    @PatchMapping
+    private ResponseEntity<Boolean> updateImage(@RequestPart("category") String category, @RequestPart("images") List<MultipartFile> images) {
+        log.debug("[POST] Controller - updateImage");
+        Boolean response = null;
+        HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
+
+        try{
+            response = itemService.updateImage(category, images);
+            status = response != null ? HttpStatus.CREATED : HttpStatus.INTERNAL_SERVER_ERROR;
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
+
+        return new ResponseEntity<>(response, status);
+    }
 }

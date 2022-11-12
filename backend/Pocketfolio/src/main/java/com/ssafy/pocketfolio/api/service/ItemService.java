@@ -35,6 +35,16 @@ public interface ItemService {
      * @param category 아이템 카테고리 영문명
      * @param files 에셋 파일
      * @return 등록 여부
+     * @throws IOException 등록 실패 시 던져짐
      */
     Boolean insertItem(String category, List<MultipartFile> files) throws IOException;
+
+    /**
+     * 에셋 이미지 등록
+     * @param category 아이템 카테고리 영문명
+     * @param images 에셋 이미지 파일
+     * @return 등록 여부
+     * @throws IOException 등록 실패 시 던져짐
+     */
+    Boolean updateImage(String category, List<MultipartFile> images) throws IOException;
 }
