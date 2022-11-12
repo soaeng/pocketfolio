@@ -79,6 +79,11 @@ public class SecurityConfig {
         return http.build();
     }
 
+    @Bean
+    public WebSecurityCustomizer webSecurityCustomizer() {
+        return (web) -> web.ignoring()
+                .antMatchers("/swagger/**", "/swagger-ui/**", "/v3/api-docs/**");
+    }
 //    public ApiLoginFilter apiLoginFilter(AuthenticationManager authenticationManager) throws Exception {
 //
 //        ApiLoginFilter apiLoginFilter =  new ApiLoginFilter("/users/login", jwtUtil());
