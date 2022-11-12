@@ -13,4 +13,5 @@ public interface ItemCategoryRepository extends JpaRepository<ItemCategory, Long
 			"from item_category c inner join item i on c.item_category_seq = i.item_category_seq " +
 			"group by c.item_category_seq order by count(*) desc", nativeQuery = true)
 	List<ItemCategoryListView> findItemCategoryList(int limit);
+	ItemCategory findByNameEngEquals(String name);
 }
