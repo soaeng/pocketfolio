@@ -1,11 +1,14 @@
 package com.ssafy.pocketfolio.api.controller;
 
+import com.nimbusds.oauth2.sdk.ErrorResponse;
 import com.ssafy.pocketfolio.api.dto.request.GuestbookCommentReq;
 import com.ssafy.pocketfolio.api.dto.request.GuestbookReq;
 import com.ssafy.pocketfolio.api.dto.response.GuestbookRes;
 import com.ssafy.pocketfolio.api.dto.response.UserRes;
 import com.ssafy.pocketfolio.api.service.GuestbookService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -29,10 +32,11 @@ public class GuestController {
     @Operation(summary = "방명록 등록", description = "방명록 등록", responses = {
             @ApiResponse(responseCode = "201", description = "방명록 등록 성공", content = @Content(schema = @Schema(implementation = GuestbookReq.class))),
             @ApiResponse(responseCode = "403", description = "사용 불가능 토큰", content = @Content(schema = @Schema(implementation = UserRes.class))),
-            @ApiResponse(responseCode = "500", description = "서버 에러", content = @Content(schema = @Schema(implementation = Error.class)))
+            @ApiResponse(responseCode = "500", description = "서버 에러", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     @PostMapping("/{roomSeq}")
-    public ResponseEntity<Long> insertGuestbook(@PathVariable("roomSeq") Long roomSeq, @RequestBody GuestbookReq guestbook, HttpServletRequest request) {
+    public ResponseEntity<Long> insertGuestbook(
+            @Parameter(name = "roomSeq", description = "방 번호", in = ParameterIn.PATH) @PathVariable("roomSeq") Long roomSeq, @RequestBody GuestbookReq guestbook, HttpServletRequest request) {
         log.debug("[POST] Controller - insertGuestbook");
         Long response = null;
         HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
@@ -56,10 +60,11 @@ public class GuestController {
     @Operation(summary = "방명록 목록 조회", description = "방명록 목록 조회", responses = {
             @ApiResponse(responseCode = "200", description = "방명록 목록 조회", content = @Content(schema = @Schema(implementation = GuestbookRes.class))),
             @ApiResponse(responseCode = "403", description = "사용 불가능 토큰", content = @Content(schema = @Schema(implementation = UserRes.class))),
-            @ApiResponse(responseCode = "500", description = "서버 에러", content = @Content(schema = @Schema(implementation = Error.class)))
+            @ApiResponse(responseCode = "500", description = "서버 에러", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     @GetMapping("/{roomSeq}")
-    public ResponseEntity<List<GuestbookRes>> findGuestbookList(@PathVariable("roomSeq") Long roomSeq) {
+    public ResponseEntity<List<GuestbookRes>> findGuestbookList(
+            @Parameter(name = "roomSeq", description = "방 번호", in = ParameterIn.PATH) @PathVariable("roomSeq") Long roomSeq) {
         List<GuestbookRes> response = null;
         HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
 
@@ -75,12 +80,12 @@ public class GuestController {
 
 
     @Operation(summary = "방명록 삭제", description = "방명록 삭제", responses = {
-            @ApiResponse(responseCode = "200", description = "방명록 삭제 성공", content = @Content(schema = @Schema(implementation = Long.class))),
+            @ApiResponse(responseCode = "200", description = "방명록 삭제 성공", content = @Content(schema = @Schema(implementation = Boolean.class))),
             @ApiResponse(responseCode = "403", description = "사용 불가능 토큰", content = @Content(schema = @Schema(implementation = UserRes.class))),
-            @ApiResponse(responseCode = "500", description = "서버 에러", content = @Content(schema = @Schema(implementation = Error.class)))
+            @ApiResponse(responseCode = "500", description = "서버 에러", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     @DeleteMapping("/{guestbookSeq}")
-    public ResponseEntity<Boolean> deleteGuestbook(@PathVariable("guestbookSeq") Long guestbookSeq, HttpServletRequest request) {
+    public ResponseEntity<Boolean> deleteGuestbook(@Parameter(name = "guestbookSeq", description = "방명록 번호", in = ParameterIn.PATH) @PathVariable("guestbookSeq") Long guestbookSeq, HttpServletRequest request) {
         Boolean  response = null;
         HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
 
@@ -101,12 +106,12 @@ public class GuestController {
     }
 
     @Operation(summary = "방명록 댓글 등록", description = "방명록 댓글 등록", responses = {
-            @ApiResponse(responseCode = "201", description = "방명록 댓글 등록 성공", content = @Content(schema = @Schema(implementation = GuestbookCommentReq.class))),
+            @ApiResponse(responseCode = "201", description = "방명록 댓글 등록 성공", content = @Content(schema = @Schema(implementation = Long.class))),
             @ApiResponse(responseCode = "403", description = "사용 불가능 토큰", content = @Content(schema = @Schema(implementation = UserRes.class))),
-            @ApiResponse(responseCode = "500", description = "서버 에러", content = @Content(schema = @Schema(implementation = Error.class)))
+            @ApiResponse(responseCode = "500", description = "서버 에러", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     @PostMapping("/comment/{roomSeq}/{guestbookSeq}")
-    public ResponseEntity<Long> insertGuestbookComment(@PathVariable("roomSeq") Long roomSeq, @PathVariable("guestbookSeq") Long guestbookSeq, @RequestBody GuestbookCommentReq comment, HttpServletRequest request) {
+    public ResponseEntity<Long> insertGuestbookComment(@Parameter(name = "roomSeq", description = "방 번호", in = ParameterIn.PATH) @PathVariable("roomSeq") Long roomSeq, @Parameter(name = "guestbookSeq", description = "방명록 번호", in = ParameterIn.PATH) @PathVariable("guestbookSeq") Long guestbookSeq, @RequestBody GuestbookCommentReq comment, HttpServletRequest request) {
         Long response = null;
         HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
 
@@ -127,12 +132,12 @@ public class GuestController {
     }
 
     @Operation(summary = "방명록 삭제", description = "방명록 삭제", responses = {
-            @ApiResponse(responseCode = "200", description = "방명록 삭제 성공", content = @Content(schema = @Schema(implementation = Long.class))),
+            @ApiResponse(responseCode = "200", description = "방명록 삭제 성공", content = @Content(schema = @Schema(implementation = Boolean.class))),
             @ApiResponse(responseCode = "403", description = "사용 불가능 토큰", content = @Content(schema = @Schema(implementation = UserRes.class))),
-            @ApiResponse(responseCode = "500", description = "서버 에러", content = @Content(schema = @Schema(implementation = Error.class)))
+            @ApiResponse(responseCode = "500", description = "서버 에러", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     @DeleteMapping("/comment/{commentSeq}")
-    public ResponseEntity<Boolean> deleteGuestbookComment(@PathVariable("commentSeq") Long commentSeq, HttpServletRequest request) {
+    public ResponseEntity<Boolean> deleteGuestbookComment(@Parameter(name = "commentSeq", description = "댓글 번호", in = ParameterIn.PATH) @PathVariable("commentSeq") Long commentSeq, HttpServletRequest request) {
         Boolean response = null;
         HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
 

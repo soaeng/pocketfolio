@@ -1,11 +1,13 @@
 package com.ssafy.pocketfolio.api.dto.response;
 
 import com.ssafy.pocketfolio.db.entity.GuestbookComment;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.Builder;
 
 import java.time.format.DateTimeFormatter;
 
 @Builder
+@Tag(name = "GuestbookCommentRes", description = "방명록 댓글 Response")
 public class GuestbookCommentRes {
     private Long commentSeq;
     private String content;

@@ -3,6 +3,7 @@ package com.ssafy.pocketfolio.api.dto.response;
 import com.ssafy.pocketfolio.db.entity.Guestbook;
 import com.ssafy.pocketfolio.db.entity.Room;
 import com.ssafy.pocketfolio.db.entity.User;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.Builder;
 
 import java.time.LocalDateTime;
@@ -10,6 +11,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Builder
+@Tag(name = "GuestbookRes", description = "방명록 Response")
 public class GuestbookRes {
     private Long guestbookSeq;
     private String content;

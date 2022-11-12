@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Builder
-
+@io.swagger.v3.oas.annotations.tags.Tag(name = "PortfolioListRes", description = "포트폴리오 목록 Response")
 public class PortfolioListRes {
     @Schema(description = "포트폴리오 번호")
     private Long portSeq;

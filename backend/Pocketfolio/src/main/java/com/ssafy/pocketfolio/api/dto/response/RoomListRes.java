@@ -1,16 +1,25 @@
 package com.ssafy.pocketfolio.api.dto.response;
 
 import com.ssafy.pocketfolio.db.entity.Room;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.Builder;
 
 @Builder
+@Tag(name = "RoomListRes", description = "방 목록 Response")
 public class RoomListRes {
-    private Long roomSeq;       // 마이룸 번호
-    private String thumbnail;   // 썸네일
-    private String name;        // 마이룸 이름
-    private String user;        // 작성자
-    private int like;        // 좋아요 수
-    private int hit;         // 조회수
+    @Schema(description = "마이룸 번호")
+    private Long roomSeq;
+    @Schema(description = "썸네일 url")
+    private String thumbnail;
+    @Schema(description = "방 이름")
+    private String name;
+    @Schema(description = "방 주인")
+    private String user;
+    @Schema(description = "좋아요 수")
+    private int like;
+    @Schema(description = "조회수")
+    private int hit;
 
     public static RoomListRes toDto(Room entity, int like, int hit) {
         if (entity == null) {
