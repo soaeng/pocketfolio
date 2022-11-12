@@ -16,7 +16,7 @@ export const Background = styled.div`
   flex-direction: column;
 
   .ck.ck-editor__editable:not(.ck-editor__nested-editable) {
-    height: 300px;
+    height: 400px;
     background-color: white;
     border: 0.5px solid #bababa;
     &::-webkit-scrollbar {

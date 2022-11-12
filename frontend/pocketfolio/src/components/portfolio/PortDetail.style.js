@@ -1,17 +1,15 @@
 import styled from 'styled-components';
 import {H2, Body1} from '../../styles/styles.style';
+import {TbEdit, TbList, TbFiles} from 'react-icons/tb';
 
 export const Background = styled.div`
   width: 100vw;
   height: 100vh;
-  /* position: relative; */
-  p {
-    /* margin: 0; */
-  }
 `;
 
 export const Container = styled.div`
   display: flex;
+  justify-content: center;
   margin: 3rem auto;
   width: 80vw;
 
@@ -41,7 +39,6 @@ export const Summary = styled(Body1)`
   padding-top: 1rem;
   width: 100%;
   overflow: auto;
-  
 `;
 
 export const WriteDate = styled.p`
@@ -52,12 +49,13 @@ export const WriteDate = styled.p`
 
 export const ThumbDiv = styled.div`
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 30%;
-  padding-bottom: 5rem;
+  margin: auto;
+  width: 40%;
+  padding-top: 3rem;
   overflow: hidden;
-
 `;
 export const ThumbNail = styled.img`
   max-width: 100%;
@@ -69,7 +67,6 @@ export const HashDiv = styled.div`
   margin-bottom: 1rem;
   width: 50%;
   flex-wrap: wrap;
-  
 `;
 
 export const Hash = styled.div`
@@ -81,29 +78,108 @@ export const Hash = styled.div`
   color: #fff;
 `;
 
-
-export const BtnDiv = styled.div`
+export const BottomDiv = styled.div`
   display: flex;
-  justify-content: flex-end;
-  /* padding-bottom: 1rem; */
+  justify-content: space-between;
+  height: 55px;
   margin-bottom: 1rem;
-`
-export const Btn = styled.div`
-  padding: 15px 30px;
-  background-color: #e75452;
-  color: #ffffff;
-  border-radius: 0.5rem;
-  text-transform: uppercase;
-  font-family: sans-serif;
-  transition: all 0.4s;
-  font-weight: bold;
-  &:focus {
-    outline: none;
-  }
-  &:hover {
-    background-color: #ca3c3a;
-    cursor: pointer;
-    box-shadow: 2;
-  }
+`;
 
-`
+export const IconDiv = styled.div`
+  display: flex;
+`;
+
+export const IconWrap = styled.div`
+  position: relative;
+  transition: all 0.3s;
+  &:hover {
+    .tooltip {
+      visibility: visible;
+    }
+  }
+`;
+
+export const EditIcon = styled(TbEdit)`
+  font-size: 50px;
+  width: 70px;
+  transition: all 0.3s;
+  color: #f3a9a1;
+  &:hover {
+    color: #df7d72;
+    font-size: 53px;
+  }
+  cursor: pointer;
+`;
+
+export const PortIcon = styled(TbList)`
+  font-size: 50px;
+  width: 70px;
+  transition: all 0.3s;
+  color: #f3a9a1;
+  &:hover {
+    font-size: 52px;
+    color: #df7d72;
+    .tooltip {
+      visibility: visible;
+    }
+  }
+  cursor: pointer;
+`;
+
+export const AttachDiv = styled.div`
+  display: flex;
+`;
+
+export const AttachList = styled.div`
+  display: flex;
+  align-items: center;
+  width: 100%;
+  flex-wrap: wrap;
+`;
+export const Attach = styled.a`
+  text-decoration: none;
+  color: black;
+  width: 5rem;
+  margin-right: 0.5rem;
+  background-color: #ffc3c3;
+  padding: 10px;
+  border-radius: 0.5rem;
+  font-family: 'NanumSquareAcr' !important;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover {
+    padding: 12px;
+  }
+`;
+
+export const AttachIcon = styled(TbFiles)`
+  font-size: 50px;
+  color: #ffc3c3;
+`;
+
+export const ToolTip = styled.span`
+  position: absolute;
+  bottom: 3.5rem;
+  left: -3.2rem;
+  visibility: hidden;
+  width: 150px;
+  display: flex;
+  flex-direction: row-reverse;
+
+  &:hover {
+  }
+`;
+
+export const ToolTipText = styled.p`
+  width: fit-content;
+  margin: 0;
+  font-size: 1rem;
+  background-color: #f8af87;
+  color: #fff;
+  border-radius: 6px;
+  padding: 4px 6px;
+`;
