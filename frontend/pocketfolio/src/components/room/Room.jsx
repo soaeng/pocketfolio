@@ -8,7 +8,7 @@ import toast, {Toaster} from 'react-hot-toast';
 import {useParams} from 'react-router-dom';
 import {useState, useEffect} from 'react';
 import {useDispatch} from 'react-redux';
-import { getGuestList } from '../../store/guestSlice';
+import {getGuestList} from '../../store/guestSlice';
 
 // 마이룸
 const Room = () => {
@@ -41,13 +41,13 @@ const Room = () => {
     toast.success('URL이 복사되었습니다.');
   };
 
-  const guestList = async () => {
-    const res = await dispatch(getGuestList(roomSeq));
-  };
+  // const guestList = async () => {
+  //   const res = await dispatch(getGuestList(roomSeq));
+  // };
 
   useEffect(() => {
-    if (sidebar === 'guest') guestList();
-    console.log(sidebar);
+    // console.log(sidebar);
+    // if (sidebar === 'guest') guestList();
   }, [sidebar]);
 
   return (

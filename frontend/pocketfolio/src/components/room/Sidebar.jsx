@@ -31,7 +31,7 @@ const Sidebar = ({sidebar, changeSidebar, edit, roomSeq}) => {
           </CloseBox>
         )}
         {sidebar === 'port' ? <PortList /> : null}
-        {sidebar === 'guest' ? <GuestList /> : null}
+        {sidebar === 'guest' ? <GuestList roomSeq={roomSeq} /> : null}
         {sidebar === 'edit' ? <ObjectList /> : null}
       </SideContainer>
       {edit ? (

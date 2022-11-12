@@ -15,7 +15,7 @@ export const SideContainer = styled.div`
   width: 38rem;
   height: calc(100vh - 4rem);
   padding: 2rem;
-  background-color: #eee;
+  background-color: #ffffff;
   transition: all 0.3s;
   display: none;
 
