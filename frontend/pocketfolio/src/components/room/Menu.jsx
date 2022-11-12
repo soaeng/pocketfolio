@@ -35,7 +35,7 @@ const Menu = ({roomSeq, changeSidebar, copyURL, onEdit}) => {
 
   // changeRoom
   const changeRoom = async () => {
-    const res = await dispatch(getRandom());
+    const res = await dispatch(getRandom(roomSeq));
     navigate(`/room/${res.payload}`);
   };
 
