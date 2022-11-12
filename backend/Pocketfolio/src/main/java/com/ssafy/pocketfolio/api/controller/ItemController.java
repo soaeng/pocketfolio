@@ -1,7 +1,5 @@
 package com.ssafy.pocketfolio.api.controller;
 
-import com.ssafy.pocketfolio.api.dto.request.ItemReq;
-import com.ssafy.pocketfolio.api.dto.request.PortfolioReq;
 import com.ssafy.pocketfolio.api.dto.response.ItemCategoryListRes;
 import com.ssafy.pocketfolio.api.dto.response.ItemRes;
 import com.ssafy.pocketfolio.api.service.ItemService;
@@ -17,8 +15,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -105,13 +101,13 @@ public class ItemController {
     }
 
     @PostMapping
-    private ResponseEntity<Boolean> insertItem(@RequestPart(value="item") ItemReq itemReq, @RequestPart(value = "files") List<MultipartFile> files) {
+    private ResponseEntity<Boolean> insertItem(@RequestPart("category") String category, @RequestPart(value = "files") List<MultipartFile> files) {
         log.debug("[POST] Controller - insertItem");
         Boolean response = null;
         HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
 
         try{
-            response = itemService.insertItem(itemReq, files);
+            response = itemService.insertItem(category, files);
             status = response != null ? HttpStatus.CREATED : HttpStatus.INTERNAL_SERVER_ERROR;
         } catch (Exception e) {
             log.error(e.getMessage());

@@ -1,11 +1,9 @@
 package com.ssafy.pocketfolio.api.service;
 
-import com.ssafy.pocketfolio.api.dto.PortfolioUrlDto;
-import com.ssafy.pocketfolio.api.dto.request.ItemReq;
-import com.ssafy.pocketfolio.api.dto.request.PortfolioReq;
 import com.ssafy.pocketfolio.api.dto.response.ItemCategoryListRes;
 import com.ssafy.pocketfolio.api.dto.response.ItemRes;
 import com.ssafy.pocketfolio.api.util.MultipartFileHandler;
+import com.ssafy.pocketfolio.api.util.TranslateHandler;
 import com.ssafy.pocketfolio.db.entity.*;
 import com.ssafy.pocketfolio.db.repository.ItemCategoryRepository;
 import com.ssafy.pocketfolio.db.repository.ItemRepository;
@@ -15,7 +13,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,7 +28,7 @@ public class ItemServiceImpl implements ItemService {
 
     private final ItemCategoryRepository itemCategoryRepository;
     private final MultipartFileHandler fileHandler;
-
+    private final TranslateHandler transHandler;
 
     @Override
     public List<ItemCategoryListRes> findItemCategoryList() {
@@ -74,24 +71,28 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     // 일단 받은 asset으로만 등록, 이후 image로 patch 통해 추가
-    public Boolean insertItem(ItemReq req, List<MultipartFile> files) {
+    public Boolean insertItem(String category, List<MultipartFile> files) {
         log.debug("[POST] Service - insertItem");
 
         try {
             for (MultipartFile file : files) {
-                String dest = fileHandler.saveFile(file, "item/" + req.getCategory());
-                int idx = file.getName().lastIndexOf(".");
-                log.debug("file.getName: " + file.getName());
-                log.debug("file.getOriginalFileName: " + file.getOriginalFilename());
-                ItemCategory category = itemCategoryRepository.findByNameEngEquals(req.getCategory());
-                log.debug("category: " + category.toString());
+                String dest = fileHandler.saveFile(file, "item/" + category);
+                assert file.getOriginalFilename() != null;
+                int idx = file.getOriginalFilename().lastIndexOf(".");
+                ItemCategory itemCategory = itemCategoryRepository.findByNameEngEquals(category);
+                log.debug("category: " + itemCategory.toString());
                 String filename = file.getOriginalFilename();
                 assert filename != null;
+                filename = filename.substring(0, idx);
+                log.debug("filename: " + filename);
+                String nameKor = transHandler.translate(filename);
+                log.debug("nameKor: " + nameKor);
                 Item item = Item.builder()
-                        .name(filename.substring(0, idx))
+                        .nameEng(filename)
+                        .nameKor(nameKor)
                         .asset(dest)
-                        .image("")
-                        .itemCategory(category)
+                        .image(dest)
+                        .itemCategory(itemCategory)
                         .build();
                 log.debug("item: " + item.toString());
                 itemRepository.save(item);

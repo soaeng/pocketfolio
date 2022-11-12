@@ -1,6 +1,5 @@
 package com.ssafy.pocketfolio.api.service;
 
-import com.ssafy.pocketfolio.api.dto.request.ItemReq;
 import com.ssafy.pocketfolio.api.dto.response.ItemCategoryListRes;
 import com.ssafy.pocketfolio.api.dto.response.ItemRes;
 import org.springframework.web.multipart.MultipartFile;
@@ -33,9 +32,9 @@ public interface ItemService {
 
     /**
      * 아이템 등록
-     * @param itemReq 아이템 정보
+     * @param category 아이템 카테고리 영문명
      * @param files 에셋 파일
      * @return 등록 여부
      */
-    Boolean insertItem(ItemReq itemReq, List<MultipartFile> files) throws IOException;
+    Boolean insertItem(String category, List<MultipartFile> files) throws IOException;
 }

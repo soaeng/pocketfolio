@@ -24,9 +24,13 @@ public class Item {
 	@Column(name="item_seq", nullable=false, updatable=false)
 	private Long itemSeq;
 	
-	@Column(name="name", length=20, nullable=false)
+	@Column(name="name_eng", length=30, nullable=false)
 	@NotNull
-	private String name;
+	private String nameEng;
+
+	@Column(name="name_kor", length=20, nullable=false)
+	@NotNull
+	private String nameKor;
 
 	@Column(name="asset", length=255, nullable=false)
 	@NotNull
@@ -40,10 +44,15 @@ public class Item {
 	@JoinColumn(name="item_category_seq")
 	private ItemCategory itemCategory;
 
-	public void updateItem(String name, String asset, String image, ItemCategory itemCategory) { // for administrator
-		this.name = name;
+	public void updateItem(String nameEng, String nameKor, String asset, String image, ItemCategory itemCategory) { // for administrator
+		this.nameEng = nameEng;
+		this.nameKor = nameKor;
 		this.asset = asset;
 		this.image = image;
 		this.itemCategory = itemCategory;
+	}
+
+	public void updateImage(String image) {
+		this.image = image;
 	}
 }

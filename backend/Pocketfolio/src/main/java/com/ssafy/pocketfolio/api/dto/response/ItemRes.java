@@ -15,8 +15,11 @@ public class ItemRes {
     @Schema(description = "아이템 번호", nullable = false)
     private Long itemSeq;
 
-    @Schema(description = "아이템 이름", nullable = false, maxLength = 20)
-    private String name;
+    @Schema(description = "아이템 영어 이름", nullable = false, maxLength = 20)
+    private String nameEng;
+    
+    @Schema(description = "아이템 한글 이름", nullable = false, maxLength = 20)
+    private String nameKor;
 
     @Schema(description = "아이템 asset 파일 경로", nullable = false, maxLength = 255, example = "/upload/object/J2EeRo2d.obj")
     private String asset;
@@ -26,7 +29,8 @@ public class ItemRes {
 
     public ItemRes(Item item) {
         itemSeq = item.getItemSeq();
-        name = item.getName();
+        nameEng = item.getNameEng();
+        nameKor = item.getNameKor();
         asset = item.getAsset();
         image = item.getImage();
     }
