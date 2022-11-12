@@ -57,8 +57,6 @@ const Profile = () => {
       ? `${user.birth.year}-${user.birth.month}-${user.birth.day}`
       : '',
   );
-  console.log(birth);
-  // const [birth, setBirth] = useState('2000-01-01');
   const [describe, setDescribe] = useState(
     user && user.describe ? user.describe : '',
   );
@@ -87,8 +85,11 @@ const Profile = () => {
     form.append('profilePic', profilePic);
 
     const res = await dispatch(updateProfile(form));
-    if (res.payload.request.status === 201) console.log(res);
-    toast.success('회원정보가 성공적으로 수정되었습니다.');
+    if (res.payload.request.status === 201) {
+      toast.success('회원정보가 성공적으로 수정되었습니다.');
+    } else {
+      toast.error('회원정보 수정에 실패했습니다.')
+    }
   }
 
   // 회원탈퇴
@@ -120,7 +121,7 @@ const Profile = () => {
         user.birth.month < 10 ? `0${user.birth.month}` : user.birth.month;
       const day = user.birth.day < 10 ? `0${user.birth.day}` : user.birth.day;
 
-      setBirth(`${year}-${month}-${day}`)
+      setBirth(`${year}-${month}-${day}`);
     }
   }, [user]);
 

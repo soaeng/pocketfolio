@@ -1,9 +1,12 @@
 import React, {useState, useEffect, useRef} from 'react';
+import {useDispatch} from 'react-redux';
+import { getMyInfo } from '../../store/oauthSlice';
 import {AvatarImg, AvatarContainer} from './Avatar.style';
 import DropDown from './Dropdown';
 
 function Avatar({user}) {
   const [visible, setVisible] = useState(false);
+  const dispatch = useDispatch();
 
   // dropdown 외부 클릭시 dropdown창 꺼지게 하기(modal 같은 기능 구현)
   const modalRef = useRef(null);
@@ -25,23 +28,27 @@ function Avatar({user}) {
       document.removeEventListener('mousedown', handler);
     };
   });
-  console.log(user.profilePic, 123);
+
+  useEffect(() => {
+    if (visible) dispatch(getMyInfo());
+  }, [visible]);
+
   return (
     <AvatarContainer ref={modalRef}>
       {user.profilePic === undefined ? (
-          <AvatarImg
-            src="./assets/images/user.png"
-            onClick={() => {
-              setVisible(!visible);
-            }}
-          />
+        <AvatarImg
+          src="./assets/images/user.png"
+          onClick={() => {
+            setVisible(!visible);
+          }}
+        />
       ) : (
-          <AvatarImg
-            src={user.profilePic}
-            onClick={() => {
-              setVisible(!visible);
-            }}
-          />
+        <AvatarImg
+          src={user.profilePic}
+          onClick={() => {
+            setVisible(!visible);
+          }}
+        />
       )}
       {visible && <DropDown user={user} />}
     </AvatarContainer>
