@@ -107,7 +107,7 @@ const GuestList = ({roomSeq}) => {
       <ScrollDiv>
         <ItemContainer>
           {data.map((item, idx) => (
-            <GuestItem item={item} removeGuest={removeGuest} key={idx}/>
+            <GuestItem item={item} removeGuest={removeGuest} key={idx} />
           ))}
         </ItemContainer>
       </ScrollDiv>

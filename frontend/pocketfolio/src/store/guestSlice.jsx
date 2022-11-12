@@ -45,8 +45,6 @@ export const delGuest = createAsyncThunk(
   },
 );
 
-
-
 /** 파도타기 */
 export const getRandom = createAsyncThunk(
   'getRandom',
