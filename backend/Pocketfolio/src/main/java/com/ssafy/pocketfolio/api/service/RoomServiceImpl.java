@@ -328,11 +328,13 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     @Transactional(readOnly = true)
-    public Long findRandomRoom() {
+    public Long findRandomRoom(long roomSeq, long userSeq) {
         log.debug("[GET] Service - findRandomRoom");
-        List<Long> roomSeqs = roomRepository.findAllByPrivacy();
-        Random rand = new Random();
-        return roomSeqs.get(rand.nextInt(roomSeqs.size()));
+        if (userSeq == 0) {
+            return roomRepository.findRoomSeqByPrivacyOrderByRandom(roomSeq);
+        } else {
+            return roomRepository.findRoomSeqByPrivacyOrderByRandom(roomSeq, userSeq);
+        }
     }
 
     @Override

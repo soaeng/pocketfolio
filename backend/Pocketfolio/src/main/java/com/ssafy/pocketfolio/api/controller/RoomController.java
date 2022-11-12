@@ -337,16 +337,17 @@ public class RoomController {
             @ApiResponse(responseCode = "403", description = "사용 불가능 토큰", content = @Content(schema = @Schema(implementation = UserRes.class))),
             @ApiResponse(responseCode = "500", description = "서버 에러", content = @Content(schema = @Schema(implementation = Error.class)))
     })
-    @GetMapping("/random")
-    public ResponseEntity<Long> findRandomRoom(HttpServletRequest request) {
+    @GetMapping("/random/{roomSeq}")
+    public ResponseEntity<Long> findRandomRoom(@PathVariable("roomSeq") Long roomSeq, HttpServletRequest request) {
         log.debug("[GET] Controller - findRandomRoom");
         Long response = null;
         HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
 
         try{
             long userSeq = (Long) request.getAttribute("userSeq");
-            if (userSeq > 0) {
-                response = roomService.findRandomRoom();
+            // 사용자, 방문자의 경우 서비스 단으로
+            if (userSeq >= 0) {
+                response = roomService.findRandomRoom(roomSeq, userSeq);
                 status = response != null ? HttpStatus.OK : HttpStatus.INTERNAL_SERVER_ERROR;
             } else {
                 log.error("사용 불가능 토큰");
