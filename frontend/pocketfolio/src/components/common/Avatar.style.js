@@ -11,6 +11,8 @@ export const AvatarContainer = styled.div`
 // Avatar Img
 export const AvatarImg = styled.img`
   height: 50px;
+  width: 50px;
+  object-fit: cover;
   border-radius: 50%;
   cursor: pointer;
 `;
