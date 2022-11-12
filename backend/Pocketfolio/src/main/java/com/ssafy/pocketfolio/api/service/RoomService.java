@@ -97,7 +97,7 @@ public interface RoomService {
      * 랜덤 방 조회
      * @return 랜덤 방 번호
      */
-    Long findRandomRoom();
+    Long findRandomRoom(long roomSeq, long userSeq);
 
     /**
      * 방문 내역

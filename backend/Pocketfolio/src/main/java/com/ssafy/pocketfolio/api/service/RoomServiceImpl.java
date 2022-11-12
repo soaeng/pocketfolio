@@ -267,6 +267,11 @@ public class RoomServiceImpl implements RoomService {
             return false;
         }
 
+        if (roomRepository.countRoomsByUser_UserSeq(userSeq) == 1) {
+            log.error("최소 1개의 방은 있어야 함");
+            return false;
+        }
+
         // 썸네일 삭제
         if (room.getThumbnail() != null) {
             fileHandler.deleteFile(room.getThumbnail(), "portfolio/thumbnail");
@@ -356,10 +361,13 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     @Transactional(readOnly = true)
-    public Long findRandomRoom() {
+    public Long findRandomRoom(long roomSeq, long userSeq) {
         log.debug("[GET] Service - findRandomRoom");
-
-        return roomRepository.findRoomSeqByPrivacyOrderByRandom();
+        if (userSeq == 0) {
+            return roomRepository.findRoomSeqByPrivacyOrderByRandom(roomSeq);
+        } else {
+            return roomRepository.findRoomSeqByPrivacyOrderByRandom(roomSeq, userSeq);
+        }
     }
 
     @Override
