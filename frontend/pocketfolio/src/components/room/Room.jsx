@@ -46,10 +46,8 @@ const Room = () => {
 
   // 방 정보 불러오기
   const getData = async () => {
-    console.log(roomSeq);
     const {payload} = await dispatch(getRoomInfo(roomSeq));
     setData(payload);
-    console.log(payload);
   };
 
   useEffect(() => {
