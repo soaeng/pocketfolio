@@ -1,173 +1,21 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useEffect} from 'react';
 import {useNavigate} from 'react-router-dom';
 
 import Nav from '../common/Nav';
 import {
-  SearchInput,
   Container,
-  Card,
-  Item,
+  Container1,
+  SearchInput,
+  SearchIcon,
   Tag,
   TagContainer,
-  RecCarImgDiv,
-  RecCarThumbnail,
-  SearchIcon,
-  Container1,
   TopButtonIcon,
   TopButton,
 } from './Search.style';
 
-// 임시데이터(card)
-const items = [
-  {
-    icon: 'face',
-    copy: '01. Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-  },
-  {
-    icon: 'pets',
-    copy: '02. Sed do eiusmod tempor incididunt ut labore.',
-  },
-  {
-    icon: 'stars',
-    copy: '03. Consectetur adipiscing elit.',
-  },
-  {
-    icon: 'invert_colors',
-    copy: '04. Ut enim ad minim veniam, quis nostrud exercitation.',
-  },
-  {
-    icon: 'psychology',
-    copy: '05. Llamco nisi ut aliquip ex ea commodo consequat.',
-  },
-  {
-    icon: 'brightness_7',
-    copy: '06. Misi ut aliquip ex ea commodo consequat.',
-  },
-  {
-    icon: 'brightness',
-    copy: '07. Misi ut aliquip ex ea commodo consequat.',
-  },
-  {
-    icon: 'brightness',
-    copy: '07. Misi ut aliquip ex ea commodo consequat.',
-  },
-  {
-    icon: 'brightness',
-    copy: '07. Misi ut aliquip ex ea commodo consequat.',
-  },
-  {
-    icon: 'brightness',
-    copy: '07. Misi ut aliquip ex ea commodo consequat.',
-  },
-  {
-    icon: 'brightness',
-    copy: '07. Misi ut aliquip ex ea commodo consequat.',
-  },
-  {
-    icon: 'brightness',
-    copy: '07. Misi ut aliquip ex ea commodo consequat.',
-  },
-  {
-    icon: 'brightness',
-    copy: '07. Misi ut aliquip ex ea commodo consequat.',
-  },
-  {
-    icon: 'brightness',
-    copy: '07. Misi ut aliquip ex ea commodo consequat.',
-  },
-  {
-    icon: 'brightness',
-    copy: '07. Misi ut aliquip ex ea commodo consequat.',
-  },
-  {
-    icon: 'brightness',
-    copy: '07. Misi ut aliquip ex ea commodo consequat.',
-  },
-  {
-    icon: 'brightness',
-    copy: '07. Misi ut aliquip ex ea commodo consequat.',
-  },
-  {
-    icon: 'brightness',
-    copy: '07. Misi ut aliquip ex ea commodo consequat.',
-  },
-  {
-    icon: 'brightness',
-    copy: '07. Misi ut aliquip ex ea commodo consequat.',
-  },
-  {
-    icon: 'brightness',
-    copy: '07. Misi ut aliquip ex ea commodo consequat.',
-  },
-  {
-    icon: 'brightness',
-    copy: '07. Misi ut aliquip ex ea commodo consequat.',
-  },
-  {
-    icon: 'brightness',
-    copy: '07. Misi ut aliquip ex ea commodo consequat.',
-  },
-  {
-    icon: 'brightness',
-    copy: '07. Misi ut aliquip ex ea commodo consequat.',
-  },
-  {
-    icon: 'brightness',
-    copy: '07. Misi ut aliquip ex ea commodo consequat.',
-  },
-  {
-    icon: 'brightness',
-    copy: '07. Misi ut aliquip ex ea commodo consequat.',
-  },
-  {
-    icon: 'brightness',
-    copy: '07. Misi ut aliquip ex ea commodo consequat.',
-  },
-  {
-    icon: 'brightness',
-    copy: '07. Misi ut aliquip ex ea commodo consequat.',
-  },
-  {
-    icon: 'brightness',
-    copy: '07. Misi ut aliquip ex ea commodo consequat.',
-  },
-  {
-    icon: 'brightness',
-    copy: '07. Misi ut aliquip ex ea commodo consequat.',
-  },
-  {
-    icon: 'brightness',
-    copy: '07. Misi ut aliquip ex ea commodo consequat.',
-  },
-  {
-    icon: 'brightness',
-    copy: '07. Misi ut aliquip ex ea commodo consequat.',
-  },
-  {
-    icon: 'brightness',
-    copy: '07. Misi ut aliquip ex ea commodo consequat.',
-  },
-  {
-    icon: 'brightness',
-    copy: '07. Misi ut aliquip ex ea commodo consequat.',
-  },
-  {
-    icon: 'brightness',
-    copy: '07. Misi ut aliquip ex ea commodo consequat.',
-  },
-  {
-    icon: 'brightness',
-    copy: '07. Misi ut aliquip ex ea commodo consequat.',
-  },
-  {
-    icon: 'brightness',
-    copy: '07. Misi ut aliquip ex ea commodo consequat.',
-  },
-  {
-    icon: 'brightness',
-    copy: '07. Misi ut aliquip ex ea commodo consequat.',
-  },
-];
+import PocketSearch from './PocketSearch';
+import PortSearch from './PortSearch';
+import UserSearch from './UserSearch';
 
 // 임시데이터(tag)
 const tags = [
@@ -180,12 +28,36 @@ const tags = [
   '순수미술',
   '작곡',
 ];
-console.log(tags[0], '오잉')
+
+// select box options
+const options = [
+	{ value: "pocket", name: "마이포켓" },
+	{ value: "portfolio", name: "포트폴리오" },
+	{ value: "user", name: "유저" },
+];
+
+// select box component
+const SelectBox = (props) => {
+  const handleChange = (e) => {
+		console.log(e.target.value);
+	}
+
+	return (
+		<select onChange={handleChange}>
+			{props.options.map((option) => (
+				<option
+					value={option.value}
+					defaultValue={props.defaultValue === option.value}
+				>
+					{option.name}
+				</option>
+			))}
+		</select>
+	);
+};
 
 const Search = () => {
   const navigate = useNavigate();
-  const [item, setItem] = useState(items);
-  const carousel = useRef(null);
 
   // 검색어
   const [word, setWord] = useState('');
@@ -214,8 +86,6 @@ const Search = () => {
       onSubmit(event);
     };
   };
-
-  // const clickHandlerTag = 
 
   // 최상단 이동 버튼
   const clickHandlerTop = e => {
@@ -258,6 +128,7 @@ const Search = () => {
       </TopButton>
       {/* 검색창 */}
       <Container1>
+        <SelectBox options={options} defaultValue="pocket"/>
         <Container>
           <SearchIcon />
           <SearchInput
@@ -274,24 +145,10 @@ const Search = () => {
           return <Tag>{tag}</Tag>;
         })}
       </TagContainer>
-
       {/* 검색 리스트 목록 */}
-      <Card ref={carousel}>
-        {item.map(it => {
-          const {icon, copy} = it;
-          return (
-            <Item>
-              <RecCarImgDiv>
-                <RecCarThumbnail
-                  src={process.env.PUBLIC_URL + '/assets/images/room.png'}
-                />
-              </RecCarImgDiv>
-              <div>{icon}</div>
-              <div>{copy}</div>
-            </Item>
-          );
-        })}
-      </Card>
+      <PocketSearch/>    
+      <PortSearch />
+      <UserSearch/>
     </>
   );
 };
