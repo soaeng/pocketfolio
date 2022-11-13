@@ -31,7 +31,7 @@ public class GuestbookServiceImpl implements GuestbookService {
 
     @Override
     @Transactional
-    public Long insertGuestbook(GuestbookReq req, long roomSeq, long userSeq) {
+    public GuestbookRes insertGuestbook(GuestbookReq req, long roomSeq, long userSeq) {
         log.debug("[POST] Service - insertGuestbook");
         try {
             Guestbook guestbook = Guestbook.builder()
@@ -40,9 +40,9 @@ public class GuestbookServiceImpl implements GuestbookService {
                     .room(roomRepository.getReferenceById(roomSeq))
                     .user(userRepository.getReferenceById(userSeq))
                     .build();
-            Long guestbookSeq = guestbookRepository.save(guestbook).getGuestbookSeq();
+            long guestbookSeq = guestbookRepository.save(guestbook).getGuestbookSeq();
             log.debug("저장된 방명록 번호: " + guestbookSeq);
-            return guestbookSeq;
+            return GuestbookRes.toDto(guestbook, guestbookSeq);
         } catch (Exception e) {
             log.error(e.getMessage());
             return null;
