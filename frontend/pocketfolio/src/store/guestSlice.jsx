@@ -45,6 +45,28 @@ export const delGuest = createAsyncThunk(
   },
 );
 
+// 방명록 댓글 등록
+export const postComment = createAsyncThunk(
+  'postComment',
+  async (data, {rejectWithValue}) => {
+    try {
+      const res = await http.post(
+        `guests/comment/${data.roomSeq}/${data.guestbookSeq}`,
+        {
+          content: data.content,
+          isPublic: data.isPublic,
+        },
+      );
+
+      console.log(res);
+      if (res.status === 201) return true;
+    } catch (error) {
+      console.log('방명록 댓글 등록 에러', error);
+      return rejectWithValue(error);
+    }
+  },
+);
+
 /** 파도타기 */
 export const getRandom = createAsyncThunk(
   'getRandom',

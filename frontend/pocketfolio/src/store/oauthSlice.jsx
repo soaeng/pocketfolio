@@ -48,7 +48,7 @@ export const signOut = createAsyncThunk(
 );
 
 /** 팔로우 */
-export const follow = createAsyncThunk(
+export const followFunc = createAsyncThunk(
   'follow',
   async (userSeq, {rejectWithValue}) => {
     try {
@@ -62,7 +62,7 @@ export const follow = createAsyncThunk(
 );
 
 // 팔로우 취소 (유저번호) => swagger에 팔로우 번호로 취소 하는 api도 되어있음
-export const unfollow = createAsyncThunk(
+export const unfollowFunc = createAsyncThunk(
   'unfollow',
   async (userSeq, {rejectWithValue}) => {
     try {

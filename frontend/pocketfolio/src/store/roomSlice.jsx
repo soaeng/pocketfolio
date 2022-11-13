@@ -47,10 +47,9 @@ export const createRoom = createAsyncThunk(
 // 마이룸 조회
 export const getRoomInfo = createAsyncThunk(
   'getRoomInfo',
-  async (room_id, {rejectWithValue}) => {
+  async (roomSeq, {rejectWithValue}) => {
     try {
-      const res = await http.get(`rooms/${room_id}`);
-
+      const res = await http.get(`rooms/${roomSeq}`);
       if (res.status === 200) return res.data;
     } catch (error) {
       console.log('마이룸조회에러', error);
@@ -135,10 +134,9 @@ export const getRoomLike = createAsyncThunk(
 // 마이룸 좋아요
 export const roomLike = createAsyncThunk(
   'roomLike',
-  async (room_id, {rejectWithValue}) => {
+  async (roomSeq, {rejectWithValue}) => {
     try {
-      const res = await http.post(`rooms/like/${room_id}`);
-
+      const res = await http.post(`rooms/like/${roomSeq}`);
       if (res.status === 201) return res.data;
     } catch (error) {
       console.log('마이룸 좋아요 에러', error);
@@ -150,10 +148,10 @@ export const roomLike = createAsyncThunk(
 // 마이룸 좋아요 취소
 export const roomDislike = createAsyncThunk(
   'roomDislike',
-  async (room_id, {rejectWithValue}) => {
+  async (roomSeq, {rejectWithValue}) => {
     try {
-      const res = await http.delete(`rooms/like/${room_id}`);
-
+      const res = await http.delete(`rooms/like/${roomSeq}`);
+      console.log(res)
       if (res.status === 200) return res.data;
     } catch (error) {
       console.log('마이룸 좋아요 취소 에러', error);

@@ -20,7 +20,7 @@ import {
   ItemContainer,
 } from './GuestList.style';
 
-const GuestList = ({roomSeq}) => {
+const GuestList = ({roomSeq, roomDto}) => {
   const dispatch = useDispatch();
 
   const user = useSelector(state => state.oauth.user);
@@ -107,7 +107,13 @@ const GuestList = ({roomSeq}) => {
       <ScrollDiv>
         <ItemContainer>
           {data.map((item, idx) => (
-            <GuestItem item={item} removeGuest={removeGuest} key={idx} />
+            <GuestItem
+              item={item}
+              removeGuest={removeGuest}
+              key={idx}
+              roomDto={roomDto}
+              getData
+            ={getData}/>
           ))}
         </ItemContainer>
       </ScrollDiv>
