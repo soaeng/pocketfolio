@@ -238,16 +238,22 @@ public class RoomServiceImpl implements RoomService {
 
         room.updateTheme(roomArrangeReq.getTheme());
 
+        log.debug("테마 업데이트 성공");
+
         roomArrangeReq.getArranges().forEach(arrangeDto -> {
-            Portfolio portfolio;
-            try {
-                portfolio = portfolioRepository.getReferenceById(arrangeDto.getPortSeq());
-            } catch (EntityNotFoundException e) {
-                log.error("포트폴리오 번호 없어서 포트폴리오 연결 없이 진행");
-                portfolio = null;
+
+            Portfolio portfolio = null;
+            Long portSeq = arrangeDto.getPortSeq();
+            if (portSeq != null) {
+                try {
+                    portfolio = portfolioRepository.getReferenceById(portSeq);
+                } catch (EntityNotFoundException e) {
+                    log.error("포트폴리오 번호를 찾지 못하여 포트폴리오 연결 없이 진행");
+                }
             }
-            long arrangeSeq = arrangeDto.getArrangeSeq();
-            if (arrangeSeqSet.contains(arrangeSeq)) { // 원래 있던 Arrange (UPDATE)
+
+            Long arrangeSeq = arrangeDto.getArrangeSeq();
+            if (arrangeSeq != null && arrangeSeqSet.contains(arrangeSeq)) { // 원래 있던 Arrange (UPDATE)
                 arrangeRepository.findById(arrangeSeq).get().updateArrangeAll(arrangeDto.getLocation(), arrangeDto.getRotation(), portfolio);
                 arrangeSeqSet.remove(arrangeSeq);
             } else { // 기존에 없던 Arrange (INSERT)
