@@ -67,13 +67,11 @@ export const ProfileDiv = styled.div`
   padding: 10px;
 `;
 
-export const ProfileimgBox = styled.div`
-  border-radius: 50%;
-`;
-
 export const ProfileImg = styled.img`
-  height: 50px;
-  padding: 10px;
+  height: 60px;
+  width: 60px;
+  border-radius: 50%;
+  object-fit: cover;
 `;
 
 export const FollowList = styled.div`

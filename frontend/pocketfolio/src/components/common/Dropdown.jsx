@@ -14,7 +14,6 @@ import {
   FollowList,
   ProfileDiv,
   ProfileImg,
-  ProfileimgBox,
   DropdownListLast,
   FollowList1,
   ProfileLine,
@@ -23,7 +22,7 @@ import {
 const DropDown = ({user}) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  // const user = useSelector(state => state.oauth.user);
+
   console.log(user, '유저 나와라');
 
   // 마이포켓 이동 => 수정 필요
@@ -47,13 +46,9 @@ const DropDown = ({user}) => {
     <Dropdown>
       <ProfileList>
         {user.profilePic === undefined ? (
-          <ProfileimgBox>
             <ProfileImg src="./assets/images/user.png" />
-          </ProfileimgBox>
         ) : (
-          <ProfileimgBox>
-            <ProfileImg>{user.profilePic}</ProfileImg>
-          </ProfileimgBox>
+            <ProfileImg src={user.profilePic}></ProfileImg>
         )}
         <ProfileDiv>{user.email}</ProfileDiv>
         <FollowList>

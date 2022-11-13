@@ -13,19 +13,30 @@ import {
 } from './Menu.style';
 import {useState} from 'react';
 import {useNavigate} from 'react-router-dom';
+import {useDispatch} from 'react-redux';
+import {getRandom} from '../../store/guestSlice';
 
 const Menu = ({roomSeq, changeSidebar, copyURL, onEdit}) => {
-  const [toggle, setToggle] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const [toggle, setToggle] = useState(false);
 
   // menu toggle
   const toggleMenu = () => {
     setToggle(!toggle);
   };
 
+  // edit mode
   const activeEdit = () => {
     onEdit();
     changeSidebar('edit');
+  };
+
+  // changeRoom
+  const changeRoom = async () => {
+    const res = await dispatch(getRandom(roomSeq));
+    navigate(`/room/${res.payload}`);
   };
 
   return (
@@ -48,8 +59,8 @@ const Menu = ({roomSeq, changeSidebar, copyURL, onEdit}) => {
       </MenuDiv>
 
       <MenuDiv
-        className={toggle ? 'visit' : ''}
-        onClick={() => changeSidebar('visit')}
+        className={toggle ? 'guest' : ''}
+        onClick={() => changeSidebar('guest')}
       >
         <VisitIcon />
         <ToolTip className="tooltip">
@@ -57,7 +68,7 @@ const Menu = ({roomSeq, changeSidebar, copyURL, onEdit}) => {
         </ToolTip>
       </MenuDiv>
 
-      <MenuDiv className={toggle ? 'wave' : ''}>
+      <MenuDiv className={toggle ? 'wave' : ''} onClick={changeRoom}>
         <WaveIcon />
         <ToolTip className="tooltip">
           <ToolTipText>파도타기</ToolTipText>

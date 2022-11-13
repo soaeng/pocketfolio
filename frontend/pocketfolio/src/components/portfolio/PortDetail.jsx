@@ -17,8 +17,17 @@ import {
   ThumbNail,
   HashDiv,
   Hash,
-  BtnDiv,
-  Btn,
+  BottomDiv,
+  IconDiv,
+  IconWrap,
+  EditIcon,
+  PortIcon,
+  AttachDiv,
+  AttachList,
+  Attach,
+  AttachIcon,
+  ToolTip,
+  ToolTipText,
 } from './PortDetail.style';
 
 const PortDetail = () => {
@@ -30,21 +39,31 @@ const PortDetail = () => {
 
   // 포트폴리오 내용
   const [portDetail, setPortDetail] = useState({});
-
+  // 작성일
   const [createDate, setCreateDate] = useState('');
 
+
+  
   // 포트폴리오 본문 파싱
   const Viewer = ({content}) => (
-    <Summary
-      className="ck-content"
-      dangerouslySetInnerHTML={{__html: content}}
-    ></Summary>
+    <div>
+      <ThumbDiv>
+        <ThumbNail src={portDetail.thumbnail}></ThumbNail>
+        <p>대표 이미지</p>
+      </ThumbDiv>
+      <Summary
+        className="ck-content"
+        dangerouslySetInnerHTML={{__html: content}}
+      ></Summary>
+    </div>
   );
 
+  // 포트폴리오 상세 내용 조회
   useEffect(() => {
     dispatch(getportDetail(port_id))
       .then(res => {
         const data = res.payload;
+        console.log(data)
         setPortDetail(data);
         setCreateDate(data.updated.slice(0, 10));
       })
@@ -53,25 +72,30 @@ const PortDetail = () => {
       });
   }, []);
 
+  // 수정 페이지로 이동
   const moveEdit = () => {
-    navigate(`/port/edit/${portDetail.portSeq}`)
+    navigate(`/port/edit/${portDetail.portSeq}`);
   };
-  console.log(portDetail);
-  const image =
-    'https://yd21.go.kr/_prog/download/index.php?func_gbn_cd=tourist&site_dvs_cd=tour&atch=atch_img&mng_no=57';
+
+  // 목록으로 이동
+  const movePortList = () => {
+    navigate('/port');
+  };
+
   return (
     <Background>
       <Nav></Nav>
       <Container>
-        <ThumbDiv>
-          <ThumbNail src={image}></ThumbNail>
-        </ThumbDiv>
         <Content>
           <TitleDiv>
             <Title>{portDetail.name}</Title>
             <WriteDate>수정일 : {createDate}</WriteDate>
           </TitleDiv>
-          <Viewer content={portDetail.summary}></Viewer>
+          <div className="뷰어">
+            <Viewer content={portDetail.summary}>
+              <span>안녕</span>
+            </Viewer>
+          </div>
           <HashDiv>
             {portDetail.tags !== undefined
               ? portDetail.tags.map((item, idx) => (
@@ -79,9 +103,38 @@ const PortDetail = () => {
                 ))
               : null}
           </HashDiv>
-          <BtnDiv>
-            <Btn onClick={moveEdit}>글 수정</Btn>
-          </BtnDiv>
+          <BottomDiv>
+            <AttachDiv>
+              <IconDiv>
+                <AttachIcon></AttachIcon>
+              </IconDiv>
+              <AttachList>
+                {portDetail.urls !== undefined ? (
+                  portDetail.urls.map((item, idx) => (
+                    <Attach href={item.url} key={idx}>
+                      {item.name}
+                    </Attach>
+                  ))
+                ) : (
+                  <Attach>첨부파일 없음</Attach>
+                )}
+              </AttachList>
+            </AttachDiv>
+            <IconDiv>
+              <IconWrap>
+                <PortIcon onClick={movePortList}></PortIcon>
+                <ToolTip className="tooltip">
+                  <ToolTipText>포트폴리오 목록</ToolTipText>
+                </ToolTip>
+              </IconWrap>
+              <IconWrap>
+                <EditIcon onClick={moveEdit}></EditIcon>
+                <ToolTip className="tooltip">
+                  <ToolTipText>포트폴리오 수정</ToolTipText>
+                </ToolTip>
+              </IconWrap>
+            </IconDiv>
+          </BottomDiv>
         </Content>
       </Container>
     </Background>

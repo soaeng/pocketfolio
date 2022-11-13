@@ -24,7 +24,7 @@ import {
   DelIcon,
 } from './Profile.style';
 import DelUserModal from './DelUserModal';
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {useNavigate} from 'react-router-dom';
 import Nav from '../common/Nav';
@@ -51,7 +51,12 @@ const Profile = () => {
   const [blogUrl, setBlogUrl] = useState(
     user && user.blogUrl ? user.blogUrl : '',
   );
-  const [birth, setBirth] = useState(user && user.birth ? user.birth : '');
+
+  const [birth, setBirth] = useState(
+    user && user.birth
+      ? `${user.birth.year}-${user.birth.month}-${user.birth.day}`
+      : '',
+  );
   const [describe, setDescribe] = useState(
     user && user.describe ? user.describe : '',
   );
@@ -66,6 +71,8 @@ const Profile = () => {
 
   // 회원정보수정
   async function sendData() {
+
+    // form 생성
     const form = new FormData();
     const json = JSON.stringify({
       name: name ? name : user.name,
@@ -79,9 +86,15 @@ const Profile = () => {
 
     form.append('profilePic', profilePic);
 
+
+    // 회원정보 수정 axios
     const res = await dispatch(updateProfile(form));
-    if (res.payload.request.status === 201) console.log(res);
-    toast.success('회원정보가 성공적으로 수정되었습니다.');
+    
+    if (res.payload.request.status === 201) {
+      toast.success('회원정보가 성공적으로 수정되었습니다.');
+    } else {
+      toast.error('회원정보 수정에 실패했습니다.')
+    }
   }
 
   // 회원탈퇴
@@ -97,6 +110,7 @@ const Profile = () => {
     setProfilePic(e.target.files[0]);
 
     const reader = new FileReader();
+    
     reader.readAsDataURL(e.target.files[0]);
     return new Promise(resolve => {
       reader.onload = () => {
@@ -105,6 +119,17 @@ const Profile = () => {
       };
     });
   }
+
+  useEffect(() => {
+    if (user && user.birth) {
+      const year = user.birth.year;
+      const month =
+        user.birth.month < 10 ? `0${user.birth.month}` : user.birth.month;
+      const day = user.birth.day < 10 ? `0${user.birth.day}` : user.birth.day;
+
+      setBirth(`${year}-${month}-${day}`);
+    }
+  }, [user]);
 
   return (
     <Container>
