@@ -117,11 +117,16 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     @Transactional
-    public Map<String, Object> findRoom(long userSeq, long roomSeq) { // TODO: 게스트 로직 추가
+    public Map<String, Object> findRoom(long userSeq, long roomSeq) {
         log.debug("[GET] Service - findRoom");
         Map<String, Object> map = new HashMap<>();
 
-        User user = userRepository.findById(userSeq).orElseThrow(() -> new IllegalArgumentException("해당 사용자를 찾을 수 없습니다."));
+        boolean isGuest = userSeq == 0L; // 방문자 처리
+
+        User user = null;
+        if (!isGuest) {
+            user = userRepository.findById(userSeq).orElseThrow(() -> new IllegalArgumentException("해당 사용자를 찾을 수 없습니다."));
+        }
         Room room = roomRepository.findById(roomSeq).orElseThrow(() -> new IllegalArgumentException("해당 방을 찾을 수 없습니다."));
         Optional<RoomCategory> roomCategoryO = roomCategoryRepository.findCategorySeqByRoom_RoomSeq(room.getRoomSeq());
 
@@ -141,7 +146,7 @@ public class RoomServiceImpl implements RoomService {
         }
 
         // 본인 방이 아닌 경우 + 당일 방문하지 않은 경우 조회수 1 증가
-        if (!isMyRoom && !roomHitRepository.existsRoomHitByUser_UserSeqAndRoom_RoomSeqAndHitDateEquals(userSeq, roomSeq, ZonedDateTime.now(ZoneId.of("Asia/Seoul")).toLocalDate())) {
+        if (!isGuest && !isMyRoom && !roomHitRepository.existsRoomHitByUser_UserSeqAndRoom_RoomSeqAndHitDateEquals(userSeq, roomSeq, ZonedDateTime.now(ZoneId.of("Asia/Seoul")).toLocalDate())) {
             roomHitRepository.save(RoomHit.builder().room(room).user(user).build());
         }
 

@@ -11,7 +11,7 @@ public interface ItemCategoryRepository extends JpaRepository<ItemCategory, Long
 
 	@Query(value = "select c.item_category_seq as itemCategorySeq, c.name_kor as nameKor, (count(*) - 1) div ?1 + 1 as lastPage " +
 			"from item_category c inner join item i on c.item_category_seq = i.item_category_seq " +
-			"group by c.item_category_seq order by count(*) desc", nativeQuery = true)
+			"group by c.item_category_seq order by c.item_category_seq desc", nativeQuery = true)
 	List<ItemCategoryListView> findItemCategoryList(int limit);
 	ItemCategory findByNameEngEquals(String name);
 }
