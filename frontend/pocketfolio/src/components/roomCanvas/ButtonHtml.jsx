@@ -1,10 +1,16 @@
-import {DelIcon, EditIcon, RotateIcon} from './ButtonHtml.style';
+import {DelIcon, EditIcon, RotateIcon, Wrapper} from './ButtonHtml.style';
 
-const ButtonHtml = () => {
+const ButtonHtml = ({handleRotate, handleDelBtn}) => {
   return (
-    <div>
-      <DelIcon />
-    </div>
+    <Wrapper>
+      <DelIcon onClick={handleDelBtn} />
+      <RotateIcon
+        onClick={e => {
+          handleRotate(e);
+        }}
+      />
+      <EditIcon />
+    </Wrapper>
   );
 };
 

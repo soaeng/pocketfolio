@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useRef} from 'react';
 import {Canvas} from '@react-three/fiber';
 import {
   OrbitControls,
@@ -13,7 +13,7 @@ import Capture from '../room/Capture';
 
 softShadows();
 const range = 2;
-const datas = [
+const _datas = [
   {
     name: 'Husky',
     position: [
@@ -37,11 +37,14 @@ const datas = [
 const RoomCanvas = ({edit}) => {
   const cntRef = useRef();
   const boundaryRef = useRef();
+  const [cntEnabled, setCntEnabled] = useState(true);
+  const [datas, setDatas] = useState(_datas);
+
   return (
     <Canvas
       shadows
-      raycaster={{params: {Line: {threshold: 0.15}}}}
-      camera={{position: [-20, 20, 20], fov: 20}}
+      // raycaster={{params: {Line: {threshold: 0.15}}}}
+      camera={{position: [-30, 30, 30], fov: 20}}
     >
       {/* <Capture /> */}
       <ambientLight intensity={0.5} />
@@ -62,9 +65,17 @@ const RoomCanvas = ({edit}) => {
         screenSpacePanning={true}
         regress={false}
         ref={cntRef}
+        enabled={cntEnabled}
       />
       <RoomTheme boundaryRef={boundaryRef} name="Room_1">
-        <Items cntRef={cntRef} boundaryRef={boundaryRef} datas={datas} />
+        <Items
+          cntRef={cntRef}
+          boundaryRef={boundaryRef}
+          datas={datas}
+          edit={edit}
+          setCntEnabled={setCntEnabled}
+          setDatas={setDatas}
+        />
       </RoomTheme>
 
       {edit && (
@@ -91,6 +102,7 @@ const RoomCanvas = ({edit}) => {
         screenSpacePanning={true}
         regress={false}
         ref={cntRef}
+        minPolarAngle={0.05}
         maxPolarAngle={Math.PI / 2.2}
       />
     </Canvas>

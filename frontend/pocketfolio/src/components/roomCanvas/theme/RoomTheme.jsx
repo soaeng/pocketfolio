@@ -3,10 +3,10 @@ import {MeshStandardMaterial} from 'three';
 
 const RoomTheme = props => {
   return (
-    <Bounds clip observe margin={2} fit>
-      <mesh ref={props.boundaryRef} visible={false}>
+    <Bounds clip observe margin={2}>
+      {/* <mesh ref={props.boundaryRef} visible={false}>
         <boxGeometry args={[10, 10, 10]} />
-      </mesh>
+      </mesh> */}
       <ThemeMesh name={props.name} />
       {props.children}
     </Bounds>
