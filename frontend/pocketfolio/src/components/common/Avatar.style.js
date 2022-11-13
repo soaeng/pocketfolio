@@ -5,22 +5,14 @@ import styled from 'styled-components';
 export const AvatarContainer = styled.div`
   padding: 0.5rem;
   height: 3.5rem;
-  align-items: center;
+  /* align-items: center; */
 `;
 
 // Avatar Img
 export const AvatarImg = styled.img`
   height: 50px;
-  cursor: pointer;
-`;
-
-export const Dropdown = styled.ul`
-  clear: both;
-  height: 0px;
-  text-align: center;
-  transition: height 0.4s ease;
-`;
-
-export const DropdownList = styled.li`
+  width: 50px;
+  object-fit: cover;
+  border-radius: 50%;
   cursor: pointer;
 `;

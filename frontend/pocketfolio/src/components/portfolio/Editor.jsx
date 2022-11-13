@@ -1,34 +1,94 @@
-// import React, {Component} from 'react';
-// import {CKEditor} from '@ckeditor/ckeditor5-react';
-// import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import React, {useState} from 'react';
+import {CKEditor} from '@ckeditor/ckeditor5-react';
+import DecoupledEditor from '@ckeditor/ckeditor5-build-decoupled-document';
+import {uploadImage} from '../../store/portSlice';
+import {useDispatch} from 'react-redux';
 
+export default function MyEditor({portContent, setPortContent, ...props}) {
+  const dispatch = useDispatch();
+  const [imgUrl, setImgUrl] = useState('');
+  const [test, setTest] = useState([]);
 
-// const Editor = () => {
+  // 이미지 업로드 함수
+  function uploadAdapter(loader) {
+    return {
+      upload: () => {
+        return new Promise((resolve, reject) => {
+          const imageForm = new FormData();
+          // 이미지 경로
+          setImgUrl(loader._reader._data);
+          loader.file.then(file => {
+            imageForm.append('image', file);
+            dispatch(uploadImage(imageForm))
+              .then(res => {
+                resolve({
+                  default: `${res.payload.data.url}`,
+                });
+              })
+              .catch(err => {
+                reject(err);
+              });
+          });
+        });
+      },
+    };
+  }
 
-//   return(
-//     <CKEditor
-          
-//             editor={ClassicEditor}
-//             data=""
-//             config={{
-//               placeholder: "내용을 입력하세요.",
-//           }}
-//             onReady={editor => {
-//               // You can store the "editor" and use when it is needed.
-//               console.log('Editor is ready to use!', editor);
-//             }}
-//             onChange={(event, editor) => {
-//               const data = editor.getData();
-//               console.log({event, editor, data});
-//             }}
-//             onBlur={(event, editor) => {
-//               console.log('Blur.', editor);
-//             }}
-//             onFocus={(event, editor) => {
-//               console.log('Focus.', editor);
-//             }}
-//           />
-//   )
-// }
+  // 이미지 업로드 플러그인
+  function uploadPlugin(editor) {
+    editor.plugins.get('FileRepository').createUploadAdapter = loader => {
+      console.log('로더', loader);
+      return uploadAdapter(loader);
+    };
+  }
 
-// export default Editor
+  return (
+    <div className="Editor">
+      <CKEditor
+        data={portContent.summary}
+        editor={DecoupledEditor}
+        onReady={editor => {
+          editor.ui
+            .getEditableElement()
+            .parentElement.insertBefore(
+              editor.ui.view.toolbar.element,
+              editor.ui.getEditableElement(),
+            );
+
+          // this.editor = editor;
+        }}
+        config={{
+          extraPlugins: [uploadPlugin],
+          fontSize: {
+            options: [
+              14,
+              15,
+              16,
+              17,
+              18,
+              19,
+              'default',
+              21,
+              22,
+              23,
+              24,
+              25,
+              26,
+              27,
+              28,
+            ],
+          },
+        }}
+        onChange={(event, editor) => {
+          const data = editor.getData();
+          setPortContent({
+            ...portContent,
+            summary: data,
+          });
+        }}
+      />
+      {/* <img src={imgUrl}></img> */}
+      <div>{portContent.summary}</div>
+    </div>
+  );
+}

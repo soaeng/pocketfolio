@@ -1,18 +1,28 @@
 import styled from 'styled-components';
+import {RiCloseCircleLine} from 'react-icons/ri';
 
 export const Container = styled.div`
   height: 100vh;
   width: 100vw;
+  margin: 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  color: #333333;
 
   @media screen and (max-width: 660px) {
     justify-content: flex-start;
     padding: 3rem 0;
     height: auto;
   }
+`;
+
+export const NavContainer = styled.div`
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
 `;
 
 export const Title = styled.h1`
@@ -59,20 +69,25 @@ export const ImgDiv = styled.div`
   height: 10rem;
   width: 10rem;
   overflow: hidden;
+
+  display: flex;
+  align-items: center;
 `;
 
 export const Img = styled.img`
-  height: 100%;
-  object-fit: cover;
+  width: 100%;
+  object-fit: contain;
 `;
 
 export const ImgInputDiv = styled.div`
   width: fit-content;
+  position: relative;
 `;
 
 export const ImgInput = styled.input`
   margin-top: 0.5rem;
   margin-left: 1rem;
+  padding-right: 1.2rem;
 
   &::file-selector-button {
     display: inline-block;
@@ -85,6 +100,23 @@ export const ImgInput = styled.input`
       background-color: #dddddd;
     }
   }
+`;
+
+export const DelBox = styled.div`
+  position: absolute;
+  top: 1rem;
+  right: 0;
+  width: 1.2rem;
+  height: 1.2rem;
+
+  &:hover {
+    scale: 1.1;
+  }
+`;
+
+export const DelIcon = styled(RiCloseCircleLine)`
+  width: 100%;
+  height: 100%;
 `;
 
 export const NickBirth = styled.div`
@@ -144,7 +176,7 @@ export const BIBox = styled.div`
 `;
 
 export const TextArea = styled.textarea`
-  font-size: 1.2rem;
+  font-size: 1rem;
   padding: 0.8rem 1rem;
   border-radius: 0.5rem;
   border: 1.4px solid #a5a5a5;
@@ -162,9 +194,27 @@ export const TextArea = styled.textarea`
   }
 `;
 
+export const BtnContainer = styled.div`
+  width: 100%;
+
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+`;
+
+export const SignOutText = styled.p`
+  margin: 0;
+  color: #626262;
+  text-decoration: underline;
+
+  &:hover {
+    color: #313131;
+  }
+`;
+
 export const Btnbox = styled.div`
   margin-top: 3rem;
-  width: 100%;
+  width: 40%;
 `;
 
 export const Btn = styled.button`
@@ -176,27 +226,27 @@ export const Btn = styled.button`
   padding: 0.5rem 0;
 
   & + & {
-    margin-left: 1rem;
+    margin-left: 0.5rem;
   }
 
   &.cancel {
     background-color: white;
-    color: #3c2e9b;
-    border: 0.5px solid #a5a5a5;
+    color: #e75452;
+    border: 0.5px solid #e75452;
 
     &:hover {
       background-color: #eeeeee;
-      color: #312582;
+      color: #c13136;
     }
   }
 
   &.save {
-    background-color: #3c2e9b;
+    background-color: #e75452;
     color: white;
 
     &:hover {
-      background-color: #312582;
-      color: #dcdcdc;
+      background-color: #c13136;
+      color: #eeeeee;
     }
   }
 `;

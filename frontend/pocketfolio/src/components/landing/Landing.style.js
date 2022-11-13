@@ -73,6 +73,18 @@ export const IconBtn = styled.button`
   font-size: 5vh;
   color: #cccccc;
   transition: all 0.2s;
+
+  animation: up-down 1.4s infinite ease-in-out alternate;
+
+  @keyframes up-down {
+    from {
+      transform: translatey(0px);
+    }
+    to {
+      transform: translatey(-15px);
+    }
+  }
+
   &:hover {
     color: #fff;
     cursor: pointer;

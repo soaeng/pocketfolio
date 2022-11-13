@@ -1,18 +1,14 @@
 import {Route, Routes, BrowserRouter} from 'react-router-dom';
 import './App.css';
+
+// pages
 import Landing from './components/landing/Landing';
 import Main from './components/main/Main';
 import Search from './components/search/Search';
-
-// Room
 import Room from './components/room/Room';
-import RoomEdit from './components/room/RoomEdit';
-
-// User
 import Login from './components/user/Login';
+import Oauth from './components/user/Oauth';
 import Profile from './components/user/Profile';
-
-// Portfolio
 import AddPort from './components/portfolio/AddPort';
 import Portfolio from './components/portfolio/Portfolio';
 import PortDetail from './components/portfolio/PortDetail';
@@ -27,11 +23,11 @@ function App() {
         <Route path="/search" element={<Search />} />
 
         {/* Room */}
-        <Route path="/room/:room_id" element={<Room />} />
-        <Route path="/room/edit/:room_id" element={<RoomEdit />} />
+        <Route path="/room/:roomSeq" element={<Room />} />
 
         {/* User */}
         <Route path="/login" element={<Login />} />
+        <Route path="/oauth" element={<Oauth />} />
         <Route path="/profile" element={<Profile />} />
 
         {/* Portfolio */}

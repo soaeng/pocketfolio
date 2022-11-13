@@ -7,9 +7,10 @@ import {
   NavBotton,
   LoginDiv,
 } from './RoomNav.style';
-import Avatar from '../common/avatar';
+import Avatar from '../common/Avatar';
 
-const RoomNav = () => {
+// 마이룸 네브바
+const RoomNav = ({sidebar, edit}) => {
   const navigate = useNavigate();
 
   // 로그인 표시 => 수정 필요
@@ -17,25 +18,27 @@ const RoomNav = () => {
     sessionStorage.getItem('Id'),
   );
 
+  // main page로 이동
   const logoClickHandler = () => {
     navigate('/main');
   };
 
+  // login page로 이동
   const loginClickHandler = () => {
     navigate('/login');
   };
 
+  // 포트폴리오로 이동
   const roomClickHandler = () => {
     navigate('/port');
   };
 
   return (
-    <Container>
+    <Container className={sidebar ? 'side' : null}>
       <LogoContainer onClick={logoClickHandler}>
-        <LogoImg src={process.env.PUBLIC_URL + '/assets/images/logo2.png'} />
+        <LogoImg src={process.env.PUBLIC_URL + '/assets/images/logo4.png'} />
       </LogoContainer>
-
-      {loginFlag === null ? (
+      {edit ? null : loginFlag === null ? (
         <NavBotton onClick={loginClickHandler}>로그인/회원가입</NavBotton>
       ) : (
         <LoginDiv>

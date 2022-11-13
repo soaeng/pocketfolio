@@ -1,32 +1,41 @@
 import styled from 'styled-components';
 
+
 export const Background = styled.div`
   display: flex;
-  justify-content: center;
   align-items: center;
   width: 100vw;
   height: 100vh;
-  background-color: #f7f7f7;
-
   flex-direction: column;
 
   .ck.ck-editor__editable:not(.ck-editor__nested-editable) {
-  min-height: 500px;
-}
+    height: 300px;
+    background-color: white;
+    border: 0.5px solid #bababa;
+    &::-webkit-scrollbar {
+      width: 10px;
+      height: 10px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      height: 5%;
+      background-color: #3c2e9b;
+      border-radius: 2rem;
+    }
+
+    &::-webkit-scrollbar-track {
+      background-color: #d7dcff;
+      border-radius: 2rem;
+    }
+  }
+
+  &.ck-content blockquote {
+    overflow: hidden;
+    padding-right: 14em;
+    padding-left: 1.5em;
+    margin-left: 0;
+    margin-right: 0;
+    font-style: italic;
+    border-left: solid 5px hsl(0, 0%, 80%);
+  }
 `;
-
-export const Wrapper = styled.div`
-  width: 80%;
-  height: 900px;
-
-`;
-
-
-
-export const Header = styled.div`
-  display: flex;
-  font-size: 36px;
-  border-bottom: 2px solid;
-  text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  width: max-content;
-`

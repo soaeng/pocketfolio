@@ -1,6 +1,24 @@
 // 추천 carousel
 import React, {useState, useEffect, useRef} from 'react';
-import {Container, Carousel, Item, Ui, Item3} from './RecCarousel.style';
+import {
+  RecCaContainer,
+  Container,
+  Carousel,
+  ButtonDiv,
+  Item,
+  Item2,
+  Item3,
+  LikeIcon,
+  ShowIcon,
+  LikeShowDiv,
+  RecCarImgDiv,
+  RecCarThumbnail,
+  RecCaTitle,
+  LeftButton,
+  NoneLeftButton,
+  RightButton,
+  NoneRightButton,
+} from './RecCarousel.style';
 
 // 임시데이터
 const items = [
@@ -57,43 +75,80 @@ const items = [
 
 const RecCarousel = () => {
   const [item, setItem] = useState(items);
+
+  const [index, setIndex] = useState(0);
   const carousel = useRef(null);
 
   const handleLeft = e => {
     e.preventDefault();
     carousel.current.scrollLeft -= carousel.current.offsetWidth;
+    setIndex(index - 1);
   };
 
   const handleRight = e => {
     e.preventDefault();
     carousel.current.scrollLeft += carousel.current.offsetWidth;
+    setIndex(index + 1);
   };
 
   return (
     <>
-      <p>포켓폴리오 추천 작품</p>
-      <Container>
-        <Carousel ref={carousel}>
-          {item.map(it => {
-            const {icon, copy, name, like, seen} = it;
-            return (
-              <Item>
-                <div>{icon}</div>
-                <div>{copy}</div>
-                <Item3>
-                  <div>{name}</div>
-                  <div>❤ {like}</div>
-                  <div>👁 {seen}</div>
-                </Item3>
-              </Item>
-            );
-          })}
-        </Carousel>
-      </Container>
-      <Ui>
-        <button onClick={handleLeft}>{'<'}</button>
-        <button onClick={handleRight}>{'>'}</button>
-      </Ui>
+      <RecCaContainer>
+        <RecCaTitle>포켓폴리오 추천 작품</RecCaTitle>
+        <Container>
+          <Carousel ref={carousel}>
+            {item.map(it => {
+              const {copy, name, like, seen} = it;
+              return (
+                <Item>
+                  {/* 이미지 */}
+                  <RecCarImgDiv>
+                    <RecCarThumbnail
+                      src={process.env.PUBLIC_URL + '/assets/images/room.png'}
+                    />
+                  </RecCarImgDiv>
+                  {/* 1차 설명 => 필요 없으면 삭제 */}
+                  {/* <div>{copy}</div> */}
+                  {/* 이름, 좋아요 등 */}
+                  <Item2>
+                    <div>{name}</div>
+                    <LikeShowDiv>
+                      <LikeIcon />
+                      <Item3>{like}</Item3>
+                      <ShowIcon />
+                      <div>{seen}</div>
+                    </LikeShowDiv>
+                  </Item2>
+                </Item>
+              );
+            })}
+          </Carousel>
+        </Container>
+        <ButtonDiv>
+          {index !== 0 ? (
+            <LeftButton
+              onClick={e => {
+                if (index !== 0) {
+                  handleLeft(e);
+                }
+              }}
+            />
+          ) : (
+            <NoneLeftButton />
+          )}
+          {index === 0 ? (
+            <RightButton
+              onClick={e => {
+                if (index === 0) {
+                  handleRight(e);
+                }
+              }}
+            />
+          ) : (
+            <NoneRightButton />
+          )}
+        </ButtonDiv>
+      </RecCaContainer>
     </>
   );
 };
