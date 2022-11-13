@@ -47,10 +47,9 @@ export const createRoom = createAsyncThunk(
 // 마이룸 조회
 export const getRoomInfo = createAsyncThunk(
   'getRoomInfo',
-  async (room_id, {rejectWithValue}) => {
+  async (roomSeq, {rejectWithValue}) => {
     try {
-      const res = await http.get(`rooms/${room_id}`);
-
+      const res = await http.get(`rooms/${roomSeq}`);
       if (res.status === 200) return res.data;
     } catch (error) {
       console.log('마이룸조회에러', error);

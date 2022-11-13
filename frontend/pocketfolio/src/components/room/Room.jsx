@@ -8,7 +8,7 @@ import toast, {Toaster} from 'react-hot-toast';
 import {useParams} from 'react-router-dom';
 import {useState, useEffect} from 'react';
 import {useDispatch} from 'react-redux';
-import {getGuestList} from '../../store/guestSlice';
+import {getRoomInfo} from '../../store/roomSlice';
 
 // 마이룸
 const Room = () => {
@@ -19,11 +19,13 @@ const Room = () => {
 
   const [sidebar, setSidebar] = useState('');
   const [edit, setEdit] = useState(false);
+  const [data, setData] = useState({});
 
   const changeSidebar = state => {
     setSidebar(state);
   };
 
+  // edit myroom
   const onEdit = () => {
     setEdit(true);
     setSidebar('edit');
@@ -42,19 +44,20 @@ const Room = () => {
     toast.success('URL이 복사되었습니다.');
   };
 
-  // const guestList = async () => {
-  //   const res = await dispatch(getGuestList(roomSeq));
-  // };
+  // 방 정보 불러오기
+  const getData = async () => {
+    const {payload} = await dispatch(getRoomInfo(roomSeq));
+    setData(payload);
+  };
 
   useEffect(() => {
-    // console.log(sidebar);
-    // if (sidebar === 'guest') guestList();
-  }, [sidebar]);
+    getData();
+  }, [roomSeq]);
 
   return (
     <Container className={sidebar ? 'active' : ''}>
       <RoomNav sidebar={sidebar} edit={edit} />
-      <RoomInfo sidebar={sidebar} edit={edit} />
+      <RoomInfo sidebar={sidebar} edit={edit} data={data}/>
       <CanvasWrapper className={sidebar ? 'active' : ''}>
         <RoomCanvas />
         <Toaster
