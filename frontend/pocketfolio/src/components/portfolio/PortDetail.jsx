@@ -137,7 +137,6 @@ const PortDetail = () => {
             </IconDiv>
           </BottomDiv>
         </Content>
-        <>{portDetail.summary}</>
       </Container>
     </Background>
   );

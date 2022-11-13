@@ -4,10 +4,12 @@ import DecoupledEditor from '@ckeditor/ckeditor5-build-decoupled-document';
 import {uploadImage} from '../../store/portSlice';
 import {useDispatch} from 'react-redux';
 
-export default function MyEditor({portContent, setPortContent, ...props}) {
+export default function MyEditor(props) {
   const dispatch = useDispatch();
   const [imgUrl, setImgUrl] = useState('');
   const [test, setTest] = useState([]);
+
+  const {portContent, setPortContent, addImgHandle} = props;
 
   // 이미지 업로드 함수
   function uploadAdapter(loader) {
@@ -21,8 +23,10 @@ export default function MyEditor({portContent, setPortContent, ...props}) {
             imageForm.append('image', file);
             dispatch(uploadImage(imageForm))
               .then(res => {
+                const imgData = res.payload.data;
+                addImgHandle(imgData.imageSeq, imgData.url);
                 resolve({
-                  default: `${res.payload.data.url}`,
+                  default: `${imgData.url}` ,
                 });
               })
               .catch(err => {
@@ -37,7 +41,6 @@ export default function MyEditor({portContent, setPortContent, ...props}) {
   // 이미지 업로드 플러그인
   function uploadPlugin(editor) {
     editor.plugins.get('FileRepository').createUploadAdapter = loader => {
-      console.log('로더', loader);
       return uploadAdapter(loader);
     };
   }
@@ -87,8 +90,6 @@ export default function MyEditor({portContent, setPortContent, ...props}) {
           });
         }}
       />
-      {/* <img src={imgUrl}></img> */}
-      <div>{portContent.summary}</div>
     </div>
   );
 }
