@@ -25,7 +25,7 @@ const Sidebar = ({sidebar, changeSidebar, edit, roomSeq}) => {
   return (
     <Container>
       <SideContainer className={sidebar ? 'open' : null}>
-        {edit ? null : (
+        {!edit && (
           <CloseBox onClick={controlSide}>
             <CloseIcon />
           </CloseBox>
