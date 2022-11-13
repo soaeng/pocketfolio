@@ -20,6 +20,7 @@ public class PortfolioRes {
     private String summary;             // 개요
     private String thumbnail;           // 썸네일 url
     private String thumbnailName;
+    private long userSeq;
     private String created;      // 생성일
     private String updated;      // 수정일
     private List<PortfolioUrlDto> urls; // 포트폴리오 url 리스트
@@ -32,6 +33,7 @@ public class PortfolioRes {
                 .summary(entity.getSummary())
                 .thumbnail(entity.getThumbnail())
                 .thumbnailName(entity.getThumbnailName())
+                .userSeq(entity.getUser().getUserSeq())
                 .created(entity.getCreated().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
                 .updated(entity.getUpdated().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
                 .urls(urls.stream().map(PortfolioUrlDto::toDto).collect(Collectors.toList()))
