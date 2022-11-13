@@ -2,6 +2,7 @@ package com.ssafy.pocketfolio.api.service;
 
 import com.ssafy.pocketfolio.api.dto.PortfolioUrlDto;
 import com.ssafy.pocketfolio.api.dto.request.PortfolioReq;
+import com.ssafy.pocketfolio.api.dto.response.ImageRes;
 import com.ssafy.pocketfolio.api.dto.response.PortfolioListRes;
 import com.ssafy.pocketfolio.api.dto.response.PortfolioRes;
 import org.springframework.web.multipart.MultipartFile;
@@ -62,5 +63,5 @@ public interface PortfolioService {
      * @param image 이미지 파일
      * @return 이미지 url
      */
-    String insertImage(MultipartFile image) throws IOException;
+    ImageRes insertImage(MultipartFile image) throws IOException;
 }

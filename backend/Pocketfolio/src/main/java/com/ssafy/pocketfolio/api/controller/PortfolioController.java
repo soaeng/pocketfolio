@@ -3,6 +3,7 @@ package com.ssafy.pocketfolio.api.controller;
 import com.nimbusds.oauth2.sdk.ErrorResponse;
 import com.ssafy.pocketfolio.api.dto.PortfolioUrlDto;
 import com.ssafy.pocketfolio.api.dto.request.PortfolioReq;
+import com.ssafy.pocketfolio.api.dto.response.ImageRes;
 import com.ssafy.pocketfolio.api.dto.response.PortfolioListRes;
 import com.ssafy.pocketfolio.api.dto.response.PortfolioRes;
 import com.ssafy.pocketfolio.api.dto.response.UserRes;
@@ -163,13 +164,13 @@ public class PortfolioController {
     }
 
     @Operation(summary = "포트폴리오 이미지 등록", description = "포트폴리오 이미지 등록", responses = {
-            @ApiResponse(responseCode = "200", description = "포트폴리오 이미지 등록 성공", content = @Content(schema = @Schema(implementation = String.class))),
+            @ApiResponse(responseCode = "200", description = "포트폴리오 이미지 등록 성공", content = @Content(schema = @Schema(implementation = ImageRes.class))),
             @ApiResponse(responseCode = "500", description = "서버 에러", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     @PostMapping("/images")
-    private ResponseEntity<String> insertPortfolio(@RequestParam(value="image") MultipartFile image) {
+    private ResponseEntity<ImageRes> insertPortfolio(@RequestParam(value="image") MultipartFile image) {
         log.debug("[POST] Controller - insertPortfolio");
-        String response = null;
+        ImageRes response = null;
         HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
 
         try{

@@ -3,6 +3,7 @@ package com.ssafy.pocketfolio.api.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.pocketfolio.api.dto.PortfolioUrlDto;
 import com.ssafy.pocketfolio.api.dto.request.PortfolioReq;
+import com.ssafy.pocketfolio.api.dto.response.ImageRes;
 import com.ssafy.pocketfolio.api.dto.response.PortfolioListRes;
 import com.ssafy.pocketfolio.api.dto.response.PortfolioRes;
 import com.ssafy.pocketfolio.api.util.MultipartFileHandler;
@@ -209,7 +210,7 @@ public class PortfolioServiceImpl implements PortfolioService {
     }
 
     @Override
-    public String insertImage(MultipartFile file) throws IOException {
+    public ImageRes insertImage(MultipartFile file) throws IOException {
         log.debug("[POST] Service - insertImage");
         String dest = fileHandler.saveFile(file, "portfolio/image");
         // 포트폴리오 저장
@@ -220,7 +221,7 @@ public class PortfolioServiceImpl implements PortfolioService {
         long imgSeq = imageRepository.save(image).getImageSeq();
         log.debug("저장된 이미지 번호: " + imgSeq);
 
-        return dest;
+        return ImageRes.toDto(imgSeq, image);
     }
 
     // 태그 저장
