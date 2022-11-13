@@ -27,12 +27,6 @@ const Menu = ({roomSeq, changeSidebar, copyURL, onEdit}) => {
     setToggle(!toggle);
   };
 
-  // edit mode
-  const activeEdit = () => {
-    onEdit();
-    changeSidebar('edit');
-  };
-
   // changeRoom
   const changeRoom = async () => {
     const res = await dispatch(getRandom(roomSeq));
@@ -41,7 +35,7 @@ const Menu = ({roomSeq, changeSidebar, copyURL, onEdit}) => {
 
   return (
     <Container>
-      <MenuDiv onClick={activeEdit} className={toggle ? 'edit' : ''}>
+      <MenuDiv onClick={onEdit} className={toggle ? 'edit' : ''}>
         <EditIcon />
         <ToolTip className="tooltip">
           <ToolTipText>마이룸 수정</ToolTipText>

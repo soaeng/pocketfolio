@@ -15,6 +15,9 @@ import {
   BtnDate,
   BtnBox,
   TextBtn,
+  CommentContainer,
+  CommentArea,
+  CommentBtn,
 } from './GuestItem.style';
 
 const GuestItem = ({item, removeGuest}) => {
@@ -34,7 +37,12 @@ const GuestItem = ({item, removeGuest}) => {
           {user && user.userSeq === item.userSeq && (
             <BtnBox>
               <TextBtn type="button">수정</TextBtn> |
-              <TextBtn type="button" onClick={() => removeGuest(item.guestbookSeq)}>삭제</TextBtn>
+              <TextBtn
+                type="button"
+                onClick={() => removeGuest(item.guestbookSeq)}
+              >
+                삭제
+              </TextBtn>
             </BtnBox>
           )}
         </BtnDate>
@@ -52,6 +60,13 @@ const GuestItem = ({item, removeGuest}) => {
         </ImgBox>
         <TextBox>{item.content}</TextBox>
       </ImgTextDiv>
+
+      <CommentContainer>
+        <CommentArea className={item.isPublic === 'T' ? '' : 'secret'} />
+        <CommentBtn className={item.isPublic === 'T' ? '' : 'secret'}>
+          확인
+        </CommentBtn>
+      </CommentContainer>
     </Container>
   );
 };

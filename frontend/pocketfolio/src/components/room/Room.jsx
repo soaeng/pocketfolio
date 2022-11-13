@@ -26,6 +26,7 @@ const Room = () => {
 
   const onEdit = () => {
     setEdit(true);
+    setSidebar('edit');
   };
 
   const offEdit = () => {
