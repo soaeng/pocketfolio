@@ -168,6 +168,7 @@ public class RoomController {
             }
         } catch (IllegalArgumentException e) {
             log.error(e.getMessage());
+            status = HttpStatus.NOT_FOUND;
         } catch (Exception e) {
             log.error(e.getMessage());
         }

@@ -15,7 +15,7 @@ import lombok.*;
 @ToString
 @Tag(name = "ArrangeDto", description = "배치 Request/Response DTO")
 public class ArrangeDto {
-    @Schema(description = "배치 번호", nullable = false)
+    @Schema(description = "배치 번호")
     private Long arrangeSeq;
 
     @Schema(description = "아이템 번호", nullable = false)
