@@ -56,7 +56,7 @@ const GuestItem = ({item, removeGuest, roomDto, getData}) => {
       <Header className={item.isPublic === 'T' ? '' : 'secret'}>
         <NameDiv>
           <IconDiv>
-            {item.isPublic == 'T' ? <UnlockIcon /> : <LockIcon />}
+            {item.isPublic === 'T' ? <UnlockIcon /> : <LockIcon />}
           </IconDiv>
           <Name>{item.userName} </Name>
         </NameDiv>
@@ -88,11 +88,11 @@ const GuestItem = ({item, removeGuest, roomDto, getData}) => {
         </ImgBox>
         <TextBox>{item.content}</TextBox>
       </ImgTextDiv>
-
-      {item.commentList && (
+      {console.log(item.commentList)}
+      {item.commentList.length > 0 && (
         <CommentList>
           {item.commentList.map((comment, idx) => (
-            <CommentItem>
+            <CommentItem key={idx}>
               <CommentL>
                 <CommentName>{roomDto.room.userName}</CommentName>
                 <CommentText>{comment.content}</CommentText>
