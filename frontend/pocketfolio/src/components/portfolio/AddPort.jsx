@@ -45,6 +45,10 @@ const AddPort = () => {
   const [hashArr, setHashArr] = useState([]);
   // 썸네일 변수
   const [thumbNail, setThumbNail] = useState('');
+  // 업로드 시도 한 이미지
+  const [uploadImg, setUplaodImg] = useState('');
+  // 최종 등록할 이미지
+  const [resultImg, setResultImg] = useState('');
 
   // 포트폴리오 제목 저장
   const getValue = e => {
@@ -263,13 +267,13 @@ const AddPort = () => {
       ></SaveModal>
 
       {/* 포트폴리오 로우 데이터 */}
-      {/* <div>
-        {portContent.title}
-        {ReactHtmlParser(portContent.content)}
-      </div> */}
+      <div>
+        {/* {portContent.summary} */}
+        {/* {ReactHtmlParser(portContent.summary)} */}
+      </div>
 
       {/* 유저에게 보여져야 할 포트폴리오 */}
-      {/* <Viewer content={portContent.content} /> */}
+      <Viewer content={portContent.summary} />
     </Background>
   );
 };
