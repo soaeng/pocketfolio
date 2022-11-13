@@ -176,8 +176,10 @@ const PortfolioEdit = () => {
     form.append('urls', new Blob([existfile], {type: 'application/json'}));
 
     let files = newFile;
-    for (let i = 0; i < files.length; i++) {
-      form.append('files', files[i]);
+    if (files.length > 0) {
+      for (let i = 0; i < files.length; i++) {
+        form.append('files', files[i]);
+      }
     }
     form.append('thumbnail', thumbNail);
 
@@ -193,7 +195,6 @@ const PortfolioEdit = () => {
       });
   };
 
-  console.log('썸네일', thumbNail);
   return (
     <Background>
       <Nav></Nav>
@@ -286,7 +287,7 @@ const PortfolioEdit = () => {
               onChange={uploadThumbnail}
               style={{display: 'none'}}
             />
-            {thumbNail.length !== 0 ? (
+            {thumbNail !== undefined ? (
               <Item>
                 {thumbNail.name}
                 <IconDiv>
