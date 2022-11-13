@@ -59,6 +59,21 @@ export const modifiedPort = createAsyncThunk(
   },
 );
 
+// 포트폴리오 이미지 업로드
+export const uploadImage = createAsyncThunk(
+  'updateImage',
+  async (data, {rejectWithValue}) => {
+    console.log('슬라이스: 이미지 업로드 데이터',data)
+    try {
+      const res = await postAxios.post('portfolios/images', data)
+      return res
+    } catch (err) {
+      return rejectWithValue(err.response)
+    }
+  }
+)
+
+
 const initialState = {};
 
 const portSlice = createSlice({
