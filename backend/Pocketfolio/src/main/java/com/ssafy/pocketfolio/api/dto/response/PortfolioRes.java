@@ -26,6 +26,8 @@ public class PortfolioRes {
     private String thumbnail;
     @Schema(description = "썸네일 명")
     private String thumbnailName;
+    @Schema(description = "작성자 회원 번호")
+    private long userSeq;
     @Schema(description = "생성일")
     private String created;
     @Schema(description = "수정일")
@@ -34,7 +36,7 @@ public class PortfolioRes {
     private List<PortfolioUrlDto> urls;
     @Schema(description = "태그 리스트")
     private List<String> tags;
-
+    
     public static PortfolioRes toDto(Portfolio entity, List<PortfolioUrl> urls, List<Tag> tags) {
         return PortfolioRes.builder()
                 .portSeq(entity.getPortSeq())
@@ -42,6 +44,7 @@ public class PortfolioRes {
                 .summary(entity.getSummary())
                 .thumbnail(entity.getThumbnail())
                 .thumbnailName(entity.getThumbnailName())
+                .userSeq(entity.getUser().getUserSeq())
                 .created(entity.getCreated().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
                 .updated(entity.getUpdated().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
                 .urls(urls.stream().map(PortfolioUrlDto::toDto).collect(Collectors.toList()))
