@@ -24,9 +24,8 @@ import Nav from '../common/Nav';
 import Editor from './Editor';
 import {Body1} from '../../styles/styles.style';
 import SaveModal from './SaveModal';
-import ReactHtmlParser from 'html-react-parser';
 import {registPortfolio} from '../../store/portSlice';
-import {format} from 'prettier';
+import toast, {Toaster} from 'react-hot-toast';
 
 const AddPort = () => {
   const navigate = useNavigate();
@@ -147,11 +146,7 @@ const AddPort = () => {
     setUploadImg(uploadImg => [...uploadImg, seq]);
   };
 
-  // 제출 할 이미지
-  const resultImgHandle = seq => {
-    setResultImg();
-  };
-
+  // 최종적으로 제출할 imgSeq 찾기
   const compareImgList = () => {
     // 포폴 내용
     const content = portContent.summary;
@@ -186,16 +181,10 @@ const AddPort = () => {
 
     const resultImage = JSON.stringify(resultImg);
 
-    console.log(uploadImage);
-
-
     form.append(
       'uploadImg',
       new Blob([uploadImage], {type: 'application/json'}),
     );
-    for (let value of form.values()) {
-      console.log(value);
-    }
     form.append('portfolio', new Blob([port], {type: 'application/json'}));
     form.append(
       'resultImg',
@@ -212,6 +201,12 @@ const AddPort = () => {
     dispatch(registPortfolio(form))
       .unwrap()
       .then(res => {
+        closeModal();
+        toast.success('포트폴리오가 수정 되었습니다.');
+        const move = setTimeout(() => {
+          navigate(`/port`);
+        }, 1500);
+        move();
       });
   };
 
@@ -226,6 +221,20 @@ const AddPort = () => {
   return (
     <Background>
       <Nav></Nav>
+      <Toaster
+        position="top-center"
+        containerStyle={{
+          position: 'absolute',
+        }}
+        toastOptions={{
+          duration: 3000,
+          style: {
+            background: '#fff',
+            color: '#333333',
+            fontSize: '0.85rem',
+          },
+        }}
+      />
       <Wrapper className="wrapper">
         <ContentDiv>
           <Label>제목</Label>
