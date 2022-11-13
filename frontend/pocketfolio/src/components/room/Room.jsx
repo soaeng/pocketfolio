@@ -19,7 +19,7 @@ const Room = () => {
 
   const [sidebar, setSidebar] = useState('');
   const [edit, setEdit] = useState(false);
-  const [data, setData] = useState({});
+  const [data, setData] = useState(null);
 
   const changeSidebar = state => {
     setSidebar(state);
@@ -46,58 +46,63 @@ const Room = () => {
 
   // 방 정보 불러오기
   const getData = async () => {
+    console.log(roomSeq);
     const {payload} = await dispatch(getRoomInfo(roomSeq));
     setData(payload);
+    console.log(payload);
   };
 
   useEffect(() => {
     getData();
-  }, [roomSeq]);
+  }, []);
 
   return (
-    <Container className={sidebar ? 'active' : ''}>
-      <RoomNav sidebar={sidebar} edit={edit} />
-      <RoomInfo sidebar={sidebar} edit={edit} data={data}/>
-      <CanvasWrapper className={sidebar ? 'active' : ''}>
-        <RoomCanvas />
-        <Toaster
-          position="bottom-left"
-          containerStyle={{
-            position: 'absolute',
-          }}
-          toastOptions={{
-            duration: 3000,
-            style: {
-              background: '#fff',
-              color: '#333333',
-              fontSize: '0.85rem',
-            },
-          }}
-        />
-        {edit ? (
-          <EditBox>
-            <Btn>저장</Btn>
-            <Btn onClick={offEdit}>취소</Btn>
-          </EditBox>
-        ) : null}
-      </CanvasWrapper>
+    data && (
+      <Container className={sidebar ? 'active' : ''}>
+        <RoomNav sidebar={sidebar} edit={edit} />
+        <RoomInfo sidebar={sidebar} edit={edit} data={data} />
+        <CanvasWrapper className={sidebar ? 'active' : ''}>
+          <RoomCanvas />
+          <Toaster
+            position="bottom-left"
+            containerStyle={{
+              position: 'absolute',
+            }}
+            toastOptions={{
+              duration: 3000,
+              style: {
+                background: '#fff',
+                color: '#333333',
+                fontSize: '0.85rem',
+              },
+            }}
+          />
+          {edit ? (
+            <EditBox>
+              <Btn>저장</Btn>
+              <Btn onClick={offEdit}>취소</Btn>
+            </EditBox>
+          ) : null}
+        </CanvasWrapper>
 
-      {sidebar | edit ? null : (
-        <Menu
-          roomSeq={roomSeq}
+        {sidebar | edit ? null : (
+          <Menu
+            roomSeq={roomSeq}
+            changeSidebar={changeSidebar}
+            copyURL={copyURL}
+            onEdit={onEdit}
+            data={data}
+          />
+        )}
+
+        <Sidebar
+          sidebar={sidebar}
           changeSidebar={changeSidebar}
-          copyURL={copyURL}
-          onEdit={onEdit}
+          edit={edit}
+          roomSeq={roomSeq}
         />
-      )}
-
-      <Sidebar
-        sidebar={sidebar}
-        changeSidebar={changeSidebar}
-        edit={edit}
-        roomSeq={roomSeq}
-      />
-    </Container>
+      </Container>
+    )
   );
 };
 
