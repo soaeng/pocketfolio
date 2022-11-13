@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface RoomRepository extends JpaRepository<Room, Long> {
 
-    List<Room> findAllByUser_UserSeq(long userSeq);
+    List<Room> findAllByUser_UserSeqOrderByUpdatedDesc(long userSeq);
     List<Room> findAllByRoomSeqIn(List<Long> roomSeqs);
     @Query(value = "SELECT room_seq FROM room WHERE privacy = 'O' AND room_seq != ?1 ORDER BY rand() LIMIT 1", nativeQuery = true)
     Long findRoomSeqByPrivacyOrderByRandom(long roomSeq);
