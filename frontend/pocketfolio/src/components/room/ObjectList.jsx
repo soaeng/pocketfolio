@@ -1,7 +1,17 @@
 import {useEffect} from 'react';
 import {useState} from 'react';
 import ObjectItem from './ObjectItem';
-import {Container, Tabs, Tab, ItemBox, ScrollBox} from './ObjectList.style';
+import {
+  Container,
+  Tabs,
+  Tab,
+  ItemBox,
+  ScrollBox,
+  PageContainer,
+  IconBox,
+  LeftIcon,
+  RightIcon,
+} from './ObjectList.style';
 import {useDispatch} from 'react-redux';
 import {getItemCategory, getItemList} from '../../store/itemSlice';
 
@@ -11,6 +21,7 @@ const ObjectList = () => {
   // 카테고리 목록, 현재 카테고리 위치, 현재 페이지
   const [categoryList, setCategoryList] = useState([]);
   const [nowCategory, setNowCategory] = useState(1);
+  const [totalPage, setTotalPage] = useState([1]);
   const [page, setPage] = useState(1);
   const [lastPage, setLastPage] = useState(1);
 
@@ -19,7 +30,10 @@ const ObjectList = () => {
 
   // 카테고리 변경
   const changeCategory = state => {
+    const total = Array.from({length: state.lastPage}, (v, i) => i + 1);
+
     setNowCategory(state.itemCategorySeq);
+    setTotalPage(total);
     setLastPage(state.lastPage);
     setPage(1);
   };
@@ -71,6 +85,33 @@ const ObjectList = () => {
             <ObjectItem item={item} key={idx} />
           ))}
         </ItemBox>
+        <PageContainer>
+          <IconBox
+            className={page === 1 && 'disappear'}
+            onClick={() => {
+              setPage(page - 1);
+            }}
+          >
+            <LeftIcon />
+          </IconBox>
+          {totalPage.map(item => (
+            <IconBox
+              key={item}
+              className={page === item && 'active'}
+              onClick={e => setPage(parseInt(e.target.innerText))}
+            >
+              {item}
+            </IconBox>
+          ))}
+          <IconBox
+            className={page == lastPage && 'disappear'}
+            onClick={() => {
+              setPage(page + 1);
+            }}
+          >
+            <RightIcon />
+          </IconBox>
+        </PageContainer>
       </ScrollBox>
     </Container>
   );

@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import {RiArrowLeftSLine, RiArrowRightSLine} from 'react-icons/ri';
 
 export const Container = styled.div`
   width: 100%;
@@ -15,6 +16,7 @@ export const Tabs = styled.div`
   margin-bottom: 1rem;
   display: grid;
   grid-template-columns: repeat(5, 1fr);
+  gap: 0.5rem;
   font-weight: bold;
 `;
 
@@ -28,6 +30,14 @@ export const Tab = styled.div`
   &.active {
     background-color: #ff9392;
     color: white;
+
+    &:hover {
+      background-color: #ff9392;
+    }
+  }
+
+  &:hover {
+    background-color: #ffd8d7;
   }
 `;
 
@@ -64,3 +74,43 @@ export const ItemBox = styled.div`
     grid-template-columns: repeat(4, 1fr);
   }
 `;
+
+export const PageContainer = styled.div`
+  margin-top: 1rem;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+export const IconBox = styled.div`
+  /* background-color: #ff9392; */
+  width: 2rem;
+  aspect-ratio: 1 / 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+
+  & + & {
+    margin-left: 0.5rem;
+  }
+
+  
+  &:hover {
+    background-color: #ffd8d7;
+  }
+
+  &.active {
+    background-color: #ff9392;
+    color: white;
+  }
+
+  &.disappear {
+    visibility: hidden;
+  }
+`;
+
+export const LeftIcon = styled(RiArrowLeftSLine)``;
+
+export const RightIcon = styled(RiArrowRightSLine)``;
