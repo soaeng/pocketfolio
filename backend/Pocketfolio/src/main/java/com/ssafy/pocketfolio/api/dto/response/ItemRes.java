@@ -15,7 +15,7 @@ public class ItemRes {
     @Schema(description = "아이템 번호", nullable = false)
     private Long itemSeq;
 
-    @Schema(description = "아이템 영어 이름", nullable = false, maxLength = 20)
+    @Schema(description = "아이템 영어 이름", nullable = false, maxLength = 30)
     private String nameEng;
     
     @Schema(description = "아이템 한글 이름", nullable = false, maxLength = 20)
