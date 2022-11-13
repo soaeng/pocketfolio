@@ -56,4 +56,11 @@ public interface PortfolioService {
      * @return 삭제 여부
      */
     Boolean deletePortfolio(long userSeq, long portSeq);
+
+    /**
+     * 포트폴리오 게시글 내 이미지
+     * @param image 이미지 파일
+     * @return 이미지 url
+     */
+    String insertImage(MultipartFile image) throws IOException;
 }

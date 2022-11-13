@@ -160,4 +160,20 @@ public class PortfolioController {
 
         return new ResponseEntity<>(response, status);
     }
+
+    @PostMapping("/images")
+    private ResponseEntity<String> insertPortfolio(@RequestParam(value="image") MultipartFile image) {
+        log.debug("[POST] Controller - insertPortfolio");
+        String response = null;
+        HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
+
+        try{
+            response = portfolioService.insertImage(image);
+            status = response != null ? HttpStatus.CREATED : HttpStatus.INTERNAL_SERVER_ERROR;
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
+
+        return new ResponseEntity<>(response, status);
+    }
 }

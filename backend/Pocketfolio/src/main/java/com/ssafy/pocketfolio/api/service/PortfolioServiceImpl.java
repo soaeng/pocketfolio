@@ -6,14 +6,8 @@ import com.ssafy.pocketfolio.api.dto.request.PortfolioReq;
 import com.ssafy.pocketfolio.api.dto.response.PortfolioListRes;
 import com.ssafy.pocketfolio.api.dto.response.PortfolioRes;
 import com.ssafy.pocketfolio.api.util.MultipartFileHandler;
-import com.ssafy.pocketfolio.db.entity.Portfolio;
-import com.ssafy.pocketfolio.db.entity.PortfolioUrl;
-import com.ssafy.pocketfolio.db.entity.Tag;
-import com.ssafy.pocketfolio.db.entity.User;
-import com.ssafy.pocketfolio.db.repository.PortfolioRepository;
-import com.ssafy.pocketfolio.db.repository.PortfolioUrlRepository;
-import com.ssafy.pocketfolio.db.repository.TagRepository;
-import com.ssafy.pocketfolio.db.repository.UserRepository;
+import com.ssafy.pocketfolio.db.entity.*;
+import com.ssafy.pocketfolio.db.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -34,6 +28,7 @@ public class PortfolioServiceImpl implements PortfolioService {
     private final PortfolioRepository portfolioRepository;
     private final PortfolioUrlRepository portfolioUrlRepository;
     private final TagRepository tagRepository;
+    private final ImageRepository imageRepository;
     private final MultipartFileHandler fileHandler;
 
     // 포트폴리오 등록
@@ -211,6 +206,21 @@ public class PortfolioServiceImpl implements PortfolioService {
             log.error(e.getMessage());
             return false;
         }
+    }
+
+    @Override
+    public String insertImage(MultipartFile file) throws IOException {
+        log.debug("[POST] Service - insertImage");
+        String dest = fileHandler.saveFile(file, "portfolio/image");
+        // 포트폴리오 저장
+        Image image= Image.builder()
+                .name(file.getOriginalFilename())
+                .url(dest)
+                .build();
+        long imgSeq = imageRepository.save(image).getImageSeq();
+        log.debug("저장된 이미지 번호: " + imgSeq);
+
+        return dest;
     }
 
     // 태그 저장
