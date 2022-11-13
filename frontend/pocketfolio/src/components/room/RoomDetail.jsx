@@ -1,41 +1,30 @@
 import {
   Container,
-  UpArrowDiv,
-  UpIcon,
-  BirthLinkDiv,
+  UserName,
+  LinkDiv,
   IconDiv,
-  BirthIcon,
-  BirthLinkTxt,
+  Link,
   Introduction,
   LinkIcon,
+  LinkText,
 } from './RoomDetail.style';
 
 // 마이룸 상세정보
-const RoomDetail = ({closeDetail}) => {
-
+const RoomDetail = ({closeDetail, data}) => {
   return (
-    <Container>
-      <UpArrowDiv>
-        <IconDiv onClick={closeDetail}>
-          <UpIcon/>
-        </IconDiv>
-      </UpArrowDiv>
-
-      <BirthLinkDiv>
-        <IconDiv>
-          <BirthIcon />
-        </IconDiv>
-        <BirthLinkTxt>1999.03.02</BirthLinkTxt>
-      </BirthLinkDiv>
-
-      <BirthLinkDiv>
-        <IconDiv>
-          <LinkIcon />
-        </IconDiv>
-        <BirthLinkTxt>https://k7e101.p.ssafy.io</BirthLinkTxt>
-      </BirthLinkDiv>
-
-      <Introduction>안녕하세요. 저는 마이룸의 주인 개발자입니다.</Introduction>
+    <Container onClick={closeDetail}>
+      <UserName>{data.room.userName}</UserName>
+      {data.room.userBlogUrl && (
+        <LinkDiv>
+          <IconDiv>
+            <LinkIcon />
+          </IconDiv>
+          <Link href={data.room.userBlogUrl} target="_blank">
+            <LinkText>{data.room.userBlogUrl}</LinkText>
+          </Link>
+        </LinkDiv>
+      )}
+      <Introduction>{data.room.introduction}</Introduction>
     </Container>
   );
 };
