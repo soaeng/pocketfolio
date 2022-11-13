@@ -21,7 +21,7 @@ public interface PortfolioService {
      * @return 등록된 포트폴리오 번호
      * @throws IOException 서버에 작성 실패 시 던진다.
      */
-    Long insertPortfolio(PortfolioReq req, MultipartFile thumbnail, long userSeq, List<MultipartFile> files) throws IOException;
+    Long insertPortfolio(PortfolioReq req, MultipartFile thumbnail, long userSeq, List<MultipartFile> files, List<Long> uploadImg, List<Long> resultImg) throws IOException;
 
     /**
      * 포트폴리오 목록 조회

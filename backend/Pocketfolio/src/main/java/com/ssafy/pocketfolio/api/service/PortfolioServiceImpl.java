@@ -35,7 +35,7 @@ public class PortfolioServiceImpl implements PortfolioService {
     // 포트폴리오 등록
     @Override
     @Transactional
-    public Long insertPortfolio(PortfolioReq req, MultipartFile thumbnail, long userSeq, List<MultipartFile> files) throws IOException {
+    public Long insertPortfolio(PortfolioReq req, MultipartFile thumbnail, long userSeq, List<MultipartFile> files, List<Long> uploadImg, List<Long> resultImg) throws IOException {
         log.debug("[POST] Service - insertPortfolio");
 
         // 사용자 번호를 통한 사용자 조회
@@ -58,6 +58,17 @@ public class PortfolioServiceImpl implements PortfolioService {
         Portfolio portfolio = PortfolioReq.toEntity(req, thumbnailUrl, thumbnailName, user);
         long portSeq = portfolioRepository.save(portfolio).getPortSeq();
         log.debug("저장된 포트폴리오 번호: " + portSeq);
+
+        // 원래의 이미지 목록에서 변경된 내용 있는지 확인
+        if (!uploadImg.equals(resultImg)) {
+            uploadImg.removeAll(resultImg);
+            // 삭제할 db의
+            List<Image> deleteImageList = imageRepository.findAllByImageSeqIn(uploadImg);
+            for (Image image : deleteImageList) {
+                fileHandler.deleteFile(image.getUrl(), "portfolio/image");
+            }
+            imageRepository.deleteAllByImageSeqIn(uploadImg);
+        }
 
         // 태그가 있다면 저장
         if (req.getTags() != null) {

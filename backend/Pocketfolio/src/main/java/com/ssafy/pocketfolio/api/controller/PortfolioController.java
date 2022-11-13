@@ -8,6 +8,7 @@ import com.ssafy.pocketfolio.api.dto.response.PortfolioListRes;
 import com.ssafy.pocketfolio.api.dto.response.PortfolioRes;
 import com.ssafy.pocketfolio.api.dto.response.UserRes;
 import com.ssafy.pocketfolio.api.service.PortfolioService;
+import com.ssafy.pocketfolio.db.entity.Image;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -38,7 +39,13 @@ public class PortfolioController {
             @ApiResponse(responseCode = "500", description = "서버 에러", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     @PostMapping
-    private ResponseEntity<Long> insertPortfolio(HttpServletRequest request, @RequestPart(value="portfolio") PortfolioReq portfolio, @RequestPart(value = "thumbnail", required = false) MultipartFile thumbnail, @RequestPart(value = "files", required = false) List<MultipartFile> files) {
+    private ResponseEntity<Long> insertPortfolio(
+            HttpServletRequest request,
+            @RequestPart(value="portfolio") PortfolioReq portfolio,
+            @RequestPart(value = "thumbnail", required = false) MultipartFile thumbnail,
+            @RequestPart(value = "files", required = false) List<MultipartFile> files,
+            @RequestPart("uploadImg") List<Long> uploadImg,
+            @RequestPart("resultImg") List<Long> resultImg) {
         log.debug("[POST] Controller - Portfolio");
         Long response = null;
         HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
@@ -46,7 +53,7 @@ public class PortfolioController {
         try{
             long userSeq = (Long) request.getAttribute("userSeq");
             if (userSeq > 0) {
-                response = portfolioService.insertPortfolio(portfolio, thumbnail, userSeq, files);
+                response = portfolioService.insertPortfolio(portfolio, thumbnail, userSeq, files, uploadImg, resultImg);
                 status = (response > 0) ? HttpStatus.CREATED : HttpStatus.INTERNAL_SERVER_ERROR;
             } else {
                 log.error("사용 불가능 토큰");
