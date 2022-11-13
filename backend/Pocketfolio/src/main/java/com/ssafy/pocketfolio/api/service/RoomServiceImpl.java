@@ -86,7 +86,7 @@ public class RoomServiceImpl implements RoomService {
         List<RoomListRes> roomsResList;
 
         try {
-            List<Room> rooms = roomRepository.findAllByUser_UserSeq(userSeq);
+            List<Room> rooms = roomRepository.findAllByUser_UserSeqOrderByUpdatedDesc(userSeq); // 최근 수정된 방을 앞으로
             roomsResList = getRoomListRes(rooms);
         } catch (Exception e) {
             log.error(e.getMessage());
@@ -407,7 +407,7 @@ public class RoomServiceImpl implements RoomService {
         }
     }
 
-    private List<RoomListRes> getRoomListRes(List<Room> rooms) {
+    private List<RoomListRes> getRoomListRes(List<Room> rooms) { // TODO: 이것도 조인으로 할 수 있지 않을까 1
         return rooms.stream().map(room -> {
             int like = roomLikeRepository.countAllByRoom_RoomSeq(room.getRoomSeq()).intValue();
             int hit = roomHitRepository.countAllByRoom_RoomSeq(room.getRoomSeq()).intValue();

@@ -8,6 +8,7 @@ import lombok.*;
 
 import javax.validation.constraints.Email;
 import java.time.LocalDate;
+import java.util.List;
 
 @Getter
 @Setter
@@ -45,8 +46,8 @@ public class UserRes {
     @Schema(description = "블로그 주소", maxLength = 1000)
     private String blogUrl;
 
-//    @Schema(description = "마이룸 목록") // TODO: 1. 마이룸 목록 주기
-//    private List<RoomRes> rooms;
+    @Schema(description = "마이룸 목록")
+    private List<RoomListRes> rooms;
 
     public UserRes(User user) {
         userSeq = user.getUserSeq();
@@ -58,7 +59,7 @@ public class UserRes {
         blogUrl = user.getBlogUrl();
     }
 
-    public UserRes(UserView userView) {
+    public UserRes(UserView userView, List<RoomListRes> rooms) {
         userSeq = userView.getUserSeq();
         email = userView.getEmail();
         name = userView.getName();
@@ -68,5 +69,7 @@ public class UserRes {
         followingTotal = userView.getFollowingTotal();
         describe = userView.getDescribe();
         blogUrl = userView.getBlogUrl();
+
+        this.rooms = rooms;
     }
 }

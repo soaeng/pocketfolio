@@ -1,9 +1,14 @@
 package com.ssafy.pocketfolio.api.service;
 
 import com.ssafy.pocketfolio.api.dto.request.UserUpdateReq;
+import com.ssafy.pocketfolio.api.dto.response.RoomListRes;
 import com.ssafy.pocketfolio.api.dto.response.UserRes;
 import com.ssafy.pocketfolio.api.util.MultipartFileHandler;
+import com.ssafy.pocketfolio.db.entity.Room;
 import com.ssafy.pocketfolio.db.entity.User;
+import com.ssafy.pocketfolio.db.repository.RoomHitRepository;
+import com.ssafy.pocketfolio.db.repository.RoomLikeRepository;
+import com.ssafy.pocketfolio.db.repository.RoomRepository;
 import com.ssafy.pocketfolio.db.repository.UserRepository;
 import com.ssafy.pocketfolio.db.view.UserView;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 @Log4j2
@@ -22,6 +28,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
+    private final RoomRepository roomRepository;
+    private final RoomHitRepository roomHitRepository;
+    private final RoomLikeRepository roomLikeRepository;
 
     private final MultipartFileHandler fileHandler;
 
@@ -29,7 +38,19 @@ public class UserServiceImpl implements UserService {
     public UserRes findUser(long userSeq) {
         UserView userView = userRepository.findProfileById(userSeq).orElseThrow(() -> new IllegalArgumentException("유저가 존재하지 않습니다."));
         log.info("Service findUser: " + userView.getName() + ", " + userView.getProfilePic() + ", " + userView.getFollowerTotal() + ", " + userView.getFollowingTotal() + ", " + userView.getDescribe());
-        return new UserRes(userView);
+
+        List<RoomListRes> roomList = new ArrayList<>();
+        List<Room> roomEntities = roomRepository.findAllByUser_UserSeqOrderByUpdatedDesc(userSeq);
+        roomEntities.forEach(room -> {
+            int like = roomLikeRepository.countAllByRoom_RoomSeq(room.getRoomSeq()).intValue(); // TODO: 이것도 조인으로 할 수 있지 않을까 1
+            int hit = roomHitRepository.countAllByRoom_RoomSeq(room.getRoomSeq()).intValue();
+            if ("T".equals(room.getIsMain())) {
+                roomList.add(0, RoomListRes.toDto(room, like, hit));
+            } else {
+                roomList.add(RoomListRes.toDto(room, like, hit));
+            }
+        });
+        return new UserRes(userView, roomList);
     }
 
     @Override
