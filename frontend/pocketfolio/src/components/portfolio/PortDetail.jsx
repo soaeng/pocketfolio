@@ -64,7 +64,6 @@ const PortDetail = () => {
     dispatch(getportDetail(port_id))
       .then(res => {
         const data = res.payload;
-        console.log(data)
         setPortDetail(data);
         setCreateDate(data.updated.slice(0, 10));
       })
