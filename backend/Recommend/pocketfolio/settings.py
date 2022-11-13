@@ -102,12 +102,6 @@ MYSQL_PORT = int(os.environ["MYSQL_PORT"])
 MYSQL_USER = os.environ["MYSQL_USER"]
 MYSQL_PASS = os.environ["MYSQL_PASS"]
 
-MONGO_NAME = os.environ["MONGO_NAME"]
-MONGO_HOST = os.environ["MONGO_HOST"]
-MONGO_PORT = int(os.environ["MONGO_PORT"])
-MONGO_USER = os.environ["MONGO_USER"]
-MONGO_PASS = os.environ["MONGO_PASS"]
-
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.mysql",
@@ -116,6 +110,11 @@ DATABASES = {
         "PORT": MYSQL_PORT,
         "USER": MYSQL_USER,
         "PASSWORD": MYSQL_PASS,
+        "OPTIONS": {
+            "init_command": "SET sql_mode='STRICT_TRANS_TABLES'",
+            "charset": "utf8",
+            "use_unicode": True,
+        },
     }
 }
 
