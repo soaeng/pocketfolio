@@ -111,8 +111,9 @@ const GuestList = ({roomSeq, roomDto}) => {
               item={item}
               removeGuest={removeGuest}
               key={idx}
-              roomDto
-            ={roomDto}/>
+              roomDto={roomDto}
+              getData
+            ={getData}/>
           ))}
         </ItemContainer>
       </ScrollDiv>

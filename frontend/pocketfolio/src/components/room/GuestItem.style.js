@@ -98,8 +98,49 @@ export const TextBox = styled.div`
 
   display: flex;
   align-items: center;
+`;
 
-  /* background-color: white; */
+export const CommentList = styled.div`
+  width: calc(100% - 2rem);
+  background-color: #fff4f1;
+  padding: 0.4rem 1rem;
+
+  margin-bottom: 0.3rem;
+`;
+
+export const CommentItem = styled.div`
+  margin: 0.8rem 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+`;
+
+export const CommentL = styled.div`
+  display: flex;
+  align-items: center;
+  width: calc(100% - 6.8rem);
+  flex-wrap: wrap;
+`;
+
+export const CommentName = styled.h5`
+  margin: 0;
+  margin-right: 0.5rem;
+  background-color: #ffb9ae;
+  padding: 0.2rem 0.3rem;
+  border-radius: 1rem;
+`;
+
+export const CommentText = styled.p`
+  margin: 0;
+  font-size: 0.85rem;
+`;
+
+export const CommentDate = styled.p`
+  margin: 0;
+  font-size: 0.7rem;
+  width: 6.3rem;
+  margin-left: 0.5rem;
 `;
 
 export const CommentContainer = styled.div`
@@ -108,7 +149,7 @@ export const CommentContainer = styled.div`
 
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
 `;
 
 export const CommentArea = styled.textarea`
