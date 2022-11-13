@@ -39,7 +39,6 @@ const ObjectList = () => {
       }),
     );
     setData(payload);
-    console.log(payload)
   };
 
   // 로딩 시, 아이템 카테고리 불러오기
@@ -59,6 +58,7 @@ const ObjectList = () => {
           <Tab
             onClick={() => changeCategory(item)}
             className={nowCategory === item.itemCategorySeq && 'active'}
+            key={idx}
           >
             {item.nameKor}
           </Tab>
@@ -68,7 +68,7 @@ const ObjectList = () => {
       <ScrollBox>
         <ItemBox>
           {data.map((item, idx) => (
-            <ObjectItem item={item} key={idx}/>
+            <ObjectItem item={item} key={idx} />
           ))}
         </ItemBox>
       </ScrollBox>
