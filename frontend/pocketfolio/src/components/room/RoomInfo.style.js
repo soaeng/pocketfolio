@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import {Body2, Body3, Body4} from '../../styles/styles.style';
 import {
   RiUserFollowFill,
   RiUserAddLine,
@@ -63,11 +62,13 @@ export const RoomImgBox = styled.div`
   height: 2rem;
   border-radius: 50%;
   margin-right: 0.5rem;
+  overflow: hidden;
 `;
 
 export const RoomImg = styled.img`
   width: 100%;
   height: 100%;
+  object-fit: cover;
 `;
 
 export const NameCategoryDiv = styled.div`
@@ -78,12 +79,13 @@ export const NameCategoryDiv = styled.div`
   justify-content: center;
 `;
 
-export const RoomName = styled(Body2)`
+export const RoomName = styled.h4`
   margin: 0;
 `;
 
-export const RoomCategory = styled(Body4)`
+export const RoomCategory = styled.p`
   margin: 0;
+  font-size: 0.85rem;
 `;
 
 export const LikeShowFollowContainer = styled.div`
@@ -136,7 +138,8 @@ export const ShowIcon = styled(RiEyeLine)`
   cursor: default;
 `;
 
-export const ShowState = styled(Body3)`
+export const ShowState = styled.p`
   margin: 0;
+  margin-left: 0.2rem;
   padding-bottom: 0.1rem;
 `;
