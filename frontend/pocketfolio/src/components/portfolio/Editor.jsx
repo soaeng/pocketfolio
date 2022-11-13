@@ -1,37 +1,33 @@
 import React, {useState} from 'react';
 import {CKEditor} from '@ckeditor/ckeditor5-react';
 import DecoupledEditor from '@ckeditor/ckeditor5-build-decoupled-document';
-
+import {uploadImage} from '../../store/portSlice';
+import {useDispatch} from 'react-redux';
 
 export default function MyEditor({portContent, setPortContent, ...props}) {
+  const dispatch = useDispatch();
   const [imgUrl, setImgUrl] = useState('');
+  const [test, setTest] = useState([]);
+
   // 이미지 업로드 함수
   function uploadAdapter(loader) {
     return {
       upload: () => {
         return new Promise((resolve, reject) => {
-          const body = new FormData();
+          const imageForm = new FormData();
           // 이미지 경로
           setImgUrl(loader._reader._data);
           loader.file.then(file => {
-            body.append('files', file);
-
-            // let headers = new Headers();
-            // headers.append("Origin", "http://localhost:3000");
-            // fetch(`${API_URL}/${UPLOAD_ENDPOINT}`, {
-            //   method: 'post',
-            //   body: body,
-            //   // mode: "no-cors"
-            // })
-            //   .then(res => res.json())
-            //   .then(res => {
-            //     resolve({
-            //       default: `${API_URL}/${res.filename}`,
-            //     });
-            //   })
-            //   .catch(err => {
-            //     reject(err);
-            //   });
+            imageForm.append('image', file);
+            dispatch(uploadImage(imageForm))
+              .then(res => {
+                resolve({
+                  default: `${res.payload.data.url}`,
+                });
+              })
+              .catch(err => {
+                reject(err);
+              });
           });
         });
       },
@@ -92,6 +88,7 @@ export default function MyEditor({portContent, setPortContent, ...props}) {
         }}
       />
       {/* <img src={imgUrl}></img> */}
+      <div>{portContent.summary}</div>
     </div>
   );
 }

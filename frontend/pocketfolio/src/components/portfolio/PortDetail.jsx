@@ -55,6 +55,7 @@ const PortDetail = () => {
         className="ck-content"
         dangerouslySetInnerHTML={{__html: content}}
       ></Summary>
+      
     </div>
   );
 
@@ -136,6 +137,7 @@ const PortDetail = () => {
             </IconDiv>
           </BottomDiv>
         </Content>
+        <>{portDetail.summary}</>
       </Container>
     </Background>
   );
