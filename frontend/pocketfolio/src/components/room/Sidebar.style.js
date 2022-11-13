@@ -31,7 +31,7 @@ export const SideContainer = styled.div`
   @media screen and (max-width: 1200px) {
     width: calc(100vw - 3rem);
     padding: 1.5rem;
-    background-color: #eee;
+    background-color: #ffffff;
     display: none;
 
     transition: all 0.3s;
