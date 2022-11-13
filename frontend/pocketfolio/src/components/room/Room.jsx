@@ -100,6 +100,7 @@ const Room = () => {
           changeSidebar={changeSidebar}
           edit={edit}
           roomSeq={roomSeq}
+          data={data}
         />
       </Container>
     )

@@ -20,10 +20,10 @@ import {
   CommentBtn,
 } from './GuestItem.style';
 
-const GuestItem = ({item, removeGuest}) => {
+const GuestItem = ({item, removeGuest, roomDto}) => {
   const user = useSelector(state => state.oauth.user);
 
-  return (
+  return item.isPublic === 'T' || (item.isPublic === 'F' && (item.userSeq === user.userSeq || roomDto.room.userSeq === user.userSeq)) ? (
     <Container>
       <Header className={item.isPublic === 'T' ? '' : 'secret'}>
         <NameDiv>
@@ -61,14 +61,16 @@ const GuestItem = ({item, removeGuest}) => {
         <TextBox>{item.content}</TextBox>
       </ImgTextDiv>
 
-      <CommentContainer>
-        <CommentArea className={item.isPublic === 'T' ? '' : 'secret'} />
-        <CommentBtn className={item.isPublic === 'T' ? '' : 'secret'}>
-          확인
-        </CommentBtn>
-      </CommentContainer>
+      {roomDto.room.userSeq === user.userSeq && (
+        <CommentContainer>
+          <CommentArea className={item.isPublic === 'T' ? '' : 'secret'} />
+          <CommentBtn className={item.isPublic === 'T' ? '' : 'secret'}>
+            확인
+          </CommentBtn>
+        </CommentContainer>
+      )}
     </Container>
-  );
+  ) : null;
 };
 
 export default GuestItem;
