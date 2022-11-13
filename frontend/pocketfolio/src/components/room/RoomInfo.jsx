@@ -21,6 +21,7 @@ import {
 import RoomDetail from './RoomDetail';
 import {useDispatch, useSelector} from 'react-redux';
 import {roomDislike, roomLike} from '../../store/roomSlice';
+import {unfollowFunc, followFunc} from '../../store/oauthSlice';
 
 // 마이룸 상단 방정보
 const RoomInfo = ({data, sidebar, edit}) => {
@@ -32,10 +33,22 @@ const RoomInfo = ({data, sidebar, edit}) => {
   const [likeCount, setLikeCount] = useState(data.likeCount);
   const [follow, setFollow] = useState(data.follow);
 
-  // 팔로우
-  const handleFollow = () => {
-    setFollow(!follow);
-  };
+  // 팔로우, 언팔로우
+  async function handleFollow() {
+    if (user) {
+      if (follow) {
+        const {payload} = await dispatch(unfollowFunc(data.room.userSeq));
+        if (payload) {
+          setFollow(false);
+        }
+      } else {
+        const {payload} = await dispatch(followFunc(data.room.userSeq));
+        if (payload) {
+          setFollow(true);
+        }
+      }
+    }
+  }
 
   // 좋아요, 좋아요 취소
   async function handleLike() {
@@ -87,7 +100,7 @@ const RoomInfo = ({data, sidebar, edit}) => {
         <LikeShowFollowContainer>
           {/* 팔로우 | 로그인한 상태이고, 방 주인이 아닌 경우 가능 */}
           {user && user.userSeq !== data.room.userSeq && (
-            <IconDiv className="follow">
+            <IconDiv className="follow" onClick={handleFollow}>
               {follow ? <AlreadyFollowIcon /> : <FollowIcon />}
             </IconDiv>
           )}
@@ -99,7 +112,7 @@ const RoomInfo = ({data, sidebar, edit}) => {
             </IconDiv>
             <ShowState>{likeCount}</ShowState>
           </LikeShowDiv>
-          
+
           {/* 방문자 */}
           <LikeShowDiv>
             <IconDiv>
