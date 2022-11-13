@@ -30,9 +30,9 @@ const Sidebar = ({sidebar, changeSidebar, edit, roomSeq}) => {
             <CloseIcon />
           </CloseBox>
         )}
-        {sidebar === 'port' ? <PortList /> : null}
-        {sidebar === 'guest' ? <GuestList roomSeq={roomSeq} /> : null}
-        {sidebar === 'edit' ? <ObjectList /> : null}
+        {sidebar === 'port' && <PortList />}
+        {sidebar === 'guest' && <GuestList roomSeq={roomSeq} />}
+        {sidebar === 'edit' && <ObjectList />}
       </SideContainer>
       {edit ? (
         <ToggleBox onClick={controlSide}>

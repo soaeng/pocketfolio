@@ -1,20 +1,18 @@
 import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
-import {http, postAxios} from '../api/axios';
+import {http} from '../api/axios';
+import qs from 'qs';
 
 // 오브젝트 리스트 조회
-/**
- * category는 category 번호: 0이면 전체 / page는 페이지 번호
-  {
-    category: int,
-    page: int
-  }
- */
 export const getItemList = createAsyncThunk(
   'getItemList',
-  async (data, {rejectWithValue}) => {
+  async (params, {rejectWithValue}) => {
     try {
-      const res = await http.get('items', data);
-      if (res.status === 200) return res;
+      http.paramsSerializer = param => {
+        return qs.stringify(param);
+      };
+
+      const res = await http.get('items', {params});
+      if (res.status === 200) return res.data;
     } catch (error) {
       console.log('오브젝트 리스트 조회 에러', error);
       return rejectWithValue(error);
@@ -42,7 +40,7 @@ export const getItemCategory = createAsyncThunk(
   async (data, {rejectWithValue}) => {
     try {
       const res = await http.get(`items/category`);
-      if (res.status === 200) return res;
+      if (res.status === 200) return res.data;
     } catch (error) {
       console.log('오브젝트 카테고리 리스트 조회 에러', error);
       return rejectWithValue(error);
