@@ -83,7 +83,7 @@ const Room = () => {
           ) : null}
         </CanvasWrapper>
 
-        {sidebar | edit ? null : (
+        {sidebar || edit ? null : (
           <Menu
             roomSeq={roomSeq}
             changeSidebar={changeSidebar}
