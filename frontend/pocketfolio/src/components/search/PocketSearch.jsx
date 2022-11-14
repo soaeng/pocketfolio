@@ -1,5 +1,7 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {useNavigate} from 'react-router-dom';
+import {useDispatch} from 'react-redux';
+import {getUserInfo} from '../../store/oauthSlice';
 
 import {
   PocketCard,
@@ -15,6 +17,8 @@ import {
   Item3,
   ShowIcon,
 } from './PocketSearch.style';
+
+import UserProfile from '../common/UserProfile';
 
 // 임시데이터(card)
 const items = [
@@ -70,6 +74,37 @@ const items = [
 
 const PocketSearch = () => {
   const [item, setItem] = useState(items);
+  const [visible, setVisible] = useState(false); //프로필 모달 보이게 안보이게
+  const dispatch = useDispatch();
+
+  // const clickUserProfile = async () => {
+  //   const res = await dispatch(getUserInfo());
+  // };
+
+  // dropdown 외부 클릭시 dropdown창 꺼지게 하기(modal 같은 기능 구현)
+  const modalRef = useRef(null);
+
+  useEffect(() => {
+    // 이벤트 핸들러 함수
+    const handler = event => {
+      // mousedown 이벤트가 발생한 영역이 모달창이 아닐 때, 모달창 제거 처리
+      if (modalRef.current && !modalRef.current.contains(event.target)) {
+        setVisible(false);
+      }
+    };
+
+    // 이벤트 핸들러 등록
+    document.addEventListener('mousedown', handler);
+
+    return () => {
+      // 이벤트 핸들러 해제
+      document.removeEventListener('mousedown', handler);
+    };
+  });
+
+  // useEffect(() => {
+  //   if (visible) dispatch(getUserInfo());
+  // }, [visible]);
 
   const navigate = useNavigate();
 
@@ -92,8 +127,12 @@ const PocketSearch = () => {
                 />
               </PocketImgDiv>
               {/* 프로필 컴포넌트 */}
-              <PocketUserInfoContainer>
-                <PocketUserDiv>
+              <PocketUserInfoContainer ref={modalRef}>
+                <PocketUserDiv
+                  onClick={() => {
+                    setVisible(!visible);
+                  }}
+                >
                   {/* 프로필 사진 */}
                   <PocketUserImgContainer>
                     <PocketUserImg
@@ -102,6 +141,7 @@ const PocketSearch = () => {
                   </PocketUserImgContainer>
                   {/* 이름 */}
                   <div>{icon}</div>
+                  {visible && <UserProfile />}
                 </PocketUserDiv>
                 {/* <div>{copy}</div> */}
                 {/* 좋아요, 클릭 컴포넌트 */}
