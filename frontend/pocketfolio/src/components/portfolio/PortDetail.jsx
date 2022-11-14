@@ -1,6 +1,6 @@
 import {useParams} from 'react-router-dom';
 import {useEffect, useState} from 'react';
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch} from 'react-redux';
 import {useNavigate} from 'react-router-dom';
 import {getportDetail} from '../../store/portSlice';
 import Nav from '../common/Nav';
@@ -42,8 +42,6 @@ const PortDetail = () => {
   // 작성일
   const [createDate, setCreateDate] = useState('');
 
-
-  
   // 포트폴리오 본문 파싱
   const Viewer = ({content}) => (
     <div>
@@ -55,7 +53,6 @@ const PortDetail = () => {
         className="ck-content"
         dangerouslySetInnerHTML={{__html: content}}
       ></Summary>
-      
     </div>
   );
 
@@ -72,6 +69,7 @@ const PortDetail = () => {
       });
   }, []);
 
+  console.log('포트상세내용', portDetail);
   // 수정 페이지로 이동
   const moveEdit = () => {
     navigate(`/port/edit/${portDetail.portSeq}`);

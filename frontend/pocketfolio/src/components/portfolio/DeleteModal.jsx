@@ -8,22 +8,35 @@ import {
 } from './DeleteModal.style';
 import {H3, Body1} from '../../styles/styles.style';
 
-const DeleteModal = ({onClose}) => {
+const DeleteModal = props => {
+  const {onClose, text, deleteFunc} = props;
+
   const handleClose = () => {
     onClose();
   };
 
-  
   return (
     <Overlay>
       <ModalWrap>
         <Contents>
-          <H3>이 포트폴리오를 지우시겠습니까?</H3>
+          <H3>이 {text} 지우시겠습니까?</H3>
           <BtnDiv>
-            <StyledBtn className="cancel" onClick={handleClose}>
+            <StyledBtn
+              className="cancel"
+              onClick={event => {
+                event.stopPropagation();
+                handleClose();
+              }}
+            >
               <Body1>취소</Body1>
             </StyledBtn>
-            <StyledBtn className="delete" onClick={handleClose}>
+            <StyledBtn
+              className="delete"
+              onClick={event => {
+                event.stopPropagation();
+                deleteFunc();
+              }}
+            >
               <Body1>삭제</Body1>
             </StyledBtn>
           </BtnDiv>

@@ -61,6 +61,7 @@ const Card = ({isDelete}) => {
           onClose={() => {
             setIsOpen(false);
           }}
+          text={'포켓을'}
         />
       )}
     </Wrapper>

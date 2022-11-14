@@ -24,7 +24,6 @@ import Nav from '../common/Nav';
 import Editor from './Editor';
 import {Body1} from '../../styles/styles.style';
 import SaveModal from './SaveModal';
-import ReactHtmlParser from 'html-react-parser';
 import {getportDetail, modifiedPort} from '../../store/portSlice';
 import toast, {Toaster} from 'react-hot-toast';
 
@@ -33,8 +32,6 @@ const PortfolioEdit = () => {
   const dispatch = useDispatch();
   const portSeq = useParams();
   const port_id = parseInt(portSeq.port_id);
-
-  const [portDetail, setPortDetail] = useState();
 
   // 저장 모달 오픈 변수
   const [modalOpen, setModalOpen] = useState(false);
@@ -56,6 +53,7 @@ const PortfolioEdit = () => {
   const [hashArr, setHashArr] = useState([]);
   // 썸네일 이미지 파일을 담을 변수
   const [thumbNail, setThumbNail] = useState('');
+  // 썸네일 이름, 미리보기 표기 변수 
   const [thumbData, setThumbData] = useState({
     url: '',
     name: '',
@@ -71,7 +69,6 @@ const PortfolioEdit = () => {
   // 포트폴리오 제목 저장
   const getValue = e => {
     const {name, value} = e.target;
-    // console.log(name, value);
     setPortContent({
       ...portContent,
       [name]: value,
@@ -130,7 +127,7 @@ const PortfolioEdit = () => {
     navigate('/port');
   };
 
-  // 모달 관련 변수,함수
+  // 모달 오픈 함수
   const openModal = () => {
     setModalOpen(true);
   };
@@ -156,6 +153,8 @@ const PortfolioEdit = () => {
     const result = attachList.filter(content => content.name !== selected);
     const newResult = newFile.filter(content => content.name !== selected);
     const oldResult = existFile.filter(content => content.name !== selected);
+
+    // 기존 파일, 새로 추가한 파일 구분
     setAttachList(result);
     setExistFile(oldResult);
     setNewFile(newResult);
@@ -169,6 +168,7 @@ const PortfolioEdit = () => {
   const uploadThumbnail = e => {
     const file = e.target.files[0];
     setThumbNail(file);
+    // 썸네일 미리보기
     const reader = new FileReader();
     reader.readAsDataURL(e.target.files[0]);
     return new Promise(resolve => {
@@ -235,7 +235,7 @@ const PortfolioEdit = () => {
     const uploadImage = JSON.stringify(uploadImg);
     const resultImage = JSON.stringify(resultImg);
     const existfile = JSON.stringify(existFile);
-
+    
     form.append('portfolio', new Blob([port], {type: 'application/json'}));
     form.append(
       'uploadImg',
@@ -310,7 +310,6 @@ const PortfolioEdit = () => {
           <BottomBox className="hashWrap">
             <Label>해시태그</Label>
             <InputDiv>
-              {/* <HashIcon /> */}
               <HashInput
                 className="HashInput"
                 name="hashtag"
@@ -390,15 +389,6 @@ const PortfolioEdit = () => {
         close={closeModal}
         save={savePortFolio}
       ></SaveModal>
-
-      {/* 포트폴리오 로우 데이터 */}
-      {/* <div>
-        {portContent.title}
-        {ReactHtmlParser(portContent.content)}
-      </div> */}
-
-      {/* 유저에게 보여져야 할 포트폴리오 */}
-      {/* <Viewer content={portContent.content} /> */}
     </Background>
   );
 };
