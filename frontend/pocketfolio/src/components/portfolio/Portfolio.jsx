@@ -10,21 +10,25 @@ import {
   Text,
   CardList,
   BtnDiv,
-  DeleteBtn,
+  IconDiv,
   DeleteIcon,
   DeleteIconX,
+  AddPortIcon,
 } from './Portfolio.style';
 import Card from './Card';
 import AddMyRoom from './AddMyRoom';
 import PortList from './PortList';
-import {getMyPort} from '../../store/portSlice';
+import {getMyPort, getMyPocket} from '../../store/portSlice';
 import {useDispatch} from 'react-redux';
 const Portfolio = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   // 포트폴리오 목록 List
-  const [portList, setPortList] = useState('');
+  const [portList, setPortList] = useState([]);
+  // 포켓 목록 List
+  const [pocketList, setPocketList] = useState([]);
+
   // 마이룸 삭제 아이콘 of/off 변수
   const [isDelete, setIsDelete] = useState(false);
   // 포트폴리오 삭제 아이콘 of/off 변수
@@ -34,8 +38,9 @@ const Portfolio = () => {
 
   // 포트폴리오 목록 불러오기
   useEffect(() => {
-    dispatch(getMyPort()).then(res => {
-      setPortList(res.payload.data);
+    dispatch(getMyPocket()).then(res => {
+      setPortList(res.payload.data.portfolios);
+      setPocketList(res.payload.data.rooms);
     });
   }, [deletedPort]);
 
@@ -56,7 +61,10 @@ const Portfolio = () => {
     navigate(`/port/${item.portSeq}`);
   };
 
-  console.log(portList);
+  const movePortCreate = () => {
+    navigate('/port/create');
+  };
+
   return (
     <Background>
       <Nav className="nav"></Nav>
@@ -64,16 +72,15 @@ const Portfolio = () => {
         <CardWrapper className="myroomwrapper">
           <HeaderDiv>
             <Text className="myrooms">나의 소중한 마이룸들</Text>
-            <DeleteBtn onClick={togglePocketDel}>
+            <IconDiv onClick={togglePocketDel}>
               {isDelete ? (
                 <DeleteIconX></DeleteIconX>
               ) : (
                 <DeleteIcon></DeleteIcon>
               )}
-            </DeleteBtn>
+            </IconDiv>
           </HeaderDiv>
           <CardList className="roomlists">
-            <Card isDelete={isDelete}></Card>
             <Card isDelete={isDelete}></Card>
             <div>
               <AddMyRoom></AddMyRoom>
@@ -83,13 +90,18 @@ const Portfolio = () => {
         <CardWrapper>
           <HeaderDiv>
             <Text className="portfolios">나의 소중한 포트폴리오들</Text>
-            <DeleteBtn onClick={togglePortDel}>
-              {delPortIcon && portList.length > 0 ? (
-                <DeleteIconX></DeleteIconX>
-              ) : (
-                <DeleteIcon></DeleteIcon>
-              )}
-            </DeleteBtn>
+            <BtnDiv>
+              <IconDiv className="addPortIcon" onClick={movePortCreate}>
+                <AddPortIcon />
+              </IconDiv>
+              <IconDiv className="delPortIcon" onClick={togglePortDel}>
+                {delPortIcon && portList.length > 0 ? (
+                  <DeleteIconX />
+                ) : (
+                  <DeleteIcon />
+                )}
+              </IconDiv>
+            </BtnDiv>
           </HeaderDiv>
           <CardList className="portlists">
             {portList.length > 0
@@ -108,7 +120,6 @@ const Portfolio = () => {
           </CardList>
         </CardWrapper>
       </Container>
-      <BtnDiv></BtnDiv>
     </Background>
   );
 };
