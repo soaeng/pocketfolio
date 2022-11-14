@@ -46,10 +46,11 @@ public class Portfolio {
 	@Column(name="updated", nullable=false, columnDefinition = "datetime DEFAULT (current_time)")
 	private LocalDateTime updated;
 	
-	public void updatePortfolio(String name, String summary, String thumbnail) {
+	public void updatePortfolio(String name, String summary, String thumbnail, String thumbnailName) {
 		this.name = name;
 		this.summary = summary;
 		this.thumbnail = thumbnail;
+		this.thumbnailName = thumbnailName;
 	}
 	
 	@PrePersist
