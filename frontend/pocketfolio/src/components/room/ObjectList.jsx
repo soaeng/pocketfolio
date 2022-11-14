@@ -42,6 +42,10 @@ const ObjectList = ({appendArrange}) => {
   const getCategoryList = async () => {
     const {payload} = await dispatch(getItemCategory());
     setCategoryList(payload);
+
+    const total = Array.from({length: payload['0'].lastPage}, (v, i) => i + 1);
+    setLastPage(payload['0'].lastPage);
+    setTotalPage(total);
   };
 
   // 아이템 목록 조회

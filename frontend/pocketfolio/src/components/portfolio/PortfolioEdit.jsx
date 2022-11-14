@@ -53,11 +53,13 @@ const PortfolioEdit = () => {
   const [hashArr, setHashArr] = useState([]);
   // 썸네일 이미지 파일을 담을 변수
   const [thumbNail, setThumbNail] = useState('');
-  // 썸네일 이름, 미리보기 표기 변수 
+  // 썸네일 이름, 미리보기 표기 변수
   const [thumbData, setThumbData] = useState({
     url: '',
     name: '',
   });
+  // 썸네일 변화 감지 변수
+  const [isChangeThumb, setIsChangeThumb] = useState(false);
 
   // 업로드 기록 (seq, url)
   const [uploadHistory, setUploadHisory] = useState([]);
@@ -93,7 +95,6 @@ const PortfolioEdit = () => {
           url: data.thumbnail,
           name: data.thumbnailName,
         });
-        console.log('넘어오는값', data);
       })
       .catch(err => {
         alert('목록 불러오기 실패');
@@ -168,6 +169,7 @@ const PortfolioEdit = () => {
   const uploadThumbnail = e => {
     const file = e.target.files[0];
     setThumbNail(file);
+    setIsChangeThumb(true);
     // 썸네일 미리보기
     const reader = new FileReader();
     reader.readAsDataURL(e.target.files[0]);
@@ -186,8 +188,8 @@ const PortfolioEdit = () => {
   const cancelThumb = () => {
     setThumbNail('');
     setThumbData({
-      name: '',
-      url: '',
+      name: null,
+      url: null,
     });
   };
 
@@ -227,16 +229,32 @@ const PortfolioEdit = () => {
   // 포트폴리오 제출 함수
   const savePortFolio = () => {
     const form = new FormData();
-    const port = JSON.stringify({
-      name: portContent.name,
-      summary: portContent.summary,
-      tags: hashArr,
-    });
+
+    // 썸네일이 변경 되었을 때,
+    if (isChangeThumb) {
+      const port = JSON.stringify({
+        name: portContent.name,
+        summary: portContent.summary,
+        tags: hashArr,
+      });
+      form.append('portfolio', new Blob([port], {type: 'application/json'}));
+      form.append('thumbnail', thumbNail);
+      // 썸네일 변경 없을 때,
+    } else {
+      const port = JSON.stringify({
+        name: portContent.name,
+        summary: portContent.summary,
+        tags: hashArr,
+        thumbnail: thumbData.url,
+        thumbnailName: thumbData.name,
+      });
+      form.append('portfolio', new Blob([port], {type: 'application/json'}));
+    }
+
     const uploadImage = JSON.stringify(uploadImg);
     const resultImage = JSON.stringify(resultImg);
     const existfile = JSON.stringify(existFile);
-    
-    form.append('portfolio', new Blob([port], {type: 'application/json'}));
+
     form.append(
       'uploadImg',
       new Blob([uploadImage], {type: 'application/json'}),
@@ -254,9 +272,7 @@ const PortfolioEdit = () => {
         form.append('files', files[i]);
       }
     }
-    form.append('thumbnail', thumbNail);
     compareImgList();
-
     dispatch(modifiedPort({form, port_id}))
       .unwrap()
       .then(res => {
@@ -364,7 +380,7 @@ const PortfolioEdit = () => {
               onChange={uploadThumbnail}
               style={{display: 'none'}}
             />
-            {thumbData.name !== '' ? (
+            {thumbData.name !== undefined && thumbData.name !== null ? (
               <Item>
                 {thumbData.name}
                 <IconDiv>
