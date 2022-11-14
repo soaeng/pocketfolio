@@ -1,6 +1,16 @@
 import {useState} from 'react';
 import {useDispatch} from 'react-redux';
-import {Container, TitleDiv, Title, IconDiv, DelIcon} from './PortList.style';
+import {
+  Container,
+  TitleDiv,
+  Title,
+  IconDiv,
+  DelIcon,
+  Table,
+  Tr,
+  Th,
+  Td,
+} from './PortList.style';
 import DeleteModal from './DeleteModal';
 import {deletePort} from '../../store/portSlice';
 import toast, {Toaster} from 'react-hot-toast';
@@ -16,7 +26,7 @@ const PortList = props => {
     setIsOpen(!isOpen);
   };
 
-  // 해당 포트폴리오 삭제 
+  // 해당 포트폴리오 삭제
   const deletePortHandle = () => {
     dispatch(deletePort(item.portSeq)).then(res => {
       setDeletedPort(!deletedPort);
@@ -41,9 +51,13 @@ const PortList = props => {
           },
         }}
       />
-      <TitleDiv>
+
+
+
+      {/* <TitleDiv>
         <Title>{item.name}</Title>
       </TitleDiv>
+
       <IconDiv
         onClick={event => {
           event.stopPropagation();
@@ -52,7 +66,8 @@ const PortList = props => {
         className={isDeletePort ? 'on' : ''}
       >
         <DelIcon></DelIcon>
-      </IconDiv>
+      </IconDiv> */}
+
       {isOpen && (
         <DeleteModal
           onClose={() => setIsOpen(false)}

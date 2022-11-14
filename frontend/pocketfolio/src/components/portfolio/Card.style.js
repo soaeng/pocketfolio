@@ -5,7 +5,6 @@ export const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  
   cursor: pointer;
 `;
 
@@ -15,8 +14,6 @@ export const Item = styled.div`
   width: 12rem;
   margin-right: 1rem;
   border-radius: 1.5rem;
-
-  outline: solid;
   background-color: white;
 `;
 
