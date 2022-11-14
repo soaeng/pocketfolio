@@ -12,7 +12,7 @@ export const Container = styled.div`
 `;
 
 export const SideContainer = styled.div`
-  width: 38rem;
+  width: 36rem;
   height: calc(100vh - 4rem);
   padding: 2rem;
   background-color: #ffffff;
