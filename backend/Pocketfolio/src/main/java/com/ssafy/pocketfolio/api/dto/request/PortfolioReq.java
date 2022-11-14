@@ -17,6 +17,10 @@ public class PortfolioReq {
     private String summary;
     @Schema(description = "태그 리스트", example = "['tag1', 'tag2', 'tag3']")
     private String[] tags;
+    @Schema(description = "썸네일 url")
+    private String thumbnail;
+    @Schema(description = "썸네일 이름")
+    private String thumbnailName;
 
     public static Portfolio toEntity(PortfolioReq req, String thumbnail, String thumbnailName, User user) {
         if (req == null) {

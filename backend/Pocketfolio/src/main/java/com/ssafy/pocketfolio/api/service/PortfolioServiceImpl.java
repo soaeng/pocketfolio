@@ -114,16 +114,15 @@ public class PortfolioServiceImpl implements PortfolioService {
         log.debug("req: " + mapper.writeValueAsString(req));
         log.debug("urls: " + mapper.writeValueAsString(urls));
         Portfolio portfolio = portfolioRepository.findById(portSeq).orElseThrow(() -> new IllegalArgumentException("해당 포트폴리오가 존재하지 않습니다."));
-        log.debug("portfolio: " + portfolio.toString());
 
         if (userSeq != portfolio.getUser().getUserSeq()) {
             log.error("권한 없음");
             return null;
         }
 
-        log.debug("portfolio" + portfolio);
         // 저장된 썸네일 주소
-        String thumbnailUrl = portfolio.getThumbnail();
+        String thumbnailUrl = req.getThumbnail();
+        String thumbnailName = req.getThumbnailName();
 
         // 저장할 썸네일 파일이 있다면 thumbnail 수정
         if (thumbnail != null) {
@@ -132,19 +131,21 @@ public class PortfolioServiceImpl implements PortfolioService {
                 fileHandler.deleteFile(thumbnailUrl, "portfolio/thumbnail");
             }
             thumbnailUrl = fileHandler.saveFile(thumbnail, "portfolio/thumbnail");
+            thumbnailName = thumbnail.getOriginalFilename();
             if(thumbnailUrl == null) {
                 log.error("썸네일 저장 실패");
                 return null;
             }
-        } else {
-            // 썸네일 삭제 후 전송되고 이전에 썸네일 있었으면 썸네일 파일 삭제
-            if (thumbnailUrl != null) {
+        } else { // 저장할 썸네일 없다면 기존 썸네일 삭제했는지 확인
+            if (thumbnailUrl != null && req.getThumbnail() == null) {
+                thumbnailUrl = null;
+                thumbnailName = null;
                 fileHandler.deleteFile(thumbnailUrl, "portfolio/thumbnail");
             }
         }
-
-        portfolio.updatePortfolio(req.getName(), req.getSummary(), thumbnailUrl);
-
+        log.debug(thumbnailUrl + " / " + thumbnailName);
+        portfolio.updatePortfolio(req.getName(), req.getSummary(), thumbnailUrl, thumbnailName);
+        log.debug(portfolio.toString());
         // 태그가 있다면 기존 태그 삭제 후 새로 저장
         if (req.getTags() != null) {
             tagRepository.deleteAllByPortfolio_PortSeq(portSeq);
