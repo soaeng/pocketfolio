@@ -33,9 +33,6 @@ export const getportDetail = createAsyncThunk(
 export const registPortfolio = createAsyncThunk(
   'registPortfolio',
   async (data, {rejectWithValue}) => {
-    for (let value of data.values()) {
-      console.log(value);
-    }
     try {
       const res = await postAxios.post('portfolios', data);
       return res
@@ -68,6 +65,7 @@ export const uploadImage = createAsyncThunk(
   async (data, {rejectWithValue}) => {
     try {
       const res = await postAxios.post('portfolios/images', data)
+      
       return res
     } catch (err) {
       return rejectWithValue(err.response)

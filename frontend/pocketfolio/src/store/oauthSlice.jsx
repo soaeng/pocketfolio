@@ -18,6 +18,21 @@ export const getMyInfo = createAsyncThunk(
   },
 );
 
+// 특정 유저정보 조회
+export const getUserInfo = createAsyncThunk(
+  'getUserInfo',
+  async (userSeq, {rejectWithValue}) => {
+    try {
+      const res = await http.get(`users/profile/${userSeq}`);
+
+      if (res.status === 200) return res.data;
+    } catch (error) {
+      console.log('특정유저정보조회 에러', error);
+      return rejectWithValue(error);
+    }
+  },
+);
+
 // 회원정보수정
 export const updateProfile = createAsyncThunk(
   'updateProfile',
