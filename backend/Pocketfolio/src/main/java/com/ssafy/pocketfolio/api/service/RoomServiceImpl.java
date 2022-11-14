@@ -408,7 +408,7 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     @Transactional(readOnly = true)
-    public Map<String, Object> findGuestList(long roomSeq) { // TODO: 방문자 목록 room에서 user로 바꾸기
+    public Map<String, Object> findGuestList(long roomSeq) {
         log.debug("[GET] Service - findGuestList");
         try {
             Map<String, Object> map = new HashMap<>();

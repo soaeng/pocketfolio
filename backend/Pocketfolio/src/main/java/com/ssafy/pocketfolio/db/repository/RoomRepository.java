@@ -16,4 +16,6 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
     Long findRoomSeqByPrivacyOrderByRandom(long roomSeq, long userSeq);
     List<Room> findRoomByUser_UserSeqAndIsMain(long userSeq, String isMain);
     Integer countRoomsByUser_UserSeq(long userSeq);
+
+
 }

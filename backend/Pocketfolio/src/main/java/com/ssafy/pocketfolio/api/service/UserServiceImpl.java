@@ -65,21 +65,23 @@ public class UserServiceImpl implements UserService {
 
         log.info("multipartFile is null: " + (multipartFile == null));
 
-        // 저장할 프로필 사진 파일이 있다면 profilePic 수정
-        if (multipartFile != null) {
-            // 저장된 프로필 사진 주소가 있으면 해당 프로필 사진 삭제 후 새로 저장
-            if (profilePicUrl != null) {
-                fileHandler.deleteFile(profilePicUrl, "portfolio/thumbnail");
-            }
-            profilePicUrl = fileHandler.saveFile(multipartFile, "profile");
-            if(profilePicUrl == null) {
-                log.error("프로필 사진이 저장되지 않았습니다.");
+        if (userUpdateReq.getPicChanged()) { // 사진이 안 바꼈으면 원래 값 그대로 저장, 바꼈을 때 처리
+            // 저장할 프로필 사진 파일이 있다면 profilePic 수정
+            if (multipartFile != null) {
+                // 저장된 프로필 사진 주소가 있으면 해당 프로필 사진 삭제 후 새로 저장
+                if (profilePicUrl != null) {
+                    fileHandler.deleteFile(profilePicUrl, "profile");
+                }
+                profilePicUrl = fileHandler.saveFile(multipartFile, "profile");
+                if(profilePicUrl == null) {
+                    log.error("프로필 사진이 저장되지 않았습니다.");
 //                throw new IOException("프로필 사진이 저장되지 않았습니다.");
-            }
-        } else {
-            // 프로필 사진 삭제 후 전송되고 이전에 프로필 사진 있었으면 프로필 사진 파일 삭제
-            if (profilePicUrl != null) {
-                fileHandler.deleteFile(profilePicUrl, "portfolio/thumbnail");
+                }
+            } else {
+                // 프로필 사진 삭제 후 전송되고 이전에 프로필 사진 있었으면 프로필 사진 파일 삭제
+                if (profilePicUrl != null) {
+                    fileHandler.deleteFile(profilePicUrl, "profile");
+                }
             }
         }
 
