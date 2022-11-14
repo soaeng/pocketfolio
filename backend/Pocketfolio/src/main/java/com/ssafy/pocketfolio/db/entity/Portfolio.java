@@ -25,7 +25,7 @@ public class Portfolio {
 	@Column(name="name", length=50)
 	private String name;
 
-	@Column(name="summary", length=2000)
+	@Column(name="summary", columnDefinition = "text")
 	private String summary;
 
 	@Column(name="thumbnail", length=255) // remove if not needed

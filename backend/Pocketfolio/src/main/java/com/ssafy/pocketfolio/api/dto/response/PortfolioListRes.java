@@ -19,8 +19,8 @@ public class PortfolioListRes {
     private String thumbnail;
     @Schema(description = "포트폴리오 태그 목록")
     private List<String> tags;
-//    @Schema(description = "연결된 아이템")
-//    private List<String> tags;
+    @Schema(description = "연결된 배치 번호")
+    private Long arrangeSeq;
 
     public static PortfolioListRes toDto(Portfolio entity, List<Tag> tags) {
         if (entity == null) {
@@ -31,6 +31,19 @@ public class PortfolioListRes {
                 .name(entity.getName())
                 .thumbnail(entity.getThumbnail())
                 .tags(tags.stream().map(Tag::getName).collect(Collectors.toList()))
+                .build();
+    }
+
+    public static PortfolioListRes toDto(Portfolio entity, List<Tag> tags, Long arrangeSeq) {
+        if (entity == null) {
+            return null;
+        }
+        return PortfolioListRes.builder()
+                .portSeq(entity.getPortSeq())
+                .name(entity.getName())
+                .thumbnail(entity.getThumbnail())
+                .tags(tags.stream().map(Tag::getName).collect(Collectors.toList()))
+                .arrangeSeq(arrangeSeq)
                 .build();
     }
 }
