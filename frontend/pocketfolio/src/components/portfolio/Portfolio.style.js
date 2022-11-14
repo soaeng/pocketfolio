@@ -1,8 +1,9 @@
 import styled from 'styled-components';
 import {TbTrash, TbTrashX} from 'react-icons/tb';
+import {RiDeleteBinFill, RiDeleteBin2Fill } from 'react-icons/ri'
 
 export const Background = styled.div`
-  width: 100vw;
+  width: 100vw; 
   height: 100vh;
   display: flex;
   flex-direction: column;
@@ -45,8 +46,7 @@ export const CardWrapper = styled.div`
 export const Text = styled.div`
   padding-bottom: 1rem;
   &.portfolios {
-    border-bottom: 1px solid #bababa;
-    margin-bottom: 1rem;
+    
   }
 `;
 
@@ -74,6 +74,7 @@ export const CardList = styled.div`
   }
 
   &.portlists {
+    padding-top: 1rem;
     overflow: auto;
     &::-webkit-scrollbar {
       width: 10px;
@@ -108,17 +109,18 @@ export const DeleteBtn = styled.button`
   justify-content: center;
   width: 3rem;
   height: 2rem;
-  background-color: #2c2365;
+  background-color: #ff9392;
   box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.3),
     0px 1px 3px 1px rgba(0, 0, 0, 0.15);
   border: 0;
   border-radius: 100px;
   color: #ffffff;
   font-size: 20px;
+  transition: all 0.3s;
   cursor: pointer;
 
   :hover {
-    background-color: #3c308a;
+    background-color: #fbb9b7;
   }
 
   p {
@@ -126,6 +128,8 @@ export const DeleteBtn = styled.button`
   }
 `;
 
-export const DeleteIcon = styled(TbTrash)``;
+export const DeleteIcon = styled(RiDeleteBinFill)`
+  
+`;
 
-export const DeleteIconX = styled(TbTrashX)``;
+export const DeleteIconX = styled(RiDeleteBin2Fill)``;
