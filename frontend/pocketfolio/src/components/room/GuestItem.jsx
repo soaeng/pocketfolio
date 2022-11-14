@@ -62,6 +62,7 @@ const GuestItem = ({item, removeGuest, roomDto, getData}) => {
     }
   }
 
+
   return item.isPublic === 'T' ||
     (item.isPublic === 'F' &&
       (item.userSeq === user.userSeq ||
@@ -78,7 +79,6 @@ const GuestItem = ({item, removeGuest, roomDto, getData}) => {
           <Date>{item.created.slice(0, 16)}</Date>
           {user && user.userSeq === item.userSeq && (
             <BtnBox>
-              <TextBtn type="button">수정</TextBtn> |
               <TextBtn
                 type="button"
                 onClick={() => removeGuest(item.guestbookSeq)}
