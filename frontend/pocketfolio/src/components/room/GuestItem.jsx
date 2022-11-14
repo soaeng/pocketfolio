@@ -1,4 +1,6 @@
-import {useSelector} from 'react-redux';
+import {useState} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
+import {postComment} from '../../store/guestSlice';
 import {
   Container,
   Header,
@@ -15,17 +17,46 @@ import {
   BtnDate,
   BtnBox,
   TextBtn,
+  CommentList,
+  CommentItem,
+  CommentText,
+  CommentName,
+  CommentDate,
+  CommentContainer,
+  CommentArea,
+  CommentBtn,
+  CommentL,
 } from './GuestItem.style';
 
-const GuestItem = ({item, removeGuest}) => {
+const GuestItem = ({item, removeGuest, roomDto, getData}) => {
+  const dispatch = useDispatch();
   const user = useSelector(state => state.oauth.user);
+  const [comment, setComment] = useState('');
 
-  return (
+  // 방명록 댓글 작성
+  async function sendComment() {
+    if (user && comment.trim()) {
+      const {payload} = await dispatch(
+        postComment({
+          roomSeq: roomDto.room.roomSeq,
+          guestbookSeq: item.guestbookSeq,
+          content: comment,
+          isPublic: item.isPublic,
+        }),
+      );
+      if (payload) getData();
+    }
+  }
+
+  return item.isPublic === 'T' ||
+    (item.isPublic === 'F' &&
+      (item.userSeq === user.userSeq ||
+        roomDto.room.userSeq === user.userSeq)) ? (
     <Container>
       <Header className={item.isPublic === 'T' ? '' : 'secret'}>
         <NameDiv>
           <IconDiv>
-            {item.isPublic == 'T' ? <UnlockIcon /> : <LockIcon />}
+            {item.isPublic === 'T' ? <UnlockIcon /> : <LockIcon />}
           </IconDiv>
           <Name>{item.userName} </Name>
         </NameDiv>
@@ -34,7 +65,12 @@ const GuestItem = ({item, removeGuest}) => {
           {user && user.userSeq === item.userSeq && (
             <BtnBox>
               <TextBtn type="button">수정</TextBtn> |
-              <TextBtn type="button" onClick={() => removeGuest(item.guestbookSeq)}>삭제</TextBtn>
+              <TextBtn
+                type="button"
+                onClick={() => removeGuest(item.guestbookSeq)}
+              >
+                삭제
+              </TextBtn>
             </BtnBox>
           )}
         </BtnDate>
@@ -52,8 +88,38 @@ const GuestItem = ({item, removeGuest}) => {
         </ImgBox>
         <TextBox>{item.content}</TextBox>
       </ImgTextDiv>
+      {console.log(item.commentList)}
+      {item.commentList.length > 0 && (
+        <CommentList>
+          {item.commentList.map((comment, idx) => (
+            <CommentItem key={idx}>
+              <CommentL>
+                <CommentName>{roomDto.room.userName}</CommentName>
+                <CommentText>{comment.content}</CommentText>
+              </CommentL>
+
+              <CommentDate>{comment.created.slice(0, 16)}</CommentDate>
+            </CommentItem>
+          ))}
+        </CommentList>
+      )}
+      {roomDto.room.userSeq === user.userSeq && (
+        <CommentContainer>
+          <CommentArea
+            className={item.isPublic === 'T' ? '' : 'secret'}
+            value={comment}
+            onChange={e => setComment(e.target.value)}
+          />
+          <CommentBtn
+            className={item.isPublic === 'T' ? '' : 'secret'}
+            onClick={sendComment}
+          >
+            확인
+          </CommentBtn>
+        </CommentContainer>
+      )}
     </Container>
-  );
+  ) : null;
 };
 
 export default GuestItem;

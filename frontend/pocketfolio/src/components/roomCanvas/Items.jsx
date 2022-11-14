@@ -15,6 +15,7 @@ const Items = props => {
 
   useEffect(() => {
     setSelectedMesh(false);
+    api.refresh().clip().fit();
   }, [edit]);
 
   useFrame((state, dt) => {

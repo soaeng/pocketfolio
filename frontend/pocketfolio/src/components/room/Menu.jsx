@@ -13,24 +13,20 @@ import {
 } from './Menu.style';
 import {useState} from 'react';
 import {useNavigate} from 'react-router-dom';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {getRandom} from '../../store/guestSlice';
 
-const Menu = ({roomSeq, changeSidebar, copyURL, onEdit}) => {
+const Menu = ({roomSeq, changeSidebar, copyURL, onEdit, data}) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  const user = useSelector((state) => state.oauth.user)
 
   const [toggle, setToggle] = useState(false);
 
   // menu toggle
   const toggleMenu = () => {
     setToggle(!toggle);
-  };
-
-  // edit mode
-  const activeEdit = () => {
-    onEdit();
-    changeSidebar('edit');
   };
 
   // changeRoom
@@ -41,12 +37,14 @@ const Menu = ({roomSeq, changeSidebar, copyURL, onEdit}) => {
 
   return (
     <Container>
-      <MenuDiv onClick={activeEdit} className={toggle ? 'edit' : ''}>
-        <EditIcon />
-        <ToolTip className="tooltip">
-          <ToolTipText>마이룸 수정</ToolTipText>
-        </ToolTip>
-      </MenuDiv>
+      {data && data.room.userSeq === user.userSeq && (
+        <MenuDiv onClick={onEdit} className={toggle ? 'edit' : ''}>
+          <EditIcon />
+          <ToolTip className="tooltip">
+            <ToolTipText>마이룸 수정</ToolTipText>
+          </ToolTip>
+        </MenuDiv>
+      )}
 
       <MenuDiv
         onClick={() => changeSidebar('port')}

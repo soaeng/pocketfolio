@@ -1,9 +1,9 @@
 import {Container, Img} from './ObjectItem.style';
 
-const ObjectItem = () => {
+const ObjectItem = ({item}) => {
   return (
     <Container>
-      <Img src={process.env.PUBLIC_URL + '/assets/images/room.png'}/>
+      <Img src={item.image}/>
     </Container>
   );
 };

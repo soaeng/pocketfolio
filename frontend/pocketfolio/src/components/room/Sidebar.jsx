@@ -14,7 +14,7 @@ import {
   ToggleOpenIcon2,
 } from './Sidebar.style';
 
-const Sidebar = ({sidebar, changeSidebar, edit, roomSeq}) => {
+const Sidebar = ({sidebar, changeSidebar, edit, roomSeq, data}) => {
   const controlSide = () => {
     if (sidebar === 'port') return changeSidebar('');
     if (sidebar === 'guest') return changeSidebar('');
@@ -25,14 +25,14 @@ const Sidebar = ({sidebar, changeSidebar, edit, roomSeq}) => {
   return (
     <Container>
       <SideContainer className={sidebar ? 'open' : null}>
-        {edit ? null : (
+        {!edit && (
           <CloseBox onClick={controlSide}>
             <CloseIcon />
           </CloseBox>
         )}
-        {sidebar === 'port' ? <PortList /> : null}
-        {sidebar === 'guest' ? <GuestList roomSeq={roomSeq} /> : null}
-        {sidebar === 'edit' ? <ObjectList /> : null}
+        {sidebar === 'port' && <PortList />}
+        {sidebar === 'guest' && <GuestList roomSeq={roomSeq} roomDto={data}/>}
+        {sidebar === 'edit' && <ObjectList />}
       </SideContainer>
       {edit ? (
         <ToggleBox onClick={controlSide}>

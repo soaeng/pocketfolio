@@ -57,6 +57,13 @@ const PortfolioEdit = () => {
   // 썸네일 변수
   const [thumbNail, setThumbNail] = useState('');
 
+  // 업로드 기록 (seq, url)
+  const [uploadHistory, setUploadHisory] = useState([]);
+  // 업로드 한 이미지 (post)
+  const [uploadImg, setUploadImg] = useState([]);
+  // 최종 등록할 이미지 (post)
+  const [resultImg, setResultImg] = useState([]);
+
   // 포트폴리오 제목 저장
   const getValue = e => {
     const {name, value} = e.target;
@@ -81,6 +88,7 @@ const PortfolioEdit = () => {
           summary: data.summary,
         });
         setThumbNail(data.thumbnail);
+        console.log('넘어오는값', data);
       })
       .catch(err => {
         alert('목록 불러오기 실패');
@@ -160,26 +168,72 @@ const PortfolioEdit = () => {
     setThumbNail('');
   };
 
-  console.log('썸넬', thumbNail);
+  // Editor에서 이미지 추가 시 실행
+  const addImgHandle = (seq, url) => {
+    setUploadHisory(uploadHistory => [
+      ...uploadHistory,
+      {
+        id: seq,
+        imgurl: url,
+      },
+    ]);
+    setUploadImg(uploadImg => [...uploadImg, seq]);
+  };
+
+  // 최종적으로 제출할 imgSeq 찾기
+  const compareImgList = () => {
+    // 포폴 내용
+    const content = portContent.summary;
+    // src 내용 추출 정규식
+    const imgSrcReg = /(<img[^>]*src\s*=\s*[\"']?([^>\"']+)[\"']?[^>]*>)/g;
+
+    while (imgSrcReg.test(content)) {
+      // summary 안의 src 값들을 하나씩 추출
+      let src = RegExp.$2.trim();
+
+      uploadHistory.forEach(function (val, idx) {
+        if (src === val.imgurl) {
+          setResultImg(resultImg => [...resultImg, val.id]);
+          const newHistory = uploadHistory.splice(idx);
+          setUploadHisory(newHistory);
+          return false;
+        }
+      });
+    }
+  };
+
   // 포트폴리오 제출 함수
   const savePortFolio = () => {
     const form = new FormData();
-
     const port = JSON.stringify({
       name: portContent.name,
       summary: portContent.summary,
       tags: hashArr,
     });
+    const uploadImage = JSON.stringify(uploadImg);
+    const resultImage = JSON.stringify(resultImg);
+
     form.append('portfolio', new Blob([port], {type: 'application/json'}));
+    form.append(
+      'uploadImg',
+      new Blob([uploadImage], {type: 'application/json'}),
+    );
+    form.append(
+      'resultImg',
+      new Blob([resultImage], {type: 'application/json'}),
+    );
 
     const existfile = JSON.stringify(existFile);
     form.append('urls', new Blob([existfile], {type: 'application/json'}));
 
     let files = newFile;
-    for (let i = 0; i < files.length; i++) {
-      form.append('files', files[i]);
+    if (files.length > 0) {
+      for (let i = 0; i < files.length; i++) {
+        form.append('files', files[i]);
+      }
     }
     form.append('thumbnail', thumbNail);
+    compareImgList();
 
     dispatch(modifiedPort({form, port_id}))
       .unwrap()
@@ -193,7 +247,6 @@ const PortfolioEdit = () => {
       });
   };
 
-  console.log('썸네일', thumbNail);
   return (
     <Background>
       <Nav></Nav>
@@ -224,7 +277,11 @@ const PortfolioEdit = () => {
 
         <ContentDiv>
           <Label>본문</Label>
-          <Editor portContent={portContent} setPortContent={setPortContent} />
+          <Editor
+            portContent={portContent}
+            setPortContent={setPortContent}
+            addImgHandle={addImgHandle}
+          />
         </ContentDiv>
 
         <ContentDiv className="bottom">
@@ -286,7 +343,7 @@ const PortfolioEdit = () => {
               onChange={uploadThumbnail}
               style={{display: 'none'}}
             />
-            {thumbNail.length !== 0 ? (
+            {thumbNail !== undefined ? (
               <Item>
                 {thumbNail.name}
                 <IconDiv>

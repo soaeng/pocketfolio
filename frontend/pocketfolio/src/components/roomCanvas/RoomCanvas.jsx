@@ -7,7 +7,7 @@ import {
   GizmoViewcube,
   GizmoViewport,
 } from '@react-three/drei';
-import RoomTheme from './theme/RoomTheme';
+import Theme from './Theme';
 import Items from './Items';
 import Capture from '../room/Capture';
 
@@ -67,7 +67,7 @@ const RoomCanvas = ({edit}) => {
         ref={cntRef}
         enabled={cntEnabled}
       />
-      <RoomTheme boundaryRef={boundaryRef} name="Room_1">
+      <Theme boundaryRef={boundaryRef} name="Room_1">
         <Items
           cntRef={cntRef}
           boundaryRef={boundaryRef}
@@ -76,7 +76,7 @@ const RoomCanvas = ({edit}) => {
           setCntEnabled={setCntEnabled}
           setDatas={setDatas}
         />
-      </RoomTheme>
+      </Theme>
 
       {edit && (
         <GizmoHelper alignment="top-right" margin={[100, 100]}>

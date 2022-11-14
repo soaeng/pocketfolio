@@ -1,41 +1,46 @@
 import styled from 'styled-components';
-import {Body3, Body4} from '../../styles/styles.style';
-import {RiCake2Fill, RiLinksFill, RiArrowUpSLine} from 'react-icons/ri';
+import {RiLinksFill} from 'react-icons/ri';
 
 export const Container = styled.div`
+  margin-top: 0.6rem;
   padding: 1rem 0 0.5rem 0;
 `;
 
-export const UpArrowDiv = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: center;
+
+export const UserName = styled.h4`
+  margin-top: 0;
+  font-weight: bold;
+  margin-bottom: 0.4rem;
 `;
 
-export const UpIcon = styled(RiArrowUpSLine)``;
 
-export const BirthLinkDiv = styled.div`
+export const LinkDiv = styled.div`
   display: flex;
   align-items: center;
   margin-bottom: 0.5rem;
+  font-size: 0.85rem;
 `;
 
 export const IconDiv = styled.div`
   margin-right: 0.3rem;
 `;
 
-export const BirthIcon = styled(RiCake2Fill)`
-  font-size: 1rem;
+export const LinkIcon = styled(RiLinksFill)``;
+
+export const Link = styled.a`
+  text-decoration: none;
+  color: #333333;
+
+  &:hover {
+    font-weight: bold;
+    text-decoration: underline;
+  }
 `;
 
-export const LinkIcon = styled(RiLinksFill)`
-  font-size: 1rem;
-`;
+export const LinkText = styled.p`
+`
 
-export const BirthLinkTxt = styled(Body4)`
+export const Introduction = styled.p`
   margin: 0;
-`;
-
-export const Introduction = styled(Body3)`
-  margin: 0;
+  font-size: 0.9rem;
 `;

@@ -24,8 +24,8 @@ import Nav from '../common/Nav';
 import Editor from './Editor';
 import {Body1} from '../../styles/styles.style';
 import SaveModal from './SaveModal';
-import ReactHtmlParser from 'html-react-parser';
 import {registPortfolio} from '../../store/portSlice';
+import toast, {Toaster} from 'react-hot-toast';
 
 const AddPort = () => {
   const navigate = useNavigate();
@@ -45,6 +45,12 @@ const AddPort = () => {
   const [hashArr, setHashArr] = useState([]);
   // 썸네일 변수
   const [thumbNail, setThumbNail] = useState('');
+  // 업로드 기록 (seq, url)
+  const [uploadHistory, setUploadHisory] = useState([]);
+  // 업로드 한 이미지 (post)
+  const [uploadImg, setUploadImg] = useState([]);
+  // 최종 등록할 이미지 (post)
+  const [resultImg, setResultImg] = useState([]);
 
   // 포트폴리오 제목 저장
   const getValue = e => {
@@ -128,25 +134,79 @@ const AddPort = () => {
     setThumbNail('');
   };
 
+  // Editor에서 이미지 추가 시 실행
+  const addImgHandle = (seq, url) => {
+    setUploadHisory(uploadHistory => [
+      ...uploadHistory,
+      {
+        id: seq,
+        imgurl: url,
+      },
+    ]);
+    setUploadImg(uploadImg => [...uploadImg, seq]);
+  };
+
+  // 최종적으로 제출할 imgSeq 찾기
+  const compareImgList = () => {
+    // 포폴 내용
+    const content = portContent.summary;
+    // src 내용 추출 정규식
+    const imgSrcReg = /(<img[^>]*src\s*=\s*[\"']?([^>\"']+)[\"']?[^>]*>)/g;
+
+    while (imgSrcReg.test(content)) {
+      // summary 안의 src 값들을 하나씩 추출
+      let src = RegExp.$2.trim();
+
+      uploadHistory.forEach(function (val, idx) {
+        if (src === val.imgurl) {
+          setResultImg(resultImg => [...resultImg, val.id]);
+          const newHistory = uploadHistory.splice(idx);
+          setUploadHisory(newHistory);
+          return false;
+        }
+      });
+    }
+  };
+
   // 포트폴리오 제출
   const savePortFolio = () => {
     const form = new FormData();
-    const json = JSON.stringify({
+    const port = JSON.stringify({
       name: portContent.name,
       summary: portContent.summary,
       tags: hashArr,
     });
-    form.append('portfolio', new Blob([json], {type: 'application/json'}));
+
+    const uploadImage = JSON.stringify(uploadImg);
+
+    const resultImage = JSON.stringify(resultImg);
+
+    form.append(
+      'uploadImg',
+      new Blob([uploadImage], {type: 'application/json'}),
+    );
+    form.append('portfolio', new Blob([port], {type: 'application/json'}));
+    form.append(
+      'resultImg',
+      new Blob([resultImage], {type: 'application/json'}),
+    );
+
     let files = attachList;
     for (let i = 0; i < files.length; i++) {
       form.append('files', files[i]);
     }
     form.append('thumbnail', thumbNail);
+    compareImgList();
 
     dispatch(registPortfolio(form))
       .unwrap()
       .then(res => {
-        console.log(res);
+        closeModal();
+        toast.success('포트폴리오가 수정 되었습니다.');
+        const move = setTimeout(() => {
+          navigate(`/port`);
+        }, 1500);
+        move();
       });
   };
 
@@ -161,6 +221,20 @@ const AddPort = () => {
   return (
     <Background>
       <Nav></Nav>
+      <Toaster
+        position="top-center"
+        containerStyle={{
+          position: 'absolute',
+        }}
+        toastOptions={{
+          duration: 3000,
+          style: {
+            background: '#fff',
+            color: '#333333',
+            fontSize: '0.85rem',
+          },
+        }}
+      />
       <Wrapper className="wrapper">
         <ContentDiv>
           <Label>제목</Label>
@@ -174,7 +248,11 @@ const AddPort = () => {
 
         <ContentDiv>
           <Label>본문</Label>
-          <Editor portContent={portContent} setPortContent={setPortContent} />
+          <Editor
+            portContent={portContent}
+            setPortContent={setPortContent}
+            addImgHandle={addImgHandle}
+          />
         </ContentDiv>
 
         <ContentDiv className="bottom">
@@ -263,13 +341,13 @@ const AddPort = () => {
       ></SaveModal>
 
       {/* 포트폴리오 로우 데이터 */}
-      {/* <div>
-        {portContent.title}
-        {ReactHtmlParser(portContent.content)}
-      </div> */}
+      <div>
+        {/* {portContent.summary} */}
+        {/* {ReactHtmlParser(portContent.summary)} */}
+      </div>
 
       {/* 유저에게 보여져야 할 포트폴리오 */}
-      {/* <Viewer content={portContent.content} /> */}
+      <Viewer content={portContent.summary} />
     </Background>
   );
 };

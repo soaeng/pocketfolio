@@ -55,6 +55,7 @@ const PortDetail = () => {
         className="ck-content"
         dangerouslySetInnerHTML={{__html: content}}
       ></Summary>
+      
     </div>
   );
 
@@ -63,7 +64,6 @@ const PortDetail = () => {
     dispatch(getportDetail(port_id))
       .then(res => {
         const data = res.payload;
-        console.log(data)
         setPortDetail(data);
         setCreateDate(data.updated.slice(0, 10));
       })
