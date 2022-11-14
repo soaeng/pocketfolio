@@ -1,10 +1,21 @@
 import React, {useState} from 'react';
+import {useNavigate} from 'react-router-dom';
+
 import {
-  Card,
-  Item,
-  RecCarImgDiv,
-  RecCarThumbnail,
+  PocketCard,
+  PocketItem,
+  PocketImgDiv,
+  PocketThumbnail,
+  PocketUserImgContainer,
+  PocketUserImg,
+  PocketUserInfoContainer,
+  PocketUserDiv,
+  LikeShowDiv,
+  LikeIcon,
+  Item3,
+  ShowIcon,
 } from './PocketSearch.style';
+
 // 임시데이터(card)
 const items = [
   {
@@ -60,26 +71,53 @@ const items = [
 const PocketSearch = () => {
   const [item, setItem] = useState(items);
 
+  const navigate = useNavigate();
+
+  // port 클릭시 이동 => 수정필요
+  const pocketClickHandler = () => {
+    navigate('/room/1');
+  };
+
   return (
     <>
-      <Card>
+      <PocketCard>
         {item.map(it => {
           const {icon, copy} = it;
           return (
-            <Item>
-              <RecCarImgDiv>
-                <RecCarThumbnail
+            <PocketItem>
+              {/* 마이포켓 썸네일 */}
+              <PocketImgDiv onClick={pocketClickHandler}>
+                <PocketThumbnail
                   src={process.env.PUBLIC_URL + '/assets/images/room.png'}
                 />
-              </RecCarImgDiv>
-              <div>{icon}</div>
-              <div>{copy}</div>
-            </Item>
+              </PocketImgDiv>
+              {/* 프로필 컴포넌트 */}
+              <PocketUserInfoContainer>
+                <PocketUserDiv>
+                  {/* 프로필 사진 */}
+                  <PocketUserImgContainer>
+                    <PocketUserImg
+                      src={process.env.PUBLIC_URL + '/assets/images/room.png'}
+                    />
+                  </PocketUserImgContainer>
+                  {/* 이름 */}
+                  <div>{icon}</div>
+                </PocketUserDiv>
+                {/* <div>{copy}</div> */}
+                {/* 좋아요, 클릭 컴포넌트 */}
+                <LikeShowDiv>
+                  <LikeIcon />
+                  <Item3>2</Item3>
+                  <ShowIcon />
+                  <div>5</div>
+                </LikeShowDiv>
+              </PocketUserInfoContainer>
+            </PocketItem>
           );
         })}
-      </Card>
+      </PocketCard>
     </>
-  )
-}
+  );
+};
 
-export default PocketSearch
+export default PocketSearch;

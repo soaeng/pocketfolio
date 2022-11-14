@@ -1,9 +1,21 @@
 import React, {useState} from 'react';
+import {useNavigate} from 'react-router-dom';
+
 import {
-  Card,
-  Item,
-  RecCarImgDiv,
-  RecCarThumbnail,
+  PortCard,
+  PortItem,
+  PortImgDiv,
+  PortThumbnail,
+  PortSearchButton,
+  HoverDiv,
+  PortUserImgContainer,
+  PortUserDiv,
+  PortUserInfoContainer,
+  PortUserImg,
+  LikeIcon,
+  LikeShowDiv,
+  Item3,
+  ShowIcon,
 } from './PortSearch.style';
 // 임시데이터(card)
 const items = [
@@ -35,51 +47,81 @@ const items = [
     icon: 'brightness',
     copy: '07. Misi ut aliquip ex ea commodo consequat.',
   },
-  {
-    icon: 'brightness',
-    copy: '07. Misi ut aliquip ex ea commodo consequat.',
-  },
-  {
-    icon: 'brightness',
-    copy: '07. Misi ut aliquip ex ea commodo consequat.',
-  },
-  {
-    icon: 'brightness',
-    copy: '07. Misi ut aliquip ex ea commodo consequat.',
-  },
-  {
-    icon: 'brightness',
-    copy: '07. Misi ut aliquip ex ea commodo consequat.',
-  },
-  {
-    icon: 'brightness',
-    copy: '07. Misi ut aliquip ex ea commodo consequat.',
-  },
 ];
 
 const PortSearch = () => {
   const [item, setItem] = useState(items);
 
+  const navigate = useNavigate();
+
+  // pocket 클릭시 이동 => 수정필요
+  const pocketClickHandler = () => {
+    navigate('/room/1');
+  };
+
+  // port 클릭시 이동 => 수정필요
+  const portClickHandler = () => {
+    navigate('/port');
+  };
+
   return (
     <>
-      <Card>
+      <PortCard>
         {item.map(it => {
           const {icon, copy} = it;
           return (
-            <Item>
-              <RecCarImgDiv>
-                <RecCarThumbnail
+            <PortItem>
+              {/* 호버시 보이는 버튼 */}
+              {/* <HoverDiv>
+                <PortSearchButton onClick={pocketClickHandler}>
+                  마이포켓 가기
+                </PortSearchButton>
+                <PortSearchButton onClick={portClickHandler}>
+                  포트폴리오 보기
+                </PortSearchButton>
+              </HoverDiv> */}
+              {/* 마이포켓 썸네일 */}
+              <PortImgDiv>
+                <PortThumbnail
                   src={process.env.PUBLIC_URL + '/assets/images/room.png'}
                 />
-              </RecCarImgDiv>
-              <div>{icon}</div>
-              <div>{copy}</div>
-            </Item>
+                <HoverDiv>
+                  <PortSearchButton onClick={pocketClickHandler}>
+                    마이포켓 가기
+                  </PortSearchButton>
+                  <PortSearchButton onClick={portClickHandler}>
+                    포트폴리오 보기
+                  </PortSearchButton>
+                </HoverDiv>
+              </PortImgDiv>
+
+              {/* 프로필 컴포넌트 */}
+              <PortUserInfoContainer>
+                <PortUserDiv>
+                  {/* 프로필 사진 */}
+                  <PortUserImgContainer>
+                    <PortUserImg
+                      src={process.env.PUBLIC_URL + '/assets/images/room.png'}
+                    />
+                  </PortUserImgContainer>
+                  {/* 이름 */}
+                  <div>{icon}</div>
+                </PortUserDiv>
+                {/* <div>{copy}</div> */}
+                {/* 좋아요, 클릭 컴포넌트 */}
+                <LikeShowDiv>
+                  <LikeIcon />
+                  <Item3>2</Item3>
+                  <ShowIcon />
+                  <div>5</div>
+                </LikeShowDiv>
+              </PortUserInfoContainer>
+            </PortItem>
           );
         })}
-      </Card>
+      </PortCard>
     </>
-  )
-}
+  );
+};
 
 export default PortSearch;

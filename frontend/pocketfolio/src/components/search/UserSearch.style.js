@@ -24,7 +24,7 @@ export const UserItem = styled.div`
 
 export const UserContainer = styled.div`
   display: flex;
-`
+`;
 
 export const RecCarImgDiv = styled.div`
   display: flex;
@@ -53,10 +53,10 @@ export const UserImg = styled.img`
 `;
 
 export const UserInfoContainer = styled.div`
-  display:flex;
+  display: flex;
   flex-direction: column;
   justify-content: center;
-`
+`;
 
 export const UserFollowBtn = styled.button`
   padding: 0.5rem 1rem;
@@ -68,12 +68,7 @@ export const UserFollowBtn = styled.button`
   cursor: pointer;
 
   &:hover {
-    background-color: #ff6b69;
-    box-shadow: 0px 2px 5px 1px rgba(0, 0, 0, 0.25);
+    background-color: #c13136;
+    color: #eeeeee;
   }
-
-  &:active {
-    background-color: #ff6b69;
-    box-shadow: 0.5px 0.5px 0.5px #333;
-  }
-`
+`;
