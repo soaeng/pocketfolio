@@ -1,29 +1,34 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useRef} from 'react';
 import {Canvas} from '@react-three/fiber';
 import {
-  useGLTF,
   OrbitControls,
   softShadows,
-  PivotControls,
   GizmoHelper,
   GizmoViewcube,
   GizmoViewport,
-  useCursor,
-  meshBounds,
-  Bounds,
-  useBounds,
 } from '@react-three/drei';
+import Theme from './Theme';
+import Items from './Items';
 import Capture from '../room/Capture';
 
 softShadows();
+const range = 2;
 
-const RoomCanvas = ({}) => {
+const RoomCanvas = props => {
   const cntRef = useRef();
+  const boundaryRef = useRef();
+  const [cntEnabled, setCntEnabled] = useState(true);
+  const arranges = props.arranges;
+  const handleArrange = props.handleArrange;
+  const handleDel = props.handleDel;
+  const edit = props.edit;
+  const theme = props.theme;
+
   return (
     <Canvas
       shadows
-      raycaster={{params: {Line: {threshold: 0.15}}}}
-      camera={{position: [-20, 20, 20], fov: 20}}
+      // raycaster={{params: {Line: {threshold: 0.15}}}}
+      camera={{position: [-30, 30, 30], fov: 20}}
     >
       {/* <Capture /> */}
       <ambientLight intensity={0.5} />
@@ -44,12 +49,47 @@ const RoomCanvas = ({}) => {
         screenSpacePanning={true}
         regress={false}
         ref={cntRef}
+        enabled={cntEnabled}
       />
-      <mesh>
-        <directionalLight position={[10, 10, 10]} intensity={1} castShadow />
-        <boxGeometry args={[5, 5, 5]} />
-        <meshStandardMaterial attach="material" color={0xa3b18a} />
-      </mesh>
+      <Theme boundaryRef={boundaryRef} name={theme}>
+        <Items
+          cntRef={cntRef}
+          boundaryRef={boundaryRef}
+          edit={edit}
+          setCntEnabled={setCntEnabled}
+          arranges={arranges}
+          handleArrange={handleArrange}
+          handleDel={handleDel}
+        />
+      </Theme>
+
+      {edit && (
+        <GizmoHelper alignment="top-right" margin={[100, 100]}>
+          <group scale={0.85}>
+            <GizmoViewcube />
+          </group>
+          <group
+            scale={1.75}
+            position={[30, -30, -30]}
+            rotation={[0, -Math.PI / 2, 0]}
+          >
+            <GizmoViewport
+              labelColor="white"
+              axisHeadScale={0.525}
+              hideNegativeAxes
+            />
+          </group>
+        </GizmoHelper>
+      )}
+
+      <OrbitControls
+        makeDefault
+        screenSpacePanning={true}
+        regress={false}
+        ref={cntRef}
+        minPolarAngle={0.05}
+        maxPolarAngle={Math.PI / 2.2}
+      />
     </Canvas>
   );
 };

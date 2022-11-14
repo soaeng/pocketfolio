@@ -1,9 +1,12 @@
 import {Container, Img} from './ObjectItem.style';
 
-const ObjectItem = ({item}) => {
+const ObjectItem = ({item, appendArrange}) => {
+  const handleClick = e => {
+    appendArrange({...item, location: [0, 0, 0], rotation: 0});
+  };
   return (
-    <Container>
-      <Img src={item.image}/>
+    <Container onClick={handleClick}>
+      <Img src={item.image} />
     </Container>
   );
 };
