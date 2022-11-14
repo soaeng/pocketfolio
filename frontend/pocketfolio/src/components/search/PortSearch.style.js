@@ -10,9 +10,9 @@ export const PortCard = styled.div`
   flex-wrap: wrap;
   overflow-x: auto;
   scroll-behavior: smooth;
-  padding: 0 5%;
 `;
 
+// 각 아이템
 export const PortItem = styled.div`
   margin: 10px;
   padding: 10px;
@@ -23,47 +23,42 @@ export const PortItem = styled.div`
   border-radius: 16px;
   box-shadow: 0px 2px 5px 1px rgba(0, 0, 0, 0.25);
   flex: none;
-
-  &:hover {
-    /* background-color: darkgray; */
-  }
 `;
 
+// 마이포켓 썸네일
 export const PortImgDiv = styled.div`
   display: flex;
   justify-content: center;
-  height: 70%;
+  border-radius: 8px;
+
+  &:hover {
+    background-color: lightgray;
+  }
 `;
 
 export const PortThumbnail = styled.img`
   width: 90%;
-  /* filter: brightness(1); */
-
-  /* &:hover {
-    filter: brightness(0.5);
-  } */
 `;
 
+// 호버시
 export const HoverDiv = styled.div`
   display: flex;
   flex-direction: column;
   position: absolute;
   justify-content: center;
   padding: 10px;
-  height: 25%;
+  height: 29%;
   min-width: 260px;
-  border-radius: 16px;
-  transition: 0.5s ease;
   opacity: 0;
   cursor: pointer;
   z-index: 9;
-  /* background-color: aqua; */
 
   &:hover {
     opacity: 1;
   }
 `;
 
+// 호버시 보이는 버튼
 export const PortSearchButton = styled.button`
   padding: 0.5rem 1rem;
   margin: 15px;
@@ -87,11 +82,19 @@ export const PortUserInfoContainer = styled.div`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  padding-top: 5px;
 
   @media screen and (max-width: 900px) {
     flex-direction: column;
     align-items: center;
   }
+`;
+
+export const PortUserDiv = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
 `;
 
 export const PortUserImgContainer = styled.div`
@@ -101,20 +104,14 @@ export const PortUserImgContainer = styled.div`
   padding: 0;
 `;
 
-// Avatar Img
 export const PortUserImg = styled.img`
   height: 50px;
   width: 50px;
   object-fit: cover;
   border-radius: 50%;
-  cursor: pointer;
 `;
 
-export const PortUserDiv = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`;
+export const PortUserName = styled.div``;
 
 export const LikeIcon = styled(RiHeart3Fill)`
   width: 100%;

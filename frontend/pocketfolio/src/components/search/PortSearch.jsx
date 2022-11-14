@@ -12,6 +12,7 @@ import {
   PortUserDiv,
   PortUserInfoContainer,
   PortUserImg,
+  PortUserName,
   LikeIcon,
   LikeShowDiv,
   Item3,
@@ -71,20 +72,12 @@ const PortSearch = () => {
           const {icon, copy} = it;
           return (
             <PortItem>
-              {/* 호버시 보이는 버튼 */}
-              {/* <HoverDiv>
-                <PortSearchButton onClick={pocketClickHandler}>
-                  마이포켓 가기
-                </PortSearchButton>
-                <PortSearchButton onClick={portClickHandler}>
-                  포트폴리오 보기
-                </PortSearchButton>
-              </HoverDiv> */}
               {/* 마이포켓 썸네일 */}
               <PortImgDiv>
                 <PortThumbnail
                   src={process.env.PUBLIC_URL + '/assets/images/room.png'}
                 />
+                {/* 호버시 보이는 버튼 */}
                 <HoverDiv>
                   <PortSearchButton onClick={pocketClickHandler}>
                     마이포켓 가기
@@ -94,7 +87,6 @@ const PortSearch = () => {
                   </PortSearchButton>
                 </HoverDiv>
               </PortImgDiv>
-
               {/* 프로필 컴포넌트 */}
               <PortUserInfoContainer>
                 <PortUserDiv>
@@ -105,7 +97,7 @@ const PortSearch = () => {
                     />
                   </PortUserImgContainer>
                   {/* 이름 */}
-                  <div>{icon}</div>
+                  <PortUserName>{icon}</PortUserName>
                 </PortUserDiv>
                 {/* <div>{copy}</div> */}
                 {/* 좋아요, 클릭 컴포넌트 */}
