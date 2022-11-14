@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import {RiLockUnlockLine, RiLockFill} from 'react-icons/ri';
+import {RiLockUnlockLine, RiLockFill, RiDeleteBack2Fill} from 'react-icons/ri';
 
 export const Container = styled.div`
   width: 100%;
@@ -114,6 +114,12 @@ export const CommentItem = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
+
+  &:hover {
+    & .delete {
+      display: block;
+    }
+  }
 `;
 
 export const CommentL = styled.div`
@@ -140,6 +146,7 @@ export const CommentDate = styled.p`
   margin: 0;
   font-size: 0.7rem;
   width: 6.3rem;
+  padding-bottom: 0.25rem;
   margin-left: 0.5rem;
 `;
 
@@ -159,7 +166,6 @@ export const CommentArea = styled.textarea`
   resize: none;
   border-radius: 0.3rem;
   border: 1.5px solid rgb(248, 211, 209);
-
 
   &::-webkit-scrollbar {
     width: 5px;
@@ -212,4 +218,13 @@ export const CommentBtn = styled.button`
       background-color: #b8b193;
     }
   }
+`;
+
+export const DelIconDiv = styled.div`
+  display: none;
+  font-size: 1rem;
+  color: #bc827c;
+`;
+
+export const DelIcon = styled(RiDeleteBack2Fill)`
 `;
