@@ -25,4 +25,7 @@ public class UserUpdateReq {
     @Schema(description = "블로그 url", maxLength = 1000)
     private String blogUrl;
 
+    @Schema(description = "프로필 사진 변경 여부")
+    private Boolean picChanged;
+
 }
