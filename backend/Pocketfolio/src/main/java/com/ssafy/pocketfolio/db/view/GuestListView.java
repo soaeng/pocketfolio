@@ -1,9 +1,8 @@
 package com.ssafy.pocketfolio.db.view;
 
 public interface GuestListView {
-    Long getRoomSeq();
-    String getName();
+    Long getUserSeq();
     String getUserName();
-    String getThumbnail();
+    String getUserProfile();
     String getHitDate();
 }

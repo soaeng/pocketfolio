@@ -1,12 +1,9 @@
 package com.ssafy.pocketfolio.api.dto.response;
 
 import com.ssafy.pocketfolio.db.entity.Guestbook;
-import com.ssafy.pocketfolio.db.entity.Room;
-import com.ssafy.pocketfolio.db.entity.User;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.Builder;
 
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
@@ -45,7 +42,7 @@ public class GuestbookRes {
             return null;
         }
         return GuestbookRes.builder()
-                .guestbookSeq(entity.getGuestbookSeq())
+                .guestbookSeq(guestbookSeq)
                 .content(entity.getContent())
                 .isPublic(entity.getIsPublic())
                 .created(entity.getCreated().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))

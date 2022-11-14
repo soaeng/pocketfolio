@@ -52,7 +52,7 @@ public class GuestbookServiceImpl implements GuestbookService {
     @Override
     @Transactional(readOnly = true)
     public List<GuestbookRes> findGuestbookList(long roomSeq) {
-        log.debug("[POST] Service - findGuestbookList");
+        log.debug("[GET] Service - findGuestbookList");
         List<GuestbookRes> guestbookResList;
         try {
             guestbookResList = guestbookRepository.findAllByRoom_RoomSeq(roomSeq).stream().map(guest -> {
