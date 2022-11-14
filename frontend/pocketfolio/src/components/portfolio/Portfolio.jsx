@@ -81,7 +81,10 @@ const Portfolio = () => {
             </IconDiv>
           </HeaderDiv>
           <CardList className="roomlists">
-            <Card isDelete={isDelete}></Card>
+            {pocketList.length > 0
+              ? pocketList.map((item, idx) => 
+                <Card pocketData={item} isDelete={isDelete}></Card>)
+              : null}
             <div>
               <AddMyRoom></AddMyRoom>
             </div>
