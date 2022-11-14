@@ -18,7 +18,6 @@ export const saveRefreshToken = token => {
 
 // get token
 export const getToken = () => {
-  console.log(Date.now(), parseInt(getExpire()));
   if (Date.now() > parseInt(getExpire())) {
     deleteAllToken();
     return;

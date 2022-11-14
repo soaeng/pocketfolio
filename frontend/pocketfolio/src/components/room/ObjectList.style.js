@@ -76,7 +76,7 @@ export const ItemBox = styled.div`
 `;
 
 export const PageContainer = styled.div`
-  margin-top: 1rem;
+  margin: 1rem 0;
   width: 100%;
   display: flex;
   align-items: center;
