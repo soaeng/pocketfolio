@@ -18,6 +18,9 @@ import {
   NoneLeftButton,
   RightButton,
   NoneRightButton,
+  RecUserImgContainer,
+  RecUserImg,
+  RecUserDiv,
 } from './RecCarousel.style';
 
 // 임시데이터
@@ -109,9 +112,19 @@ const RecCarousel = () => {
                   </RecCarImgDiv>
                   {/* 1차 설명 => 필요 없으면 삭제 */}
                   {/* <div>{copy}</div> */}
-                  {/* 이름, 좋아요 등 */}
+                  {/* 프로필 컴포넌트 */}
                   <Item2>
-                    <div>{name}</div>
+                    <RecUserDiv>
+                      {/* 프로필 사진 */}
+                      <RecUserImgContainer>
+                        <RecUserImg
+                          src={
+                            process.env.PUBLIC_URL + '/assets/images/room.png'
+                          }
+                        />
+                      </RecUserImgContainer>
+                      <div>{name}</div>
+                    </RecUserDiv>
                     <LikeShowDiv>
                       <LikeIcon />
                       <Item3>{like}</Item3>
