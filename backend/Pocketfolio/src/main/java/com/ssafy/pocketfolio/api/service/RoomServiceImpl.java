@@ -43,6 +43,7 @@ public class RoomServiceImpl implements RoomService {
     private final ArrangeRepository arrangeRepository;
     private final MultipartFileHandler fileHandler;
     private final FollowRepository followRepository;
+    private final TagRepository tagRepository;
 
     private final int BEST_LIMIT = 12;
 
@@ -165,9 +166,24 @@ public class RoomServiceImpl implements RoomService {
         map.put("like", roomLikeRepository.existsByUser_UserSeqAndRoom_RoomSeq(userSeq, roomSeq));
 
         List<ArrangeRes> arranges = new ArrayList<>();
-        List<Arrange> arrangeList = arrangeRepository.findByRoom_RoomSeq(roomSeq);
-        arrangeList.forEach(arrange -> arranges.add(new ArrangeRes(arrange)));
+        List<PortfolioListRes> portfolios = new ArrayList<>(); // findRoom에
+
+        List<Arrange> arrangeList = arrangeRepository.findByRoom_RoomSeqOrderByArrangeSeqDesc(roomSeq);
+        HashSet<Long> addedPortSeqSet = new HashSet<>(); // 포트폴리오 중복되지 않게 불러오기
+        arrangeList.forEach(arrange -> {
+            arranges.add(new ArrangeRes(arrange));
+            Portfolio portfolio = arrange.getPortfolio();
+            if (portfolio != null) {
+                Long portSeq = portfolio.getPortSeq();
+                if (!addedPortSeqSet.contains(portSeq)) {
+                    List<Tag> tags = tagRepository.findAllByPortfolio_PortSeq(portSeq);
+                    addedPortSeqSet.add(portSeq);
+                    portfolios.add(PortfolioListRes.toDto(portfolio, tags, arrange.getArrangeSeq()));
+                }
+            }
+        });
         map.put("arranges", arranges);
+        map.put("portfolios", portfolios);
 
         UserView userView = userRepository.findProfileById(ownerSeq).orElseThrow(() -> new IllegalArgumentException("해당 사용자(Pocket owner)를 찾을 수 없습니다."));
         List<Room> roomEntities = roomRepository.findAllByUser_UserSeqOrderByUpdatedDesc(ownerSeq);
@@ -236,7 +252,7 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     @Transactional
-    public Long updateRoom(long userSeq, long roomSeq, RoomArrangeReq roomArrangeReq) {
+    public Long updateRoom(long userSeq, long roomSeq, RoomArrangeReq roomArrangeReq) { // TODO: (나중에) 한 방에는 포트폴리오를 한 개까지만 등록할 수 있게 하기
         // 수정하는 메소드. 성능 상 삭제 후 삽입도 고려해 볼 만함.
         Room room = roomRepository.findById(roomSeq).orElseThrow(() -> new IllegalArgumentException("해당 포켓이 존재하지 않습니다."));
         if (room.getUser().getUserSeq() != userSeq) {
@@ -252,6 +268,7 @@ public class RoomServiceImpl implements RoomService {
 
             Portfolio portfolio = null;
             Long portSeq = arrangeReq.getPortSeq();
+
             if (portSeq != null) {
                 try {
                     portfolio = portfolioRepository.getReferenceById(portSeq);

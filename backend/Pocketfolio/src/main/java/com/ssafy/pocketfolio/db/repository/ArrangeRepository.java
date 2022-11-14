@@ -9,9 +9,11 @@ import java.util.List;
 
 public interface ArrangeRepository extends JpaRepository<Arrange, Long> {
 
-	List<Arrange> findByRoom_RoomSeq(long roomSeq);
+	List<Arrange> findByRoom_RoomSeqOrderByArrangeSeqDesc(long roomSeq);
 
 	@Query(value = "select arrange_seq from arrange where room_seq = ?1", nativeQuery = true)
 	HashSet<Long> findArrangeSeqByRoom_RoomSeq(long roomSeq);
+
+	int countByRoom_RoomSeqAndPortfolio_PortSeq(long roomSeq, long portSeq);
 
 }
