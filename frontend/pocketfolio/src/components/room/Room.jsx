@@ -52,7 +52,7 @@ const Room = () => {
 
   useEffect(() => {
     getData();
-  }, []);
+  }, [roomSeq]);
 
   return (
     data && (
