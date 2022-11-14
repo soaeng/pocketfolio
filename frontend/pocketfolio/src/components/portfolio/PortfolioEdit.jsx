@@ -54,8 +54,12 @@ const PortfolioEdit = () => {
   const [hashtag, setHashtag] = useState('');
   // 등록 된 해시태그
   const [hashArr, setHashArr] = useState([]);
-  // 썸네일 변수
+  // 썸네일 이미지 파일을 담을 변수
   const [thumbNail, setThumbNail] = useState('');
+  const [thumbData, setThumbData] = useState({
+    url: '',
+    name: '',
+  });
 
   // 업로드 기록 (seq, url)
   const [uploadHistory, setUploadHisory] = useState([]);
@@ -74,7 +78,7 @@ const PortfolioEdit = () => {
     });
   };
 
-  // 랜더링 시 포트폴리오 상세 내용 get
+  // 랜더링 시 기존 포트폴리오 상세 내용 get
   useEffect(() => {
     dispatch(getportDetail(port_id))
       .then(res => {
@@ -88,6 +92,10 @@ const PortfolioEdit = () => {
           summary: data.summary,
         });
         setThumbNail(data.thumbnail);
+        setThumbData({
+          url: data.thumbnail,
+          name: data.thumbnailName,
+        });
         console.log('넘어오는값', data);
       })
       .catch(err => {
@@ -161,11 +169,26 @@ const PortfolioEdit = () => {
   const uploadThumbnail = e => {
     const file = e.target.files[0];
     setThumbNail(file);
+    const reader = new FileReader();
+    reader.readAsDataURL(e.target.files[0]);
+    return new Promise(resolve => {
+      reader.onload = () => {
+        resolve();
+        setThumbData({
+          url: reader.result,
+          name: file.name,
+        });
+      };
+    });
   };
 
   // 썸네일 첨부 취소
   const cancelThumb = () => {
     setThumbNail('');
+    setThumbData({
+      name: '',
+      url: '',
+    });
   };
 
   // Editor에서 이미지 추가 시 실행
@@ -184,13 +207,12 @@ const PortfolioEdit = () => {
   const compareImgList = () => {
     // 포폴 내용
     const content = portContent.summary;
-    // src 내용 추출 정규식
+    // src 추출용 정규식
     const imgSrcReg = /(<img[^>]*src\s*=\s*[\"']?([^>\"']+)[\"']?[^>]*>)/g;
 
     while (imgSrcReg.test(content)) {
       // summary 안의 src 값들을 하나씩 추출
       let src = RegExp.$2.trim();
-
       uploadHistory.forEach(function (val, idx) {
         if (src === val.imgurl) {
           setResultImg(resultImg => [...resultImg, val.id]);
@@ -212,6 +234,7 @@ const PortfolioEdit = () => {
     });
     const uploadImage = JSON.stringify(uploadImg);
     const resultImage = JSON.stringify(resultImg);
+    const existfile = JSON.stringify(existFile);
 
     form.append('portfolio', new Blob([port], {type: 'application/json'}));
     form.append(
@@ -223,7 +246,6 @@ const PortfolioEdit = () => {
       new Blob([resultImage], {type: 'application/json'}),
     );
 
-    const existfile = JSON.stringify(existFile);
     form.append('urls', new Blob([existfile], {type: 'application/json'}));
 
     let files = newFile;
@@ -343,9 +365,9 @@ const PortfolioEdit = () => {
               onChange={uploadThumbnail}
               style={{display: 'none'}}
             />
-            {thumbNail !== undefined ? (
+            {thumbData.name !== '' ? (
               <Item>
-                {thumbNail.name}
+                {thumbData.name}
                 <IconDiv>
                   <Cancel onClick={cancelThumb} />
                 </IconDiv>
