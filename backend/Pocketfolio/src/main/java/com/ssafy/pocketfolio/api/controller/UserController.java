@@ -83,7 +83,7 @@ public class UserController {
         return new ResponseEntity<>(result, status);
     }
 
-    @Operation(summary = "회원 검색", description = "회원 리스트 검색", responses = {
+    @Operation(summary = "회원 검색", description = "회원 리스트 검색", responses = { // TODO: 회원 검색
             @ApiResponse(responseCode = "200", description = "회원 리스트 검색 성공", content = @Content(schema = @Schema(implementation = UserRes.class))),
             @ApiResponse(responseCode = "404", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = UserRes.class))),
             @ApiResponse(responseCode = "500", description = "서버 에러", content = @Content(schema = @Schema(implementation = UserRes.class)))
@@ -91,7 +91,7 @@ public class UserController {
     @GetMapping("/search")
     public ResponseEntity<List<UserRes>> findUserList(@RequestParam String type, @RequestParam String keyword, @RequestParam String sort) {
         log.debug("Controller: findUserList()");
-        HttpStatus status; // 12345
+        HttpStatus status;
 
         List<UserRes> result = null;
 

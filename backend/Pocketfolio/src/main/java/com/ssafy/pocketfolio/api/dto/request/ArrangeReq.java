@@ -1,4 +1,4 @@
-package com.ssafy.pocketfolio.api.dto;
+package com.ssafy.pocketfolio.api.dto.request;
 
 import com.ssafy.pocketfolio.db.entity.Arrange;
 import com.ssafy.pocketfolio.db.entity.Item;
@@ -13,8 +13,8 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-@Tag(name = "ArrangeDto", description = "배치 Request/Response DTO")
-public class ArrangeDto {
+@Tag(name = "ArrangeReq", description = "배치 Request DTO")
+public class ArrangeReq {
     @Schema(description = "배치 번호")
     private Long arrangeSeq;
 
@@ -29,21 +29,6 @@ public class ArrangeDto {
 
     @Schema(description = "포트폴리오 번호")
     private Long portSeq;
-
-    public ArrangeDto(Arrange arrange) {
-        arrangeSeq = arrange.getArrangeSeq();
-        itemSeq = arrange.getItem().getItemSeq();
-        Double[] locationXYZ = new Double[3];
-        locationXYZ[0] = arrange.getLocationX();
-        locationXYZ[1] = arrange.getLocationY();
-        locationXYZ[2] = arrange.getLocationZ();
-        location = locationXYZ;
-        rotation = arrange.getRotation();
-        Portfolio portfolio = arrange.getPortfolio();
-        if (portfolio != null) {
-            portSeq = portfolio.getPortSeq();
-        }
-    }
 
     public Arrange toEntity(Room room, Item item) {
         return this.toEntity(room, item, null);

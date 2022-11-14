@@ -16,6 +16,8 @@ public class RoomListRes {
     private String name;
     @Schema(description = "방 주인")
     private String user;
+    @Schema(description = "메인 룸 여부")
+    private boolean isMain;
     @Schema(description = "좋아요 수")
     private int like;
     @Schema(description = "조회수")
@@ -30,6 +32,7 @@ public class RoomListRes {
                 .thumbnail(entity.getThumbnail())
                 .name(entity.getName())
                 .user(entity.getUser().getName())
+                .isMain("T".equals(entity.getIsMain()))
                 .like(like)
                 .hit(hit)
                 .build();

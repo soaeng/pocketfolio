@@ -19,6 +19,8 @@ public class PortfolioListRes {
     private String thumbnail;
     @Schema(description = "포트폴리오 태그 목록")
     private List<String> tags;
+//    @Schema(description = "연결된 아이템")
+//    private List<String> tags;
 
     public static PortfolioListRes toDto(Portfolio entity, List<Tag> tags) {
         if (entity == null) {
