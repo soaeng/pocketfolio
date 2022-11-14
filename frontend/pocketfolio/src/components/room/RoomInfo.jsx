@@ -85,8 +85,8 @@ const RoomInfo = ({data, sidebar, edit}) => {
           <RoomImgBox onClick={toggleDetail}>
             <RoomImg
               src={
-                data && data.room.userProfile
-                  ? data.room.userProfile
+                data && data.owner.profilePic
+                  ? data.owner.profilePic
                   : process.env.PUBLIC_URL + '/assets/images/logo3.png'
               }
             />
