@@ -47,7 +47,6 @@ export const registPortfolio = createAsyncThunk(
 export const modifiedPort = createAsyncThunk(
   'modifiedPort',
   async (data , {rejectWithValue}) => {
-    console.log('시퀀스', data.port_id, '포폴', data.form)
     try {
       const res = await postAxios.patch(`portfolios/${data.port_id}`, data.form);
       return res
@@ -58,6 +57,20 @@ export const modifiedPort = createAsyncThunk(
     }
   },
 );
+
+// 포트폴리오 삭제
+export const deletePort = createAsyncThunk(
+  'deletePort',
+  async (portSeq, {rejectWithValue}) => {
+    console.log(portSeq)
+    try {
+      const res = await http.delete(`portfolios/${portSeq}`)
+      return res
+    } catch (err) {
+      return rejectWithValue(err.response)
+    }
+  }
+)
 
 // 포트폴리오 이미지 업로드
 export const uploadImage = createAsyncThunk(

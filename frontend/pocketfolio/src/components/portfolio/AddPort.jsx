@@ -197,15 +197,16 @@ const AddPort = () => {
     }
     form.append('thumbnail', thumbNail);
     compareImgList();
+    
+    const move = setTimeout(() => {
+      navigate(`/port`);
+    }, 1500);
 
     dispatch(registPortfolio(form))
       .unwrap()
       .then(res => {
         closeModal();
-        toast.success('포트폴리오가 수정 되었습니다.');
-        const move = setTimeout(() => {
-          navigate(`/port`);
-        }, 1500);
+        toast.success('포트폴리오가 작성 되었습니다.');
         move();
       });
   };
