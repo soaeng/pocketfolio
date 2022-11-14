@@ -1,9 +1,9 @@
 import styled from 'styled-components';
 import {TbTrash, TbTrashX} from 'react-icons/tb';
-import {RiDeleteBinFill, RiDeleteBin2Fill } from 'react-icons/ri'
+import {RiFileAddFill, RiDeleteBinFill, RiDeleteBin2Fill} from 'react-icons/ri';
 
 export const Background = styled.div`
-  width: 100vw; 
+  width: 100vw;
   height: 100vh;
   display: flex;
   flex-direction: column;
@@ -46,7 +46,6 @@ export const CardWrapper = styled.div`
 export const Text = styled.div`
   padding-bottom: 1rem;
   &.portfolios {
-    
   }
 `;
 
@@ -94,16 +93,11 @@ export const CardList = styled.div`
   }
 `;
 
-
-
 export const BtnDiv = styled.div`
   display: flex;
-  justify-content: end;
-  padding-right: 5rem;
-  z-index: 65;
 `;
 
-export const DeleteBtn = styled.button`
+export const IconDiv = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -123,13 +117,18 @@ export const DeleteBtn = styled.button`
     background-color: #fbb9b7;
   }
 
+  &.addPortIcon{
+    margin-right: 0.5rem;
+  }
   p {
     margin: 0;
   }
 `;
 
-export const DeleteIcon = styled(RiDeleteBinFill)`
-  
-`;
+export const AddPortIcon = styled(RiFileAddFill)`
+
+`
+
+export const DeleteIcon = styled(RiDeleteBinFill)``;
 
 export const DeleteIconX = styled(RiDeleteBin2Fill)``;

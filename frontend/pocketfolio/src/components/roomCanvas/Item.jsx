@@ -76,7 +76,7 @@ const Item = props => {
   useCursor(hovered);
   return (
     <PivotControls
-      anchor={[1, 1.2, -1]}
+      anchor={[1, 2, -1]}
       rotation={[0, -Math.PI / 2, 0]}
       scale={100}
       depthTest={false}

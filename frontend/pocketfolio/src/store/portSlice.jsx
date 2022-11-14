@@ -72,6 +72,21 @@ export const deletePort = createAsyncThunk(
   }
 )
 
+// 내 포켓, 마이룸 조회
+export const getMyPocket = createAsyncThunk(
+  'getMyPocket',
+  async (data, {rejectWithValue}) => {
+
+    try {
+      const res = await http.get('rooms/my')
+      return res
+    } catch (err) {
+      return rejectWithValue(err.response)
+    }
+
+  }
+)
+
 // 포트폴리오 이미지 업로드
 export const uploadImage = createAsyncThunk(
   'updateImage',
