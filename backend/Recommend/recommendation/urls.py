@@ -6,4 +6,5 @@ from . import views
 urlpatterns = [
     # 포트폴리오 테스트
     url(r"^api/v2/test", views.release_test),
+    url(r"^api/v2/recomm", views.recommend)
 ]
