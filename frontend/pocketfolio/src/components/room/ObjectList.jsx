@@ -67,7 +67,7 @@ const ObjectList = ({appendArrange}) => {
 
   useEffect(() => {
     getData();
-  }, [nowCategory, lastPage]);
+  }, [nowCategory, page]);
 
   return (
     <Container>
