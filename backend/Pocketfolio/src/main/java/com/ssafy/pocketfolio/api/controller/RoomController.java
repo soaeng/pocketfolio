@@ -3,7 +3,10 @@ package com.ssafy.pocketfolio.api.controller;
 import com.ssafy.pocketfolio.api.dto.RoomDto;
 import com.ssafy.pocketfolio.api.dto.request.RoomArrangeReq;
 import com.ssafy.pocketfolio.api.dto.request.RoomReq;
-import com.ssafy.pocketfolio.api.dto.response.*;
+import com.ssafy.pocketfolio.api.dto.response.CategoryRes;
+import com.ssafy.pocketfolio.api.dto.response.PortfolioListRes;
+import com.ssafy.pocketfolio.api.dto.response.RoomListRes;
+import com.ssafy.pocketfolio.api.dto.response.UserRes;
 import com.ssafy.pocketfolio.api.service.PortfolioService;
 import com.ssafy.pocketfolio.api.service.RoomService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -147,7 +150,8 @@ public class RoomController {
     @Operation(summary = "마이룸 꾸미기", description = "마이룸 꾸미기", responses = {
             @ApiResponse(responseCode = "201", description = "마이룸 꾸미기 성공", content = @Content(schema = @Schema(implementation = Long.class))),
             @ApiResponse(responseCode = "403", description = "사용 불가능 토큰", content = @Content(schema = @Schema(implementation = Long.class))),
-            @ApiResponse(responseCode = "404", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = ItemRes.class))),
+            @ApiResponse(responseCode = "404", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = Long.class))),
+            @ApiResponse(responseCode = "409", description = "포켓에 추가하려는 포트폴리오가 이미 존재함", content = @Content(schema = @Schema(implementation = Long.class))),
             @ApiResponse(responseCode = "500", description = "서버 에러", content = @Content(schema = @Schema(implementation = Long.class)))
     })
     @PatchMapping("/{roomSeq}")
@@ -167,6 +171,9 @@ public class RoomController {
                 log.error("사용 불가능 토큰");
                 status = HttpStatus.FORBIDDEN;
             }
+//        } catch (AlreadyHasPortfolioException e) {
+//            log.error(e.getMessage());
+//            status = HttpStatus.CONFLICT;
         } catch (IllegalArgumentException e) {
             log.error(e.getMessage());
             status = HttpStatus.NOT_FOUND;
