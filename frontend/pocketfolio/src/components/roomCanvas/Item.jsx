@@ -14,14 +14,14 @@ const Item = props => {
   const selectedMesh = props.selectedMesh;
   const setSelectedMesh = props.setSelectedMesh;
   const boundaryRef = props.boundaryRef;
-  const data = props.data;
+  const arrange = props.arrange;
   const edit = props.edit;
   const cntRef = props.cntRef;
   const setCntEnabled = props.setCntEnabled;
   const idx = props.idx;
-  const handleData = props.handleData;
+  const handleArrange = props.handleArrange;
   const handleDel = props.handleDel;
-  const {nodes, materials} = useGLTF(`/assets/${data.name}.glb`);
+  const {nodes, materials} = useGLTF(arrange.asset);
   const _materials = new MeshStandardMaterial(
     materials[Object.keys(materials)[0]],
   );
@@ -42,13 +42,12 @@ const Item = props => {
     0,
     1,
     0,
-    data.position[2],
-    data.position[1],
-    data.position[0],
+    arrange.location[2],
+    arrange.location[1],
+    arrange.location[0],
     1,
   ];
   const pivotRef = useRef();
-
   useEffect(() => {
     if (selectedMesh === ref.current) {
       setSelected(true);
@@ -58,16 +57,16 @@ const Item = props => {
   }, [selectedMesh]);
 
   const handleRotate = e => {
-    handleData(
-      {...data, rotateY: (data.rotateY - Math.PI / 4) % (Math.PI * 2)},
+    handleArrange(
+      {...arrange, rotation: (arrange.rotation - Math.PI / 4) % (Math.PI * 2)},
       idx,
     );
   };
 
   const handleMove = e => {
     const _matrix = pivotRef.current.matrix.elements;
-    const _position = [_matrix[14], _matrix[13], _matrix[12]];
-    handleData({...data, position: _position}, idx);
+    const _location = [_matrix[14], _matrix[13], _matrix[12]];
+    handleArrange({...arrange, location: _location}, idx);
   };
 
   const handleDelBtn = e => {
@@ -103,9 +102,9 @@ const Item = props => {
         raycast={meshBounds}
         castShadow
         {...props}
-        geometry={nodes[data.name].geometry}
+        geometry={nodes[arrange.nameEng].geometry}
         material={_materials}
-        rotation={[0, data.rotateY, 0]}
+        rotation={[0, arrange.rotation, 0]}
         dispose={null}
         material-color={hovered && !selected ? 'lightgray' : 'white'}
         onPointerOver={e =>

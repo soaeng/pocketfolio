@@ -15,7 +15,7 @@ import {
 import {useDispatch} from 'react-redux';
 import {getItemCategory, getItemList} from '../../store/itemSlice';
 
-const ObjectList = () => {
+const ObjectList = ({appendArrange}) => {
   const dispatch = useDispatch();
 
   // 카테고리 목록, 현재 카테고리 위치, 현재 페이지
@@ -82,7 +82,7 @@ const ObjectList = () => {
       <ScrollBox>
         <ItemBox>
           {data.map((item, idx) => (
-            <ObjectItem item={item} key={idx} />
+            <ObjectItem item={item} key={idx} appendArrange={appendArrange} />
           ))}
         </ItemBox>
         <PageContainer>

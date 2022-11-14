@@ -20,6 +20,7 @@ const Room = () => {
   const [sidebar, setSidebar] = useState('');
   const [edit, setEdit] = useState(false);
   const [data, setData] = useState(null);
+  const [arranges, setArranges] = useState(null);
 
   const changeSidebar = state => {
     setSidebar(state);
@@ -48,11 +49,33 @@ const Room = () => {
   const getData = async () => {
     const {payload} = await dispatch(getRoomInfo(roomSeq));
     setData(payload);
+    setArranges(payload.arranges);
   };
 
   useEffect(() => {
     getData();
   }, [roomSeq]);
+
+  // 아이템 배치
+  const appendArrange = arrange => {
+    setArranges([...arranges, arrange]);
+  };
+  // 배치 수정
+  const handleArrange = (arrange, idx) => {
+    setArranges(
+      arranges.map((_arrange, _idx) => {
+        if (idx === _idx) {
+          return arrange;
+        } else {
+          return _arrange;
+        }
+      }),
+    );
+  };
+  // 배치 삭제
+  const handleDel = idx => {
+    setArranges(arranges.filter((_arrange, _idx) => idx !== _idx));
+  };
 
   return (
     data && (
@@ -60,7 +83,13 @@ const Room = () => {
         <RoomNav sidebar={sidebar} edit={edit} />
         <RoomInfo sidebar={sidebar} edit={edit} data={data} />
         <CanvasWrapper className={sidebar ? 'active' : ''}>
-          <RoomCanvas />
+          <RoomCanvas
+            edit={edit}
+            theme={data.room.theme}
+            arranges={arranges}
+            handleArrange={handleArrange}
+            handleDel={handleDel}
+          />
           <Toaster
             position="bottom-left"
             containerStyle={{
@@ -99,6 +128,7 @@ const Room = () => {
           edit={edit}
           roomSeq={roomSeq}
           data={data}
+          appendArrange={appendArrange}
         />
       </Container>
     )

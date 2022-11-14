@@ -2,19 +2,20 @@ import {Bounds, useGLTF} from '@react-three/drei';
 import {MeshStandardMaterial} from 'three';
 
 const RoomTheme = props => {
+  const name = props.name;
   return (
     <Bounds clip observe margin={2}>
       {/* <mesh ref={props.boundaryRef} visible={false}>
         <boxGeometry args={[10, 10, 10]} />
       </mesh> */}
-      <ThemeMesh name={props.name} />
+      <ThemeMesh name={name} />
       {props.children}
     </Bounds>
   );
 };
 
 RoomTheme.defaultProps = {
-  name: 'Room_1',
+  name: 'room_01',
 };
 
 function ThemeMesh(props) {

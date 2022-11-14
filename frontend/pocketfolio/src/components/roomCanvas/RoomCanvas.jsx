@@ -13,32 +13,16 @@ import Capture from '../room/Capture';
 
 softShadows();
 const range = 2;
-const _datas = [
-  {
-    name: 'Husky',
-    position: [
-      Math.random() * range * 2 - range,
-      0,
-      Math.random() * range * 2 - range,
-    ],
-    rotateY: Math.random() * Math.PI * 2,
-  },
-  {
-    name: 'Husky',
-    position: [
-      Math.random() * range * 2 - range,
-      0,
-      Math.random() * range * 2 - range,
-    ],
-    rotateY: Math.random() * Math.PI * 2,
-  },
-];
 
-const RoomCanvas = ({edit}) => {
+const RoomCanvas = props => {
   const cntRef = useRef();
   const boundaryRef = useRef();
   const [cntEnabled, setCntEnabled] = useState(true);
-  const [datas, setDatas] = useState(_datas);
+  const arranges = props.arranges;
+  const handleArrange = props.handleArrange;
+  const handleDel = props.handleDel;
+  const edit = props.edit;
+  const theme = props.theme;
 
   return (
     <Canvas
@@ -67,14 +51,15 @@ const RoomCanvas = ({edit}) => {
         ref={cntRef}
         enabled={cntEnabled}
       />
-      <Theme boundaryRef={boundaryRef} name="Room_1">
+      <Theme boundaryRef={boundaryRef} name={theme}>
         <Items
           cntRef={cntRef}
           boundaryRef={boundaryRef}
-          datas={datas}
           edit={edit}
           setCntEnabled={setCntEnabled}
-          setDatas={setDatas}
+          arranges={arranges}
+          handleArrange={handleArrange}
+          handleDel={handleDel}
         />
       </Theme>
 

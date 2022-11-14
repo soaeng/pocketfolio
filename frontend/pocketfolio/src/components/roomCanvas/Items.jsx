@@ -7,16 +7,16 @@ const Items = props => {
   const [selectedMesh, setSelectedMesh] = useState(false);
   const cntRef = props.cntRef;
   const boundaryRef = props.boundaryRef;
-  const setDatas = props.setDatas;
-  const datas = props.datas;
   const edit = props.edit;
   const setCntEnabled = props.setCntEnabled;
+  const handleArrange = props.handleArrange;
+  const handleDel = props.handleDel;
   const api = useBounds();
-
+  const arranges = props.arranges;
   useEffect(() => {
     setSelectedMesh(false);
     api.refresh().clip().fit();
-  }, [edit]);
+  }, [edit, api]);
 
   useFrame((state, dt) => {
     if (selectedMesh) {
@@ -31,34 +31,19 @@ const Items = props => {
     }
   });
 
-  const handleData = (data, idx) => {
-    setDatas(
-      datas.map((_data, _idx) => {
-        if (idx === _idx) {
-          return data;
-        } else {
-          return _data;
-        }
-      }),
-    );
-  };
-  const handleDel = idx => {
-    setDatas(datas.filter((_data, _idx) => idx !== _idx));
-  };
-
   return (
     <group>
-      {datas.map((data, idx) => (
+      {arranges.map((arrange, idx) => (
         <Item
-          key={data.name + idx}
+          key={arrange.nameEng}
           selectedMesh={selectedMesh}
           setSelectedMesh={setSelectedMesh}
           boundaryRef={boundaryRef}
-          data={data}
+          arrange={arrange}
           edit={edit}
           setCntEnabled={setCntEnabled}
           cntRef={cntRef}
-          handleData={handleData}
+          handleArrange={handleArrange}
           handleDel={handleDel}
           idx={idx}
         />
