@@ -22,6 +22,7 @@ import RoomDetail from './RoomDetail';
 import {useDispatch, useSelector} from 'react-redux';
 import {roomDislike, roomLike} from '../../store/roomSlice';
 import {unfollowFunc, followFunc} from '../../store/oauthSlice';
+import HitDetail from './HitDetail';
 
 // 마이룸 상단 방정보
 const RoomInfo = ({data, sidebar, edit}) => {
@@ -29,6 +30,7 @@ const RoomInfo = ({data, sidebar, edit}) => {
   const dispatch = useDispatch();
 
   const [detail, setDetail] = useState(false);
+  const [hitDetail, setHitDetail] = useState(false);
   const [like, setLike] = useState(data.like);
   const [likeCount, setLikeCount] = useState(data.likeCount);
   const [follow, setFollow] = useState(data.follow);
@@ -69,13 +71,26 @@ const RoomInfo = ({data, sidebar, edit}) => {
     }
   }
 
-  // detail Modal
+  // user detail
   const toggleDetail = () => {
     setDetail(!detail);
+    setHitDetail(false);
   };
 
   const closeDetail = () => {
     setDetail(false);
+    setHitDetail(false);
+  };
+
+  // hit Detail
+  const togglehit = () => {
+    setDetail(false);
+    setHitDetail(!hitDetail);
+  };
+
+  const closeHit = () => {
+    setDetail(false);
+    setHitDetail(false);
   };
 
   return edit ? null : (
@@ -114,7 +129,7 @@ const RoomInfo = ({data, sidebar, edit}) => {
           </LikeShowDiv>
 
           {/* 방문자 */}
-          <LikeShowDiv>
+          <LikeShowDiv onClick={togglehit}>
             <IconDiv>
               <ShowIcon />
             </IconDiv>
@@ -123,7 +138,8 @@ const RoomInfo = ({data, sidebar, edit}) => {
         </LikeShowFollowContainer>
       </Box>
 
-      {detail ? <RoomDetail closeDetail={closeDetail} data={data} /> : null}
+      {detail && <RoomDetail closeDetail={closeDetail} data={data} />}
+      {hitDetail && <HitDetail closeHit={closeHit} data={data} />}
     </Container>
   );
 };

@@ -151,7 +151,7 @@ export const roomDislike = createAsyncThunk(
   async (roomSeq, {rejectWithValue}) => {
     try {
       const res = await http.delete(`rooms/like/${roomSeq}`);
-      console.log(res)
+      console.log(res);
       if (res.status === 200) return res.data;
     } catch (error) {
       console.log('마이룸 좋아요 취소 에러', error);
@@ -160,7 +160,19 @@ export const roomDislike = createAsyncThunk(
   },
 );
 
-
+// 최근 방문자 목록 조회
+export const getVisitors = createAsyncThunk(
+  'getVisitors',
+  async (roomSeq, {rejectWithValue}) => {
+    try {
+      const res = await http.get(`rooms/guests/${roomSeq}`);
+      if (res.status === 200) return res.data;
+    } catch (error) {
+      console.log('최근 방문자 목록 조회 에러', error);
+      return rejectWithValue(error);
+    }
+  },
+);
 
 const initialState = {};
 
