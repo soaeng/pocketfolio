@@ -35,6 +35,7 @@ public class UserServiceImpl implements UserService {
     private final MultipartFileHandler fileHandler;
 
     @Override
+    @Transactional(readOnly = true)
     public UserRes findUser(long userSeq) {
         UserView userView = userRepository.findProfileById(userSeq).orElseThrow(() -> new IllegalArgumentException("유저가 존재하지 않습니다."));
         log.info("Service findUser: " + userView.getName() + ", " + userView.getProfilePic() + ", " + userView.getFollowerTotal() + ", " + userView.getFollowingTotal() + ", " + userView.getDescribe());
