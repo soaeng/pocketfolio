@@ -76,7 +76,8 @@ export const ImgDiv = styled.div`
 
 export const Img = styled.img`
   width: 100%;
-  object-fit: contain;
+  height: 100%;
+  object-fit: cover;
 `;
 
 export const ImgInputDiv = styled.div`

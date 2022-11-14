@@ -1,6 +1,6 @@
 import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
 import {http, postAxios} from '../api/axios';
-import {deleteAllToken} from '../api/jwt';
+import {deleteAllToken, getToken} from '../api/jwt';
 
 /** 유저 */
 // 본인 정보 조회
@@ -8,9 +8,10 @@ export const getMyInfo = createAsyncThunk(
   'getMyInfo',
   async (data, {rejectWithValue}) => {
     try {
-      const res = await http.get('users/profile');
-
-      if (res.status === 200) return res.data;
+      if (getToken()) {
+        const res = await http.get('users/profile');
+        if (res.status === 200) return res.data;
+      } else return null
     } catch (error) {
       console.log('유저정보에러', error);
       return rejectWithValue(error);
@@ -24,7 +25,6 @@ export const getUserInfo = createAsyncThunk(
   async (userSeq, {rejectWithValue}) => {
     try {
       const res = await http.get(`users/profile/${userSeq}`);
-
       if (res.status === 200) return res.data;
     } catch (error) {
       console.log('특정유저정보조회 에러', error);

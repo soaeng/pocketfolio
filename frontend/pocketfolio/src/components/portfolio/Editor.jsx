@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {CKEditor} from '@ckeditor/ckeditor5-react';
 import DecoupledEditor from '@ckeditor/ckeditor5-build-decoupled-document';
 import {uploadImage} from '../../store/portSlice';
@@ -6,8 +6,6 @@ import {useDispatch} from 'react-redux';
 
 export default function MyEditor(props) {
   const dispatch = useDispatch();
-  const [imgUrl, setImgUrl] = useState('');
-  const [test, setTest] = useState([]);
 
   const {portContent, setPortContent, addImgHandle} = props;
 
@@ -17,8 +15,6 @@ export default function MyEditor(props) {
       upload: () => {
         return new Promise((resolve, reject) => {
           const imageForm = new FormData();
-          // 이미지 경로
-          setImgUrl(loader._reader._data);
           loader.file.then(file => {
             imageForm.append('image', file);
             dispatch(uploadImage(imageForm))
@@ -26,7 +22,7 @@ export default function MyEditor(props) {
                 const imgData = res.payload.data;
                 addImgHandle(imgData.imageSeq, imgData.url);
                 resolve({
-                  default: `${imgData.url}` ,
+                  default: `${imgData.url}`,
                 });
               })
               .catch(err => {
@@ -57,8 +53,6 @@ export default function MyEditor(props) {
               editor.ui.view.toolbar.element,
               editor.ui.getEditableElement(),
             );
-
-          // this.editor = editor;
         }}
         config={{
           extraPlugins: [uploadPlugin],
