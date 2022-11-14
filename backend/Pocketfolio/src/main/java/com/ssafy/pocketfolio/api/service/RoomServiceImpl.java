@@ -4,9 +4,14 @@ import com.ssafy.pocketfolio.api.dto.RoomDto;
 import com.ssafy.pocketfolio.api.dto.request.RoomArrangeReq;
 import com.ssafy.pocketfolio.api.dto.request.RoomReq;
 import com.ssafy.pocketfolio.api.dto.response.*;
+import com.ssafy.pocketfolio.api.dto.response.CategoryRes;
+import com.ssafy.pocketfolio.api.dto.response.GuestRoomRes;
+import com.ssafy.pocketfolio.api.dto.response.HitStatRes;
+import com.ssafy.pocketfolio.api.dto.response.RoomListRes;
 import com.ssafy.pocketfolio.api.util.MultipartFileHandler;
 import com.ssafy.pocketfolio.db.entity.*;
 import com.ssafy.pocketfolio.db.repository.*;
+import com.ssafy.pocketfolio.db.view.HitStatListView;
 import com.ssafy.pocketfolio.db.view.UserView;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -390,6 +395,7 @@ public class RoomServiceImpl implements RoomService {
         log.debug("[GET] Service - findGuestList");
         try {
             Map<String, Object> map = new HashMap<>();
+            List<HitStatListView> hitStatListViews = roomHitRepository.countAllByHitDateAndRoomSeq(roomSeq);
             List<GuestRoomRes> guests = roomHitRepository.findGuest(roomSeq).stream().map(x -> {
                 int like = roomLikeRepository.countAllByRoom_RoomSeq(roomSeq).intValue();
                 int hit = roomHitRepository.countAllByRoom_RoomSeq(roomSeq).intValue();
@@ -397,6 +403,7 @@ public class RoomServiceImpl implements RoomService {
             }).collect(Collectors.toList());
             map.put("guests", guests);
             map.put("today", roomHitRepository.countRoomHitToday(roomSeq));
+            map.put("hitStat", HitStatRes.toDto(hitStatListViews));
             return map;
         } catch (Exception e) {
             log.error(e.getMessage());
