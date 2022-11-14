@@ -5,6 +5,7 @@ import styled from 'styled-components';
 export const AvatarContainer = styled.div`
   padding: 0.5rem;
   height: 3.5rem;
+  z-index: 3;
   /* align-items: center; */
 `;
 

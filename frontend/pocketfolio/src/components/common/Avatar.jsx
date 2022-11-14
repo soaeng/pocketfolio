@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useRef} from 'react';
 import {useDispatch} from 'react-redux';
-import { getMyInfo } from '../../store/oauthSlice';
+import {getMyInfo} from '../../store/oauthSlice';
 import {AvatarImg, AvatarContainer} from './Avatar.style';
 import DropDown from './Dropdown';
 
