@@ -191,6 +191,7 @@ const PortfolioEdit = () => {
       name: null,
       url: null,
     });
+    setIsChangeThumb(false)
   };
 
   // Editor에서 이미지 추가 시 실행

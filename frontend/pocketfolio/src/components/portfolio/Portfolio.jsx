@@ -14,11 +14,16 @@ import {
   DeleteIcon,
   DeleteIconX,
   AddPortIcon,
+  Table,
+  Th,
+  Td,
+  Tr,
 } from './Portfolio.style';
 import Card from './Card';
 import AddMyRoom from './AddMyRoom';
 import PortList from './PortList';
 import {getMyPort, getMyPocket} from '../../store/portSlice';
+import {createRoom} from '../../store/roomSlice';
 import {useDispatch} from 'react-redux';
 const Portfolio = () => {
   const navigate = useNavigate();
@@ -65,6 +70,7 @@ const Portfolio = () => {
     navigate('/port/create');
   };
 
+
   return (
     <Background>
       <Nav className="nav"></Nav>
@@ -82,12 +88,10 @@ const Portfolio = () => {
           </HeaderDiv>
           <CardList className="roomlists">
             {pocketList.length > 0
-              ? pocketList.map((item, idx) => 
-                <Card pocketData={item} isDelete={isDelete}></Card>)
+              ? pocketList.map((item, idx) => (
+                  <Card pocketData={item} isDelete={isDelete}></Card>
+                ))
               : null}
-            <div>
-              <AddMyRoom></AddMyRoom>
-            </div>
           </CardList>
         </CardWrapper>
         <CardWrapper>
@@ -107,19 +111,20 @@ const Portfolio = () => {
             </BtnDiv>
           </HeaderDiv>
           <CardList className="portlists">
-            {portList.length > 0
-              ? portList.map((item, idx) => (
-                  <div onClick={() => movePortDetail({item})}>
-                    <PortList
-                      key={idx}
-                      item={item}
-                      isDeletePort={delPortIcon}
-                      deletedPort={deletedPort}
-                      setDeletedPort={setDeletedPort}
-                    />
-                  </div>
-                ))
-              : null}
+            <Table>
+              <Tr>
+                <Th className="no">No.</Th>
+                <Th className="title">포트폴리오 제목</Th>
+              </Tr>
+              {portList.length > 0
+                ? portList.map((item, idx) => (
+                    <Tr key={idx} onClick={() => movePortDetail({item})}>
+                      <Td className={ (idx+1)%2 ? 'odd' : 'even' }>{idx+1}.</Td>
+                      <Td className={ (idx+1)%2 ? 'odd' : 'even' }>{item.name}</Td>
+                    </Tr>
+                  ))
+                : null}
+            </Table>
           </CardList>
         </CardWrapper>
       </Container>
