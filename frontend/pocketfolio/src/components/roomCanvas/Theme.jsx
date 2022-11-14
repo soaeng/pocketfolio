@@ -3,12 +3,23 @@ import {MeshStandardMaterial} from 'three';
 
 const RoomTheme = props => {
   const name = props.name;
+  const type = name.split('_')[0];
+  let arr = [];
+  if (type === 'room') {
+    arr = [name];
+  } else if (name === 'island') {
+    arr = ['Ocean', 'Sky', 'Island'];
+  }
   return (
     <Bounds clip observe margin={2}>
-      {/* <mesh ref={props.boundaryRef} visible={false}>
-        <boxGeometry args={[10, 10, 10]} />
-      </mesh> */}
-      <ThemeMesh name={name} />
+      {type === 'island' && (
+        <mesh ref={props.boundaryRef} visible={false}>
+          <boxGeometry args={[20, 20, 20]} />
+        </mesh>
+      )}
+      {arr.map(_name => (
+        <ThemeMesh name={_name} key={_name} />
+      ))}
       {props.children}
     </Bounds>
   );

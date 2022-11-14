@@ -27,7 +27,7 @@ const RoomCanvas = props => {
   return (
     <Canvas
       shadows
-      // raycaster={{params: {Line: {threshold: 0.15}}}}
+      raycaster={{params: {Line: {threshold: 0.15}}}}
       camera={{position: [-30, 30, 30], fov: 20}}
     >
       {/* <Capture /> */}

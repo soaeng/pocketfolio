@@ -15,7 +15,7 @@ const Items = props => {
   const arranges = props.arranges;
   useEffect(() => {
     setSelectedMesh(false);
-    api.refresh().clip().fit();
+    api.refresh(boundaryRef.current).clip().fit();
   }, [edit, api]);
 
   useFrame((state, dt) => {
@@ -35,7 +35,7 @@ const Items = props => {
     <group>
       {arranges.map((arrange, idx) => (
         <Item
-          key={arrange.nameEng}
+          key={arrange.nameEng + idx}
           selectedMesh={selectedMesh}
           setSelectedMesh={setSelectedMesh}
           boundaryRef={boundaryRef}
