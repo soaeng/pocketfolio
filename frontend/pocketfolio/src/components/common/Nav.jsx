@@ -24,10 +24,9 @@ function Nav() {
 
   // 검색어
   const [word, setWord] = useState('');
-  console.log(word, '네브검색')
 
   // 입력창 변화 감지
-  const onChange = (e) => {
+  const onChange = e => {
     setWord(e.target.value);
   };
 
@@ -59,10 +58,6 @@ function Nav() {
     navigate('/login');
   };
 
-  const roomClickHandler = () => {
-    navigate('/room/1');
-  };
-
   return (
     <NavContainer>
       <NavLogoImg
@@ -85,7 +80,6 @@ function Nav() {
       ) : (
         <LoginDiv>
           <UserName>{user.name}님</UserName>
-          {/* <NavBotton onClick={roomClickHandler}>마이룸</NavBotton> */}
           <Avatar user={user} />
         </LoginDiv>
       )}

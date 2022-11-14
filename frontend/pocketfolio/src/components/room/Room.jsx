@@ -52,7 +52,7 @@ const Room = () => {
 
   useEffect(() => {
     getData();
-  }, []);
+  }, [roomSeq]);
 
   return (
     data && (
@@ -83,7 +83,7 @@ const Room = () => {
           ) : null}
         </CanvasWrapper>
 
-        {sidebar | edit ? null : (
+        {sidebar || edit ? null : (
           <Menu
             roomSeq={roomSeq}
             changeSidebar={changeSidebar}

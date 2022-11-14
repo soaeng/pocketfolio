@@ -57,11 +57,24 @@ export const postComment = createAsyncThunk(
           isPublic: data.isPublic,
         },
       );
-
-      console.log(res);
+      
       if (res.status === 201) return true;
     } catch (error) {
       console.log('방명록 댓글 등록 에러', error);
+      return rejectWithValue(error);
+    }
+  },
+);
+
+// 방명록 댓글 삭제
+export const delComment = createAsyncThunk(
+  'delComment',
+  async (commentSeq, {rejectWithValue}) => {
+    try {
+      const res = await http.delete(`guests/comment/${commentSeq}`);
+      if (res.status === 200) return res.data;
+    } catch (error) {
+      console.log('방명록 댓글 삭제 에러', error);
       return rejectWithValue(error);
     }
   },
