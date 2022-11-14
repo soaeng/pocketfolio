@@ -1,15 +1,13 @@
 package com.ssafy.pocketfolio.api.service;
 
-import com.ssafy.pocketfolio.api.dto.ArrangeDto;
 import com.ssafy.pocketfolio.api.dto.RoomDto;
 import com.ssafy.pocketfolio.api.dto.request.RoomArrangeReq;
 import com.ssafy.pocketfolio.api.dto.request.RoomReq;
-import com.ssafy.pocketfolio.api.dto.response.CategoryRes;
-import com.ssafy.pocketfolio.api.dto.response.GuestRoomRes;
-import com.ssafy.pocketfolio.api.dto.response.RoomListRes;
+import com.ssafy.pocketfolio.api.dto.response.*;
 import com.ssafy.pocketfolio.api.util.MultipartFileHandler;
 import com.ssafy.pocketfolio.db.entity.*;
 import com.ssafy.pocketfolio.db.repository.*;
+import com.ssafy.pocketfolio.db.view.UserView;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -87,7 +85,7 @@ public class RoomServiceImpl implements RoomService {
 
         try {
             List<Room> rooms = roomRepository.findAllByUser_UserSeqOrderByUpdatedDesc(userSeq); // 최근 수정된 방을 앞으로
-            roomsResList = getRoomListRes(rooms);
+            roomsResList = getRoomListResWithMain(rooms);
         } catch (Exception e) {
             log.error(e.getMessage());
             roomsResList = null;
@@ -139,7 +137,8 @@ public class RoomServiceImpl implements RoomService {
 
         log.debug("roomCategory: " + roomCategory);
 
-        boolean isMyRoom = userSeq == room.getUser().getUserSeq(); // 본인 방 여부
+        long ownerSeq = room.getUser().getUserSeq(); // 주인장 유저 번호
+        boolean isMyRoom = userSeq == ownerSeq; // 본인 방 여부
 
         if ("C".equals(room.getPrivacy()) && !isMyRoom) {
             throw new NotFoundException("비공개인 포켓은 본인 말고는 열람할 수 없습니다.");
@@ -157,13 +156,17 @@ public class RoomServiceImpl implements RoomService {
         map.put("hitCount", roomHitRepository.countAllByRoom_RoomSeq(roomSeq));
         map.put("likeCount", roomLikeRepository.countAllByRoom_RoomSeq(roomSeq));
         // Item
-        map.put("follow", followRepository.existsByUserFrom_UserSeqAndUserTo_UserSeq(userSeq, room.getUser().getUserSeq()));
+        map.put("follow", followRepository.existsByUserFrom_UserSeqAndUserTo_UserSeq(userSeq, ownerSeq));
         map.put("like", roomLikeRepository.existsByUser_UserSeqAndRoom_RoomSeq(userSeq, roomSeq));
 
-        List<ArrangeDto> arranges = new ArrayList<>();
+        List<ArrangeRes> arranges = new ArrayList<>();
         List<Arrange> arrangeList = arrangeRepository.findByRoom_RoomSeq(roomSeq);
-        arrangeList.forEach(arrange -> arranges.add(new ArrangeDto(arrange)));
+        arrangeList.forEach(arrange -> arranges.add(new ArrangeRes(arrange)));
         map.put("arranges", arranges);
+
+        UserView userView = userRepository.findProfileById(ownerSeq).orElseThrow(() -> new IllegalArgumentException("해당 사용자(Pocket owner)를 찾을 수 없습니다."));
+        List<Room> roomEntities = roomRepository.findAllByUser_UserSeqOrderByUpdatedDesc(ownerSeq);
+        map.put("owner", new UserRes(userView, getRoomListResWithMain(roomEntities)));
 
         return map;
     }
@@ -240,10 +243,10 @@ public class RoomServiceImpl implements RoomService {
 
         log.debug("테마 업데이트 성공");
 
-        roomArrangeReq.getArranges().forEach(arrangeDto -> {
+        roomArrangeReq.getArranges().forEach(arrangeReq -> {
 
             Portfolio portfolio = null;
-            Long portSeq = arrangeDto.getPortSeq();
+            Long portSeq = arrangeReq.getPortSeq();
             if (portSeq != null) {
                 try {
                     portfolio = portfolioRepository.getReferenceById(portSeq);
@@ -252,12 +255,12 @@ public class RoomServiceImpl implements RoomService {
                 }
             }
 
-            Long arrangeSeq = arrangeDto.getArrangeSeq();
+            Long arrangeSeq = arrangeReq.getArrangeSeq();
             if (arrangeSeq != null && arrangeSeqSet.contains(arrangeSeq)) { // 원래 있던 Arrange (UPDATE)
-                arrangeRepository.findById(arrangeSeq).get().updateArrangeAll(arrangeDto.getLocation(), arrangeDto.getRotation(), portfolio);
+                arrangeRepository.findById(arrangeSeq).get().updateArrangeAll(arrangeReq.getLocation(), arrangeReq.getRotation(), portfolio);
                 arrangeSeqSet.remove(arrangeSeq);
             } else { // 기존에 없던 Arrange (INSERT)
-                Arrange arrange = arrangeDto.toEntity(room, itemRepository.getReferenceById(arrangeDto.getItemSeq()), portfolio);
+                Arrange arrange = arrangeReq.toEntity(room, itemRepository.getReferenceById(arrangeReq.getItemSeq()), portfolio);
                 arrangeRepository.save(arrange);
             }
         });
@@ -419,6 +422,20 @@ public class RoomServiceImpl implements RoomService {
             int hit = roomHitRepository.countAllByRoom_RoomSeq(room.getRoomSeq()).intValue();
             return RoomListRes.toDto(room, like, hit);
         }).collect(Collectors.toList());
+    }
+
+    private List<RoomListRes> getRoomListResWithMain(List<Room> rooms) { // TODO: 이것도 조인으로 할 수 있지 않을까 1
+        List<RoomListRes> roomList = new ArrayList<>();
+        rooms.forEach(room -> {
+            int like = roomLikeRepository.countAllByRoom_RoomSeq(room.getRoomSeq()).intValue();
+            int hit = roomHitRepository.countAllByRoom_RoomSeq(room.getRoomSeq()).intValue();
+            if ("T".equals(room.getIsMain())) {
+                roomList.add(0, RoomListRes.toDto(room, like, hit));
+            } else {
+                roomList.add(RoomListRes.toDto(room, like, hit));
+            }
+        });
+        return roomList;
     }
 
     private RoomCategory createRoomCategoryIfNotExist(Room room) {

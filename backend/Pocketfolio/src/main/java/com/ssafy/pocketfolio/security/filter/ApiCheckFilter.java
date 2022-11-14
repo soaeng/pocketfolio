@@ -66,7 +66,12 @@ public class ApiCheckFilter extends OncePerRequestFilter {
         if (authHeader.startsWith("Bearer ")) {
             log.info("Authorization(accessToken) exist: " + authHeader);
 
-            userSeq = jwtUtil.validateAndExtractUserSeq(authHeader.substring(7));
+            String token = authHeader.substring(7);
+            if ("null".equals(token)) {
+                return 0L;
+            }
+
+            userSeq = jwtUtil.validateAndExtractUserSeq(token);
             log.info("validate result: " + userSeq);
         }
 

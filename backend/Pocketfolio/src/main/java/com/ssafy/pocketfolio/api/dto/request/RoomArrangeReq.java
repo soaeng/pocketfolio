@@ -1,6 +1,5 @@
 package com.ssafy.pocketfolio.api.dto.request;
 
-import com.ssafy.pocketfolio.api.dto.ArrangeDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.*;
@@ -18,6 +17,6 @@ public class RoomArrangeReq {
     private String theme;
 
     @Schema(description = "배치 정보 리스트")
-    private List<ArrangeDto> arranges;
+    private List<ArrangeReq> arranges;
 
 }
