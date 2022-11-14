@@ -2,7 +2,7 @@ import {Bounds, useGLTF} from '@react-three/drei';
 import {MeshStandardMaterial} from 'three';
 
 const RoomTheme = props => {
-  const name = props.name;
+  const name = 'room_05';
   const type = name.split('_')[0];
   let arr = [];
   if (type === 'room') {
@@ -14,7 +14,7 @@ const RoomTheme = props => {
     <Bounds clip observe margin={2}>
       {type === 'island' && (
         <mesh ref={props.boundaryRef} visible={false}>
-          <boxGeometry args={[20, 20, 20]} />
+          <boxGeometry args={[25, 25, 25]} />
         </mesh>
       )}
       {arr.map(_name => (
