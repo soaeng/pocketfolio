@@ -16,14 +16,16 @@ import {
 } from './Card.style';
 import DeleteModal from './DeleteModal';
 
-const Card = ({isDelete}) => {
-  const [isOpen, setIsOpen] = useState(false);
+const Card = props => {
   const navigate = useNavigate();
+
+  const [isOpen, setIsOpen] = useState(false);
+  const {isDelete, pocketData} = props;
   const openModal = () => {
     setIsOpen(true);
   };
   const moveMyRoom = () => {
-    navigate('/room/1');
+    navigate(`/room/${pocketData.roomSeq}`);
   };
 
   return (
@@ -42,16 +44,16 @@ const Card = ({isDelete}) => {
             />
           </ImgDiv>
           <TitleDiv>
-            <Title>아이링크</Title>
+            <Title>{pocketData.name}</Title>
           </TitleDiv>
           <LikeDiv>
             <LikeContent>
               <Heart />
-              <Count>20</Count>
+              <Count>{pocketData.like}</Count>
             </LikeContent>
             <LikeContent>
               <Eye />
-              <Count>13</Count>
+              <Count>{pocketData.hit}</Count>
             </LikeContent>
           </LikeDiv>
         </div>
