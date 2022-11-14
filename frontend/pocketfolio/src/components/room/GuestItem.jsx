@@ -1,6 +1,6 @@
 import {useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {postComment} from '../../store/guestSlice';
+import {delComment, postComment} from '../../store/guestSlice';
 import {
   Container,
   Header,
@@ -26,6 +26,8 @@ import {
   CommentArea,
   CommentBtn,
   CommentL,
+  DelIconDiv,
+  DelIcon,
 } from './GuestItem.style';
 
 const GuestItem = ({item, removeGuest, roomDto, getData}) => {
@@ -44,6 +46,18 @@ const GuestItem = ({item, removeGuest, roomDto, getData}) => {
           isPublic: item.isPublic,
         }),
       );
+      if (payload) {
+        getData();
+        setComment('');
+      }
+    }
+  }
+
+  // 방명록 댓글 삭제
+  async function deleteComment(commentSeq) {
+    if (user) {
+      const {payload} = await dispatch(delComment(commentSeq));
+
       if (payload) getData();
     }
   }
@@ -88,7 +102,8 @@ const GuestItem = ({item, removeGuest, roomDto, getData}) => {
         </ImgBox>
         <TextBox>{item.content}</TextBox>
       </ImgTextDiv>
-      {console.log(item.commentList)}
+
+      {/* 댓글 목록 */}
       {item.commentList.length > 0 && (
         <CommentList>
           {item.commentList.map((comment, idx) => (
@@ -98,11 +113,17 @@ const GuestItem = ({item, removeGuest, roomDto, getData}) => {
                 <CommentText>{comment.content}</CommentText>
               </CommentL>
 
+              <DelIconDiv className="delete" onClick={() => deleteComment(comment.commentSeq)}>
+                <DelIcon />
+              </DelIconDiv>
+
               <CommentDate>{comment.created.slice(0, 16)}</CommentDate>
             </CommentItem>
           ))}
         </CommentList>
       )}
+
+      {/* 댓글 작성 */}
       {roomDto.room.userSeq === user.userSeq && (
         <CommentContainer>
           <CommentArea
