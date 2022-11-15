@@ -6,7 +6,7 @@ import {RiHeart3Line, RiHeart3Fill, RiEyeLine} from 'react-icons/ri';
 export const RecCaContainer = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 3% 5%;
+  padding: 0 5%;
 `;
 
 //추천 포트폴리오 전체 감싼 것
@@ -30,6 +30,7 @@ export const Carousel = styled.div`
 export const Item = styled.div`
   display: flex;
   width: calc(84% / 4);
+  height: 80%;
   flex-direction: column;
   justify-content: space-between;
   margin: 1%;
@@ -120,7 +121,9 @@ export const NoneRightButton = styled.a`
 
 export const Item2 = styled.div`
   display: flex;
+  flex-direction: row;
   justify-content: space-between;
+  align-items: center;
 
   @media screen and (max-width: 900px) {
     flex-direction: column;
@@ -166,4 +169,24 @@ export const RecCarThumbnail = styled.img`
 // 글자 component 스타일
 export const RecCaTitle = styled(Body1)`
   padding: 10px;
+`;
+
+export const RecUserImgContainer = styled.div`
+  padding: 0.5rem;
+  height: 3.5rem;
+  margin: 0;
+  padding: 0;
+`;
+
+export const RecUserImg = styled.img`
+  height: 50px;
+  width: 50px;
+  object-fit: cover;
+  border-radius: 50%;
+`;
+
+export const RecUserDiv = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 `;

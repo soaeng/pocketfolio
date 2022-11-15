@@ -1,6 +1,7 @@
 // styled Component
 import styled from 'styled-components';
 import {H3, Body1, Body2} from '../../styles/styles.style';
+import {AiOutlineSearch} from 'react-icons/ai';
 
 // Main Carousel
 export const Container = styled.div``;
@@ -73,23 +74,15 @@ export const ImageContainer = styled.img`
 export const RoomButton = styled.button`
   z-index: 9;
   width: 200px;
-  height: 35px;
   margin-top: 1rem;
-  padding: 0.5rem 1rem;
-  border-radius: 16px;
+  padding: 0.8rem 1rem;
+  border-radius: 24px;
   border: none;
   background-color: #fff;
+  color: #333;
+  font-weight: bold;
+  font-size: 16px;
   cursor: pointer;
-
-  &:hover {
-    box-shadow: 0.5px 0.5px 0.5px #333;
-    color: #000;
-  }
-
-  &:active {
-    top: 2px;
-    box-shadow: 0.5px 0.5px 0.5px #333;
-  }
 `;
 
 export const RecCarouselContainer = styled.div`
@@ -97,11 +90,12 @@ export const RecCarouselContainer = styled.div`
 `;
 
 // 글자 component 스타일
-export const Title = styled(H3)``;
+export const Title = styled(H3)`
+  font-weight:bold;
+`;
 
 export const Text = styled(Body2)`
   color: white;
-  opacity: 80%;
 `;
 
 // Carousel 버튼
@@ -128,6 +122,10 @@ export const CarouselNav = styled.div`
   } ;
 `;
 
+export const Text1 = styled(Body2)`
+  color: #333;
+`;
+
 // CarouselNavButton 색 변경
 export const CarouselNavButton = styled.button`
   margin-left: 10px;
@@ -151,3 +149,43 @@ export const CarouselNavButtonNone = styled.button`
   background-color: white;
   opacity: 50%;
 `;
+
+// SearchInput
+export const SearchContainer = styled.div`
+  display: flex;
+  align-items: center;
+  border-radius: 16px;
+  border: 0.5px solid #bbb;
+  width: 40%;
+  height: 40px;
+  min-width: 200px;
+  padding: 0px 30px;
+`;
+export const SearchInput = styled.input`
+  width: 80%;
+  height: 25px;
+  border: none;
+  padding: 0 10px;
+  font-size: 17px;
+  background-color: transparent;
+
+  &::placeholder {
+    font-size: 17px;
+  }
+
+  &:focus {
+    border: none;
+    outline: none;
+    padding: 0 10px;
+  }
+`;
+
+export const SearchIcon = styled(AiOutlineSearch)`
+  height: 25px;
+  width: 25px;
+`;
+
+export const SearchDiv = styled.div`
+display:flex;
+justify-content:center;
+margin-top:5%`

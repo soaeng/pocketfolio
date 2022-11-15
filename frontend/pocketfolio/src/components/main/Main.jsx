@@ -1,17 +1,17 @@
-import React, {useEffect, useRef, useReducer} from 'react';
+import React, {useState, useEffect, useRef, useReducer} from 'react';
 import {useNavigate} from 'react-router-dom';
+import {useSelector} from 'react-redux';
 
 import Nav from '../common/Nav';
 import {
   Container,
-  Slider,
+  SearchDiv,
   Content,
   CarouselNav,
   CarouselNavButton,
   CarouselNavButtonNone,
   RoomButton,
   Item,
-  Test,
   Items,
   ImageContainer,
   ColorBox,
@@ -19,9 +19,11 @@ import {
   Title,
   Text,
   RecCarouselContainer,
+  SearchContainer,
+  SearchIcon,
+  SearchInput
 } from './Main.style';
 import RecCarousel from './RecCarousel';
-import {getMyInfo} from '../../store/oauthSlice';
 
 const pageSlider = [
   {
@@ -42,17 +44,47 @@ const pageSlider = [
 
 // Main 페이지
 function Main() {
+  // 로그인 유저 정보 가져오기
+  const user = useSelector(state => state.oauth.user);
+
   const navigate = useNavigate();
 
   const color1 = {
-    backgroundColor: '#b94d4d',
+    backgroundColor: '#f3a9a1',
   };
   const color2 = {
-    backgroundColor: '#10468e',
+    backgroundColor: '#7db0e0',
   };
 
   let _style = {
-    backgroundColor: '#b94d4d',
+    backgroundColor: '#f3a9a1',
+  };
+
+  // 검색어
+  const [word, setWord] = useState('');
+
+  // 입력창 변화 감지
+  const onChange = e => {
+    setWord(e.target.value);
+  };
+
+  // 검색어 창 입력
+  const onSubmit = async e => {
+    e.preventDefault();
+    navigate('/search', {
+      state: {
+        search: word,
+      },
+    });
+    setWord(''); //submit 후 창 비우기
+  };
+
+  // 검색어 창 엔터시 입력
+  const keyDownHandler = event => {
+    if (event.key === 'Enter') {
+      setWord(word);
+      onSubmit(event);
+    }
   };
 
   // 5초마다 화면 전환을 위한 것
@@ -83,6 +115,11 @@ function Main() {
     navigate('/port');
   };
 
+  // 바로 시작 버튼 이동
+  const moveLoginClickHandler = () => {
+    navigate('/login');
+  };
+
   return (
     <>
       {/* Navbar */}
@@ -102,9 +139,9 @@ function Main() {
                     <Title>{title2}</Title>
                     <Text>{text1}</Text>
                     <Text>{text2}</Text>
-                    <RoomButton onClick={buttonClickHandler}>
+                    {user === null ? (<RoomButton onClick={moveLoginClickHandler}>시작하기</RoomButton>):(<RoomButton onClick={buttonClickHandler}>
                       {buttonText}
-                    </RoomButton>
+                    </RoomButton>)}
                   </ContentItem>
                   <div>
                     <ImageContainer src="./assets/images/logo2.png" />
@@ -143,6 +180,18 @@ function Main() {
           </CarouselNav>
         </Content>
       </Container>
+      {/* 검색창 */}
+      <SearchDiv>
+        <SearchContainer>
+          <SearchIcon />
+          <SearchInput
+            placeholder="검색어를 입력해주세요"
+            onKeyDown={keyDownHandler}
+            onChange={onChange}
+            value={word}
+          />
+        </SearchContainer>
+      </SearchDiv>
       {/* 추천 Carousel */}
       <RecCarouselContainer>
         <RecCarousel />

@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {useNavigate} from 'react-router-dom';
 import {useDispatch, useSelector} from 'react-redux';
-import {logout} from '../../store/oauthSlice';
+import {logout, getMyFollowing} from '../../store/oauthSlice';
 import {deleteAllToken} from '../../api/jwt';
 import {
   Dropdown,
@@ -23,7 +23,10 @@ const DropDown = ({user}) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  console.log(user, '유저 나와라');
+  // 팔로잉 리스트 저장 되는 상태
+  const [followingList, setFollowingList] = useState('')
+
+  console.log(user.userSeq, '유저 나와라');
 
   // 마이포켓 이동 => 수정 필요
   const myPocketClickHandler = () => {
@@ -41,6 +44,21 @@ const DropDown = ({user}) => {
     dispatch(logout());
     navigate('/main');
   };
+
+  // 팔로잉 목록 가져오기
+  const getFollowing = async () => {
+    const {payload} = await dispatch(getMyFollowing(user.userSeq));
+    setFollowingList(payload);
+    console.log(payload)
+  }
+
+  useEffect(() => {
+    getFollowing()
+  }, [])
+  
+  useEffect(() => {
+    console.log(followingList, '팔로잉');
+  }, [followingList]);
 
   return (
     <Dropdown>
