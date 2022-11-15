@@ -13,18 +13,18 @@ import {
 const RoomDetail = ({closeDetail, data}) => {
   return (
     <Container onClick={closeDetail}>
-      <UserName>{data.room.userName}</UserName>
-      {data.room.userBlogUrl && (
+      <UserName>{data.owner.name}</UserName>
+      {data.owner.blogUrl && (
         <LinkDiv>
           <IconDiv>
             <LinkIcon />
           </IconDiv>
-          <Link href={data.room.userBlogUrl} target="_blank">
-            <LinkText>{data.room.userBlogUrl}</LinkText>
+          <Link href={data.owner.blogUrl} target="_blank">
+            <LinkText>{data.owner.blogUrl}</LinkText>
           </Link>
         </LinkDiv>
       )}
-      <Introduction>{data.room.introduction}</Introduction>
+      <Introduction>{data.owner.describe}</Introduction>
     </Container>
   );
 };

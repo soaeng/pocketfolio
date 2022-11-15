@@ -40,17 +40,10 @@ const Profile = () => {
 
   // 변경된 유저 정보
   const [name, setName] = useState(user && user.name ? user.name : null);
-  const [profilePic, setProfilePic] = useState(
-    user && user.profilePic ? user.profilePic : null,
-  );
-  const [preview, setPreview] = useState(
-    user && user.profilePic
-      ? user.profilePic
-      : process.env.PUBLIC_URL + '/assets/images/logo3.png',
-  );
-  const [blogUrl, setBlogUrl] = useState(
-    user && user.blogUrl ? user.blogUrl : '',
-  );
+  const [profilePic, setProfilePic] = useState(null);
+  const [picChanged, setPicChanged] = useState(false);
+  const [preview, setPreview] = useState(user && user.profilePic);
+  const [blogUrl, setBlogUrl] = useState(user && user.blogUrl);
 
   const [birth, setBirth] = useState(
     user && user.birth
@@ -71,29 +64,30 @@ const Profile = () => {
 
   // 회원정보수정
   async function sendData() {
-
     // form 생성
     const form = new FormData();
+
     const json = JSON.stringify({
       name: name ? name : user.name,
-      birth: birth ? birth : null,
+      birth : birth ? birth : null,
       describe:
         describe && describe !== user.discribe ? describe : user.discribe,
       blogUrl: blogUrl ? blogUrl : null,
+      picChanged,
     });
 
     form.append('user', new Blob([json], {type: 'application/json'}));
 
-    form.append('profilePic', profilePic);
+    if (profilePic) form.append('profilePic', profilePic);
 
 
     // 회원정보 수정 axios
     const res = await dispatch(updateProfile(form));
-    
+
     if (res.payload.request.status === 201) {
       toast.success('회원정보가 성공적으로 수정되었습니다.');
     } else {
-      toast.error('회원정보 수정에 실패했습니다.')
+      toast.error('회원정보 수정에 실패했습니다.');
     }
   }
 
@@ -108,9 +102,10 @@ const Profile = () => {
   // 파일 미리보기
   function changeImg(e) {
     setProfilePic(e.target.files[0]);
+    setPicChanged(true)
 
     const reader = new FileReader();
-    
+
     reader.readAsDataURL(e.target.files[0]);
     return new Promise(resolve => {
       reader.onload = () => {
@@ -147,7 +142,14 @@ const Profile = () => {
         <Div>
           <ImgContainer>
             <ImgDiv>
-              <Img id="preview-image" src={preview} />
+              <Img
+                id="preview-image"
+                src={
+                  preview
+                    ? preview
+                    : process.env.PUBLIC_URL + '/assets/images/logo3.png'
+                }
+              />
             </ImgDiv>
             <ImgInputDiv>
               <ImgInput
@@ -160,6 +162,7 @@ const Profile = () => {
                   onClick={() => {
                     setProfilePic(null);
                     setPreview(null);
+                    setPicChanged(true);
                   }}
                 >
                   <DelIcon />
