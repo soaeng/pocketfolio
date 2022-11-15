@@ -24,7 +24,7 @@ const Oauth = () => {
     saveRefreshToken(refreshToken);
     saveExpire();
     dispatch(getMyInfo());
-    navigate(-4);
+    navigate('/main');
   }, []);
 
   return;
