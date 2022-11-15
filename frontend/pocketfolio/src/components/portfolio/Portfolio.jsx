@@ -57,6 +57,7 @@ const Portfolio = () => {
     setOpenPockMod(!openPockMod);
   };
 
+  console.log(openPockMod)
   // 포트폴리오 목록 불러오기
   useEffect(() => {
     dispatch(getMyPocket()).then(res => {

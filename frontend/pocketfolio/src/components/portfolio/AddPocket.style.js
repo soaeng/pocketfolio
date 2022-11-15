@@ -3,7 +3,7 @@ import {Body1, H2} from '../../styles/styles.style';
 
 export const Overlay = styled.div`
   .modal {
-    z-index: 999;
+    z-index: 1000;
     outline: 2px solid purple;
     position: fixed;
     top: 0;
@@ -18,13 +18,14 @@ export const Overlay = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
+    cursor: default;
+    /* background-color: blue; */
   }
   .modal.close {
-    animation-name: fadeOut;
+    animation-name: fade-out;
   }
   .modal button {
     outline: none;
-    cursor: pointer;
     border: 0;
   }
 
@@ -52,7 +53,6 @@ export const Overlay = styled.div`
     background-color: transparent;
   }
   .modal > section > p {
-    
   }
 
   @keyframes modal-bg-show {
@@ -98,7 +98,9 @@ export const Overlay = styled.div`
   }
 `;
 
-export const ModalWrap = styled.div``;
+export const ModalWrap = styled.div`
+  z-index: 9;
+`;
 
 export const Contents = styled.section`
   background-color: #fff;
@@ -110,6 +112,21 @@ export const Contents = styled.section`
   animation-name: slideUp;
   animation-fill-mode: forwards;
   overflow: auto;
+  &::-webkit-scrollbar {
+    width: 5px;
+    /* height: 5px; */
+  }
+
+  &::-webkit-scrollbar-thumb {
+    height: 5%;
+    background-color: lightgray;
+    border-radius: 2rem;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: #ffffff;
+    border-radius: 2rem;
+  }
 `;
 
 export const Body = styled.div`
@@ -123,7 +140,7 @@ export const Body = styled.div`
 
 export const BtnDiv = styled.footer`
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
   padding: 12px 16px;
   text-align: right;
 `;
@@ -177,13 +194,12 @@ export const Box = styled.div`
   display: flex;
   flex-direction: column;
 
-  &.dropselect{
+  &.dropselect {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     /* outline: solid black; */
     width: 50%;
-
   }
 `;
 
@@ -192,41 +208,62 @@ export const Text = styled(Body1)`
   color: black;
   margin-bottom: 1.3rem !important;
   font-family: 'NanumSquareBold' !important ;
-  
-
 `;
 
 export const Head = styled(H2)`
   margin: 0;
 `;
 
-export const TitleInput = styled.input`
-  
+export const InputDiv = styled.div`
+
+`
+export const Input = styled.input`
   border-radius: 0.2rem;
   padding: 0.5rem;
   /* border: 1px black; */
-  width: 50%;
+
+  &.title {
+    width: 50%;
+  }
+  &.themedrop {
+    /* visibility: hidden; */
+    display: none;
+  }
+
+  &.maincheck {
+    /* width: 100%; */
+  }
+  :checked + img {
+    border-radius: 1rem;
+    background-color: #fdd7d7;
+  }
 `;
+
+
+export const Label = styled.label``;
 
 export const ThemeDiv = styled.div`
   display: grid;
-  overflow: auto;
   grid-template-columns: repeat(4, 1fr);
   grid-gap: 10px;
-`
-
-export const Theme = styled.div`
 `;
+
+export const Theme = styled.div``;
 
 export const ThemeImg = styled.img`
   max-width: 100%;
   height: auto;
+  cursor: pointer;
 `;
 
 export const ThemeTitle = styled.div`
-color: black;
+  color: black;
 `;
 
+export const DropDiv = styled.div``;
 
-export const DropDiv = styled.div`
-`
+export const Select = styled.select`
+  width: fit-content;
+`;
+
+export const Option = styled.option``;
