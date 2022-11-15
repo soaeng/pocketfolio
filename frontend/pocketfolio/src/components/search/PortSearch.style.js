@@ -10,6 +10,7 @@ export const PortCard = styled.div`
   flex-wrap: wrap;
   overflow-x: auto;
   scroll-behavior: smooth;
+  padding: 0 5%;
 `;
 
 // 각 아이템

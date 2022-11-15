@@ -77,10 +77,6 @@ const PocketSearch = () => {
   const [visible, setVisible] = useState(false); //프로필 모달 보이게 안보이게
   const dispatch = useDispatch();
 
-  // const clickUserProfile = async () => {
-  //   const res = await dispatch(getUserInfo());
-  // };
-
   // dropdown 외부 클릭시 dropdown창 꺼지게 하기(modal 같은 기능 구현)
   const modalRef = useRef(null);
 
@@ -101,10 +97,6 @@ const PocketSearch = () => {
       document.removeEventListener('mousedown', handler);
     };
   });
-
-  // useEffect(() => {
-  //   if (visible) dispatch(getUserInfo());
-  // }, [visible]);
 
   const navigate = useNavigate();
 
