@@ -39,7 +39,6 @@ const DropDown = ({user}) => {
   const logoutClickHandler = () => {
     deleteAllToken();
     dispatch(logout());
-    navigate('/main');
   };
 
   return (
