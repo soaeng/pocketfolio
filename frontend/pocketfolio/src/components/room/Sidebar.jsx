@@ -37,7 +37,7 @@ const Sidebar = ({
             <CloseIcon />
           </CloseBox>
         )}
-        {sidebar === 'port' && <PortList />}
+        {sidebar === 'port' && <PortList data={data.portfolios} />}
         {sidebar === 'guest' && <GuestList roomSeq={roomSeq} roomDto={data} />}
         {sidebar === 'edit' && <ObjectList appendArrange={appendArrange} />}
       </SideContainer>
