@@ -1,7 +1,6 @@
 import {
   Container,
   ChartContainer,
-  ListContainer,
   DateContainer,
   GraphBox,
   KeyFrameBox,
@@ -9,6 +8,12 @@ import {
   DateText,
   ValueBox,
   Value,
+  ListContainer,
+  Title,
+  UserItem,
+  UserImgBox,
+  UserImg,
+  UserName,
 } from './HitDetail.style';
 import {useDispatch} from 'react-redux';
 import {getVisitors} from '../../store/roomSlice';
@@ -16,7 +21,7 @@ import {useEffect, useState} from 'react';
 
 const HitDetail = ({closeHit, data}) => {
   const dispatch = useDispatch();
-  const [visitors, setVisitors] = useState(null);
+  const [visitors, setVisitors] = useState([]);
   const [today, setToday] = useState(0);
   const [hitStat, setHitStat] = useState([]);
   const [max, setMax] = useState(0);
@@ -50,7 +55,7 @@ const HitDetail = ({closeHit, data}) => {
             <GraphBox>
               <KeyFrameBox>
                 <Graph style={{height: `${(item[1] / max) * 100}%`}}>
-                  <ValueBox className={item[1] ? "" : "noShow"}>
+                  <ValueBox className={item[1] ? '' : 'noShow'}>
                     <Value>{`${item[1]}`}</Value>
                   </ValueBox>
                 </Graph>
@@ -60,7 +65,23 @@ const HitDetail = ({closeHit, data}) => {
           </DateContainer>
         ))}
       </ChartContainer>
-      <ListContainer></ListContainer>
+      <ListContainer>
+        <Title>최근 방문자 목록</Title>
+        {visitors.map((visitor, idx) => (
+          <UserItem>
+            <UserImgBox>
+              <UserImg
+                src={
+                  visitor.userProfile
+                    ? visitor.userProfile
+                    : process.env.PUBLIC_URL + '/assets/images/logo3.png'
+                }
+              />
+            </UserImgBox>
+            <UserName>{visitor.userName}</UserName>
+          </UserItem>
+        ))}
+      </ListContainer>
     </Container>
   );
 };
