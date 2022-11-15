@@ -91,7 +91,7 @@ export const updateRoom = createAsyncThunk(
   'updateRoom',
   async (data, {rejectWithValue}) => {
     try {
-      const res = await http.patch(`rooms/info/${data.room_id}`, data);
+      const res = await http.patch(`rooms/info/${data.roomSeq}`, data);
 
       if (res.status === 201) return res.data;
     } catch (error) {
@@ -151,7 +151,7 @@ export const roomDislike = createAsyncThunk(
   async (roomSeq, {rejectWithValue}) => {
     try {
       const res = await http.delete(`rooms/like/${roomSeq}`);
-      console.log(res)
+      console.log(res);
       if (res.status === 200) return res.data;
     } catch (error) {
       console.log('마이룸 좋아요 취소 에러', error);
@@ -160,7 +160,53 @@ export const roomDislike = createAsyncThunk(
   },
 );
 
+// 최근 방문자 목록 조회
+export const getVisitors = createAsyncThunk(
+  'getVisitors',
+  async (roomSeq, {rejectWithValue}) => {
+    try {
+      const res = await http.get(`rooms/guests/${roomSeq}`);
+      if (res.status === 200) return res.data;
+    } catch (error) {
+      console.log('최근 방문자 목록 조회 에러', error);
+      return rejectWithValue(error);
+    }
+  },
+);
 
+// 배치 수정
+/**
+  {  
+    "roomSeq": "방 번호"
+    "body": {
+      "theme": "string",
+      "arranges": [
+      {
+      "arrangeSeq": 0,
+      "itemSeq": 0,
+      "location" [
+        0
+      ],
+      "rotation": 0,
+      "portSeq": 0
+      }
+      ]
+    },
+  }
+ */
+export const updateArranges = createAsyncThunk(
+  'updateArranges',
+  async (data, {rejectWithValue}) => {
+    try {
+      const res = await http.patch(`rooms/${data.roomSeq}`, data.body);
+
+      if (res.status === 201) return res.data;
+    } catch (error) {
+      console.log('배치 수정 에러', error);
+      return rejectWithValue(error);
+    }
+  },
+);
 
 const initialState = {};
 

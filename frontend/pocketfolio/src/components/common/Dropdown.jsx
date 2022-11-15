@@ -45,11 +45,13 @@ const DropDown = ({user}) => {
   return (
     <Dropdown>
       <ProfileList>
-        {user.profilePic === undefined ? (
-            <ProfileImg src="./assets/images/user.png" />
-        ) : (
-            <ProfileImg src={user.profilePic}></ProfileImg>
-        )}
+        <ProfileImg
+          src={
+            user.profilePic
+              ? user.profilePic
+              : process.env.PUBLIC_URL + '/assets/images/user.png'
+          }
+        />
         <ProfileDiv>{user.email}</ProfileDiv>
         <FollowList>
           <FollowList1>팔로워 | {user.followerTotal}</FollowList1>
