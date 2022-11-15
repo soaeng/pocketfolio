@@ -25,9 +25,9 @@ export const Container = styled.div`
   flex-direction: column;
 
   @media screen and (max-width: 1000px) {
-    width: 80%;
-    top: 4rem;
-    left: 8%;
+    width: 75%;
+    top: 5rem;
+    left: 10%;
   }
 
   &.sidebar {
