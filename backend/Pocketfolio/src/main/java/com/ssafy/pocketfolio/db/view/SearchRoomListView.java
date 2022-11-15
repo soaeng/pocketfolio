@@ -9,6 +9,7 @@ public interface SearchRoomListView {
     public String getUserProfilePic();
     public Integer getLike();
     public Integer getHit();
-    public String getIsMain();
+    public Integer getIsLiked();
+    public String getCategoryName();
 
 }

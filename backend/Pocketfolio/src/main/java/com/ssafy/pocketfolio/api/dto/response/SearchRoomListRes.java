@@ -29,7 +29,9 @@ public class SearchRoomListRes {
     @Schema(description = "조회수")
     private Integer hit;
     @Schema(description = "좋아요 여부")
-    private Boolean isMain;
+    private Boolean isLiked;
+    @Schema(description = "카테고리 이름")
+    private String categoryName;
 
     public SearchRoomListRes(SearchRoomListView view) {
         roomSeq = view.getRoomSeq();
@@ -40,7 +42,8 @@ public class SearchRoomListRes {
         userProfilePic = view.getUserProfilePic();
         like = view.getLike();
         hit = view.getHit();
-        isMain = "T".equals(view.getIsMain());
+        isLiked = view.getIsLiked() > 0;
+        categoryName = view.getCategoryName();
     }
 
 }
