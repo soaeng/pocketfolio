@@ -1,6 +1,6 @@
 import {useParams} from 'react-router-dom';
 import {useEffect, useState} from 'react';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {useNavigate} from 'react-router-dom';
 import {getportDetail} from '../../store/portSlice';
 import Nav from '../common/Nav';
@@ -33,12 +33,15 @@ import {
 const PortDetail = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  // 유저 정보 가져오기
+  const user = useSelector(state => state.oauth.user);
   // portSeq
   const params = useParams();
   const port_id = parseInt(params.port_id);
 
   // 포트폴리오 내용
   const [portDetail, setPortDetail] = useState({});
+
   // 작성일
   const [createDate, setCreateDate] = useState('');
 
@@ -117,20 +120,22 @@ const PortDetail = () => {
                 )}
               </AttachList>
             </AttachDiv>
-            <IconDiv>
-              <IconWrap>
-                <PortIcon onClick={movePortList}></PortIcon>
-                <ToolTip className="tooltip">
-                  <ToolTipText>포트폴리오 목록</ToolTipText>
-                </ToolTip>
-              </IconWrap>
-              <IconWrap>
-                <EditIcon onClick={moveEdit}></EditIcon>
-                <ToolTip className="tooltip">
-                  <ToolTipText>포트폴리오 수정</ToolTipText>
-                </ToolTip>
-              </IconWrap>
-            </IconDiv>
+            {user.userSeq === portDetail.userSeq ? (
+              <IconDiv>
+                <IconWrap>
+                  <PortIcon onClick={movePortList}></PortIcon>
+                  <ToolTip className="tooltip">
+                    <ToolTipText>포트폴리오 목록</ToolTipText>
+                  </ToolTip>
+                </IconWrap>
+                <IconWrap>
+                  <EditIcon onClick={moveEdit}></EditIcon>
+                  <ToolTip className="tooltip">
+                    <ToolTipText>포트폴리오 수정</ToolTipText>
+                  </ToolTip>
+                </IconWrap>
+              </IconDiv>
+            ) : null}
           </BottomDiv>
         </Content>
       </Container>

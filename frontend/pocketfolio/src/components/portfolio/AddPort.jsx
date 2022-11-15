@@ -340,15 +340,14 @@ const AddPort = () => {
         close={closeModal}
         save={savePortFolio}
       ></SaveModal>
-
       {/* 포트폴리오 로우 데이터 */}
       <div>
-        {/* {portContent.summary} */}
+        {portContent.summary}
         {/* {ReactHtmlParser(portContent.summary)} */}
       </div>
 
       {/* 유저에게 보여져야 할 포트폴리오 */}
-      <Viewer content={portContent.summary} />
+      {/* <Viewer content={portContent.summary} /> */}
     </Background>
   );
 };
