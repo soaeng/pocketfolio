@@ -18,6 +18,8 @@ public class SearchRoomListRes {
     private String thumbnail;
     @Schema(description = "방 이름")
     private String name;
+    @Schema(description = "유저 번호")
+    private Long userSeq;
     @Schema(description = "방 주인 이름")
     private String userName;
     @Schema(description = "방 주인 프로필 사진 url")
@@ -33,11 +35,12 @@ public class SearchRoomListRes {
         roomSeq = view.getRoomSeq();
         thumbnail = view.getThumbnail();
         name = view.getName();
+        userSeq = view.getUserSeq();
         userName = view.getUserName();
         userProfilePic = view.getUserProfilePic();
         like = view.getLike();
         hit = view.getHit();
-        isMain = view.getIsMain();
+        isMain = "T".equals(view.getIsMain());
     }
 
 }

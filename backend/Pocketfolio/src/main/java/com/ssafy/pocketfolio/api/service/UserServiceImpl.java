@@ -75,13 +75,14 @@ public class UserServiceImpl implements UserService {
                 profilePicUrl = fileHandler.saveFile(multipartFile, "profile");
                 if(profilePicUrl == null) {
                     log.error("프로필 사진이 저장되지 않았습니다.");
-//                throw new IOException("프로필 사진이 저장되지 않았습니다.");
+                    throw new IOException("프로필 사진이 저장되지 않았습니다.");
                 }
             } else {
                 // 프로필 사진 삭제 후 전송되고 이전에 프로필 사진 있었으면 프로필 사진 파일 삭제
                 if (profilePicUrl != null) {
                     fileHandler.deleteFile(profilePicUrl, "profile");
                 }
+                profilePicUrl = null;
             }
         }
 
