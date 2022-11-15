@@ -35,21 +35,16 @@ function Avatar({user}) {
 
   return (
     <AvatarContainer ref={modalRef}>
-      {user.profilePic === undefined ? (
-        <AvatarImg
-          src="./assets/images/user.png"
-          onClick={() => {
-            setVisible(!visible);
-          }}
-        />
-      ) : (
-        <AvatarImg
-          src={user.profilePic}
-          onClick={() => {
-            setVisible(!visible);
-          }}
-        />
-      )}
+      <AvatarImg
+        src={
+          user.profilePic
+            ? user.profilePic
+            : process.env.PUBLIC_URL + '/assets/images/user.png'
+        }
+        onClick={() => {
+          setVisible(!visible);
+        }}
+      />
       {visible && <DropDown user={user} />}
     </AvatarContainer>
   );

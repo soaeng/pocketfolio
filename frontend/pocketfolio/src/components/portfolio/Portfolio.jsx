@@ -11,15 +11,25 @@ import {
   CardList,
   BtnDiv,
   IconDiv,
-  DeleteIcon,
-  DeleteIconX,
+  TrashIcon,
+  TrashIconX,
   AddPortIcon,
+  AddPocket,
+  DelIcon,
+  Table,
+  Th,
+  Td,
+  Tr,
 } from './Portfolio.style';
 import Card from './Card';
-import AddMyRoom from './AddMyRoom';
-import PortList from './PortList';
-import {getMyPort, getMyPocket} from '../../store/portSlice';
+
+import {getMyPocket} from '../../store/portSlice';
+import {createRoom} from '../../store/roomSlice';
 import {useDispatch} from 'react-redux';
+import DeleteModal from './DeleteModal';
+import {deletePort} from '../../store/portSlice';
+import toast, {Toaster} from 'react-hot-toast';
+
 const Portfolio = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -28,13 +38,15 @@ const Portfolio = () => {
   const [portList, setPortList] = useState([]);
   // 포켓 목록 List
   const [pocketList, setPocketList] = useState([]);
-
   // 마이룸 삭제 아이콘 of/off 변수
   const [isDelete, setIsDelete] = useState(false);
   // 포트폴리오 삭제 아이콘 of/off 변수
   const [delPortIcon, setDelPortIcon] = useState(false);
   // 포트폴리오 삭제 후 재랜더링 위한 변수
   const [deletedPort, setDeletedPort] = useState(false);
+
+  // 삭제 모달 개폐 변수
+  const [isOpen, setIsOpen] = useState(false);
 
   // 포트폴리오 목록 불러오기
   useEffect(() => {
@@ -65,29 +77,51 @@ const Portfolio = () => {
     navigate('/port/create');
   };
 
+  // 해당 포트폴리오 삭제
+  const deletePortHandle = (seq) => {
+    dispatch(deletePort(seq)).then(res => {
+      setDeletedPort(!deletedPort);
+      setIsOpen(false)
+      toast.success('포트폴리오가 삭제 되었습니다.');
+    });
+  };
+
   return (
     <Background>
       <Nav className="nav"></Nav>
+      <Toaster
+        position="top-center"
+        containerStyle={{
+          position: 'absolute',
+        }}
+        toastOptions={{
+          duration: 3000,
+          style: {
+            background: '#fff',
+            color: '#333333',
+            fontSize: '0.85rem',
+          },
+        }}
+      />
       <Container>
         <CardWrapper className="myroomwrapper">
           <HeaderDiv>
-            <Text className="myrooms">나의 소중한 마이룸들</Text>
-            <IconDiv onClick={togglePocketDel}>
-              {isDelete ? (
-                <DeleteIconX></DeleteIconX>
-              ) : (
-                <DeleteIcon></DeleteIcon>
-              )}
-            </IconDiv>
+            <Text className="myrooms">나의 소중한 포켓들</Text>
+            <BtnDiv>
+              <IconDiv className="addPocketIcon">
+                <AddPocket></AddPocket>
+              </IconDiv>
+              <IconDiv className="delPocketIcon" onClick={togglePocketDel}>
+                {isDelete ? <TrashIconX /> : <TrashIcon />}
+              </IconDiv>
+            </BtnDiv>
           </HeaderDiv>
           <CardList className="roomlists">
             {pocketList.length > 0
-              ? pocketList.map((item, idx) => 
-                <Card pocketData={item} isDelete={isDelete}></Card>)
+              ? pocketList.map((item, idx) => (
+                  <Card pocketData={item} isDelete={isDelete}></Card>
+                ))
               : null}
-            <div>
-              <AddMyRoom></AddMyRoom>
-            </div>
           </CardList>
         </CardWrapper>
         <CardWrapper>
@@ -99,27 +133,52 @@ const Portfolio = () => {
               </IconDiv>
               <IconDiv className="delPortIcon" onClick={togglePortDel}>
                 {delPortIcon && portList.length > 0 ? (
-                  <DeleteIconX />
+                  <TrashIconX />
                 ) : (
-                  <DeleteIcon />
+                  <TrashIcon />
                 )}
               </IconDiv>
             </BtnDiv>
           </HeaderDiv>
           <CardList className="portlists">
-            {portList.length > 0
-              ? portList.map((item, idx) => (
-                  <div onClick={() => movePortDetail({item})}>
-                    <PortList
-                      key={idx}
-                      item={item}
-                      isDeletePort={delPortIcon}
-                      deletedPort={deletedPort}
-                      setDeletedPort={setDeletedPort}
-                    />
-                  </div>
-                ))
-              : null}
+            <Table>
+              <Tr>
+                <Th className="no">No.</Th>
+                <Th className="title">포트폴리오 제목</Th>
+                <Th className="del"> 삭제</Th>
+              </Tr>
+              {portList.length > 0
+                ? portList.map((item, idx) => (
+                    <Tr key={idx} onClick={() => movePortDetail({item})}>
+                      <Td className={(idx + 1) % 2 ? 'odd' : 'even'}>
+                        {idx + 1}.
+                      </Td>
+                      <Td className={(idx + 1) % 2 ? 'odd ' : 'even'}>
+                        {item.name}
+                      </Td>
+                      <Td className={(idx + 1) % 2 ? 'odd ' : 'even'}>
+                        <DelIcon
+                          onClick={event => {
+                            event.stopPropagation();
+                            // 모달 띄우기
+                            setIsOpen(true)
+                            
+                          }}
+                          className={delPortIcon ? 'on' : 'off'}
+                        ></DelIcon>
+                      </Td>
+                      {isOpen && (
+                        <DeleteModal
+                          onClose={() => setIsOpen(false)}
+                          text={'포트폴리오를'}
+                          item={item}
+                          deleteFunc={deletePortHandle}
+                        ></DeleteModal>
+                      )}
+                    </Tr>
+                  ))
+                : null}
+            </Table>
           </CardList>
         </CardWrapper>
       </Container>

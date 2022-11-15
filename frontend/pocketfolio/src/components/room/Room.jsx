@@ -6,9 +6,9 @@ import RoomCanvas from '../roomCanvas/RoomCanvas';
 import {Container, CanvasWrapper, EditBox, Btn} from './Room.style';
 import toast, {Toaster} from 'react-hot-toast';
 import {useParams} from 'react-router-dom';
-import {useState, useEffect} from 'react';
+import {useState, useEffect, useRef} from 'react';
 import {useDispatch} from 'react-redux';
-import {getRoomInfo} from '../../store/roomSlice';
+import {getRoomInfo, updateArranges} from '../../store/roomSlice';
 
 // 마이룸
 const Room = () => {
@@ -21,6 +21,7 @@ const Room = () => {
   const [edit, setEdit] = useState(false);
   const [data, setData] = useState(null);
   const [arranges, setArranges] = useState(null);
+  const prevArranges = useRef();
 
   const changeSidebar = state => {
     setSidebar(state);
@@ -33,6 +34,7 @@ const Room = () => {
   };
 
   const offEdit = () => {
+    setArranges(prevArranges.current);
     setEdit(false);
     setSidebar('');
   };
@@ -56,6 +58,11 @@ const Room = () => {
     getData();
   }, [roomSeq]);
 
+  // 수정 버튼 눌렀을 시 이전 arranges 저장
+  useEffect(() => {
+    prevArranges.current = arranges;
+  }, [edit]);
+
   // 아이템 배치
   const appendArrange = arrange => {
     setArranges([...arranges, arrange]);
@@ -75,6 +82,26 @@ const Room = () => {
   // 배치 삭제
   const handleDel = idx => {
     setArranges(arranges.filter((_arrange, _idx) => idx !== _idx));
+  };
+
+  // 배치 수정 API put
+  const saveArrange = async e => {
+    setEdit(false);
+    setSidebar('');
+    const body = {
+      theme: data.room.theme,
+      arranges: arranges.map(arrange => {
+        return {
+          arrangeSeq: arrange.arrangeSeq,
+          itemSeq: arrange.item.itemSeq,
+          location: arrange.location,
+          rotation: arrange.rotation,
+          portSeq: arrange.portSeq,
+        };
+      }),
+    };
+    const res = await dispatch(updateArranges({roomSeq, body}));
+    console.log(res);
   };
 
   return (
@@ -106,7 +133,7 @@ const Room = () => {
           />
           {edit ? (
             <EditBox>
-              <Btn>저장</Btn>
+              <Btn onClick={saveArrange}>저장</Btn>
               <Btn onClick={offEdit}>취소</Btn>
             </EditBox>
           ) : null}
