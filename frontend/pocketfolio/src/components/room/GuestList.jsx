@@ -70,41 +70,43 @@ const GuestList = ({roomSeq, roomDto}) => {
 
   return (
     <Container>
-      <WriteForm
-        onSubmit={e => {
-          e.preventDefault();
-          writeGuest();
-        }}
-      >
-        <ImgTextDiv>
-          <ImgBox>
-            <Img
-              src={
-                user.profilePic
-                  ? user.profilePic
-                  : process.env.PUBLIC_URL + '/assets/images/logo3.png'
-              }
+      { user &&
+        <WriteForm
+          onSubmit={e => {
+            e.preventDefault();
+            writeGuest();
+          }}
+        >
+          <ImgTextDiv>
+            <ImgBox>
+              <Img
+                src={
+                  user.profilePic
+                    ? user.profilePic
+                    : process.env.PUBLIC_URL + '/assets/images/logo3.png'
+                }
+              />
+            </ImgBox>
+            <TextArea
+              placeholder="방명록을 작성해주세요"
+              value={content}
+              onChange={e => {
+                setContent(e.target.value);
+              }}
             />
-          </ImgBox>
-          <TextArea
-            placeholder="방명록을 작성해주세요"
-            value={content}
-            onChange={e => {
-              setContent(e.target.value);
-            }}
-          />
-        </ImgTextDiv>
+          </ImgTextDiv>
 
-        <BottomBox>
-          <LockIconDiv onClick={() => setIsPublic(!isPublic)}>
-            {isPublic ? <UnlockIcon /> : <LockIcon />}
-            <LockText>{isPublic ? '공개글' : '비밀글'}</LockText>
-          </LockIconDiv>
-          <Btn type="submit">확인</Btn>
-        </BottomBox>
-      </WriteForm>
+          <BottomBox>
+            <LockIconDiv onClick={() => setIsPublic(!isPublic)}>
+              {isPublic ? <UnlockIcon /> : <LockIcon />}
+              <LockText>{isPublic ? '공개글' : '비밀글'}</LockText>
+            </LockIconDiv>
+            <Btn type="submit">확인</Btn>
+          </BottomBox>
+        </WriteForm>
+      }
 
-      <ScrollDiv>
+      <ScrollDiv className={ user ? "" : "full"}>
         <ItemContainer>
           {data.map((item, idx) => (
             <GuestItem

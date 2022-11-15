@@ -93,6 +93,10 @@ export const ScrollDiv = styled.div`
   height: 70%;
   overflow: auto;
 
+  &.full {
+    height: 92%;
+  }
+
   &::-webkit-scrollbar {
     width: 8px; /* 세로축 스크롤바 길이 */
     height: 15px; /* 가로축 스크롤바 길이 */
