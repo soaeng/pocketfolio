@@ -21,6 +21,8 @@ const Item = props => {
   const idx = props.idx;
   const handleArrange = props.handleArrange;
   const handleDel = props.handleDel;
+  const loadConnect = props.loadConnect;
+
   const {nodes, materials} = useGLTF(arrange.item.asset);
   const _materials = new MeshStandardMaterial(
     materials[Object.keys(materials)[0]],
@@ -94,7 +96,12 @@ const Item = props => {
     >
       {selected && edit && (
         <Html center occlude={pivotRef}>
-          <ButtonHtml handleRotate={handleRotate} handleDelBtn={handleDelBtn} />
+          <ButtonHtml
+            handleRotate={handleRotate}
+            handleDelBtn={handleDelBtn}
+            loadConnect={loadConnect}
+            idx={idx}
+          />
         </Html>
       )}
       <mesh

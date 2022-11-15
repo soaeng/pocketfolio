@@ -7,7 +7,7 @@ export const getMyPort = createAsyncThunk(
   async (uid, {rejectWithValue}) => {
     try {
       const res = await http.get(`portfolios`);
-      if (res.status === 200) return res;
+      if (res.status === 200) return res.data;
     } catch (err) {
       console.log('포트폴리오 목록 조회 실패');
       return rejectWithValue(err.response);

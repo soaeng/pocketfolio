@@ -13,6 +13,7 @@ import {
   ToggleOpenIcon1,
   ToggleOpenIcon2,
 } from './Sidebar.style';
+import EditPortList from './EditPortList';
 
 const Sidebar = ({
   sidebar,
@@ -21,6 +22,10 @@ const Sidebar = ({
   roomSeq,
   data,
   appendArrange,
+  arranges,
+  nowIdx,
+  connectPort,
+  disconnectPort,
 }) => {
   const controlSide = () => {
     if (sidebar === 'port') return changeSidebar('');
@@ -37,7 +42,15 @@ const Sidebar = ({
             <CloseIcon />
           </CloseBox>
         )}
-        {sidebar === 'port' && <PortList data={data.portfolios} />}
+        {!edit && sidebar === 'port' && <PortList data={data.portfolios} />}
+        {edit && sidebar === 'port' && (
+          <EditPortList
+            arranges={arranges}
+            nowIdx={nowIdx}
+            connectPort={connectPort}
+            disconnectPort={disconnectPort}
+          />
+        )}
         {sidebar === 'guest' && <GuestList roomSeq={roomSeq} roomDto={data} />}
         {sidebar === 'edit' && <ObjectList appendArrange={appendArrange} />}
       </SideContainer>

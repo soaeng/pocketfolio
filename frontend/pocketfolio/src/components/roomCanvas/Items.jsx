@@ -13,6 +13,8 @@ const Items = props => {
   const handleDel = props.handleDel;
   const api = useBounds();
   const arranges = props.arranges;
+  const loadConnect = props.loadConnect;
+
   useEffect(() => {
     setSelectedMesh(false);
     api.refresh(boundaryRef.current).clip().fit();
@@ -46,6 +48,7 @@ const Items = props => {
           handleArrange={handleArrange}
           handleDel={handleDel}
           idx={idx}
+          loadConnect={loadConnect}
         />
       ))}
     </group>
