@@ -6,7 +6,7 @@ import {RiHeart3Line, RiHeart3Fill, RiEyeLine} from 'react-icons/ri';
 export const RecCaContainer = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 3% 5%;
+  padding: 0 5%;
 `;
 
 //추천 포트폴리오 전체 감싼 것

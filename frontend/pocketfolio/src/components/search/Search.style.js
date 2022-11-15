@@ -24,7 +24,7 @@ export const Container = styled.div`
 
 // SearchInput
 export const SearchInput = styled.input`
-  width: 100%;
+  width: 80%;
   height: 25px;
   border: none;
   padding: 0 10px;
@@ -58,18 +58,11 @@ export const TagContainer = styled.div`
 export const Tag = styled(Body3)`
   display: flex;
   justify-content: center;
-  background-color: #e75452;
-  color: white;
   padding: 5px 10px;
   margin: 5px;
-  border-radius: 8px;
+  border-radius: 16px;
   min-width: 50px;
   cursor: pointer;
-
-  &:hover {
-    background-color: #c13136;
-    color: #eeeeee;
-  }
 `;
 
 export const TopButton = styled.div`
@@ -89,19 +82,20 @@ export const TopButtonIcon = styled(CiCircleChevUp)`
 `;
 
 export const Select = styled.select`
-  padding: 10px;
-  border-radius: 16px;
+  padding: 5px;
+  border-radius: 8px;
   border: 2px solid lightcoral;
+  font-size: 16px;
 `;
 
 export const SelectOption = styled.option`
-  padding: 10px;
-  size: 10px;
+  font-size: 16px;
 `;
 
 export const FilterDiv = styled.div`
   display: flex;
   justify-content: flex-end;
+  margin-right: 125px;
 `;
 
 export const DivTest = styled.div`
@@ -110,15 +104,16 @@ export const DivTest = styled.div`
   flex-direction: column;
 `;
 
-export const Tab = styled.div`
-  width: 7%;
+export const Tab = styled(Body3)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 5%;
   margin: 0 0.5%;
   color: white;
-  text-align: center;
   padding: 10px;
   transition: all 0.2s;
   border-radius: 3rem;
-  font-size: medium;
   font-weight: bold;
   cursor: pointer;
 

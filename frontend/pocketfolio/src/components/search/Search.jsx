@@ -228,9 +228,13 @@ const Search = () => {
                 !!((2 ** (tags.length - idx - 1)) & category)
                   ? {
                       backgroundColor: '#e75452',
+                      color: '#fff',
+                      border: 'none',
                     }
                   : {
-                      backgroundColor: '#333',
+                      backgroundColor: '#fff',
+                      color: 'darkgray',
+                      border: '1px solid darkgray'
                     }
               }
             >
