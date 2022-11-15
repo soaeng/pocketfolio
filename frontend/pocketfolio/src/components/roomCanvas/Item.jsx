@@ -21,7 +21,7 @@ const Item = props => {
   const idx = props.idx;
   const handleArrange = props.handleArrange;
   const handleDel = props.handleDel;
-  const {nodes, materials} = useGLTF(arrange.asset);
+  const {nodes, materials} = useGLTF(arrange.item.asset);
   const _materials = new MeshStandardMaterial(
     materials[Object.keys(materials)[0]],
   );
@@ -102,7 +102,7 @@ const Item = props => {
         raycast={meshBounds}
         castShadow
         {...props}
-        geometry={nodes[arrange.nameEng].geometry}
+        geometry={nodes[arrange.item.nameEng].geometry}
         material={_materials}
         rotation={[0, arrange.rotation, 0]}
         dispose={null}
