@@ -150,7 +150,7 @@ export const TrashIcon = styled(RiDeleteBinFill)``;
 
 export const TrashIconX = styled(RiDeleteBin2Fill)``;
 
-export const AddPocket = styled(RiFolderAddFill)``;
+export const AddPocketIcon = styled(RiFolderAddFill)``;
 
 export const DelIcon = styled(RiCloseCircleLine)`
   font-size: 20px;
@@ -205,4 +205,12 @@ export const Td = styled.td`
   /* border: 1px solid; */
 `;
 
-export const Tr = styled.tr``;
+export const Tr = styled.tr`
+  &.portlist {
+    cursor: pointer;
+  }
+`;
+
+export const Tbody = styled.tbody`
+
+`
