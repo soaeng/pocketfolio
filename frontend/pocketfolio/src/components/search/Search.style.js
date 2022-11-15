@@ -8,16 +8,18 @@ import {CiCircleChevUp} from 'react-icons/ci';
 export const Container1 = styled.div`
   display: flex;
   justify-content: center;
+  margin-top: 2%;
 `;
 
 export const Container = styled.div`
   display: flex;
   align-items: center;
   border-radius: 16px;
-  border: 1px solid #bbb;
-  width: 50%;
+  border: 0.5px solid #bbb;
+  width: 30%;
+  height: 40px;
   min-width: 200px;
-  padding: 5px 30px;
+  padding: 0px 30px;
 `;
 
 // SearchInput
@@ -26,10 +28,10 @@ export const SearchInput = styled.input`
   height: 25px;
   border: none;
   padding: 0 10px;
-  font-size: 15px;
+  font-size: 17px;
 
   &::placeholder {
-    font-size: 15px;
+    font-size: 17px;
   }
 
   &:focus {
@@ -39,7 +41,10 @@ export const SearchInput = styled.input`
   }
 `;
 
-export const SearchIcon = styled(AiOutlineSearch)``;
+export const SearchIcon = styled(AiOutlineSearch)`
+  height: 25px;
+  width: 25px;
+`;
 
 // Tag 스타일
 // Tag 전체를 감싸는 것
@@ -81,4 +86,55 @@ export const TopButton = styled.div`
 export const TopButtonIcon = styled(CiCircleChevUp)`
   width: 100%;
   height: 100%;
+`;
+
+export const Select = styled.select`
+  padding: 10px;
+  border-radius: 16px;
+  border: 2px solid lightcoral;
+`;
+
+export const SelectOption = styled.option`
+  padding: 10px;
+  size: 10px;
+`;
+
+export const FilterDiv = styled.div`
+  display: flex;
+  justify-content: flex-end;
+`;
+
+export const DivTest = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+`;
+
+export const Tab = styled.div`
+  width: 7%;
+  margin: 0 0.5%;
+  color: white;
+  text-align: center;
+  padding: 10px;
+  transition: all 0.2s;
+  border-radius: 3rem;
+  font-size: medium;
+  font-weight: bold;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #f3a9a1;
+  }
+
+  background-color: ${props => {
+    return props.searchMode === props.children ? '#e75452' : '#fff';
+  }};
+
+  border: ${props => {
+    return props.searchMode === props.children ? 'none' : '1px solid #e75452';
+  }};
+
+  color: ${props => {
+    return props.searchMode === props.children ? '#fff' : '#e75452';
+  }};
 `;
