@@ -40,7 +40,7 @@ export const Link = styled.a`
 export const LinkText = styled.p`
 `
 
-export const Introduction = styled.p`
+export const Introduction = styled.pre`
   margin: 0;
   font-size: 0.9rem;
 `;

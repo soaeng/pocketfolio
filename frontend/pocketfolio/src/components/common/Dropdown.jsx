@@ -42,7 +42,6 @@ const DropDown = ({user}) => {
   const logoutClickHandler = () => {
     deleteAllToken();
     dispatch(logout());
-    navigate('/main');
   };
 
   // 팔로잉 목록 가져오기

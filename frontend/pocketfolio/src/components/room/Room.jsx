@@ -20,6 +20,7 @@ const Room = () => {
   const [sidebar, setSidebar] = useState('');
   const [edit, setEdit] = useState(false);
   const [data, setData] = useState(null);
+  const [nowIdx, setNowIdx] = useState(0);
   const [arranges, setArranges] = useState(null);
   const prevArranges = useRef();
 
@@ -52,11 +53,51 @@ const Room = () => {
     const {payload} = await dispatch(getRoomInfo(roomSeq));
     setData(payload);
     setArranges(payload.arranges);
+    console.log(payload);
   };
 
   useEffect(() => {
     getData();
   }, [roomSeq]);
+
+  // 포트폴리오 연결 버튼 눌렀을 때, 포트폴리오 수정 모드
+  const loadConnect = idx => {
+    setNowIdx(idx);
+    setSidebar('port');
+  };
+
+  // 포트폴리오 연결
+  const connectPort = portSeq => {
+    setArranges(
+      arranges.map((_arrange, _idx) => {
+        if (nowIdx === _idx) {
+          const arrange = {..._arrange, portSeq};
+          return arrange;
+        } else {
+          return _arrange;
+        }
+      }),
+    );
+  };
+
+  // 포트폴리오 해제
+  const disconnectPort = portSeq => {
+    setArranges(
+      arranges.map((_arrange, _idx) => {
+        if (nowIdx === _idx) {
+          const arrange = {
+            arrangeSeq: _arrange.arrangeSeq,
+            item: _arrange.item,
+            location: _arrange.location,
+            rotation: _arrange.rotation,
+          };
+          return arrange;
+        } else {
+          return _arrange;
+        }
+      }),
+    );
+  };
 
   // 수정 버튼 눌렀을 시 이전 arranges 저장
   useEffect(() => {
@@ -67,6 +108,7 @@ const Room = () => {
   const appendArrange = arrange => {
     setArranges([...arranges, arrange]);
   };
+
   // 배치 수정
   const handleArrange = (arrange, idx) => {
     setArranges(
@@ -79,6 +121,7 @@ const Room = () => {
       }),
     );
   };
+
   // 배치 삭제
   const handleDel = idx => {
     setArranges(arranges.filter((_arrange, _idx) => idx !== _idx));
@@ -100,9 +143,14 @@ const Room = () => {
         };
       }),
     };
+
     const res = await dispatch(updateArranges({roomSeq, body}));
     console.log(res);
   };
+
+  useEffect(() => {
+    console.log(arranges);
+  }, [arranges]);
 
   return (
     data && (
@@ -116,6 +164,7 @@ const Room = () => {
             arranges={arranges}
             handleArrange={handleArrange}
             handleDel={handleDel}
+            loadConnect={loadConnect}
           />
           <Toaster
             position="bottom-left"
@@ -156,6 +205,10 @@ const Room = () => {
           roomSeq={roomSeq}
           data={data}
           appendArrange={appendArrange}
+          arranges={arranges}
+          nowIdx={nowIdx}
+          connectPort={connectPort}
+          disconnectPort={disconnectPort}
         />
       </Container>
     )

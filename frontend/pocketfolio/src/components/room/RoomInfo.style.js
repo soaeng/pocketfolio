@@ -15,8 +15,9 @@ export const Container = styled.div`
   width: 33rem;
   padding: 0.6rem 1rem;
   border-radius: 20px;
-  border: 1px solid #333333;
+  /* border: 1px solid #333333; */
   background: rgb(255, 255, 255, 0.85);
+  box-shadow: 0 0 2px 2px #eeeeee;
   color: #333333;
   cursor: default;
 
@@ -24,9 +25,9 @@ export const Container = styled.div`
   flex-direction: column;
 
   @media screen and (max-width: 1000px) {
-    width: 80%;
-    top: 4rem;
-    left: 8%;
+    width: 75%;
+    top: 5rem;
+    left: 10%;
   }
 
   &.sidebar {

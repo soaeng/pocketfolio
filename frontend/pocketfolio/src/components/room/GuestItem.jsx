@@ -124,7 +124,7 @@ const GuestItem = ({item, removeGuest, roomDto, getData}) => {
       )}
 
       {/* 댓글 작성 */}
-      {roomDto.room.userSeq === user.userSeq && (
+      {user && roomDto.room.userSeq === user.userSeq && (
         <CommentContainer>
           <CommentArea
             className={item.isPublic === 'T' ? '' : 'secret'}

@@ -1,7 +1,8 @@
 import PortItem from './PortItem';
 import {Container, Title, BtnBox, IconBox, AddIcon} from './PortList.style';
 
-const PortList = ({roomSeq}) => {
+const PortList = ({data}) => {
+  console.log(data)
   return (
     <Container>
       <Title>포트폴리오 목록</Title>

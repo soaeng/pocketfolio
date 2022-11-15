@@ -37,7 +37,7 @@ const Menu = ({roomSeq, changeSidebar, copyURL, onEdit, data}) => {
 
   return (
     <Container>
-      {data && data.room.userSeq === user.userSeq && (
+      {data && user && data.room.userSeq === user.userSeq && (
         <MenuDiv onClick={onEdit} className={toggle ? 'edit' : ''}>
           <EditIcon />
           <ToolTip className="tooltip">
