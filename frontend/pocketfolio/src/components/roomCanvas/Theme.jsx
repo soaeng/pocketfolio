@@ -2,7 +2,7 @@ import {Bounds, useGLTF} from '@react-three/drei';
 import {MeshStandardMaterial} from 'three';
 
 const RoomTheme = props => {
-  const name = 'island';
+  const name = props.name;
   const type = name.split('_')[0];
   let arr = [];
   if (type === 'room') {
