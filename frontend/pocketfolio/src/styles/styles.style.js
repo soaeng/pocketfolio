@@ -27,11 +27,11 @@ const H1 = styled.h1`
 
 const H2 = styled.h2`
   // xl(4k, ≥2100px)
-  font-size: 4rem;
+  font-size: 3rem;
 
   // lg(FHD <2100px)
   @media screen and (max-width: 2100px) {
-    font-size: 3rem;
+    font-size: 2.7rem;
   }
 
   // md(HD, <1500px)

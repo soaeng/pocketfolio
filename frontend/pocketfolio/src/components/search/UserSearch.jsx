@@ -55,7 +55,7 @@ const UserSearch = () => {
         })}
       </UserCard>
     </>
-  )
-}
+  );
+};
 
 export default UserSearch;

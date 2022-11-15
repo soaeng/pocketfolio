@@ -1,5 +1,7 @@
 import React, {useState, useEffect} from 'react';
-import {useNavigate} from 'react-router-dom';
+import {useLocation, useNavigate} from 'react-router-dom';
+import {useDispatch} from 'react-redux';
+import {getSearch} from '../../store/searchSlice';
 
 import Nav from '../common/Nav';
 import {
@@ -11,11 +13,18 @@ import {
   TagContainer,
   TopButtonIcon,
   TopButton,
+  Select,
+  SelectOption,
+  FilterDiv,
+  DivTest,
+  Tabs,
+  Tab,
 } from './Search.style';
 
 import PocketSearch from './PocketSearch';
 import PortSearch from './PortSearch';
 import UserSearch from './UserSearch';
+// import Filter from './Filter';
 
 // 임시데이터(tag)
 const tags = [
@@ -27,44 +36,88 @@ const tags = [
   'React',
   '순수미술',
   '작곡',
+  '기타',
 ];
 
-// select box options
-const options = [
-	{ value: "pocket", name: "마이포켓" },
-	{ value: "portfolio", name: "포트폴리오" },
-	{ value: "user", name: "유저" },
+// filter options
+const filterOptions = [
+  {value: 1, name: '좋아요순'},
+  {value: 2, name: '조회순'},
+  {value: 3, name: '팔로우순'},
 ];
 
-// select box component
-const SelectBox = (props) => {
-  const handleChange = (e) => {
-		console.log(e.target.value);
-	}
+// filter component
+const Filter = props => {
+  const handleChange = e => {
+    props.setSort(e.target.value);
+  };
 
-	return (
-		<select onChange={handleChange}>
-			{props.options.map((option) => (
-				<option
-					value={option.value}
-					defaultValue={props.defaultValue === option.value}
-				>
-					{option.name}
-				</option>
-			))}
-		</select>
-	);
+  return (
+    <Select onChange={handleChange}>
+      {props.options.map(option => (
+        <SelectOption
+          value={option.value}
+          defaultValue={props.defaultValue === option.value}
+        >
+          {option.name}
+        </SelectOption>
+      ))}
+    </Select>
+  );
 };
 
 const Search = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const dispatch = useDispatch();
+
+  // 카테고리
+  const [category, setCategory] = useState(0);
+
+  /** params: 이진수 */
+  const selectCategory = (e, bin_int) => {
+    if (category & bin_int) {
+      setCategory(category - bin_int);
+    } else {
+      setCategory(category + bin_int);
+    }
+  };
+
+  // 카테고리(3개)
+  const [searchMode, setSearchMode] = useState('pocket');
+
+  const selectSearchMode = (e, searchMode) => {
+    setSearchMode(searchMode);
+  };
+
+  // 정렬
+  const [sort, setSort] = useState(1);
+
+  // 페이지당 보이는 개수
+  const size = 20;
+
+  // 검색 결과가 저장되는 상태
+  const [data, setData] = useState([]);
+
+  // 검색 요청 함수
+  const getData = async () => {
+    const params = {
+      search: location.state.search,
+      sort: location.state.sort,
+      category: location.state.category,
+      size: size,
+      page: location.state.page,
+    };
+    const {payload} = await dispatch(getSearch({params, searchMode}));
+
+    setData(payload);
+  };
 
   // 검색어
   const [word, setWord] = useState('');
-  console.log(word, '검색어')
 
   // 입력창 변화 감지
-  const onChange = (e) => {
+  const onChange = e => {
     setWord(e.target.value);
   };
 
@@ -74,17 +127,21 @@ const Search = () => {
     navigate('/search', {
       state: {
         search: word,
+        sort: sort,
+        category: category,
+        size: size,
+        page: 1,
       },
     });
     setWord(''); //submit 후 창 비우기
   };
-  
+
   // 검색어 창 엔터시 입력
   const keyDownHandler = event => {
     if (event.key === 'Enter') {
       setWord(word);
       onSubmit(event);
-    };
+    }
   };
 
   // 최상단 이동 버튼
@@ -103,20 +160,25 @@ const Search = () => {
     const scrollTop = document.documentElement.scrollTop;
     const clientHeight = document.documentElement.clientHeight;
 
-    console.log('스크롤 이벤트 발생');
+    // console.log('스크롤 이벤트 발생');
 
     if (scrollTop + clientHeight >= scrollHeight) {
-      console.log('페이지 끝에 스크롤이 닿았음');
+      // console.log('페이지 끝에 스크롤이 닿았음');
       setPage(prev => prev + 1);
     }
   };
 
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);
+    getData();
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
+
+  useEffect(() => {
+    console.log(data);
+  }, [data]);
 
   return (
     <>
@@ -128,7 +190,6 @@ const Search = () => {
       </TopButton>
       {/* 검색창 */}
       <Container1>
-        <SelectBox options={options} defaultValue="pocket"/>
         <Container>
           <SearchIcon />
           <SearchInput
@@ -138,17 +199,60 @@ const Search = () => {
             value={word}
           />
         </Container>
+        {/* 카테고리 */}
+        <Tab
+          searchMode={searchMode}
+          onClick={e => selectSearchMode(e, '마이포켓')}
+        >
+          마이포켓
+        </Tab>
+        <Tab
+          searchMode={searchMode}
+          onClick={e => selectSearchMode(e, '포트폴리오')}
+        >
+          포트폴리오
+        </Tab>
+        <Tab searchMode={searchMode} onClick={e => selectSearchMode(e, '유저')}>
+          유저
+        </Tab>
       </Container1>
       {/* 태그 */}
       <TagContainer>
-        {tags.map(tag => {
-          return <Tag>{tag}</Tag>;
+        {tags.map((tag, idx) => {
+          return (
+            <Tag
+              category={category}
+              onClick={e => selectCategory(e, 2 ** (tags.length - idx - 1))}
+              key={idx}
+              style={
+                !!((2 ** (tags.length - idx - 1)) & category)
+                  ? {
+                      backgroundColor: '#e75452',
+                      color: '#fff',
+                      border: 'none',
+                    }
+                  : {
+                      backgroundColor: '#fff',
+                      color: 'darkgray',
+                      border: '1px solid darkgray'
+                    }
+              }
+            >
+              {tag}
+            </Tag>
+          );
         })}
       </TagContainer>
-      {/* 검색 리스트 목록 */}
-      <PocketSearch/>    
-      <PortSearch />
-      <UserSearch/>
+      <DivTest>
+        {/* 필터 */}
+        <FilterDiv>
+          <Filter options={filterOptions} setSort={setSort} />
+        </FilterDiv>
+        {/* 검색 리스트 목록 */}
+        <PocketSearch />
+        <PortSearch />
+        <UserSearch />
+      </DivTest>
     </>
   );
 };
