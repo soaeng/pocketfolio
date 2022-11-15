@@ -117,7 +117,7 @@ export const IconDiv = styled.button`
     background-color: #fbb9b7;
   }
 
-  &.addPortIcon{
+  &.addPortIcon {
     margin-right: 0.5rem;
   }
   p {
@@ -125,10 +125,46 @@ export const IconDiv = styled.button`
   }
 `;
 
-export const AddPortIcon = styled(RiFileAddFill)`
-
-`
+export const AddPortIcon = styled(RiFileAddFill)``;
 
 export const DeleteIcon = styled(RiDeleteBinFill)``;
 
 export const DeleteIconX = styled(RiDeleteBin2Fill)``;
+
+export const Table = styled.table`
+  width: 100%;
+  border-collapse: collapse;
+  border-radius: 1rem 1rem 0 0;
+  /* border: 1px solid; */
+`;
+
+export const Th = styled.th`
+  background-color: #ffb1c4;
+  color: #ffffff;
+  font-size: 1.1rem;
+  padding: 0.4rem 0;
+  &.no {
+    border-radius: 10px 0 0 0;
+  }
+  &.title {
+    border-radius: 0 10px 0 0;
+  }
+`;
+
+export const Td = styled.td`
+  text-align: center;
+  padding: 0.3rem 0 ;
+  
+  &.even{
+    background-color: #edecec;
+  }
+
+  &.odd{
+    background-color: #fbfbfb;
+  }
+  /* border: 1px solid; */
+`;
+
+export const Tr = styled.tr`
+  /* border: 1px solid; */
+`;

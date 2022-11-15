@@ -47,7 +47,7 @@ const PortDetail = () => {
     <div>
       <ThumbDiv>
         <ThumbNail src={portDetail.thumbnail}></ThumbNail>
-        <p>대표 이미지</p>
+        <p>썸네일</p>
       </ThumbDiv>
       <Summary
         className="ck-content"
@@ -69,7 +69,6 @@ const PortDetail = () => {
       });
   }, []);
 
-  console.log('포트상세내용', portDetail);
   // 수정 페이지로 이동
   const moveEdit = () => {
     navigate(`/port/edit/${portDetail.portSeq}`);
