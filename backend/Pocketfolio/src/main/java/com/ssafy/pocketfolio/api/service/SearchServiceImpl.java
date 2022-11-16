@@ -1,6 +1,7 @@
 package com.ssafy.pocketfolio.api.service;
 
 import com.ssafy.pocketfolio.api.dto.response.SearchRes;
+import com.ssafy.pocketfolio.api.dto.response.SearchRoomListRes;
 import com.ssafy.pocketfolio.db.repository.SearchRepository;
 import com.ssafy.pocketfolio.db.view.SearchRoomListView;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +13,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Log4j2
 @Service
@@ -48,7 +50,7 @@ public class SearchServiceImpl implements SearchService {
             categorySeqBinary = CATEGORY_BINARY_MAX;
         } else {
             char[] categoryBinary = Long.toBinaryString(categorySeqBinary).toCharArray();
-            for (int i = 0; i < categoryBinary.length; i++) {
+            for (int i = categoryBinary.length - 1; i >= 0; i--) {
                 if (categoryBinary[i] == '1') {
                     categories.add(Long.valueOf(i + 1));
                 }
@@ -62,12 +64,18 @@ public class SearchServiceImpl implements SearchService {
         if (page == null || page < 1) {
             page = 1;
         }
+        page--;
 
         Pageable pageable = PageRequest.of(page, size, Sort.by("room_seq").descending());
+//        Pageable pageable = PageRequest.of(page, size, JpaSort.unsafe(Sort.Direction.DESC, "like.like"));
+//        Pageable pageable = PageRequest.of(page, size, Sort.by("room_seq").descending());
 
         Page<SearchRoomListView> viewPage = searchRepository.searchRoom(myUserSeq, keyword, categories, pageable);
 
-        result = new SearchRes(viewPage);
+        List<SearchRoomListRes> list = new ArrayList<>();
+        viewPage.getContent().forEach(e -> list.add(new SearchRoomListRes(e)));
+
+        result = new SearchRes(list, viewPage.getTotalPages(), viewPage.getTotalElements());
 
         return result;
     }

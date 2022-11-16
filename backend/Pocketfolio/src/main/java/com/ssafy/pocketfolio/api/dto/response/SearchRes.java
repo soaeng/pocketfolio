@@ -3,7 +3,6 @@ package com.ssafy.pocketfolio.api.dto.response;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.*;
-import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -26,12 +25,6 @@ public class SearchRes<T> {
     private int totalPages;
     @Schema(description = "전체 개수")
     private long totalElements;
-
-    public SearchRes(Page<T> page) {
-        list = page.getContent();
-        totalPages = page.getTotalPages();
-        totalElements = page.getTotalElements();
-    }
 
 //    public SearchRes(Page<SearchRoomListRes> page) {
 //        rooms = page.getContent();
