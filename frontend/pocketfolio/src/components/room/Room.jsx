@@ -196,8 +196,8 @@ const Room = () => {
           />
           {edit ? (
             <EditBox>
+              <Btn onClick={offEdit} className="cancel">취소</Btn>
               <Btn onClick={saveArrange}>저장</Btn>
-              <Btn onClick={offEdit}>취소</Btn>
             </EditBox>
           ) : null}
         </CanvasWrapper>

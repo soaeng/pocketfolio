@@ -23,6 +23,11 @@ export const IconBox = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+
+  &:hover {
+    background-color: #c74745;
+    color: #dfdfdf;
+  }
 `;
 
 export const Icon = styled(RiBrushFill)``;
