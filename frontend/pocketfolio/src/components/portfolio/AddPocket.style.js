@@ -1,8 +1,8 @@
 import styled from 'styled-components';
-import {Body1, H2} from '../../styles/styles.style';
+import {Body1, H2, H3} from '../../styles/styles.style';
+import {RiCloseFill} from 'react-icons/ri'
 
 export const Overlay = styled.div`
-  background-color: red;
   .modal.close {
     animation-name: fade-out;
   }
@@ -16,15 +16,17 @@ export const Overlay = styled.div`
   }
   .modal > section > header {
     position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     color: #ffffff;
     background-color: #ffb9ae;
     padding: 1rem;
     border-radius: 0.5rem 0.5rem 0 0;
-    /* font-size: 2rem; */
-    /* font-weight: 700; */
+
   }
   .modal > section > header button {
-    position: absolute;
+    /* position: absolute;
     top: 15px;
     right: 15px;
     width: 30px;
@@ -32,7 +34,7 @@ export const Overlay = styled.div`
     font-weight: 700;
     text-align: center;
     color: #999;
-    background-color: transparent;
+    background-color: transparent; */
   }
   .modal > section > p {
   }
@@ -102,17 +104,26 @@ export const ModalWrap = styled.div`
 
 export const Contents = styled.section`
   background-color: #fff;
-  width: 60%;
-  height: 80%;
+  width: 50rem;
+  height: 40rem;
   border-radius: 0.5rem;
   animation-duration: 0.25s;
   animation-timing-function: ease-out;
   animation-name: slideUp;
   animation-fill-mode: forwards;
+`;
+
+export const Body = styled.div`
+  display: flex;
+  position: relative;
+  margin: 0 auto;
+  padding-top: 2rem;
+  flex-direction: column;
   overflow: auto;
+  height: 80%;
+  width: 100%;
   &::-webkit-scrollbar {
     width: 5px;
-    /* height: 5px; */
   }
 
   &::-webkit-scrollbar-thumb {
@@ -127,15 +138,6 @@ export const Contents = styled.section`
   }
 `;
 
-export const Body = styled.div`
-  display: flex;
-  margin: 1rem auto;
-  flex-direction: column;
-  /* border: 1px black solid; */
-  height: 70%;
-  width: 70%;
-`;
-
 export const Box = styled.div`
   margin-bottom: 2rem;
   display: flex;
@@ -146,7 +148,6 @@ export const Box = styled.div`
     flex-direction: row;
     width: 100%;
     /* justify-content: space-between; */
-    /* outline: solid black; */
   }
 
   &.mainset {
@@ -169,7 +170,22 @@ export const Head = styled(H2)`
   margin: 0;
 `;
 
-export const InputDiv = styled.div``;
+export const IconDiv = styled.div`
+  position: absolute;
+  display: flex;
+  align-items: center;
+  right : 5%;
+  font-size: 2rem;
+  
+`
+
+export const CloseIcon = styled(RiCloseFill)`
+  cursor: pointer;
+`
+
+export const InputDiv = styled.div`
+
+`;
 export const Input = styled.input`
   border-radius: 0.2rem;
   padding: 0.5rem;
@@ -182,12 +198,10 @@ export const Input = styled.input`
     font-weight: bold;
   }
   &.themedrop {
-    /* visibility: hidden; */
     display: none;
   }
 
   &.maincheck {
-    /* width: 100%; */
   }
   :checked + img {
     border-radius: 1rem;

@@ -39,9 +39,13 @@ const Card = props => {
 
         <div onClick={moveMyRoom}>
           <ImgDiv>
-            <Thumbnail
-              src={process.env.PUBLIC_URL + '/assets/images/room.png'}
-            />
+            {pocketData.thumbnail === undefined ? (
+              <Thumbnail
+                src={process.env.PUBLIC_URL + '/assets/images/room_01.png'}
+              />
+            ) : (
+              <Thumbnail src={pocketData.thumbnail} />
+            )}
           </ImgDiv>
           <TitleDiv>
             <Title>{pocketData.name}</Title>

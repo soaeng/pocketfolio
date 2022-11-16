@@ -35,8 +35,7 @@ export const createRoom = createAsyncThunk(
   async (data, {rejectWithValue}) => {
     try {
       const res = await postAxios.post(`rooms`, data);
-      console.log('성공')
-      if (res.status === 201) return res.data;
+      if (res.status === 201) return res;
     } catch (error) {
       console.log('마이룸 생성에러', error);
       return rejectWithValue(error);
