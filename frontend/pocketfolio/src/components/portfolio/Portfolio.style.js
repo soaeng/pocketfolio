@@ -117,7 +117,7 @@ export const IconDiv = styled.button`
     0px 1px 3px 1px rgba(0, 0, 0, 0.15);
   border: 0;
   border-radius: 10px;
-  color: #ffffff;
+
   font-size: 20px;
   transition: all 0.3s;
 
@@ -144,13 +144,21 @@ export const IconDiv = styled.button`
   }
 `;
 
-export const AddPortIcon = styled(RiFileAddFill)``;
+export const AddPortIcon = styled(RiFileAddFill)`
+  color: #ffffff;
+`;
 
-export const TrashIcon = styled(RiDeleteBinFill)``;
+export const TrashIcon = styled(RiDeleteBinFill)`
+  color: #ffffff;
+`;
 
-export const TrashIconX = styled(RiDeleteBin2Fill)``;
+export const TrashIconX = styled(RiDeleteBin2Fill)`
+  color: #ffffff;
+`;
 
-export const AddPocketIcon = styled(RiFolderAddFill)``;
+export const AddPocketIcon = styled(RiFolderAddFill)`
+  color: #ffffff;
+`;
 
 export const DelIcon = styled(RiCloseCircleLine)`
   font-size: 20px;
@@ -179,10 +187,10 @@ export const Th = styled.th`
   }
   &.title {
   }
-  &.del{
+  &.del {
     border-radius: 0 10px 0 0;
     font-size: 2px;
-    color:#e75452;
+    color: #e75452;
     /* visibility: hidden; */
   }
 `;
@@ -200,7 +208,6 @@ export const Td = styled.td`
   }
 
   &.delIcon {
-    
   }
   /* border: 1px solid; */
 `;
@@ -211,6 +218,4 @@ export const Tr = styled.tr`
   }
 `;
 
-export const Tbody = styled.tbody`
-
-`
+export const Tbody = styled.tbody``;

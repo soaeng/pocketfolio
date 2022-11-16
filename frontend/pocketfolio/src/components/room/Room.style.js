@@ -57,17 +57,32 @@ export const EditBox = styled.div`
 `;
 
 export const Btn = styled.button`
-  background-color: white;
-  border-radius: 1rem;
-  border: 2px solid #333;
-  padding: 0.2rem 0.5rem;
-  font-size: 1rem;
+  background-color: #e75452;
+  color: white;
+  border-radius: 1.5rem;
+  padding: 0.5rem 0.7rem;
+  font-size: 1.2rem;
+  border: 1.5px solid #e75452;
 
   & + & {
     margin-left: 0.5rem;
   }
 
   &:hover {
-    background-color: #f0f0f0;
+    border: 1.5px solid #c74745;
+    background-color: #c74745;
+    color: #dfdfdf;
+  }
+
+  &.cancel {
+    color: #e75452;
+    border: 1.5px solid #e75452;
+    background-color: white;
+
+    &:hover {
+      color: #c74745;
+      border: 1.5px solid #c74745;
+      background-color: #dfdfdf;
+    }
   }
 `;

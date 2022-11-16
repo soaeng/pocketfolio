@@ -2,25 +2,7 @@ import styled from 'styled-components';
 import {Body1, H2} from '../../styles/styles.style';
 
 export const Overlay = styled.div`
-  .modal {
-    z-index: 1000;
-    outline: 2px solid purple;
-    position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    background-color: rgba(0, 0, 0, 0.6);
-    animation-duration: 0.25s;
-    animation-timing-function: ease-out;
-    animation-name: fadeIn;
-    animation-fill-mode: forwards;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: default;
-    /* background-color: blue; */
-  }
+  background-color: red;
   .modal.close {
     animation-name: fade-out;
   }
@@ -99,7 +81,23 @@ export const Overlay = styled.div`
 `;
 
 export const ModalWrap = styled.div`
-  z-index: 9;
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  animation-duration: 0.25s;
+  animation-timing-function: ease-out;
+  animation-name: fadeIn;
+  animation-fill-mode: forwards;
+  cursor: default;
+
+  /* 나중에 지울 것 */
 `;
 
 export const Contents = styled.section`
@@ -138,7 +136,98 @@ export const Body = styled.div`
   width: 70%;
 `;
 
-export const BtnDiv = styled.footer`
+export const Box = styled.div`
+  margin-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  &.dropselect {
+    flex-direction: row;
+    width: 100%;
+    /* justify-content: space-between; */
+    /* outline: solid black; */
+  }
+
+  &.mainset {
+  }
+`;
+
+export const TextDiv = styled.div`
+  outline: solid black;
+  display: flex;
+  justify-content: center;
+`;
+export const Text = styled(Body1)`
+  display: flex;
+  color: black;
+  margin-bottom: 1.3rem !important;
+  font-family: 'NanumSquareBold' !important ;
+`;
+
+export const Head = styled(H2)`
+  margin: 0;
+`;
+
+export const InputDiv = styled.div``;
+export const Input = styled.input`
+  border-radius: 0.2rem;
+  padding: 0.5rem;
+
+  /* border: 1px black; */
+  &.title {
+    width: 30%;
+    text-align: center;
+    font-size: 1rem;
+    font-weight: bold;
+  }
+  &.themedrop {
+    /* visibility: hidden; */
+    display: none;
+  }
+
+  &.maincheck {
+    /* width: 100%; */
+  }
+  :checked + img {
+    border-radius: 1rem;
+    background-color: #fdd7d7;
+  }
+`;
+
+export const Label = styled.label``;
+
+export const ThemeDiv = styled.div`
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 10px;
+`;
+
+export const Theme = styled.div``;
+
+export const ThemeImg = styled.img`
+  max-width: 100%;
+  height: auto;
+  cursor: pointer;
+`;
+
+export const ThemeTitle = styled.div`
+  color: black;
+`;
+
+export const DropDiv = styled.div`
+  padding: 0 1.5rem;
+  /* outline: solid black; */
+  margin: 0 1rem;
+`;
+
+export const Select = styled.select`
+  width: fit-content;
+`;
+
+export const Option = styled.option``;
+
+export const BtnDiv = styled.div`
   display: flex;
   justify-content: center;
   padding: 12px 16px;
@@ -188,82 +277,3 @@ export const StyledBtn = styled.button`
     }
   }
 `;
-
-export const Box = styled.div`
-  margin-bottom: 2rem;
-  display: flex;
-  flex-direction: column;
-
-  &.dropselect {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    /* outline: solid black; */
-    width: 50%;
-  }
-`;
-
-export const Text = styled(Body1)`
-  display: flex;
-  color: black;
-  margin-bottom: 1.3rem !important;
-  font-family: 'NanumSquareBold' !important ;
-`;
-
-export const Head = styled(H2)`
-  margin: 0;
-`;
-
-export const InputDiv = styled.div`
-
-`
-export const Input = styled.input`
-  border-radius: 0.2rem;
-  padding: 0.5rem;
-  /* border: 1px black; */
-
-  &.title {
-    width: 50%;
-  }
-  &.themedrop {
-    /* visibility: hidden; */
-    display: none;
-  }
-
-  &.maincheck {
-    /* width: 100%; */
-  }
-  :checked + img {
-    border-radius: 1rem;
-    background-color: #fdd7d7;
-  }
-`;
-
-
-export const Label = styled.label``;
-
-export const ThemeDiv = styled.div`
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-gap: 10px;
-`;
-
-export const Theme = styled.div``;
-
-export const ThemeImg = styled.img`
-  max-width: 100%;
-  height: auto;
-  cursor: pointer;
-`;
-
-export const ThemeTitle = styled.div`
-  color: black;
-`;
-
-export const DropDiv = styled.div``;
-
-export const Select = styled.select`
-  width: fit-content;
-`;
-
-export const Option = styled.option``;

@@ -1,4 +1,5 @@
-import {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
+import {useDispatch} from 'react-redux';
 import {
   Overlay,
   ModalWrap,
@@ -7,6 +8,7 @@ import {
   BtnDiv,
   StyledBtn,
   Box,
+  TextDiv,
   Text,
   Head,
   Input,
@@ -19,18 +21,25 @@ import {
   Select,
   Option,
 } from './AddPocket.style';
-import {getItemCategory} from '../../store/itemSlice';
+import {getRoomCategory, createRoom} from '../../store/roomSlice';
 
 const AddPocket = props => {
   const {open, close, save} = props;
+  const dispatch = useDispatch();
+  // 포켓 이름
+  const [pocketName, setPocketName] = useState('');
+  // 카테고리 리스트
+  const [categoryList, setCategoryList] = useState([]);
   // 카테고리 변수
-  const [selectedCate, setSelectedCate] = useState('');
+  const [selectedCate, setSelectedCate] = useState(1);
   // 공개범위 변수
-  const [selectedRange, setSelectedRange] = useState('');
+  const [selectedRange, setSelectedRange] = useState('O');
   // 테마 변수
   const [selectedTheme, setSelectedTheme] = useState('room_01');
   // 메인 설정 변수
-  const [main, setMain] = useState(true);
+  const [main, setMain] = useState('T');
+  // 썸네일 변수
+  const [thumbNail, setThumbNail] = useState('');
 
   // 테마 종류
   const themeList = [
@@ -66,21 +75,9 @@ const AddPocket = props => {
       src: '/assets/images/apartment_03.png',
       name: 'apartment_03',
     },
-  ];
-
-  // 카테고리 종류
-  const categoryList = [
     {
-      seq: 1,
-      name: '기타',
-    },
-    {
-      seq: 2,
-      name: '그래픽디자인',
-    },
-    {
-      seq: 3,
-      name: 'UI/UX',
+      src: '/assets/images/island.png',
+      name: 'island',
     },
   ];
 
@@ -104,6 +101,14 @@ const AddPocket = props => {
   // 실제 컴포넌트가 사라지는 시점을 지연시키기 위한 값
   const [visible, setVisible] = useState(open);
 
+  // 룸 카테고리 불러오기
+  useEffect(() => {
+    dispatch(getRoomCategory()).then(res => {
+      console.log(res);
+      setCategoryList(res.payload);
+    });
+  }, []);
+
   useEffect(() => {
     // open 값이 true -> false 가 되는 것을 감지 (즉, 모달창을 닫을 때)
     if (visible && !open) {
@@ -114,28 +119,63 @@ const AddPocket = props => {
   }, [visible, open]);
   if (!animate && !visible) return null;
 
+  // 포켓 이름 변경
+  const changePocketName = e => {
+    setPocketName(e.target.value);
+  };
+
+  // 카테고리 설정
   const changeCategory = e => {
     setSelectedCate(e.target.value);
   };
 
+  // 공개범위 설정
   const changeRange = e => {
     setSelectedRange(e.target.value);
   };
 
+  // 테마 설정
   const changeTheme = e => {
     setSelectedTheme(e.target.value);
   };
 
-  const nothing = () => {};
+  // 썸네일 첨부
+  const uploadThumbnail = e => {
+    const file = e.target.files[0];
+    setThumbNail(file);
+  };
+
+  // 메인 설정 여부 
+  const changeMain = e => {
+    if (main === 'T') {
+      setMain('F');
+    } else {
+      setMain('T');
+    }
+  };
+
+  // 데이터 제출
+  const createPocket = () => {
+    const form = new FormData();
+    const pocket = JSON.stringify({
+      name: pocketName,
+      theme: selectedTheme,
+      category: parseInt(selectedCate),
+      isMain: main,
+      privacy: selectedRange,
+    });
+    form.append('room', new Blob([pocket], {type: 'application/json'}));
+    form.append('thumbnail', thumbNail);
+    
+    dispatch(createRoom(form))
+    .then(res => {
+      
+    })
+  };
+
   return (
     <Overlay>
-      <ModalWrap
-        onClick={event => {
-          event.stopPropagation();
-          nothing();
-        }}
-        className={open ? 'modal open' : 'modal close'}
-      >
+      <ModalWrap className={open ? 'modal open' : 'modal close'}>
         <Contents>
           <header>
             <Head>포켓 만들기</Head>
@@ -145,7 +185,12 @@ const AddPocket = props => {
             {/* 포켓 이름 입력 */}
             <Box>
               <Text>포켓이름</Text>
-              <Input className='title' autoComplete="off" placeholder="이름을 입력 해주세요" />
+              <Input
+                className="title"
+                autoComplete="off"
+                placeholder="이름을 입력 해주세요"
+                onChange={changePocketName}
+              />
             </Box>
 
             {/* 카테고리 & 공개범위 설정 */}
@@ -154,7 +199,7 @@ const AddPocket = props => {
                 <Text>카테고리</Text>
                 <Select onChange={changeCategory} value={selectedCate}>
                   {categoryList.map((item, idx) => (
-                    <Option key={idx} value={item.name}>
+                    <Option key={idx} value={item.categorySeq}>
                       {item.name}
                     </Option>
                   ))}
@@ -195,25 +240,35 @@ const AddPocket = props => {
               </ThemeDiv>
             </Box>
 
-            <Box>
+            <Box className="mainset">
+              {/* 메인 설정 */}
               <Text>메인 포켓 설정</Text>
               <Input
-                type='checkbox' 
-                className='maincheck'
-              >
+                type="checkbox"
+                className="maincheck"
+                onChange={changeMain}
+                checked={main === 'T'}
+              ></Input>
 
-              
-              </Input>
+              {/* 썸네일 첨부 */}
+              <Text>썸네일</Text>
+              <Input
+                type="file"
+                accept="image/*"
+                onChange={uploadThumbnail}
+                // style={{display: 'none'}}
+              />
             </Box>
+
+            <BtnDiv>
+              <StyledBtn className="cancel" onClick={close}>
+                취소
+              </StyledBtn>
+              <StyledBtn className="save" onClick={createPocket}>
+                저장
+              </StyledBtn>
+            </BtnDiv>
           </Body>
-          <BtnDiv>
-            <StyledBtn className="cancel" onClick={close}>
-              취소
-            </StyledBtn>
-            <StyledBtn className="save" onClick={save}>
-              저장
-            </StyledBtn>
-          </BtnDiv>
         </Contents>
       </ModalWrap>
     </Overlay>
