@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import {RiLinksFill} from 'react-icons/ri';
+import {RiLinksFill, RiEyeLine, RiHeart3Fill} from 'react-icons/ri';
 
 export const Container = styled.div`
   margin-top: 0.6rem;
@@ -68,19 +68,71 @@ export const ExtraContainer = styled.div`
 `;
 
 export const ExtraItem = styled.div`
-  width: calc(100% - 0.6rem);
-  padding: 0.3rem;
+  width: calc(100% - 0.8rem);
+  padding: 0.4rem;
   aspect-ratio: 4/5;
-  background-color: aquamarine;
+  background-color: #f3a9a1;
+  border-radius: 0.5rem;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  cursor: pointer;
+
+  &:hover {
+    background-color: #de938b;
+  }
+
+  &:hover > div {
+    box-shadow: 0px 0px 100px rgba(120, 120, 120, 0.8) inset,
+      0px 0px 100px rgba(201, 200, 200, 0.5);
+    transition: all 0.1s;
+  }
 `;
 
 export const ImgBox = styled.div`
   width: 100%;
   aspect-ratio: 1 / 1;
+  background-color: #ffffff;
+  border-radius: 0.3rem;
+  position: relative;
 `;
 
 export const Img = styled.img`
   width: 100%;
   height: 100%;
   object-fit: cover;
+`;
+
+export const LikeHitBox = styled.div`
+  position: absolute;
+  right: 5px;
+  bottom: 3px;
+
+  display: flex;
+  align-items: center;
+  color: white;
+`;
+
+export const LikeHitIconDiv = styled.div`
+  margin: 0 0.2rem;
+  height: 1rem;
+  aspect-ratio: 1/1;
+  font-size: 1rem;
+`;
+
+export const HitIcon = styled(RiEyeLine)``;
+
+export const LikeIcon = styled(RiHeart3Fill)``;
+
+export const HitLikeCount = styled.p`
+  margin: 0;
+`
+
+export const ExtraName = styled.p`
+  font-size: 0.9rem;
+  margin: 0.5rem 0;
+  margin-top: 0.8rem;
+  color: white;
 `;
