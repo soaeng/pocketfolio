@@ -157,12 +157,8 @@ const Room = () => {
     };
 
     const res = await dispatch(updateArranges({roomSeq, body}));
-    console.log(res);
+    if (res) getData();
   };
-
-  useEffect(() => {
-    console.log(arranges);
-  }, [arranges]);
 
   return (
     data && (
@@ -170,7 +166,7 @@ const Room = () => {
         <RoomNav sidebar={sidebar} edit={edit} />
         <RoomInfo sidebar={sidebar} edit={edit} data={data} />
         <CanvasWrapper className={sidebar ? 'active' : ''}>
-          {edit && <EditTheme nowTheme={nowTheme} changeTheme={changeTheme}/>}
+          {edit && <EditTheme nowTheme={nowTheme} changeTheme={changeTheme} />}
           <RoomCanvas
             edit={edit}
             theme={nowTheme}
@@ -196,7 +192,9 @@ const Room = () => {
           />
           {edit ? (
             <EditBox>
-              <Btn onClick={offEdit} className="cancel">취소</Btn>
+              <Btn onClick={offEdit} className="cancel">
+                취소
+              </Btn>
               <Btn onClick={saveArrange}>저장</Btn>
             </EditBox>
           ) : null}
