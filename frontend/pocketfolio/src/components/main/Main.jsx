@@ -3,6 +3,7 @@ import {useNavigate} from 'react-router-dom';
 import {useSelector} from 'react-redux';
 
 import Nav from '../common/Nav';
+
 import {
   Container,
   SearchDiv,
@@ -21,7 +22,7 @@ import {
   RecCarouselContainer,
   SearchContainer,
   SearchIcon,
-  SearchInput
+  SearchInput,
 } from './Main.style';
 import RecCarousel from './RecCarousel';
 
@@ -82,13 +83,17 @@ function Main() {
   // 검색어 창 엔터시 입력
   const keyDownHandler = event => {
     if (event.key === 'Enter') {
-      setWord(word);
-      onSubmit(event);
+      //아무것도 입력하지 않은 경우 submit 방지
+      if (word.length !== 0) {
+        setWord(word);
+        onSubmit(event);
+      }
     }
   };
 
   // 5초마다 화면 전환을 위한 것
   const carousel = useRef(null);
+
   const reducer = (state, action) => {
     _style = action === 1 ? color1 : color2;
     carousel.current.scrollTo({
@@ -98,6 +103,7 @@ function Main() {
     });
     return action;
   };
+
   const [slideIndex, scrollCarousel] = useReducer(reducer, 1);
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -139,9 +145,15 @@ function Main() {
                     <Title>{title2}</Title>
                     <Text>{text1}</Text>
                     <Text>{text2}</Text>
-                    {user === null ? (<RoomButton onClick={moveLoginClickHandler}>시작하기</RoomButton>):(<RoomButton onClick={buttonClickHandler}>
-                      {buttonText}
-                    </RoomButton>)}
+                    {user === null ? (
+                      <RoomButton onClick={moveLoginClickHandler}>
+                        시작하기
+                      </RoomButton>
+                    ) : (
+                      <RoomButton onClick={buttonClickHandler}>
+                        {buttonText}
+                      </RoomButton>
+                    )}
                   </ContentItem>
                   <div>
                     <ImageContainer src="./assets/images/logo2.png" />
@@ -192,10 +204,6 @@ function Main() {
           />
         </SearchContainer>
       </SearchDiv>
-      {/* 추천 Carousel */}
-      <RecCarouselContainer>
-        <RecCarousel />
-      </RecCarouselContainer>
       {/* 추천 Carousel */}
       <RecCarouselContainer>
         <RecCarousel />
