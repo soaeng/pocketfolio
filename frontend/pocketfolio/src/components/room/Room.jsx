@@ -60,6 +60,11 @@ const Room = () => {
     getData();
   }, [roomSeq]);
 
+  // 포커싱 중인 아이템
+  const changeNowIdx = idx => {
+    setNowIdx(idx);
+  };
+
   // 포트폴리오 연결 버튼 눌렀을 때, 포트폴리오 수정 모드
   const loadConnect = idx => {
     setNowIdx(idx);
@@ -80,7 +85,7 @@ const Room = () => {
     );
   };
 
-  // 포트폴리오 해제
+  // 포트폴리오 연결해제
   const disconnectPort = portSeq => {
     setArranges(
       arranges.map((_arrange, _idx) => {
@@ -165,6 +170,7 @@ const Room = () => {
             handleArrange={handleArrange}
             handleDel={handleDel}
             loadConnect={loadConnect}
+            changeNowIdx={changeNowIdx}
           />
           <Toaster
             position="bottom-left"

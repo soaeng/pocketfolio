@@ -14,6 +14,7 @@ const Items = props => {
   const api = useBounds();
   const arranges = props.arranges;
   const loadConnect = props.loadConnect;
+  const changeNowIdx = props.changeNowIdx;
 
   useEffect(() => {
     setSelectedMesh(false);
@@ -49,6 +50,7 @@ const Items = props => {
           handleDel={handleDel}
           idx={idx}
           loadConnect={loadConnect}
+          changeNowIdx={changeNowIdx}
         />
       ))}
     </group>

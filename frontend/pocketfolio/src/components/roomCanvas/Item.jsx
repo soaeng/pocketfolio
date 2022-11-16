@@ -22,6 +22,7 @@ const Item = props => {
   const handleArrange = props.handleArrange;
   const handleDel = props.handleDel;
   const loadConnect = props.loadConnect;
+  const changeNowIdx = props.changeNowIdx;
 
   const {nodes, materials} = useGLTF(arrange.item.asset);
   const _materials = new MeshStandardMaterial(
@@ -123,6 +124,7 @@ const Item = props => {
             e.stopPropagation();
             setSelectedMesh(e.object);
             setCntEnabled(false);
+            changeNowIdx(idx);
           }
         }}
         onPointerMissed={e => {

@@ -24,6 +24,7 @@ const RoomCanvas = props => {
   const edit = props.edit;
   const theme = props.theme;
   const loadConnect = props.loadConnect;
+  const changeNowIdx = props.changeNowIdx;
 
   return (
     <Canvas
@@ -62,6 +63,7 @@ const RoomCanvas = props => {
           handleArrange={handleArrange}
           handleDel={handleDel}
           loadConnect={loadConnect}
+          changeNowIdx={changeNowIdx}
         />
       </Theme>
 
