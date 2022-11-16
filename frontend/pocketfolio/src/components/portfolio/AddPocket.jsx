@@ -7,6 +7,7 @@ import {
   BtnDiv,
   StyledBtn,
   Box,
+  TextDiv,
   Text,
   Head,
   Input,
@@ -30,7 +31,7 @@ const AddPocket = props => {
   // 테마 변수
   const [selectedTheme, setSelectedTheme] = useState('room_01');
   // 메인 설정 변수
-  const [main, setMain] = useState(true);
+  const [main, setMain] = useState('T');
 
   // 테마 종류
   const themeList = [
@@ -66,22 +67,17 @@ const AddPocket = props => {
       src: '/assets/images/apartment_03.png',
       name: 'apartment_03',
     },
+    {
+      src: '/assets/images/island.png',
+      name: 'island',
+    },
   ];
 
   // 카테고리 종류
   const categoryList = [
-    {
-      seq: 1,
-      name: '기타',
-    },
-    {
-      seq: 2,
-      name: '그래픽디자인',
-    },
-    {
-      seq: 3,
-      name: 'UI/UX',
-    },
+    {seq: 1, name: '기타'},
+    {seq: 2, name: '그래픽디자인'},
+    {seq: 3, name: 'UI/UX'},
   ];
 
   // 공개, 비공개, 링크 공유
@@ -126,6 +122,15 @@ const AddPocket = props => {
     setSelectedTheme(e.target.value);
   };
 
+  const changeMain = e => {
+    if (main === 'T') {
+      setMain('F');
+    } else {
+      setMain('T');
+    }
+  };
+
+  // console.log(main);
   const nothing = () => {};
   return (
     <Overlay>
@@ -145,7 +150,11 @@ const AddPocket = props => {
             {/* 포켓 이름 입력 */}
             <Box>
               <Text>포켓이름</Text>
-              <Input className='title' autoComplete="off" placeholder="이름을 입력 해주세요" />
+              <Input
+                className="title"
+                autoComplete="off"
+                placeholder="이름을 입력 해주세요"
+              />
             </Box>
 
             {/* 카테고리 & 공개범위 설정 */}
@@ -195,25 +204,25 @@ const AddPocket = props => {
               </ThemeDiv>
             </Box>
 
-            <Box>
+            {/* 메인 설정 */}
+            <Box className="mainset">
               <Text>메인 포켓 설정</Text>
               <Input
-                type='checkbox' 
-                className='maincheck'
-              >
-
-              
-              </Input>
+                type="checkbox"
+                className="maincheck"
+                onChange={changeMain}
+                checked={main === 'T'}
+              ></Input>
             </Box>
+            <BtnDiv>
+              <StyledBtn className="cancel" onClick={close}>
+                취소
+              </StyledBtn>
+              <StyledBtn className="save" onClick={save}>
+                저장
+              </StyledBtn>
+            </BtnDiv>
           </Body>
-          <BtnDiv>
-            <StyledBtn className="cancel" onClick={close}>
-              취소
-            </StyledBtn>
-            <StyledBtn className="save" onClick={save}>
-              저장
-            </StyledBtn>
-          </BtnDiv>
         </Contents>
       </ModalWrap>
     </Overlay>
