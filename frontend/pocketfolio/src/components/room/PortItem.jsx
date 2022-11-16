@@ -1,22 +1,13 @@
 import {Container, Title, TagBox, Tag} from './PortItem.style';
 
-const PortItem = () => {
+const PortItem = ({item, idx}) => {
   return (
     <Container>
-      <Title>포트폴리오 제목</Title>
+      <Title>{`${item.name}`}</Title>
       <TagBox>
-        <Tag>#React</Tag>
-        <Tag>#SpringBoot</Tag>
-        <Tag>#SpringBoot</Tag>
-        <Tag>#SpringBoot</Tag>
-        <Tag>#SpringBoot</Tag>
-        <Tag>#SpringBoot</Tag>
-        <Tag>#SpringBoot</Tag>
-        <Tag>#SpringBoot</Tag>
-        <Tag>#SpringBoot</Tag>
-        <Tag>#SpringBoot</Tag>
-        <Tag>#SpringBoot</Tag>
-        <Tag>#js</Tag>
+        {item.tags.map((tag, idx) => (
+          <Tag>{`# ${tag}`}</Tag>
+        ))}
       </TagBox>
     </Container>
   );
