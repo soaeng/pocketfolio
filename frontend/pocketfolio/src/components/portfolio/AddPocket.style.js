@@ -227,7 +227,7 @@ export const Select = styled.select`
 
 export const Option = styled.option``;
 
-export const BtnDiv = styled.footer`
+export const BtnDiv = styled.div`
   display: flex;
   justify-content: center;
   padding: 12px 16px;

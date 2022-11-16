@@ -96,10 +96,10 @@ const Portfolio = () => {
     });
   };
 
-  const createPocket = () => {
-    alert('포켓 생성');
-    // dispatch(createRoom())
-  };
+  // const createPocket = () => {
+  //   alert('포켓 생성');
+  //   // dispatch(createRoom())
+  // };
 
   return (
     <Background>
@@ -128,7 +128,7 @@ const Portfolio = () => {
                 <AddPocket
                   open={openPockMod}
                   close={openPockModal}
-                  save={createPocket}
+                  // save={createPocket}
                 ></AddPocket>
               </IconDiv>
               <IconDiv className="delPocketIcon" onClick={togglePocketDel}>

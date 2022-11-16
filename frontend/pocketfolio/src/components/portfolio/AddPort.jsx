@@ -260,14 +260,13 @@ const AddPort = () => {
           <BottomBox className="hashWrap">
             <Label>해시태그</Label>
             <InputDiv>
-              {/* <HashIcon /> */}
               <HashInput
                 className="HashInput"
                 name="hashtag"
                 value={hashtag}
                 onChange={onChangeHashtag}
                 onKeyUp={onKeyUp}
-                placeholder=" # 포켓폴리오"
+                placeholder="포켓폴리오"
               />
             </InputDiv>
             <HashList>
