@@ -1,5 +1,5 @@
 import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
-import {http} from '../api/axios';
+import {http, postAxios} from '../api/axios';
 
 // 마이룸 목록 조회
 export const getRoomList = createAsyncThunk(
@@ -34,8 +34,8 @@ export const createRoom = createAsyncThunk(
   'createRoom',
   async (data, {rejectWithValue}) => {
     try {
-      const res = await http.post(`rooms`, data);
-
+      const res = await postAxios.post(`rooms`, data);
+      console.log('성공')
       if (res.status === 201) return res.data;
     } catch (error) {
       console.log('마이룸 생성에러', error);
@@ -181,9 +181,23 @@ export const updateArranges = createAsyncThunk(
     try {
       const res = await http.patch(`rooms/${data.roomSeq}`, data.body);
 
-      if (res.status === 201) return true;  
+      if (res.status === 201) return true;
     } catch (error) {
       console.log('배치 수정 에러', error);
+      return rejectWithValue(error);
+    }
+  },
+);
+
+// 룸 카테고리 조회
+export const getRoomCategory = createAsyncThunk(
+  'getRoomCategory',
+  async (data, {rejectWithValue}) => {
+    try {
+      const res = await http.get('rooms/category');
+      if (res.status === 200) return res.data;
+    } catch (error) {
+      console.log('룸 카테고리 불러오기 실패', error);
       return rejectWithValue(error);
     }
   },
