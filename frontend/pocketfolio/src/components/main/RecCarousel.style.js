@@ -169,6 +169,7 @@ export const RecCarThumbnail = styled.img`
 // 글자 component 스타일
 export const RecCaTitle = styled(Body1)`
   padding: 10px;
+  font-weight: bold;
 `;
 
 export const RecUserImgContainer = styled.div`

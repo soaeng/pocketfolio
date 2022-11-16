@@ -1,5 +1,7 @@
 // 추천 carousel
 import React, {useState, useEffect, useRef} from 'react';
+import {useDispatch} from 'react-redux';
+import {getRoomBest} from '../../store/roomSlice';
 import {
   RecCaContainer,
   Container,
@@ -77,7 +79,24 @@ const items = [
 ];
 
 const RecCarousel = () => {
+  const dispatch = useDispatch();
   const [item, setItem] = useState(items);
+  // 마이룸 좋아요 베스트 순 저장되는 상태
+  const [roomLike, setroomLike] = useState([]);
+
+  // 마이룸 좋아요 베스트 순 목록 가져오기
+  const getRoomLike = async () => {
+    const {payload} = await dispatch(getRoomBest());
+    setroomLike(payload);
+  };
+
+  useEffect(() => {
+    getRoomLike();
+  }, []);
+
+  useEffect(() => {
+    console.log(roomLike, '좋아요룸');
+  }, [roomLike]);
 
   const [index, setIndex] = useState(0);
   const carousel = useRef(null);
@@ -97,7 +116,7 @@ const RecCarousel = () => {
   return (
     <>
       <RecCaContainer>
-        <RecCaTitle>포켓폴리오 추천 작품</RecCaTitle>
+        <RecCaTitle>포켓폴리오 베스트 작품</RecCaTitle>
         <Container>
           <Carousel ref={carousel}>
             {item.map(it => {
@@ -110,8 +129,6 @@ const RecCarousel = () => {
                       src={process.env.PUBLIC_URL + '/assets/images/room.png'}
                     />
                   </RecCarImgDiv>
-                  {/* 1차 설명 => 필요 없으면 삭제 */}
-                  {/* <div>{copy}</div> */}
                   {/* 프로필 컴포넌트 */}
                   <Item2>
                     <RecUserDiv>
