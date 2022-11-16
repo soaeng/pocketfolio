@@ -50,7 +50,9 @@ const Sidebar = ({
         {!edit && sidebar === 'port' && (
           <PortList data={data.portfolios} openPortDetail={openPortDetail} />
         )}
-        {!edit && sidebar === 'portDetail' && <PortDetail nowPort={nowPort}/>}
+        {!edit && sidebar === 'portDetail' && (
+          <PortDetail nowPort={nowPort} roomDto={data} />
+        )}
         {edit && sidebar === 'port' && (
           <EditPortList
             arranges={arranges}
