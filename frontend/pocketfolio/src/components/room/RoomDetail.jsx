@@ -7,10 +7,15 @@ import {
   Introduction,
   LinkIcon,
   LinkText,
+  ExtraContainer,
+  ExtraItem,
+  ImgBox,
+  Img,
 } from './RoomDetail.style';
 
 // 마이룸 상세정보
 const RoomDetail = ({closeDetail, data}) => {
+  console.log(data);
   return (
     <Container onClick={closeDetail}>
       <UserName>{data.owner.name}</UserName>
@@ -25,6 +30,16 @@ const RoomDetail = ({closeDetail, data}) => {
         </LinkDiv>
       )}
       <Introduction>{data.owner.describe}</Introduction>
+
+      {data.owner.rooms.length > 0 && (
+        <ExtraContainer>
+          {data.owner.rooms.map((room, idx) => (
+            <ExtraItem>
+              <ImgBox>{/* <Img src={room.}/> */}</ImgBox>
+            </ExtraItem>
+          ))}
+        </ExtraContainer>
+      )}
     </Container>
   );
 };
