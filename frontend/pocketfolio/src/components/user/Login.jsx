@@ -1,7 +1,6 @@
 import {useNavigate} from 'react-router-dom';
 import {
   Container,
-  CanvasWrapper,
   LoginContainer,
   LogoDiv,
   LogoImg,
@@ -11,8 +10,7 @@ import {
   LoginText,
   CommentText,
 } from './Login.style';
-import {Canvas} from '@react-three/fiber';
-import {OrbitControls} from '@react-three/drei';
+import LoginCanvas from './LoginCanvas';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -28,17 +26,7 @@ const Login = () => {
 
   return (
     <Container>
-      <CanvasWrapper>
-        <Canvas camera={{position: [-15, 10, -20], fov: 25}}>
-          <OrbitControls autoRotate={true} />
-          <mesh>
-            <ambientLight intensity={1} castShadow />
-            <directionalLight position={[10, 10, 10]} intensity={1} castShadow />
-            <boxGeometry args={[5, 5, 5]} />
-            <meshStandardMaterial attach="material" color={0xffffff} />
-          </mesh>
-        </Canvas>
-      </CanvasWrapper>
+      <LoginCanvas />
 
       <LoginContainer>
         <LogoDiv onClick={moveToMain}>
