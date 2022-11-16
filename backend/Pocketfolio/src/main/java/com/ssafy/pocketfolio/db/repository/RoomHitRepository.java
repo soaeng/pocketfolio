@@ -14,9 +14,10 @@ public interface RoomHitRepository extends JpaRepository<RoomHit, Long>  {
     Long countRoomHitToday(long roomSeq);
     Long countAllByRoom_RoomSeq(Long roomSeq);
     Boolean existsRoomHitByUser_UserSeqAndRoom_RoomSeqAndHitDateEquals(long userSeq, long roomSeq, LocalDate date);
-    @Query(value = "SELECT r.user_seq AS userSeq, user_name AS userName, user_profile AS userProfile, rh.hit_date AS hitDate FROM room_hit AS rh " +
-            " JOIN ( SELECT r.*, u.name AS user_name, u.profile_pic AS user_profile FROM room AS r JOIN user AS u ON u.user_seq = r.user_seq ) r " +
-            " ON r.user_seq = rh.user_seq WHERE rh.room_seq = ?1 ORDER BY hit_date DESC LIMIT 5 ;", nativeQuery = true)
+
+    @Query(value = "SELECT DISTINCT(`u`.`user_seq`) AS `userSeq`, `name` AS `userName`, `profile_pic` AS `profile` FROM `user` AS `u` JOIN " +
+            "(SELECT `user_seq`, `hit_date` FROM `room_hit` WHERE `room_seq` = ?1 ORDER BY `hit_date` DESC LIMIT 5) AS `rh` " +
+            "ON `rh`.`user_seq` = `u`.`user_seq`; ", nativeQuery = true)
     List<GuestListView> findGuest(Long roomSeq);
 
     @Query(value = "SELECT hit_date as `date`, count(room_hit_seq) as `count` FROM room_hit " +

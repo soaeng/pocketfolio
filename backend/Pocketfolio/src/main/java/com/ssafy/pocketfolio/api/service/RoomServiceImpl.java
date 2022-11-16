@@ -4,10 +4,6 @@ import com.ssafy.pocketfolio.api.dto.RoomDto;
 import com.ssafy.pocketfolio.api.dto.request.RoomArrangeReq;
 import com.ssafy.pocketfolio.api.dto.request.RoomReq;
 import com.ssafy.pocketfolio.api.dto.response.*;
-import com.ssafy.pocketfolio.api.dto.response.CategoryRes;
-import com.ssafy.pocketfolio.api.dto.response.GuestListRes;
-import com.ssafy.pocketfolio.api.dto.response.HitStatRes;
-import com.ssafy.pocketfolio.api.dto.response.RoomListRes;
 import com.ssafy.pocketfolio.api.util.MultipartFileHandler;
 import com.ssafy.pocketfolio.db.entity.*;
 import com.ssafy.pocketfolio.db.repository.*;
@@ -413,8 +409,7 @@ public class RoomServiceImpl implements RoomService {
         try {
             Map<String, Object> map = new HashMap<>();
             List<HitStatListView> hitStatListViews = roomHitRepository.countAllByHitDateAndRoomSeq(roomSeq);
-            List<GuestListRes> guests = roomHitRepository.findGuest(roomSeq).stream().map(GuestListRes::toDto).collect(Collectors.toList());
-
+            List<GuestRes> guests = roomHitRepository.findGuest(roomSeq).stream().map(GuestRes::toDto).collect(Collectors.toList());
             map.put("guests", guests);
             map.put("today", roomHitRepository.countRoomHitToday(roomSeq));
             map.put("hitStat", HitStatRes.toDto(hitStatListViews));
