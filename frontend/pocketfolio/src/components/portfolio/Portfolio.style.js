@@ -34,8 +34,8 @@ export const CardWrapper = styled.div`
   margin-top: 1rem;
 
   &.myroomwrapper {
-    height: 20rem;
-    margin-bottom: 5rem;
+    height: fit-content;
+    
   }
 `;
 export const HeaderDiv = styled.div`
@@ -51,37 +51,21 @@ export const Header = styled.span`
   border-bottom: 2px solid;
 `;
 
-
 export const Text = styled.h2`
   font-size: 1.4rem;
   margin: 0;
+  text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   &.portfolios {
   }
 `;
 
 export const CardList = styled.div`
   &.roomlists {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
     align-items: center;
     height: 100%;
-    overflow: auto;
-    /* outline: solid; */
-    &::-webkit-scrollbar {
-      width: 2px;
-      height: 5px;
-
-    }
-
-    &::-webkit-scrollbar-thumb {
-      height: 5%;
-      background-color: #ffc7bb;
-      border-radius: 2rem;
-    }
-
-    &::-webkit-scrollbar-track {
-      background-color: #fbddd7;
-      border-radius: 2rem;
-    }
+    
   }
 
   &.portlists {
@@ -107,7 +91,6 @@ export const CardList = styled.div`
 
 export const BtnDiv = styled.div`
   display: flex;
-  padding-bottom: 0.5rem;
 `;
 
 export const IconDiv = styled.button`

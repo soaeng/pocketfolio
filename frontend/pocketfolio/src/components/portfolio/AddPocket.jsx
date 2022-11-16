@@ -90,10 +90,6 @@ const AddPocket = props => {
       name: '전체 공개',
     },
     {
-      data: 'S',
-      name: '링크 공유',
-    },
-    {
       data: 'C',
       name: '비공개',
     },
@@ -224,7 +220,7 @@ const AddPocket = props => {
             </Box>
 
             {/* 테마 선택 */}
-            <Box>
+            {/* <Box>
               <Text>테마</Text>
               <ThemeDiv>
                 {themeList.map((item, idx) => (
@@ -232,7 +228,7 @@ const AddPocket = props => {
                     <Label>
                       <Input
                         type="radio"
-                        className="themedrop"
+                        className="themeselect"
                         value={item.name}
                         checked={selectedTheme === `${item.name}`}
                         onChange={changeTheme}
@@ -244,7 +240,7 @@ const AddPocket = props => {
                   </Theme>
                 ))}
               </ThemeDiv>
-            </Box>
+            </Box> */}
 
             <Box className="mainset">
               {/* 메인 설정 */}
@@ -257,13 +253,13 @@ const AddPocket = props => {
               ></Input>
 
               {/* 썸네일 첨부 */}
-              <Text>썸네일</Text>
+              {/* <Text>썸네일</Text>
               <Input
                 type="file"
                 accept="image/*"
                 onChange={uploadThumbnail}
                 // style={{display: 'none'}}
-              />
+              /> */}
             </Box>
 
             <BtnDiv>
