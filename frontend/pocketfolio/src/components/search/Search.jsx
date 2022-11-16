@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {useLocation, useNavigate} from 'react-router-dom';
 import {useDispatch} from 'react-redux';
 import {getSearch} from '../../store/searchSlice';
+import {getUserInfo} from '../../store/oauthSlice';
 
 import Nav from '../common/Nav';
 import {
@@ -24,10 +25,10 @@ import {
 import PocketSearch from './PocketSearch';
 import PortSearch from './PortSearch';
 import UserSearch from './UserSearch';
-// import Filter from './Filter';
 
 // 임시데이터(tag)
 const tags = [
+  'All',
   '웹기술',
   '미술',
   '웹 디자이너',
@@ -73,6 +74,18 @@ const Search = () => {
 
   // 카테고리
   const [category, setCategory] = useState(0);
+  // 카테고리(3개: 포켓, 포트폴리오, 유저)
+  const [searchMode, setSearchMode] = useState('pocket');
+  // 정렬
+  const [sort, setSort] = useState(1);
+  // 페이지당 보이는 개수
+  const size = 20;
+  // 검색 결과가 저장되는 상태
+  const [data, setData] = useState([]);
+  // 검색어
+  const [word, setWord] = useState('');
+  // 특정 유저정보 담을 상태
+  const [userInfo, setUserInfo] = useState([]);
 
   /** params: 이진수 */
   const selectCategory = (e, bin_int) => {
@@ -83,21 +96,9 @@ const Search = () => {
     }
   };
 
-  // 카테고리(3개)
-  const [searchMode, setSearchMode] = useState('pocket');
-
   const selectSearchMode = (e, searchMode) => {
     setSearchMode(searchMode);
   };
-
-  // 정렬
-  const [sort, setSort] = useState(1);
-
-  // 페이지당 보이는 개수
-  const size = 20;
-
-  // 검색 결과가 저장되는 상태
-  const [data, setData] = useState([]);
 
   // 검색 요청 함수
   const getData = async () => {
@@ -113,8 +114,16 @@ const Search = () => {
     setData(payload);
   };
 
-  // 검색어
-  const [word, setWord] = useState('');
+  // 특정 유저정보 조회 함수
+  // const getUserInfo = async () => {
+  //   const {payload} = await dispatch(getUserInfo(userSeq));
+  //   setUserInfo(payload);
+  //   console.log(payload, '특정 유저정보');
+  // };
+
+  // useEffect(() => {
+  //   getUserInfo();
+  // }, []);
 
   // 입력창 변화 감지
   const onChange = e => {
@@ -234,7 +243,7 @@ const Search = () => {
                   : {
                       backgroundColor: '#fff',
                       color: 'darkgray',
-                      border: '1px solid darkgray'
+                      border: '1px solid darkgray',
                     }
               }
             >

@@ -11,7 +11,7 @@ export const getMyInfo = createAsyncThunk(
       if (getToken()) {
         const res = await http.get('users/profile');
         if (res.status === 200) return res.data;
-      } else return null
+      } else return null;
     } catch (error) {
       console.log('유저정보에러', error);
       return rejectWithValue(error);
@@ -96,7 +96,7 @@ export const getMyFollower = createAsyncThunk(
   async (data, {rejectWithValue}) => {
     try {
       const res = await http.get(`follows/follower`);
-      if (res.status === 200) return true;
+      if (res.status === 200) return res.data;
     } catch (error) {
       console.log('내 팔로워 리스트 조회 에러', error);
       return rejectWithValue(error);
@@ -110,7 +110,7 @@ export const getMyFollowing = createAsyncThunk(
   async (data, {rejectWithValue}) => {
     try {
       const res = await http.get(`follows/following`);
-      if (res.status === 200) return true;
+      if (res.status === 200) return res.data;
     } catch (error) {
       console.log('내 팔로잉 리스트 조회 에러', error);
       return rejectWithValue(error);
