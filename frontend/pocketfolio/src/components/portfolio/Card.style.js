@@ -14,19 +14,22 @@ export const Item = styled.div`
   width: 12rem;
   margin-right: 1rem;
   border-radius: 1.5rem;
-  background-color: white;
+  background-color: #ffe8e8;
 `;
 
 export const ImgDiv = styled.div`
   display: flex;
   justify-content: center;
-  height: 70%;
+  height: 9rem;
+  width: 12rem;
+  overflow: hidden;
   border-radius: 1.5rem 1.5rem 0 0;
 `;
 
 export const Thumbnail = styled.img`
-  height: 90%;
-  width: 90%;
+  max-width: 100%;
+  height: auto;
+  cursor: pointer;
 `;
 
 export const TitleDiv = styled.div`
@@ -37,25 +40,26 @@ export const TitleDiv = styled.div`
   border-bottom: 0.3px solid rgba(0, 0, 0, 0.3);
 `;
 
-export const Title = styled.div`
+export const Title = styled.p`
   font-size: 15px;
   margin-left: 1rem;
+  font-family: 'NanumSquareAcr' !important;
+  
 `;
 
 export const LikeDiv = styled.div`
   display: flex;
   justify-content: center;
-  width: 70%;
+  width: 50%;
   justify-content: space-around;
-  padding-top: 0.5rem;
-  margin: auto;
+  margin: 1rem auto;
 `;
 
 export const LikeContent = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-around;
-  width: 40%;
+  width: 30%;
 `;
 
 export const Img = styled.img`
@@ -92,9 +96,5 @@ export const Button = styled.img`
   }
 `;
 
-export const Heart = styled(RiHeart3Fill)`
-
-`
-export const Eye = styled(RiEyeLine)`
-
-`
+export const Heart = styled(RiHeart3Fill)``;
+export const Eye = styled(RiEyeLine)``;

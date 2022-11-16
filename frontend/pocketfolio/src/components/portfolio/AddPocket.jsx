@@ -11,6 +11,8 @@ import {
   TextDiv,
   Text,
   Head,
+  IconDiv,
+  CloseIcon,
   Input,
   Label,
   ThemeDiv,
@@ -24,7 +26,7 @@ import {
 import {getRoomCategory, createRoom} from '../../store/roomSlice';
 
 const AddPocket = props => {
-  const {open, close, save} = props;
+  const {open, close, save, reLander, setReLander} = props;
   const dispatch = useDispatch();
   // 포켓 이름
   const [pocketName, setPocketName] = useState('');
@@ -104,7 +106,6 @@ const AddPocket = props => {
   // 룸 카테고리 불러오기
   useEffect(() => {
     dispatch(getRoomCategory()).then(res => {
-      console.log(res);
       setCategoryList(res.payload);
     });
   }, []);
@@ -145,7 +146,7 @@ const AddPocket = props => {
     setThumbNail(file);
   };
 
-  // 메인 설정 여부 
+  // 메인 설정 여부
   const changeMain = e => {
     if (main === 'T') {
       setMain('F');
@@ -166,11 +167,12 @@ const AddPocket = props => {
     });
     form.append('room', new Blob([pocket], {type: 'application/json'}));
     form.append('thumbnail', thumbNail);
-    
-    dispatch(createRoom(form))
-    .then(res => {
-      
-    })
+    dispatch(createRoom(form)).then(res => {
+      if (res.payload.status === 201) {
+        setReLander(!reLander)
+        close();
+      }
+    });
   };
 
   return (
@@ -179,8 +181,12 @@ const AddPocket = props => {
         <Contents>
           <header>
             <Head>포켓 만들기</Head>
+            <IconDiv 
+              className='close'
+              onClick={close}>
+              <CloseIcon></CloseIcon>
+            </IconDiv>
           </header>
-
           <Body>
             {/* 포켓 이름 입력 */}
             <Box>
