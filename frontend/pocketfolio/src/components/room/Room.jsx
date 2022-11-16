@@ -37,6 +37,7 @@ const Room = () => {
     setSidebar('edit');
   };
 
+  /** 마이룸 수정 취소 */
   const offEdit = () => {
     setNowTheme(data.room.theme);
     setArranges(prevArranges.current);
@@ -141,10 +142,8 @@ const Room = () => {
     setArranges(arranges.filter((_arrange, _idx) => idx !== _idx));
   };
 
-  // 배치 수정 API put
+  /** 배치 수정 API put */
   const saveArrange = async e => {
-    setEdit(false);
-    setSidebar('');
     const body = {
       theme: nowTheme,
       arranges: arranges.map(arrange => {
@@ -200,10 +199,16 @@ const Room = () => {
           />
           {edit ? (
             <EditBox>
-              <Btn onClick={offEdit} className="cancel">
-                취소
+              <Btn
+                onClick={e => {
+                  setEdit(false);
+                  setSidebar('');
+                  saveArrange(e);
+                }}
+              >
+                저장
               </Btn>
-              <Btn onClick={saveArrange}>저장</Btn>
+              <Btn onClick={offEdit}>취소</Btn>
             </EditBox>
           ) : null}
         </CanvasWrapper>
