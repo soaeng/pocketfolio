@@ -1,16 +1,11 @@
 import styled from 'styled-components';
 import {Body1, H2, H3} from '../../styles/styles.style';
-import {RiCloseFill} from 'react-icons/ri'
+import {RiCloseFill} from 'react-icons/ri';
 
 export const Overlay = styled.div`
   .modal.close {
     animation-name: fade-out;
   }
-  .modal button {
-    outline: none;
-    border: 0;
-  }
-
   .modal.close > section {
     animation-name: slide;
   }
@@ -21,22 +16,8 @@ export const Overlay = styled.div`
     justify-content: center;
     color: #ffffff;
     background-color: #ffb9ae;
-    padding: 1rem;
+    padding: 0.7rem;
     border-radius: 0.5rem 0.5rem 0 0;
-
-  }
-  .modal > section > header button {
-    /* position: absolute;
-    top: 15px;
-    right: 15px;
-    width: 30px;
-    font-size: 21px;
-    font-weight: 700;
-    text-align: center;
-    color: #999;
-    background-color: transparent; */
-  }
-  .modal > section > p {
   }
 
   @keyframes modal-bg-show {
@@ -99,13 +80,12 @@ export const ModalWrap = styled.div`
   animation-fill-mode: forwards;
   cursor: default;
 
-  /* 나중에 지울 것 */
 `;
 
 export const Contents = styled.section`
   background-color: #fff;
   width: 50rem;
-  height: 40rem;
+  height: 30rem;
   border-radius: 0.5rem;
   animation-duration: 0.25s;
   animation-timing-function: ease-out;
@@ -115,9 +95,9 @@ export const Contents = styled.section`
 
 export const Body = styled.div`
   display: flex;
+  justify-content: center;
   position: relative;
   margin: 0 auto;
-  padding-top: 2rem;
   flex-direction: column;
   overflow: auto;
   height: 80%;
@@ -167,6 +147,7 @@ export const Text = styled(Body1)`
 `;
 
 export const Head = styled(H2)`
+  font-size: 2rem;
   margin: 0;
 `;
 
@@ -174,18 +155,16 @@ export const IconDiv = styled.div`
   position: absolute;
   display: flex;
   align-items: center;
-  right : 5%;
+  right: 5%;
   font-size: 2rem;
-  
-`
+`;
 
 export const CloseIcon = styled(RiCloseFill)`
   cursor: pointer;
-`
-
-export const InputDiv = styled.div`
-
 `;
+
+export const InputDiv = styled.div``;
+
 export const Input = styled.input`
   border-radius: 0.2rem;
   padding: 0.5rem;
@@ -196,16 +175,20 @@ export const Input = styled.input`
     text-align: center;
     font-size: 1rem;
     font-weight: bold;
+    border: 0.5px solid #ffbcbc;
+    :focus {
+      outline: 0.5px solid #fcb4b4;
+    }
   }
-  &.themedrop {
+  &.themeselect {
     display: none;
-  }
+    transition: all 0.1s;
 
-  &.maincheck {
-  }
-  :checked + img {
-    border-radius: 1rem;
-    background-color: #fdd7d7;
+    :checked + img {
+      border-radius: 1rem;
+      background-color: #f7c6c6;
+      scale: 1;
+    }
   }
 `;
 
@@ -213,16 +196,27 @@ export const Label = styled.label``;
 
 export const ThemeDiv = styled.div`
   display: grid;
+  width: 95%;
   grid-template-columns: repeat(4, 1fr);
   grid-gap: 10px;
 `;
 
-export const Theme = styled.div``;
+export const Theme = styled.div`
+  :hover {
+    border-radius: 1rem;
+    background-color: #fff4f1;
+  }
+`;
 
 export const ThemeImg = styled.img`
   max-width: 100%;
   height: auto;
   cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover {
+    scale: 1.1;
+  }
 `;
 
 export const ThemeTitle = styled.div`

@@ -56,7 +56,7 @@ const Portfolio = () => {
     setOpenPockMod(!openPockMod);
   };
 
-  console.log(openPockMod);
+  
   // 포트폴리오 목록 불러오기
   useEffect(() => {
     dispatch(getMyPocket()).then(res => {
@@ -82,6 +82,7 @@ const Portfolio = () => {
     navigate(`/port/${item.portSeq}`);
   };
 
+  // 포트폴리오 작성 페이지 이동
   const movePortCreate = () => {
     navigate('/port/create');
   };
@@ -120,7 +121,7 @@ const Portfolio = () => {
       <Container>
         <CardWrapper className="myroomwrapper">
           <HeaderDiv>
-            <Text className="myrooms">나의 소듕한 포켓들</Text>
+            <Text className="myrooms">소듕한 포켓들</Text>
             <BtnDiv>
               <IconDiv className="addPocketIcon">
                 <AddPocketIcon onClick={openPockModal}></AddPocketIcon>
@@ -128,7 +129,7 @@ const Portfolio = () => {
                   open={openPockMod}
                   close={openPockModal}
                   reLander={reLander}
-                  setReLander={setReLander}
+                  setReLander={setReLander} 
                   // save={createPocket}
                 ></AddPocket>
               </IconDiv>
@@ -147,7 +148,7 @@ const Portfolio = () => {
         </CardWrapper>
         <CardWrapper>
           <HeaderDiv>
-            <Text className="portfolios">나의 소중한 포트폴리오들</Text>
+            <Text className="portfolios">소중한 포트폴리오들</Text>
             <BtnDiv>
               <IconDiv className="addPortIcon" onClick={movePortCreate}>
                 <AddPortIcon />

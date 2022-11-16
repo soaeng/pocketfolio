@@ -6,24 +6,35 @@ export const Wrapper = styled.div`
   flex-direction: column;
   align-items: center;
   cursor: pointer;
+  padding: 1rem;
 `;
 
 export const Item = styled.div`
   position: relative;
-  height: 15rem;
-  width: 12rem;
-  margin-right: 1rem;
-  border-radius: 1.5rem;
-  background-color: #ffe8e8;
+
+  /* 1안 */
+  border-radius: 1rem;
+  background-color: #fff0f0;
+  box-shadow: 0px 2px 5px 1px rgba(0, 0, 0, 0.25);
+
+
 `;
+
+export const PortDiv = styled.div`
+  
+`
 
 export const ImgDiv = styled.div`
   display: flex;
   justify-content: center;
-  height: 9rem;
-  width: 12rem;
+  /* height: 9rem;
+  width: 12rem; */
   overflow: hidden;
-  border-radius: 1.5rem 1.5rem 0 0;
+
+  /* 2안 */
+  /* border-radius: 1rem;
+  background-color: #fff0f0;
+  box-shadow: 0px 2px 5px 1px rgba(0, 0, 0, 0.25); */
 `;
 
 export const Thumbnail = styled.img`
@@ -35,14 +46,15 @@ export const Thumbnail = styled.img`
 export const TitleDiv = styled.div`
   display: flex;
   align-items: center;
-  height: 3rem;
+  justify-content: center;
+
   font-family: bold;
-  border-bottom: 0.3px solid rgba(0, 0, 0, 0.3);
 `;
 
 export const Title = styled.p`
   font-size: 15px;
-  margin-left: 1rem;
+  padding: 10px;
+  margin: 0;
   font-family: 'NanumSquareAcr' !important;
   
 `;

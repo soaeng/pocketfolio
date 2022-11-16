@@ -3,6 +3,7 @@ import {useNavigate} from 'react-router-dom';
 import {
   Wrapper,
   Item,
+  PortDiv,
   ImgDiv,
   TitleDiv,
   Title,
@@ -37,7 +38,7 @@ const Card = props => {
           src={process.env.PUBLIC_URL + '/assets/images/minus.png'}
         ></Button>
 
-        <div onClick={moveMyRoom}>
+        <PortDiv onClick={moveMyRoom}>
           <ImgDiv>
             {pocketData.thumbnail === undefined ? (
               <Thumbnail
@@ -50,7 +51,7 @@ const Card = props => {
           <TitleDiv>
             <Title>{pocketData.name}</Title>
           </TitleDiv>
-          <LikeDiv>
+          {/* <LikeDiv>
             <LikeContent>
               <Heart />
               <Count>{pocketData.like}</Count>
@@ -59,8 +60,8 @@ const Card = props => {
               <Eye />
               <Count>{pocketData.hit}</Count>
             </LikeContent>
-          </LikeDiv>
-        </div>
+          </LikeDiv>  */}
+        </PortDiv>
       </Item>
       {isOpen && (
         <DeleteModal
