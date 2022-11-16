@@ -9,6 +9,7 @@ import {useParams} from 'react-router-dom';
 import {useState, useEffect, useRef} from 'react';
 import {useDispatch} from 'react-redux';
 import {getRoomInfo, updateArranges} from '../../store/roomSlice';
+import EditTheme from './EditTheme';
 
 // 마이룸
 const Room = () => {
@@ -21,6 +22,7 @@ const Room = () => {
   const [edit, setEdit] = useState(false);
   const [data, setData] = useState(null);
   const [nowIdx, setNowIdx] = useState(0);
+  const [nowTheme, setNowTheme] = useState('');
   const [arranges, setArranges] = useState(null);
   const prevArranges = useRef();
 
@@ -53,7 +55,7 @@ const Room = () => {
     const {payload} = await dispatch(getRoomInfo(roomSeq));
     setData(payload);
     setArranges(payload.arranges);
-    console.log(payload);
+    setNowTheme(payload.room.theme);
   };
 
   useEffect(() => {
@@ -104,6 +106,11 @@ const Room = () => {
     );
   };
 
+  // 테마변경
+  const changeTheme = state => {
+    setNowTheme(state);
+  };
+
   // 수정 버튼 눌렀을 시 이전 arranges 저장
   useEffect(() => {
     prevArranges.current = arranges;
@@ -137,7 +144,7 @@ const Room = () => {
     setEdit(false);
     setSidebar('');
     const body = {
-      theme: data.room.theme,
+      theme: nowTheme,
       arranges: arranges.map(arrange => {
         return {
           arrangeSeq: arrange.arrangeSeq,
@@ -163,9 +170,10 @@ const Room = () => {
         <RoomNav sidebar={sidebar} edit={edit} />
         <RoomInfo sidebar={sidebar} edit={edit} data={data} />
         <CanvasWrapper className={sidebar ? 'active' : ''}>
+          {edit && <EditTheme nowTheme={nowTheme} changeTheme={changeTheme}/>}
           <RoomCanvas
             edit={edit}
-            theme={data.room.theme}
+            theme={nowTheme}
             arranges={arranges}
             handleArrange={handleArrange}
             handleDel={handleDel}

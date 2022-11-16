@@ -84,7 +84,6 @@ export const PageContainer = styled.div`
 `;
 
 export const IconBox = styled.div`
-  /* background-color: #ff9392; */
   width: 2rem;
   aspect-ratio: 1 / 1;
   display: flex;
