@@ -37,6 +37,7 @@ const Room = () => {
   };
 
   const offEdit = () => {
+    setNowTheme(data.room.theme)
     setArranges(prevArranges.current);
     setEdit(false);
     setSidebar('');
