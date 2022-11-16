@@ -1,4 +1,4 @@
-import {useEffect, useRef, useReducer} from 'react';
+import {useEffect, useRef, useReducer, Suspense} from 'react';
 import {useNavigate} from 'react-router-dom';
 import {
   Frame,
@@ -15,6 +15,7 @@ import {
 } from './Landing.style';
 import {Button} from '../common/Button';
 import {BsChevronDoubleDown} from 'react-icons/bs';
+import LandingCanvas from './LandingCanvas';
 
 const _active = {
   opacity: '1',
@@ -35,6 +36,7 @@ const _hidden = {
 const Landing = () => {
   const outerDivRef = useRef();
   const navigate = useNavigate();
+
   const reducer = (state, action) => {
     const pageHeight = window.innerHeight;
     const DIVIDER_HEIGHT = 5;
@@ -99,6 +101,9 @@ const Landing = () => {
 
   return (
     <Outer ref={outerDivRef}>
+      <Suspense fallback={null}>
+        <LandingCanvas outerDivRef={outerDivRef} page={page} />
+      </Suspense>
       <Dots style={page === 1 ? _hidden : _active}>
         <DotBtn style={_gray} onClick={e => handleBtn(e, 1)}></DotBtn>
         <DotBtn
