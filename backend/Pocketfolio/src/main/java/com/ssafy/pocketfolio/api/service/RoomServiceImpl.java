@@ -131,11 +131,8 @@ public class RoomServiceImpl implements RoomService {
         Optional<RoomCategory> roomCategoryO = roomCategoryRepository.findCategorySeqByRoom_RoomSeq(room.getRoomSeq());
 
         RoomCategory roomCategory;
-        if (roomCategoryO.isPresent()) {
-            roomCategory = roomCategoryO.get();
-        } else {
-            roomCategory = createRoomCategoryIfNotExist(room); // 카테고리가 비어 있으면 기타 카테고리로 하나 만들어 줌
-        }
+        // 카테고리가 비어 있으면 기타 카테고리로 하나 만들어 줌
+        roomCategory = roomCategoryO.orElseGet(() -> createRoomCategoryIfNotExist(room));
 
         log.debug("roomCategory: " + roomCategory);
 
@@ -283,7 +280,7 @@ public class RoomServiceImpl implements RoomService {
             }
         });
 
-        arrangeSeqSet.forEach(arrangeSeq -> arrangeRepository.deleteById(arrangeSeq));
+        arrangeSeqSet.forEach(arrangeRepository::deleteById);
 
         return room.getRoomSeq();
     }
@@ -370,7 +367,7 @@ public class RoomServiceImpl implements RoomService {
         log.debug("[GET] Service - findRoomLikeList");
         try {
             List<Room> rooms = roomLikeRepository.findAllByUser_UserSeq(userSeq).stream().map(RoomLike::getRoom).collect(Collectors.toList());
-            return getRoomListRes(rooms);
+            return getRoomListRes(rooms, userSeq);
         } catch (Exception e) {
             log.error(e.getMessage());
             return null;
@@ -379,12 +376,12 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<RoomListRes> findRoomBestList() {
+    public List<RoomListRes> findRoomBestList(long userSeq) {
         log.debug("[GET] Service - findRoomBestList");
         try {
             List<Long> roomSeqs = roomLikeRepository.findRoomBestList(BEST_LIMIT); // TODO: JOIN으로 한 번에 처리하기
             List<Room> rooms = roomRepository.findAllByRoomSeqIn(roomSeqs);
-            return getRoomListRes(rooms);
+            return getRoomListRes(rooms, userSeq);
         } catch (Exception e) {
             log.error(e.getMessage());
             return null;
@@ -432,11 +429,12 @@ public class RoomServiceImpl implements RoomService {
         }
     }
 
-    private List<RoomListRes> getRoomListRes(List<Room> rooms) { // TODO: 이것도 조인으로 할 수 있지 않을까 1
+    private List<RoomListRes> getRoomListRes(List<Room> rooms, long userSeq) { // TODO: 이것도 조인으로 할 수 있지 않을까 1
         return rooms.stream().map(room -> {
             int like = roomLikeRepository.countAllByRoom_RoomSeq(room.getRoomSeq()).intValue();
             int hit = roomHitRepository.countAllByRoom_RoomSeq(room.getRoomSeq()).intValue();
-            return RoomListRes.toDto(room, like, hit);
+            boolean isFollowing = followRepository.existsByUserFrom_UserSeqAndUserTo_UserSeq(userSeq, room.getUser().getUserSeq());
+            return RoomListRes.toDto(room, like, hit, isFollowing);
         }).collect(Collectors.toList());
     }
 
@@ -445,10 +443,11 @@ public class RoomServiceImpl implements RoomService {
         rooms.forEach(room -> {
             int like = roomLikeRepository.countAllByRoom_RoomSeq(room.getRoomSeq()).intValue();
             int hit = roomHitRepository.countAllByRoom_RoomSeq(room.getRoomSeq()).intValue();
+
             if ("T".equals(room.getIsMain())) {
-                roomList.add(0, RoomListRes.toDto(room, like, hit));
+                roomList.add(0, RoomListRes.toDto(room, like, hit, false));
             } else {
-                roomList.add(RoomListRes.toDto(room, like, hit));
+                roomList.add(RoomListRes.toDto(room, like, hit, false));
             }
         });
         return roomList;

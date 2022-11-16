@@ -45,10 +45,11 @@ public class UserServiceImpl implements UserService {
         roomEntities.forEach(room -> {
             int like = roomLikeRepository.countAllByRoom_RoomSeq(room.getRoomSeq()).intValue(); // TODO: 이것도 조인으로 할 수 있지 않을까 1
             int hit = roomHitRepository.countAllByRoom_RoomSeq(room.getRoomSeq()).intValue();
+
             if ("T".equals(room.getIsMain())) {
-                roomList.add(0, RoomListRes.toDto(room, like, hit));
+                roomList.add(0, RoomListRes.toDto(room, like, hit, false));
             } else {
-                roomList.add(RoomListRes.toDto(room, like, hit));
+                roomList.add(RoomListRes.toDto(room, like, hit, false));
             }
         });
         return new UserRes(userView, roomList);

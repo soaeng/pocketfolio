@@ -91,7 +91,7 @@ public interface RoomService {
      * 베스트 방 목록
      * @return 좋아요 내림차순 방 목록
      */
-    List<RoomListRes> findRoomBestList();
+    List<RoomListRes> findRoomBestList(long userSeq);
 
     /**
      * 랜덤 방 조회

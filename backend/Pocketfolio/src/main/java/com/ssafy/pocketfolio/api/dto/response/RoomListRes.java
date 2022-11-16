@@ -22,8 +22,10 @@ public class RoomListRes {
     private int like;
     @Schema(description = "조회수")
     private int hit;
+    @Schema(description = "팔로우 여부")
+    private boolean isFollowing;
 
-    public static RoomListRes toDto(Room entity, int like, int hit) {
+    public static RoomListRes toDto(Room entity, int like, int hit, boolean isFollowing) {
         if (entity == null) {
             return null;
         }
@@ -35,6 +37,7 @@ public class RoomListRes {
                 .isMain("T".equals(entity.getIsMain()))
                 .like(like)
                 .hit(hit)
+                .isFollowing(isFollowing)
                 .build();
     }
 }
