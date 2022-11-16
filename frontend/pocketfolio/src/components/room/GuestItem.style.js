@@ -88,16 +88,16 @@ export const Img = styled.img`
   height: 100%;
 `;
 
-export const TextBox = styled.div`
+export const TextBox = styled.pre`
   margin-left: 1rem;
   padding: 1rem;
   width: calc(100% - 9.25rem);
-  min-height: 4.25rem;
+  min-height: 4rem;
   font-size: 0.85rem;
   border-radius: 0.3rem;
 
-  display: flex;
-  align-items: center;
+  /* display: flex;
+  align-items: center; */
 `;
 
 export const CommentList = styled.div`
