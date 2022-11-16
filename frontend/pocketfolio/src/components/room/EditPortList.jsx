@@ -11,8 +11,6 @@ const EditPortList = ({arranges, nowIdx, connectPort, disconnectPort}) => {
     arranges[nowIdx].portSeq ? true : false,
   );
 
-  console.log(arranges[nowIdx]);
-
   // 전체 포트폴리오 목록 불러오기
   async function loadData() {
     const {payload} = await dispatch(getMyPort());
@@ -25,6 +23,7 @@ const EditPortList = ({arranges, nowIdx, connectPort, disconnectPort}) => {
 
   useEffect(() => {
     setIsConnected(arranges[nowIdx].portSeq ? true : false);
+    console.log(nowIdx)
   }, [nowIdx, arranges]);
 
   return (

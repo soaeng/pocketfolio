@@ -5,6 +5,7 @@ import {
   RiArrowLeftSLine,
   RiArrowDownSLine,
   RiArrowUpSLine,
+  RiArrowLeftLine,
 } from 'react-icons/ri';
 
 export const Container = styled.div`
@@ -48,6 +49,7 @@ export const CloseBox = styled.div`
 `;
 
 export const CloseIcon = styled(RiCloseFill)``;
+export const BackIcon = styled(RiArrowLeftLine)``;
 
 export const ToggleBox = styled.div`
   position: absolute;

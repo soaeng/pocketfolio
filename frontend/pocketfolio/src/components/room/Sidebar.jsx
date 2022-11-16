@@ -5,6 +5,7 @@ import {
   Container,
   SideContainer,
   CloseBox,
+  BackIcon,
   CloseIcon,
   ToggleBox,
   ToggleIconBox,
@@ -14,6 +15,7 @@ import {
   ToggleOpenIcon2,
 } from './Sidebar.style';
 import EditPortList from './EditPortList';
+import PortDetail from './PortDetail';
 
 const Sidebar = ({
   sidebar,
@@ -26,11 +28,14 @@ const Sidebar = ({
   nowIdx,
   connectPort,
   disconnectPort,
+  openPortDetail,
+  nowPort,
 }) => {
   const controlSide = () => {
     if (sidebar === 'port') return changeSidebar('');
     if (sidebar === 'guest') return changeSidebar('');
     if (sidebar === 'edit') return changeSidebar('');
+    if (sidebar === 'portDetail') return changeSidebar('port');
     if (!sidebar) return changeSidebar('edit');
   };
 
@@ -39,10 +44,13 @@ const Sidebar = ({
       <SideContainer className={sidebar ? 'open' : null}>
         {!edit && (
           <CloseBox onClick={controlSide}>
-            <CloseIcon />
+            {sidebar !== 'portDetail' ? <CloseIcon /> : <BackIcon />}
           </CloseBox>
         )}
-        {!edit && sidebar === 'port' && <PortList data={data.portfolios} />}
+        {!edit && sidebar === 'port' && (
+          <PortList data={data.portfolios} openPortDetail={openPortDetail} />
+        )}
+        {!edit && sidebar === 'portDetail' && <PortDetail nowPort={nowPort}/>}
         {edit && sidebar === 'port' && (
           <EditPortList
             arranges={arranges}

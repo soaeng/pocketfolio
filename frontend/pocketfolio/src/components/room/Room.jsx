@@ -9,6 +9,7 @@ import {useParams} from 'react-router-dom';
 import {useState, useEffect, useRef} from 'react';
 import {useDispatch} from 'react-redux';
 import {getRoomInfo, updateArranges} from '../../store/roomSlice';
+import EditTheme from './EditTheme';
 
 // 마이룸
 const Room = () => {
@@ -21,6 +22,8 @@ const Room = () => {
   const [edit, setEdit] = useState(false);
   const [data, setData] = useState(null);
   const [nowIdx, setNowIdx] = useState(0);
+  const [nowTheme, setNowTheme] = useState('');
+  const [nowPort, setNowPort] = useState(null);
   const [arranges, setArranges] = useState(null);
   const prevArranges = useRef();
 
@@ -35,6 +38,7 @@ const Room = () => {
   };
 
   const offEdit = () => {
+    setNowTheme(data.room.theme);
     setArranges(prevArranges.current);
     setEdit(false);
     setSidebar('');
@@ -53,12 +57,17 @@ const Room = () => {
     const {payload} = await dispatch(getRoomInfo(roomSeq));
     setData(payload);
     setArranges(payload.arranges);
-    console.log(payload);
+    setNowTheme(payload.room.theme);
   };
 
   useEffect(() => {
     getData();
   }, [roomSeq]);
+
+  // 포커싱 중인 아이템
+  const changeNowIdx = idx => {
+    setNowIdx(idx);
+  };
 
   // 포트폴리오 연결 버튼 눌렀을 때, 포트폴리오 수정 모드
   const loadConnect = idx => {
@@ -80,7 +89,7 @@ const Room = () => {
     );
   };
 
-  // 포트폴리오 해제
+  // 포트폴리오 연결해제
   const disconnectPort = portSeq => {
     setArranges(
       arranges.map((_arrange, _idx) => {
@@ -97,6 +106,11 @@ const Room = () => {
         }
       }),
     );
+  };
+
+  // 테마변경
+  const changeTheme = state => {
+    setNowTheme(state);
   };
 
   // 수정 버튼 눌렀을 시 이전 arranges 저장
@@ -132,7 +146,7 @@ const Room = () => {
     setEdit(false);
     setSidebar('');
     const body = {
-      theme: data.room.theme,
+      theme: nowTheme,
       arranges: arranges.map(arrange => {
         return {
           arrangeSeq: arrange.arrangeSeq,
@@ -145,12 +159,14 @@ const Room = () => {
     };
 
     const res = await dispatch(updateArranges({roomSeq, body}));
-    console.log(res);
+    if (res) getData();
   };
 
-  useEffect(() => {
-    console.log(arranges);
-  }, [arranges]);
+  // 포트폴리오 상세보기
+  const openPortDetail = portSeq => {
+    setSidebar('portDetail');
+    setNowPort(portSeq);
+  };
 
   return (
     data && (
@@ -158,13 +174,15 @@ const Room = () => {
         <RoomNav sidebar={sidebar} edit={edit} />
         <RoomInfo sidebar={sidebar} edit={edit} data={data} />
         <CanvasWrapper className={sidebar ? 'active' : ''}>
+          {edit && <EditTheme nowTheme={nowTheme} changeTheme={changeTheme} />}
           <RoomCanvas
             edit={edit}
-            theme={data.room.theme}
+            theme={nowTheme}
             arranges={arranges}
             handleArrange={handleArrange}
             handleDel={handleDel}
             loadConnect={loadConnect}
+            changeNowIdx={changeNowIdx}
           />
           <Toaster
             position="bottom-left"
@@ -182,8 +200,10 @@ const Room = () => {
           />
           {edit ? (
             <EditBox>
+              <Btn onClick={offEdit} className="cancel">
+                취소
+              </Btn>
               <Btn onClick={saveArrange}>저장</Btn>
-              <Btn onClick={offEdit}>취소</Btn>
             </EditBox>
           ) : null}
         </CanvasWrapper>
@@ -209,6 +229,8 @@ const Room = () => {
           nowIdx={nowIdx}
           connectPort={connectPort}
           disconnectPort={disconnectPort}
+          openPortDetail={openPortDetail}
+          nowPort={nowPort}
         />
       </Container>
     )

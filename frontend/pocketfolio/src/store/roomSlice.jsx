@@ -175,32 +175,13 @@ export const getVisitors = createAsyncThunk(
 );
 
 // 배치 수정
-/**
-  {  
-    "roomSeq": "방 번호"
-    "body": {
-      "theme": "string",
-      "arranges": [
-      {
-      "arrangeSeq": 0,
-      "itemSeq": 0,
-      "location" [
-        0
-      ],
-      "rotation": 0,
-      "portSeq": 0
-      }
-      ]
-    },
-  }
- */
 export const updateArranges = createAsyncThunk(
   'updateArranges',
   async (data, {rejectWithValue}) => {
     try {
       const res = await http.patch(`rooms/${data.roomSeq}`, data.body);
 
-      if (res.status === 201) return res.data;
+      if (res.status === 201) return true;  
     } catch (error) {
       console.log('배치 수정 에러', error);
       return rejectWithValue(error);

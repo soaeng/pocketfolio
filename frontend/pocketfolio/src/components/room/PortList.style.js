@@ -6,30 +6,16 @@ export const Container = styled.div`
   color: #333;
 `;
 
-export const Title = styled.h1``;
+export const Title = styled.h2`
+  margin-bottom: 1rem;
 
-export const BtnBox = styled.div`
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: end;
-  margin-bottom: 0.5rem;
-`;
-
-export const IconBox = styled.div`
-  font-size: 1.5rem;
-  border-radius: 50%;
-  padding: 0.2rem 0.4rem;
-  transition: all 0.2s;
-
-  & + & {
-    margin-left: 5px;
+  &::before {
+    background-color: #e75452;
+    border-radius: 0.25rem;
+    content: '';
+    display: block;
+    height: 0.25rem;
+    width: 50px;
+    margin-bottom: 1.25rem;
   }
-
-  &:hover {
-    background-color: #ddd;
-  }
-`;
-
-export const AddIcon = styled(RiPlayListAddFill)`
 `;
