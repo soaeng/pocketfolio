@@ -8,16 +8,15 @@ import {
   Img,
 } from './PortItem.style';
 
-const PortItem = ({item, idx}) => {
-  console.log(item.thumbnail);
+const PortItem = ({item, openPortDetail}) => {
   return (
-    <Container>
+    <Container onClick={() => openPortDetail(item.portSeq)}>
       {item.thumbnail && (
         <ImgBox>
           <Img src={item.thumbnail} />
         </ImgBox>
       )}
-      <ContentBox className={!item.thumbnail && "full"}>
+      <ContentBox className={!item.thumbnail && 'full'}>
         <Title>{`${item.name}`}</Title>
         <TagBox>
           {item.tags.map((tag, idx) => (

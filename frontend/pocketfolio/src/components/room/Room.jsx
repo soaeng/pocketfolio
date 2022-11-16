@@ -23,6 +23,7 @@ const Room = () => {
   const [data, setData] = useState(null);
   const [nowIdx, setNowIdx] = useState(0);
   const [nowTheme, setNowTheme] = useState('');
+  const [nowPort, setNowPort] = useState(null);
   const [arranges, setArranges] = useState(null);
   const prevArranges = useRef();
 
@@ -37,7 +38,7 @@ const Room = () => {
   };
 
   const offEdit = () => {
-    setNowTheme(data.room.theme)
+    setNowTheme(data.room.theme);
     setArranges(prevArranges.current);
     setEdit(false);
     setSidebar('');
@@ -161,6 +162,12 @@ const Room = () => {
     if (res) getData();
   };
 
+  // 포트폴리오 상세보기
+  const openPortDetail = portSeq => {
+    setSidebar('portDetail');
+    setNowPort(portSeq);
+  };
+
   return (
     data && (
       <Container className={sidebar ? 'active' : ''}>
@@ -222,6 +229,8 @@ const Room = () => {
           nowIdx={nowIdx}
           connectPort={connectPort}
           disconnectPort={disconnectPort}
+          openPortDetail={openPortDetail}
+          nowPort={nowPort}
         />
       </Container>
     )
