@@ -6,10 +6,7 @@ import com.ssafy.pocketfolio.api.dto.response.UserRes;
 import com.ssafy.pocketfolio.api.util.MultipartFileHandler;
 import com.ssafy.pocketfolio.db.entity.Room;
 import com.ssafy.pocketfolio.db.entity.User;
-import com.ssafy.pocketfolio.db.repository.RoomHitRepository;
-import com.ssafy.pocketfolio.db.repository.RoomLikeRepository;
-import com.ssafy.pocketfolio.db.repository.RoomRepository;
-import com.ssafy.pocketfolio.db.repository.UserRepository;
+import com.ssafy.pocketfolio.db.repository.*;
 import com.ssafy.pocketfolio.db.view.UserView;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -31,7 +28,7 @@ public class UserServiceImpl implements UserService {
     private final RoomRepository roomRepository;
     private final RoomHitRepository roomHitRepository;
     private final RoomLikeRepository roomLikeRepository;
-
+    private final CategoryRepository categoryRepository;
     private final MultipartFileHandler fileHandler;
 
     @Override
@@ -43,13 +40,14 @@ public class UserServiceImpl implements UserService {
         List<RoomListRes> roomList = new ArrayList<>();
         List<Room> roomEntities = roomRepository.findAllByUser_UserSeqOrderByUpdatedDesc(userSeq);
         roomEntities.forEach(room -> {
+            String category = categoryRepository.findCategoryByRoomSeq(room.getRoomSeq());
             int like = roomLikeRepository.countAllByRoom_RoomSeq(room.getRoomSeq()).intValue(); // TODO: 이것도 조인으로 할 수 있지 않을까 1
             int hit = roomHitRepository.countAllByRoom_RoomSeq(room.getRoomSeq()).intValue();
 
             if ("T".equals(room.getIsMain())) {
-                roomList.add(0, RoomListRes.toDto(room, like, hit, false));
+                roomList.add(0, RoomListRes.toDto(room, category, like, hit, false));
             } else {
-                roomList.add(RoomListRes.toDto(room, like, hit, false));
+                roomList.add(RoomListRes.toDto(room, category, like, hit, false));
             }
         });
         return new UserRes(userView, roomList);

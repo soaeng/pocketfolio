@@ -501,23 +501,24 @@ public class RoomServiceImpl implements RoomService {
 
     private List<RoomListRes> getRoomListRes(List<Room> rooms, long userSeq) { // TODO: 이것도 조인으로 할 수 있지 않을까 1
         return rooms.stream().map(room -> {
+            String category = categoryRepository.findCategoryByRoomSeq(room.getRoomSeq());
             int like = roomLikeRepository.countAllByRoom_RoomSeq(room.getRoomSeq()).intValue();
             int hit = roomHitRepository.countAllByRoom_RoomSeq(room.getRoomSeq()).intValue();
             boolean isFollowing = followRepository.existsByUserFrom_UserSeqAndUserTo_UserSeq(userSeq, room.getUser().getUserSeq());
-            return RoomListRes.toDto(room, like, hit, isFollowing);
+            return RoomListRes.toDto(room, category, like, hit, isFollowing);
         }).collect(Collectors.toList());
     }
 
     private List<RoomListRes> getRoomListResWithMain(List<Room> rooms) { // TODO: 이것도 조인으로 할 수 있지 않을까 1
         List<RoomListRes> roomList = new ArrayList<>();
         rooms.forEach(room -> {
+            String category = categoryRepository.findCategoryByRoomSeq(room.getRoomSeq());
             int like = roomLikeRepository.countAllByRoom_RoomSeq(room.getRoomSeq()).intValue();
             int hit = roomHitRepository.countAllByRoom_RoomSeq(room.getRoomSeq()).intValue();
-
             if ("T".equals(room.getIsMain())) {
-                roomList.add(0, RoomListRes.toDto(room, like, hit, false));
+                roomList.add(0, RoomListRes.toDto(room, category, like, hit, false));
             } else {
-                roomList.add(RoomListRes.toDto(room, like, hit, false));
+                roomList.add(RoomListRes.toDto(room, category, like, hit, false));
             }
         });
         return roomList;
