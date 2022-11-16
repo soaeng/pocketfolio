@@ -25,4 +25,7 @@ public interface FollowRepository extends JpaRepository<Follow, Long> {
 
 	void deleteByUserFrom_UserSeqAndUserTo_UserSeq(long userFrom, long userTo);
 	Boolean existsByUserFrom_UserSeqAndUserTo_UserSeq(long userFrom, long userTo);
+
+	@Query(value = "SELECT `user_to` FROM `follow` WHERE `user_from` = ?1 ORDER BY rand() LIMIT 1 ;", nativeQuery = true)
+	long findFollowByUserFromOrderByRand(long userSeq);
 }

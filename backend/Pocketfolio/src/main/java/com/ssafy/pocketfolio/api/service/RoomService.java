@@ -2,8 +2,7 @@ package com.ssafy.pocketfolio.api.service;
 
 import com.ssafy.pocketfolio.api.dto.request.RoomArrangeReq;
 import com.ssafy.pocketfolio.api.dto.request.RoomReq;
-import com.ssafy.pocketfolio.api.dto.response.CategoryRes;
-import com.ssafy.pocketfolio.api.dto.response.RoomListRes;
+import com.ssafy.pocketfolio.api.dto.response.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -110,4 +109,25 @@ public interface RoomService {
      * @return 카테고리 목록
      */
     List<CategoryRes> findCategoryList();
+
+    /**
+     * 대표 방 조회
+     * @param userSeq 방 주인 번호
+     * @return 방 정보
+     */
+    MainRoomRes findMainRoom(long userSeq);
+
+    /**
+     * 좋아요, 팔로우 한 포켓 랜덤 추천
+     * @param userSeq 회원 번호
+     * @param type 좋아요 / 팔료우 구분 (like, follow)
+     * @return 포켓 정보
+     */
+    MainPocketListRes findMainRandomRoom(long userSeq, String type);
+
+    /**
+     * 카테고리별 추천
+     * @return 카테고리별 8개의 포켓 정보
+     */
+    List<CategoryRecRes> findCategoryRecList(long userSeq);
 }
