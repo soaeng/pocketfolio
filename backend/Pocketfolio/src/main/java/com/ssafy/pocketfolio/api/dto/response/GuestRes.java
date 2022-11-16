@@ -6,26 +6,26 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.Builder;
 
 @Builder
-@Tag(name = "GuestListRes", description = "최근 방문자 Response")
-public class GuestListRes {
-    @Schema(description = "방문자 번호")
+@Tag(name = "GuestRes", description = "최근 방문자 Response")
+public class GuestRes {
+    @Schema(description = "방문자 회원 번호")
     private Long userSeq;
     @Schema(description = "방문자 이름")
     private String userName;
-    @Schema(description = "방문자 프로필 이미지")
-    private String userProfile;
+    @Schema(description = "방문자 프로필")
+    private String profile;
     @Schema(description = "방문일")
     private String hitDate;
 
-    public static GuestListRes toDto(GuestListView view) {
+    public static GuestRes toDto(GuestListView view) {
         if (view == null) {
             return null;
         }
 
-        return GuestListRes.builder()
+        return GuestRes.builder()
                 .userSeq(view.getUserSeq())
                 .userName(view.getUserName())
-                .userProfile(view.getUserProfile())
+                .profile(view.getProfile())
                 .hitDate(view.getHitDate())
                 .build();
     }

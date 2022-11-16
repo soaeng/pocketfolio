@@ -4,10 +4,6 @@ import com.ssafy.pocketfolio.api.dto.RoomDto;
 import com.ssafy.pocketfolio.api.dto.request.RoomArrangeReq;
 import com.ssafy.pocketfolio.api.dto.request.RoomReq;
 import com.ssafy.pocketfolio.api.dto.response.*;
-import com.ssafy.pocketfolio.api.dto.response.CategoryRes;
-import com.ssafy.pocketfolio.api.dto.response.GuestListRes;
-import com.ssafy.pocketfolio.api.dto.response.HitStatRes;
-import com.ssafy.pocketfolio.api.dto.response.RoomListRes;
 import com.ssafy.pocketfolio.api.util.MultipartFileHandler;
 import com.ssafy.pocketfolio.db.entity.*;
 import com.ssafy.pocketfolio.db.repository.*;
@@ -135,11 +131,8 @@ public class RoomServiceImpl implements RoomService {
         Optional<RoomCategory> roomCategoryO = roomCategoryRepository.findCategorySeqByRoom_RoomSeq(room.getRoomSeq());
 
         RoomCategory roomCategory;
-        if (roomCategoryO.isPresent()) {
-            roomCategory = roomCategoryO.get();
-        } else {
-            roomCategory = createRoomCategoryIfNotExist(room); // 카테고리가 비어 있으면 기타 카테고리로 하나 만들어 줌
-        }
+        // 카테고리가 비어 있으면 기타 카테고리로 하나 만들어 줌
+        roomCategory = roomCategoryO.orElseGet(() -> createRoomCategoryIfNotExist(room));
 
         log.debug("roomCategory: " + roomCategory);
 
@@ -287,7 +280,7 @@ public class RoomServiceImpl implements RoomService {
             }
         });
 
-        arrangeSeqSet.forEach(arrangeSeq -> arrangeRepository.deleteById(arrangeSeq));
+        arrangeSeqSet.forEach(arrangeRepository::deleteById);
 
         return room.getRoomSeq();
     }
@@ -374,7 +367,7 @@ public class RoomServiceImpl implements RoomService {
         log.debug("[GET] Service - findRoomLikeList");
         try {
             List<Room> rooms = roomLikeRepository.findAllByUser_UserSeq(userSeq).stream().map(RoomLike::getRoom).collect(Collectors.toList());
-            return getRoomListRes(rooms);
+            return getRoomListRes(rooms, userSeq);
         } catch (Exception e) {
             log.error(e.getMessage());
             return null;
@@ -383,12 +376,12 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<RoomListRes> findRoomBestList() {
+    public List<RoomListRes> findRoomBestList(long userSeq) {
         log.debug("[GET] Service - findRoomBestList");
         try {
             List<Long> roomSeqs = roomLikeRepository.findRoomBestList(BEST_LIMIT); // TODO: JOIN으로 한 번에 처리하기
             List<Room> rooms = roomRepository.findAllByRoomSeqIn(roomSeqs);
-            return getRoomListRes(rooms);
+            return getRoomListRes(rooms, userSeq);
         } catch (Exception e) {
             log.error(e.getMessage());
             return null;
@@ -413,8 +406,7 @@ public class RoomServiceImpl implements RoomService {
         try {
             Map<String, Object> map = new HashMap<>();
             List<HitStatListView> hitStatListViews = roomHitRepository.countAllByHitDateAndRoomSeq(roomSeq);
-            List<GuestListRes> guests = roomHitRepository.findGuest(roomSeq).stream().map(GuestListRes::toDto).collect(Collectors.toList());
-
+            List<GuestRes> guests = roomHitRepository.findGuest(roomSeq).stream().map(GuestRes::toDto).collect(Collectors.toList());
             map.put("guests", guests);
             map.put("today", roomHitRepository.countRoomHitToday(roomSeq));
             map.put("hitStat", HitStatRes.toDto(hitStatListViews));
@@ -437,23 +429,96 @@ public class RoomServiceImpl implements RoomService {
         }
     }
 
-    private List<RoomListRes> getRoomListRes(List<Room> rooms) { // TODO: 이것도 조인으로 할 수 있지 않을까 1
-        return rooms.stream().map(room -> {
+    @Override
+    @Transactional(readOnly = true)
+    public MainRoomRes findMainRoom(long userSeq) {
+        log.debug("[GET] Service - findMainRoom");
+        try {
+            Room room = roomRepository.findRoomByIsMainAndUser_UserSeq(userSeq);
             int like = roomLikeRepository.countAllByRoom_RoomSeq(room.getRoomSeq()).intValue();
             int hit = roomHitRepository.countAllByRoom_RoomSeq(room.getRoomSeq()).intValue();
-            return RoomListRes.toDto(room, like, hit);
+            List<ArrangeRes> arranges = arrangeRepository.findByRoom_RoomSeqOrderByArrangeSeqDesc(room.getRoomSeq())
+                    .stream().map(ArrangeRes::new).collect(Collectors.toList());
+            return MainRoomRes.toDto(room, arranges, like, hit);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return null;
+        }
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public MainPocketListRes findMainRandomRoom(long userSeq, String type) {
+        log.debug("[GET] Service - findMainRoomList");
+        try {
+            long roomSeq = 0L;
+            if (type.equals("like")) {
+                roomSeq = roomLikeRepository.findRoomLikeByUser_UserSeqOrderByRandom(userSeq);
+            } else if (type.equals("follow")) {
+                roomSeq = followRepository.findFollowByUserFromOrderByRand(userSeq);
+            }
+            Room room = roomRepository.findById(roomSeq).orElse(new Room());
+            String category = categoryRepository.findCategoryByRoomSeq(roomSeq);
+            boolean follow = followRepository.existsByUserFrom_UserSeqAndUserTo_UserSeq(userSeq, room.getUser().getUserSeq());
+            boolean like = roomLikeRepository.existsByUser_UserSeqAndRoom_RoomSeq(userSeq, roomSeq);
+            int likeCount = roomLikeRepository.countAllByRoom_RoomSeq(roomSeq).intValue();
+            int hitCount = roomHitRepository.countAllByRoom_RoomSeq(roomSeq).intValue();
+            return MainPocketListRes.toDto(room, category, follow, like, likeCount, hitCount, room.getUser());
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return null;
+        }
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<CategoryRecRes> findCategoryRecList(long userSeq) {
+        // 카테고리 목록 불러오기
+        List<CategoryRes> categoryList = categoryRepository.findAll().stream().map(CategoryRes::toDto).collect(Collectors.toList());
+        // 카테고리별 추천 목록 담을 리스트
+        List<CategoryRecRes> categoryRecList = new ArrayList<>();
+        // 카테고리 개수
+        int size = categoryList.size();
+        for(int category_seq = 1 ; category_seq <= size ; category_seq++) {
+            // 카테고리 이름
+            String name = categoryList.get(category_seq-1).getName();
+            // 카테고리별 포켓 담을 리스트
+            List<MainPocketListRes> pocketList = new ArrayList<>();
+            // 카테고리별 방 개수
+            List<Room> rooms = roomRepository.findAllByCategorySeq(category_seq);
+
+            for (Room room : rooms) {
+                boolean follow = followRepository.existsByUserFrom_UserSeqAndUserTo_UserSeq(userSeq, room.getUser().getUserSeq());
+                boolean like = roomLikeRepository.existsByUser_UserSeqAndRoom_RoomSeq(userSeq, room.getRoomSeq());
+                int likeCount = roomLikeRepository.countAllByRoom_RoomSeq(room.getRoomSeq()).intValue();
+                int hitCount = roomHitRepository.countAllByRoom_RoomSeq(room.getRoomSeq()).intValue();
+                pocketList.add(MainPocketListRes.toDto(room, name, follow, like, likeCount, hitCount, room.getUser()));
+            }
+            categoryRecList.add(CategoryRecRes.toDto(name, pocketList));
+        }
+        return categoryRecList;
+    }
+
+    private List<RoomListRes> getRoomListRes(List<Room> rooms, long userSeq) { // TODO: 이것도 조인으로 할 수 있지 않을까 1
+        return rooms.stream().map(room -> {
+            String category = categoryRepository.findCategoryByRoomSeq(room.getRoomSeq());
+            int like = roomLikeRepository.countAllByRoom_RoomSeq(room.getRoomSeq()).intValue();
+            int hit = roomHitRepository.countAllByRoom_RoomSeq(room.getRoomSeq()).intValue();
+            boolean isFollowing = followRepository.existsByUserFrom_UserSeqAndUserTo_UserSeq(userSeq, room.getUser().getUserSeq());
+            return RoomListRes.toDto(room, category, like, hit, isFollowing);
         }).collect(Collectors.toList());
     }
 
     private List<RoomListRes> getRoomListResWithMain(List<Room> rooms) { // TODO: 이것도 조인으로 할 수 있지 않을까 1
         List<RoomListRes> roomList = new ArrayList<>();
         rooms.forEach(room -> {
+            String category = categoryRepository.findCategoryByRoomSeq(room.getRoomSeq());
             int like = roomLikeRepository.countAllByRoom_RoomSeq(room.getRoomSeq()).intValue();
             int hit = roomHitRepository.countAllByRoom_RoomSeq(room.getRoomSeq()).intValue();
             if ("T".equals(room.getIsMain())) {
-                roomList.add(0, RoomListRes.toDto(room, like, hit));
+                roomList.add(0, RoomListRes.toDto(room, category, like, hit, false));
             } else {
-                roomList.add(RoomListRes.toDto(room, like, hit));
+                roomList.add(RoomListRes.toDto(room, category, like, hit, false));
             }
         });
         return roomList;

@@ -18,7 +18,7 @@ public class RoomDto {
     private String userBlogUrl;
     private String theme;
     private CategoryRes category;
-//    private String thumbnail;
+    private String thumbnail;
     private String isMain;
     private String privacy;
     private String created;
@@ -34,7 +34,7 @@ public class RoomDto {
                 .userBlogUrl(entity.getUser().getBlogUrl())
                 .theme(entity.getTheme())
                 .category(category)
-//                .thumbnail(entity.getThumbnail())
+                .thumbnail(entity.getThumbnail())
                 .isMain(entity.getIsMain())
                 .privacy(entity.getPrivacy())
                 .created(entity.getCreated().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))

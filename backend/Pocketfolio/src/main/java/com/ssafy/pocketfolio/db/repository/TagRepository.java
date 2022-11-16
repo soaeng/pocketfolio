@@ -1,6 +1,5 @@
 package com.ssafy.pocketfolio.db.repository;
 
-import com.ssafy.pocketfolio.db.entity.Portfolio;
 import com.ssafy.pocketfolio.db.entity.Tag;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -11,4 +10,5 @@ public interface TagRepository extends JpaRepository<Tag, Long> {
     List<Tag> findAllByPortfolio_PortSeq(long portSeq);
     // Tag 삭제
     void deleteAllByPortfolio_PortSeq(long portSeq);
+    void deleteAllByPortfolio_PortSeqAndNameIn(long portSeq, List<String> tags);
 }

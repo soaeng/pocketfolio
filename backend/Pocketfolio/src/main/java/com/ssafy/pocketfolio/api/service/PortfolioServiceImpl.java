@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -157,11 +158,23 @@ public class PortfolioServiceImpl implements PortfolioService {
         }
         log.debug(thumbnailUrl + " / " + thumbnailName);
         portfolio.updatePortfolio(req.getName(), req.getSummary(), thumbnailUrl, thumbnailName);
-        log.debug(portfolio.toString());
+
         // 태그가 있다면 기존 태그 삭제 후 새로 저장
         if (req.getTags() != null) {
-            tagRepository.deleteAllByPortfolio_PortSeq(portSeq);
-            saveTags(req.getTags(), portfolio);
+            List<String> origin = tagRepository.findAllByPortfolio_PortSeq(portSeq).stream().map(Tag::getName).collect(Collectors.toList());
+            List<String> latest = Arrays.asList(req.getTags());
+            if (!origin.equals(latest)) {
+                // 없어진 태그 삭제
+                List<String> temp = new ArrayList<>(origin);
+                temp.removeAll(latest);
+                tagRepository.deleteAllByPortfolio_PortSeqAndNameIn(portSeq, temp);
+
+                // 새로 추가된 태그 저장
+                temp.clear();
+                temp.addAll(latest);
+                temp.removeAll(origin);
+                saveTags(temp.toArray(new String[0]), portfolio);
+            }
         }
 
         if (urls != null) {

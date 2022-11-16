@@ -336,11 +336,18 @@ public class RoomController {
         HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
 
         try{
-            response = roomService.findRoomBestList();
-            status = response != null ? HttpStatus.OK : HttpStatus.INTERNAL_SERVER_ERROR;
+            long userSeq = (Long) request.getAttribute("userSeq");
+            if (userSeq >= 0) {
+                response = roomService.findRoomBestList(userSeq);
+                status = response != null ? HttpStatus.OK : HttpStatus.INTERNAL_SERVER_ERROR;
+            } else {
+                log.error("사용 불가능 토큰");
+                status = HttpStatus.FORBIDDEN;
+            }
         } catch (Exception e) {
             log.error(e.getMessage());
         }
+
         return new ResponseEntity<>(response, status);
     }
 
@@ -376,7 +383,7 @@ public class RoomController {
             @ApiResponse(responseCode = "500", description = "서버 에러", content = @Content(schema = @Schema(implementation = Error.class)))
     })
     @GetMapping("/guests/{roomSeq}")
-    public ResponseEntity<Map<String, Object>> findGuestList(@PathVariable("roomSeq") Long roomSeq, HttpServletRequest request) {
+    public ResponseEntity<Map<String, Object>> findGuestList(@PathVariable("roomSeq") Long roomSeq) {
         log.debug("[GET] Controller - findGuestList");
         Map<String, Object> response = new HashMap<>();
         HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
@@ -396,7 +403,7 @@ public class RoomController {
             @ApiResponse(responseCode = "500", description = "서버 에러", content = @Content(schema = @Schema(implementation = Error.class)))
     })
     @GetMapping("/category")
-    public ResponseEntity<List<CategoryRes>> findCategoryList(HttpServletRequest request) {
+    public ResponseEntity<List<CategoryRes>> findCategoryList() {
         log.debug("[GET] Controller - findCategoryList");
         List<CategoryRes> response = null;
         HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;

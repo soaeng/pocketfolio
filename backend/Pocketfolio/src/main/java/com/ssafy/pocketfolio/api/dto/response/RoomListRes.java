@@ -14,6 +14,8 @@ public class RoomListRes {
     private String thumbnail;
     @Schema(description = "방 이름")
     private String name;
+    @Schema(description = "카테고리")
+    private String category;
     @Schema(description = "방 주인")
     private String user;
     @Schema(description = "메인 룸 여부")
@@ -22,8 +24,10 @@ public class RoomListRes {
     private int like;
     @Schema(description = "조회수")
     private int hit;
+    @Schema(description = "팔로우 여부")
+    private boolean isFollowing;
 
-    public static RoomListRes toDto(Room entity, int like, int hit) {
+    public static RoomListRes toDto(Room entity, String category, int like, int hit, boolean isFollowing) {
         if (entity == null) {
             return null;
         }
@@ -31,10 +35,12 @@ public class RoomListRes {
                 .roomSeq(entity.getRoomSeq())
                 .thumbnail(entity.getThumbnail())
                 .name(entity.getName())
+                .category(category)
                 .user(entity.getUser().getName())
                 .isMain("T".equals(entity.getIsMain()))
                 .like(like)
                 .hit(hit)
+                .isFollowing(isFollowing)
                 .build();
     }
 }
