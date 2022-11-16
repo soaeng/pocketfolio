@@ -1,8 +1,12 @@
 package com.ssafy.pocketfolio.api.dto.response;
 
+import com.ssafy.pocketfolio.db.view.SearchPortfolioListView;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -32,22 +36,26 @@ public class SearchPortfolioListRes {
     private Integer like;
     @Schema(description = "포켓 조회수")
     private Integer hit;
-    @Schema(description = "좋아요 여부")
-    private Boolean isLiked;
     @Schema(description = "태그 리스트")
-    private String[] tags;
+    private List<String> tags;
 
-//    public SearchPortfolioListRes(SearchRoomListView view) {
-//        roomSeq = view.getRoomSeq();
-//        thumbnail = view.getThumbnail();
-//        name = view.getName();
-//        userSeq = view.getUserSeq();
-//        userName = view.getUserName();
-//        userProfilePic = view.getUserProfilePic();
-//        like = view.getLike();
-//        hit = view.getHit();
-//        isMain = "T".equals(view.getIsMain());
-//        categoryName = view.getCategoryName();
-//    }
+    public SearchPortfolioListRes(SearchPortfolioListView view) {
+        portSeq = view.getPortSeq();
+        name = view.getName();
+        roomSeq = view.getRoomSeq();
+        roomName = view.getRoomName();
+        roomThumbnail = view.getRoomThumbnail();
+        userSeq = view.getUserSeq();
+        userName = view.getUserName();
+        userProfilePic = view.getUserProfilePic();
+        like = view.getLike();
+        hit = view.getHit();
+        tags = new ArrayList<>();
+        String[] tagArr = view.getTags().split(",", 6);
+        int maxLength = tagArr.length > 5 ? 5 : tagArr.length;
+        for (int i = 0; i < maxLength; i++) {
+            tags.add(tagArr[i]);
+        }
+    }
 
 }
