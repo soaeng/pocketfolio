@@ -227,6 +227,9 @@ const PortfolioEdit = () => {
     }
   };
 
+  console.log('업로드 기록',uploadImg, '최종등록', resultImg)
+  
+
   // 포트폴리오 제출 함수
   const savePortFolio = () => {
     const form = new FormData();
