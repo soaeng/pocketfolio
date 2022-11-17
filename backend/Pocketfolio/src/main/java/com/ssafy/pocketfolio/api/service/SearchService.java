@@ -6,5 +6,7 @@ public interface SearchService {
 
     SearchRes searchRoom(Long myUserSeq, String keyword, Integer sort, Long categorySeqBinary, Integer size, Integer page);
 
+    SearchRes searchPortfolio(String keyword, Integer sort, Integer size, Integer page);
+
 
 }

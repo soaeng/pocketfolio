@@ -53,4 +53,28 @@ public class SearchController {
         return new ResponseEntity<>(result, status);
     }
 
+    @Operation(summary = "포트폴리오 검색", description = "포트폴리오 검색", responses = {
+            @ApiResponse(responseCode = "200", description = "포켓 검색 성공", content = @Content(schema = @Schema(implementation = SearchRes.class))),
+            @ApiResponse(responseCode = "404", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = SearchRes.class))),
+            @ApiResponse(responseCode = "500", description = "서버 에러", content = @Content(schema = @Schema(implementation = SearchRes.class)))
+    })
+    @GetMapping("/portfolio")
+    public ResponseEntity<SearchRes> searchRoom(@RequestParam("search") String keyword, @RequestParam Integer sort,
+                                                @RequestParam Integer size, @RequestParam Integer page, HttpServletRequest request) {
+        log.debug("Controller: searchRoom()");
+        HttpStatus status;
+
+        SearchRes result = null;
+
+        try {
+            result = searchService.searchPortfolio(keyword, sort, size, page);
+            status = HttpStatus.OK;
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+
+        return new ResponseEntity<>(result, status);
+    }
+
 }
