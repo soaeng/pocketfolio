@@ -56,11 +56,8 @@ const Main = () => {
   // 검색어 창 엔터시 입력
   const keyDownHandler = event => {
     if (event.key === 'Enter') {
-      //아무것도 입력하지 않은 경우 submit 방지
-      if (word.length !== 0) {
-        setWord(word);
-        onSubmit(event);
-      }
+      setWord(word);
+      onSubmit(event);
     }
   };
 
@@ -135,7 +132,7 @@ const Main = () => {
             </PortList>
           </PortContainer>
         </TopContainer>
-        
+
         <SearchDiv>
           <SearchContainer>
             <SearchIcon />
