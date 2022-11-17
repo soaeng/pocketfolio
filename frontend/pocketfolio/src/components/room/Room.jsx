@@ -204,10 +204,21 @@ const Room = () => {
             handleDel={handleDel}
             loadConnect={loadConnect}
             changeNowIdx={changeNowIdx}
+<<<<<<< Updated upstream
+=======
+<<<<<<< HEAD
+            openPortDetail={openPortDetail}
+            setSidebar={setSidebar}
+=======
+>>>>>>> Stashed changes
             data={data}
             capture={capture}
             offCaptrue={offCaptrue}
             changeSidebar={changeSidebar}
+<<<<<<< Updated upstream
+=======
+>>>>>>> 3a7d75bb6755f0d3960c1558c87740101cb39ad3
+>>>>>>> Stashed changes
           />
           <Toaster
             position="bottom-left"

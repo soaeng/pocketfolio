@@ -28,6 +28,8 @@ const RoomCanvas = props => {
   const capture = props.capture;
   const data = props.data;
   const changeNowIdx = props.changeNowIdx;
+  const openPortDetail = props.openPortDetail;
+  const setSidebar = props.setSidebar;
   const changeSidebar = props.changeSidebar;
 
   return (
@@ -40,8 +42,8 @@ const RoomCanvas = props => {
         offCaptrue={offCaptrue}
         capture={capture}
         data={data}
-        changeSidebar
-      ={changeSidebar}/>
+        changeSidebar={changeSidebar}
+      />
       <ambientLight intensity={0.5} />
       <directionalLight
         castShadow
@@ -73,6 +75,8 @@ const RoomCanvas = props => {
           handleDel={handleDel}
           loadConnect={loadConnect}
           changeNowIdx={changeNowIdx}
+          openPortDetail={openPortDetail}
+          setSidebar={setSidebar}
         />
       </Theme>
 
