@@ -27,7 +27,6 @@ import UserSearch from './UserSearch';
 
 // 임시데이터(tag)
 const tags = [
-  'All',
   '개발',
   '사운드',
   '게임 디자인',
@@ -75,7 +74,7 @@ const Search = () => {
   const dispatch = useDispatch();
 
   // 카테고리
-  const [category, setCategory] = useState(0);
+  const [category, setCategory] = useState(2 ** tags.length - 1);
   // 카테고리(3개: 포켓, 포트폴리오, 유저)
   const [searchMode, setSearchMode] = useState('room');
   // 정렬
@@ -85,7 +84,7 @@ const Search = () => {
   // 검색 결과가 저장되는 상태
   const [data, setData] = useState([]);
   // 검색어
-  const [word, setWord] = useState('');
+  const [word, setWord] = useState(location.state.search);
   // 페이지
   const [page, setPage] = useState(1);
 
@@ -107,8 +106,7 @@ const Search = () => {
     const params = {
       search: location.state.search,
       sort: location.state.sort,
-      // category: location.state.category,
-      category: 2047,
+      category: location.state.category,
       size: size,
       page: location.state.page,
     };
@@ -128,14 +126,11 @@ const Search = () => {
       state: {
         search: word,
         sort: sort,
-        // category: category,
-        category: 2047,
+        category: category,
         size: size,
         page: 1,
       },
     });
-    getData();
-    setWord(''); //submit 후 창 비우기
   };
 
   // 검색어 창 엔터시 입력
@@ -196,15 +191,44 @@ const Search = () => {
 
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);
-    getData();
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
 
+  // 내비게이트 발생 시 검색
   useEffect(() => {
-    // console.log(data);
-  }, [data]);
+    getData();
+  }, [location]);
+
+  // 카테고리 변경 시 검색
+  useEffect(() => {
+    if (category === 0) {
+      setCategory(2 ** (tags.length - 1));
+    }
+    navigate('/search', {
+      state: {
+        search: word,
+        sort: sort,
+        category: category,
+        size: size,
+        page: 1,
+      },
+    });
+  }, [category]);
+
+  // 정렬 변경 시 검색
+  useEffect(() => {
+    navigate('/search', {
+      state: {
+        search: word,
+        sort: sort,
+        category: category,
+        size: size,
+        page: 1,
+      },
+    });
+  }, [sort]);
 
   return (
     <>
@@ -253,6 +277,30 @@ const Search = () => {
       {/* 태그 */}
       {searchMode === 'portfolio' ? null : (
         <TagContainer>
+          <Tag
+            style={
+              category === 2 ** tags.length - 1
+                ? {
+                    backgroundColor: '#e75452',
+                    color: '#fff',
+                    border: 'none',
+                  }
+                : {
+                    backgroundColor: '#fff',
+                    color: 'darkgray',
+                    border: '1px solid darkgray',
+                  }
+            }
+            onClick={() => {
+              if (category === 2 ** tags.length - 1) {
+                setCategory(2 ** (tags.length - 1));
+              } else {
+                setCategory(2 ** tags.length - 1);
+              }
+            }}
+          >
+            ALL
+          </Tag>
           {tags.map((tag, idx) => {
             return (
               <Tag
@@ -280,20 +328,30 @@ const Search = () => {
         </TagContainer>
       )}
       <DivTest>
-        {/* 필터 */}
-
-        <FilterDiv>
-          <Filter options={filterOptions} setSort={setSort} />
-        </FilterDiv>
-        {/* 검색 리스트 목록 */}
+        {/* 포켓 검색 */}
         {searchMode === 'room' && data ? (
-          <PocketSearch
-            data={data}
-            handleLike={handleLike}
-            handleDisLike={handleDisLike}
-          />
+          <>
+            {/* 필터 */}
+            <FilterDiv>
+              <Filter options={filterOptions} setSort={setSort} />
+            </FilterDiv>
+            <PocketSearch
+              data={data}
+              handleLike={handleLike}
+              handleDisLike={handleDisLike}
+            />
+          </>
         ) : null}
-        {searchMode === 'portfolio' && data ? <PortSearch /> : null}
+        {/* 포트폴리오 검색 */}
+        {searchMode === 'portfolio' && data ? (
+          <>
+            <FilterDiv>
+              <Filter options={filterOptions} setSort={setSort} />
+            </FilterDiv>
+            <PortSearch />{' '}
+          </>
+        ) : null}
+        {/* 유저 검색 */}
         {searchMode === 'user' && data ? <UserSearch /> : null}
       </DivTest>
     </>

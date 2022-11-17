@@ -112,7 +112,7 @@ export const roomLike = createAsyncThunk(
   async (roomSeq, {rejectWithValue}) => {
     try {
       const res = await http.post(`rooms/like/${roomSeq}`);
-      if (res.status === 201) return res.data;
+      if (res.status === 201) return true;
     } catch (error) {
       console.log('마이룸 좋아요 에러', error);
       return rejectWithValue(error);

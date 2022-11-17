@@ -25,7 +25,7 @@ import UserProfile from '../common/UserProfile';
 
 const PocketSearch = ({data, handleLike, handleDisLike}) => {
   // console.log(data, 123);
-  const [visible, setVisible] = useState(false); //프로필 모달 보이게 안보이게
+  const [roomModal, setRoomModal] = useState(false); //프로필 모달 보이게 안보이게
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -37,7 +37,7 @@ const PocketSearch = ({data, handleLike, handleDisLike}) => {
     const handler = event => {
       // mousedown 이벤트가 발생한 영역이 모달창이 아닐 때, 모달창 제거 처리
       if (modalRef.current && !modalRef.current.contains(event.target)) {
-        setVisible(false);
+        setRoomModal(false);
       }
     };
 
@@ -79,12 +79,11 @@ const PocketSearch = ({data, handleLike, handleDisLike}) => {
   const [userInfo, setUserInfo] = useState([]);
 
   // 특정 유저정보 조회 함수
-  // const bringUserInfo = async
-  // const getUserInfo = async userSeq => {
-  //   const {payload} = await dispatch(getUserInfo(userSeq));
-  //   setUserInfo(payload);
-  //   console.log(payload, '특정 유저정보');
-  // };
+  const bringUserInfo = async userSeq => {
+    const {payload} = await dispatch(getUserInfo(userSeq));
+    setUserInfo(payload);
+    console.log(payload, '특정 유저정보');
+  };
 
   useEffect(() => {
     getUserInfo();
@@ -117,8 +116,9 @@ const PocketSearch = ({data, handleLike, handleDisLike}) => {
               {/* 프로필 컴포넌트 */}
               <PocketUserInfoContainer ref={modalRef}>
                 <PocketUserDiv
-                  onClick={() => {
-                    setVisible(!visible);
+                  onClick={e => {
+                    setRoomModal(roomSeq);
+                    bringUserInfo(userSeq);
                   }}
                 >
                   {/* 프로필 사진 */}
@@ -133,7 +133,7 @@ const PocketSearch = ({data, handleLike, handleDisLike}) => {
                   </PocketUserImgContainer>
                   {/* 이름 */}
                   <div>{userName}</div>
-                  {visible && <UserProfile />}
+                  {roomSeq === roomModal && <UserProfile userInfo={userInfo} />}
                 </PocketUserDiv>
                 {/* 좋아요, 클릭 컴포넌트 */}
                 <LikeShowDiv>
