@@ -69,7 +69,7 @@ const Profile = () => {
 
     const json = JSON.stringify({
       name: name ? name : user.name,
-      birth : birth ? birth : null,
+      birth: birth ? birth : null,
       describe:
         describe && describe !== user.discribe ? describe : user.discribe,
       blogUrl: blogUrl ? blogUrl : null,
@@ -79,7 +79,6 @@ const Profile = () => {
     form.append('user', new Blob([json], {type: 'application/json'}));
 
     if (profilePic) form.append('profilePic', profilePic);
-
 
     // 회원정보 수정 axios
     const res = await dispatch(updateProfile(form));
@@ -102,7 +101,7 @@ const Profile = () => {
   // 파일 미리보기
   function changeImg(e) {
     setProfilePic(e.target.files[0]);
-    setPicChanged(true)
+    setPicChanged(true);
 
     const reader = new FileReader();
 

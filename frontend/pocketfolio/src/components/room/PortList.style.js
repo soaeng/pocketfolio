@@ -4,10 +4,15 @@ import {RiPlayListAddFill} from 'react-icons/ri';
 export const Container = styled.div`
   width: 100%;
   color: #333;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 `;
 
 export const Title = styled.h2`
-  margin-bottom: 1rem;
+  margin-bottom: 2rem;
 
   &::before {
     background-color: #e75452;
