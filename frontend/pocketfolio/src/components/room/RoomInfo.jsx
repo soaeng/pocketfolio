@@ -27,7 +27,7 @@ import HitDetail from './HitDetail';
 import InfoEdit from './InfoEdit';
 
 // 마이룸 상단 방정보
-const RoomInfo = ({data, sidebar, edit}) => {
+const RoomInfo = ({data, sidebar, edit, handleReload}) => {
   const user = useSelector(state => state.oauth.user);
   const dispatch = useDispatch();
 
@@ -98,7 +98,7 @@ const RoomInfo = ({data, sidebar, edit}) => {
 
   // info Edit
   const closeInfoEdit = () => {
-    setInfoEdit(false)
+    setInfoEdit(false);
   };
 
   return edit ? null : (
@@ -154,7 +154,13 @@ const RoomInfo = ({data, sidebar, edit}) => {
 
       {detail && <RoomDetail closeDetail={closeDetail} data={data} />}
       {hitDetail && <HitDetail closeHit={closeHit} data={data} />}
-      {infoEdit && <InfoEdit closeInfoEdit={closeInfoEdit} data={data} />}
+      {infoEdit && (
+        <InfoEdit
+          closeInfoEdit={closeInfoEdit}
+          data={data}
+          handleReload={handleReload}
+        />
+      )}
     </Container>
   );
 };

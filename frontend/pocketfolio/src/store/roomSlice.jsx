@@ -77,10 +77,11 @@ export const updateRoom = createAsyncThunk(
   'updateRoom',
   async (data, {rejectWithValue}) => {
     try {
-      console.log(data)
-      const res = await http.patch(`rooms/info/${data.roomSeq}`, data.data);
-      console.log(res)
-      if (res.status === 201) return res.data;
+      const res = await postAxios.patch(
+        `rooms/info/${data.roomSeq}`,
+        data.data,
+      );
+      if (res.status === 201) return true;
     } catch (error) {
       console.log('마이룸 수정 에러', error);
       return rejectWithValue(error);

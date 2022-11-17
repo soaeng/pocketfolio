@@ -7,6 +7,7 @@ import {
   CancelBox,
   CancelIcon,
   Title,
+  DivContainer,
   Div,
   Name,
   NameInput,
@@ -22,9 +23,8 @@ import {
   Btn,
 } from './InfoEdit.style';
 
-const InfoEdit = ({closeInfoEdit, data}) => {
+const InfoEdit = ({closeInfoEdit, data, handleReload}) => {
   const dispatch = useDispatch();
-  console.log(data);
 
   const [categorys, setCategorys] = useState([]);
   const [name, setName] = useState(data.room.name);
@@ -42,20 +42,26 @@ const InfoEdit = ({closeInfoEdit, data}) => {
   }
 
   async function sendData() {
+    const form = new FormData();
+
+    const json = JSON.stringify({
+      name,
+      category: category.categorySeq,
+      theme: data.room.theme,
+      isMain: isMain ? 'T' : 'F',
+      privacy: privacy ? 'O' : 'C',
+    });
+
+    form.append('room', new Blob([json], {type: 'application/json'}));
+
     const res = await dispatch(
       updateRoom({
         roomSeq: data.room.roomSeq,
-        data: {
-          room: {
-            name,
-            category: category.categorySeq,
-            theme: data.room.theme,
-            isMain: isMain ? 'T' : 'F',
-            privacy: privacy ? 'O' : 'C',
-          },
-        },
+        data: form,
       }),
     );
+
+    if (res) handleReload();
   }
 
   useEffect(() => {
@@ -69,58 +75,67 @@ const InfoEdit = ({closeInfoEdit, data}) => {
           <CancelIcon />
         </CancelBox>
         <Title>포켓 정보 수정</Title>
-        <Div>
-          <Name>포켓명</Name>
-          <NameInput
-            type="text"
-            value={name}
-            onChange={e => {
-              setName(e.target.value);
-            }}
-          />
-        </Div>
 
-        <Div className={open && 'open'}>
-          <Name>카테고리</Name>
-          <SelectBox className={open && 'open'}>
-            <Selected onClick={() => setOpen(!open)} className={open && 'open'}>
-              <SelectOption className="selected">{category.name}</SelectOption>
-              <IconDiv>{open ? <NoshowIcon /> : <ShowIcon />}</IconDiv>
-            </Selected>
+        <DivContainer>
+          <Div>
+            <Name>포켓이름</Name>
+            <NameInput
+              type="text"
+              value={name}
+              onChange={e => {
+                setName(e.target.value);
+              }}
+            />
+          </Div>
 
-            {categorys.map(
-              (item, idx) =>
-                item.categorySeq !== category.categorySeq && (
-                  <SelectOption
-                    className={!open && 'close'}
-                    onClick={() => {
-                      setCategory(item);
-                      setOpen(!open);
-                    }}
-                  >
-                    {item.name}
-                  </SelectOption>
-                ),
-            )}
-          </SelectBox>
-        </Div>
+          <Div className={open && 'open'}>
+            <Name>카테고리</Name>
+            <SelectBox className={open && 'open'}>
+              <Selected
+                onClick={() => setOpen(!open)}
+                className={open && 'open'}
+              >
+                <SelectOption className="selected">
+                  {category.name}
+                </SelectOption>
+                <IconDiv>{open ? <NoshowIcon /> : <ShowIcon />}</IconDiv>
+              </Selected>
 
-        <Div>
-          <Name>메인 설정</Name>
-          <TFBox onClick={() => setIsMain(!isMain)}>
-            {isMain ? <TIcon /> : <FIcon />}
-          </TFBox>
-        </Div>
-        <Div>
-          <Name>공개 설정</Name>
-          <TFBox onClick={() => setPrivacy(!privacy)}>
-            {privacy ? <TIcon /> : <FIcon />}
-          </TFBox>
-        </Div>
+              {categorys.map(
+                (item, idx) =>
+                  item.categorySeq !== category.categorySeq && (
+                    <SelectOption
+                      key={idx}
+                      className={!open && 'close'}
+                      onClick={() => {
+                        setCategory(item);
+                        setOpen(!open);
+                      }}
+                    >
+                      {item.name}
+                    </SelectOption>
+                  ),
+              )}
+            </SelectBox>
+          </Div>
 
-        <Div>
-          <Btn onClick={sendData}>저장</Btn>
-        </Div>
+          <Div className='tf'>
+            <Name>메인 설정</Name>
+            <TFBox onClick={() => setIsMain(!isMain)}>
+              {isMain ? <TIcon /> : <FIcon />}
+            </TFBox>
+
+            <Name className="privacy">공개 설정</Name>
+            <TFBox onClick={() => setPrivacy(!privacy)}>
+              {privacy ? <TIcon /> : <FIcon />}
+            </TFBox>
+          </Div>
+
+          <Div className="save">
+            <Btn onClick={sendData}>저장</Btn>
+          </Div>
+        </DivContainer>
+
       </Container>
     </Modal>
   );

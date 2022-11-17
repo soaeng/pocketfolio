@@ -23,6 +23,7 @@ const Room = () => {
   const [data, setData] = useState(null);
   const [nowIdx, setNowIdx] = useState(0);
   const [nowTheme, setNowTheme] = useState('');
+  const [reload, setReload] = useState(false);
   const [nowPort, setNowPort] = useState(null);
   const [arranges, setArranges] = useState(null);
   const prevArranges = useRef();
@@ -53,6 +54,12 @@ const Room = () => {
     toast.success('URL이 복사되었습니다.');
   };
 
+  // 다시 불러오기
+  const handleReload = () => {
+    setReload(!reload);
+    toast.success('포켓정보가 성공적으로 수정되었습니다.');
+  };
+
   // 방 정보 불러오기
   const getData = async () => {
     const {payload} = await dispatch(getRoomInfo(roomSeq));
@@ -63,7 +70,7 @@ const Room = () => {
 
   useEffect(() => {
     getData();
-  }, [roomSeq]);
+  }, [roomSeq, reload]);
 
   // 포커싱 중인 아이템
   const changeNowIdx = idx => {
@@ -171,7 +178,12 @@ const Room = () => {
     data && (
       <Container className={sidebar ? 'active' : ''}>
         <RoomNav sidebar={sidebar} edit={edit} />
-        <RoomInfo sidebar={sidebar} edit={edit} data={data} />
+        <RoomInfo
+          sidebar={sidebar}
+          edit={edit}
+          data={data}
+          handleReload={handleReload}
+        />
         <CanvasWrapper className={sidebar ? 'active' : ''}>
           {edit && <EditTheme nowTheme={nowTheme} changeTheme={changeTheme} />}
           <RoomCanvas
