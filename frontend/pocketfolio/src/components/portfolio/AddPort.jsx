@@ -26,7 +26,8 @@ import {Body1} from '../../styles/styles.style';
 import SaveModal from './SaveModal';
 import {registPortfolio} from '../../store/portSlice';
 import toast, {Toaster} from 'react-hot-toast';
-
+// import ReactHtmlParser from 'html-react-parser';
+ 
 const AddPort = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -340,10 +341,10 @@ const AddPort = () => {
         save={savePortFolio}
       ></SaveModal>
       {/* 포트폴리오 로우 데이터 */}
-      <div>
+      {/* <div>
         {portContent.summary}
-        {/* {ReactHtmlParser(portContent.summary)} */}
-      </div>
+        {ReactHtmlParser(portContent.summary)}
+      </div> */}
 
       {/* 유저에게 보여져야 할 포트폴리오 */}
       {/* <Viewer content={portContent.summary} /> */}

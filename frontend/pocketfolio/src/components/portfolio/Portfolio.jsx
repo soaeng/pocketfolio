@@ -43,9 +43,8 @@ const Portfolio = () => {
   const [isDelete, setIsDelete] = useState(false);
   // 포트폴리오 삭제 아이콘 of/off 변수
   const [delPortIcon, setDelPortIcon] = useState(false);
-  // 포트폴리오 삭제 후 재랜더링 위한 변수
-  const [deletedPort, setDeletedPort] = useState(false);
-
+  // 포트폴리오 삭제, 포켓 생성 후 재랜더링 위한 변수
+  const [reLander, setReLander] = useState(false);
   // 삭제 모달 개폐 변수
   const [isOpen, setIsOpen] = useState(false);
 
@@ -57,14 +56,14 @@ const Portfolio = () => {
     setOpenPockMod(!openPockMod);
   };
 
-  console.log(openPockMod)
+  
   // 포트폴리오 목록 불러오기
   useEffect(() => {
     dispatch(getMyPocket()).then(res => {
       setPortList(res.payload.data.portfolios);
       setPocketList(res.payload.data.rooms);
     });
-  }, [deletedPort]);
+  }, [reLander]);
 
   // 마이룸 삭제 아이콘 토글
   const togglePocketDel = () => {
@@ -83,6 +82,7 @@ const Portfolio = () => {
     navigate(`/port/${item.portSeq}`);
   };
 
+  // 포트폴리오 작성 페이지 이동
   const movePortCreate = () => {
     navigate('/port/create');
   };
@@ -90,7 +90,7 @@ const Portfolio = () => {
   // 해당 포트폴리오 삭제
   const deletePortHandle = seq => {
     dispatch(deletePort(seq)).then(res => {
-      setDeletedPort(!deletedPort);
+      setReLander(!reLander);
       setIsOpen(false);
       toast.success('포트폴리오가 삭제 되었습니다.');
     });
@@ -121,13 +121,15 @@ const Portfolio = () => {
       <Container>
         <CardWrapper className="myroomwrapper">
           <HeaderDiv>
-            <Text className="myrooms">나의 소중한 포켓들</Text>
+            <Text className="myrooms">소듕한 포켓들</Text>
             <BtnDiv>
               <IconDiv className="addPocketIcon">
                 <AddPocketIcon onClick={openPockModal}></AddPocketIcon>
                 <AddPocket
                   open={openPockMod}
                   close={openPockModal}
+                  reLander={reLander}
+                  setReLander={setReLander} 
                   // save={createPocket}
                 ></AddPocket>
               </IconDiv>
@@ -146,7 +148,7 @@ const Portfolio = () => {
         </CardWrapper>
         <CardWrapper>
           <HeaderDiv>
-            <Text className="portfolios">나의 소중한 포트폴리오들</Text>
+            <Text className="portfolios">소중한 포트폴리오들</Text>
             <BtnDiv>
               <IconDiv className="addPortIcon" onClick={movePortCreate}>
                 <AddPortIcon />

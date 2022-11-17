@@ -6,56 +6,72 @@ export const Wrapper = styled.div`
   flex-direction: column;
   align-items: center;
   cursor: pointer;
+  padding: 1rem;
 `;
 
 export const Item = styled.div`
   position: relative;
-  height: 15rem;
-  width: 12rem;
-  margin-right: 1rem;
-  border-radius: 1.5rem;
-  background-color: white;
+
+  /* 1안 */
+  border-radius: 1rem;
+  background-color: #fff0f0;
+  box-shadow: 0px 2px 5px 1px rgba(0, 0, 0, 0.25);
+
+
 `;
+
+export const PortDiv = styled.div`
+  
+`
 
 export const ImgDiv = styled.div`
   display: flex;
   justify-content: center;
-  height: 70%;
-  border-radius: 1.5rem 1.5rem 0 0;
+  /* height: 9rem;
+  width: 12rem; */
+  overflow: hidden;
+
+  /* 2안 */
+  /* border-radius: 1rem;
+  background-color: #fff0f0;
+  box-shadow: 0px 2px 5px 1px rgba(0, 0, 0, 0.25); */
 `;
 
 export const Thumbnail = styled.img`
-  height: 90%;
-  width: 90%;
+  max-width: 100%;
+  height: auto;
+  cursor: pointer;
 `;
 
 export const TitleDiv = styled.div`
   display: flex;
   align-items: center;
-  height: 3rem;
+  justify-content: center;
+
   font-family: bold;
-  border-bottom: 0.3px solid rgba(0, 0, 0, 0.3);
 `;
 
-export const Title = styled.div`
+export const Title = styled.p`
   font-size: 15px;
-  margin-left: 1rem;
+  padding: 10px;
+  margin: 0;
+  font-family: 'NanumSquareAcr' !important;
+  
 `;
 
 export const LikeDiv = styled.div`
   display: flex;
   justify-content: center;
-  width: 70%;
+  width: 50%;
   justify-content: space-around;
-  padding-top: 0.5rem;
-  margin: auto;
+  margin: 1rem auto;
 `;
 
 export const LikeContent = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-around;
-  width: 40%;
+  width: 30%;
 `;
 
 export const Img = styled.img`
@@ -92,9 +108,5 @@ export const Button = styled.img`
   }
 `;
 
-export const Heart = styled(RiHeart3Fill)`
-
-`
-export const Eye = styled(RiEyeLine)`
-
-`
+export const Heart = styled(RiHeart3Fill)``;
+export const Eye = styled(RiEyeLine)``;
