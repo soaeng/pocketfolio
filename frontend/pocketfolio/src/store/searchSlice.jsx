@@ -1,13 +1,16 @@
 import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
 import {http} from '../api/axios';
+import qs from 'qs';
 
 // 마이룸 목록 조회
 export const getSearch = createAsyncThunk(
   'getSearch',
-  async (data, {rejectWithValue}) => {
+  async (params, {rejectWithValue}) => {
     try {
-      const res = await http.get(`search/${data.searchMode}`, data.params);
-
+      http.paramsSerializer = param => {
+        return qs.stringify(param);
+      };
+      const res = await http.get(`search/${params.searchMode}`, params);
       if (res.status === 200) return res.data;
     } catch (error) {
       console.log('검색 조회에러', error);

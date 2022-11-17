@@ -75,6 +75,10 @@ function Main() {
     navigate('/search', {
       state: {
         search: word,
+        sort: 1,
+        category: 2047,
+        size: 20,
+        page: 1,
       },
     });
     setWord(''); //submit 후 창 비우기
