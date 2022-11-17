@@ -5,6 +5,7 @@ import {getGuestList, postGuest, delGuest} from '../../store/guestSlice';
 import GuestItem from './GuestItem';
 import {
   Container,
+  Title,
   ImgTextDiv,
   WriteForm,
   TextArea,
@@ -70,6 +71,7 @@ const GuestList = ({roomSeq, roomDto}) => {
 
   return (
     <Container>
+      <Title>방명록</Title>
       { user &&
         <WriteForm
           onSubmit={e => {

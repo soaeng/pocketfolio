@@ -1,6 +1,11 @@
 import styled from 'styled-components';
 import {H2, Body1} from '../../styles/styles.style';
 import {TbEdit, TbList, TbFiles} from 'react-icons/tb';
+import {
+  RiFileDownloadLine,
+  RiDownloadLine,
+  RiArrowLeftLine,
+} from 'react-icons/ri';
 
 export const Background = styled.div`
   width: 100vw;
@@ -10,106 +15,80 @@ export const Background = styled.div`
 export const Container = styled.div`
   display: flex;
   justify-content: center;
-  margin: 3rem auto;
+  margin: 2rem auto;
   width: 80vw;
-
-  .ck-content {
-    margin: 0;
-  }
+  /* outline: solid; */
 `;
 
 export const Content = styled.div`
   width: 70%;
-  padding-left: 2rem;
+  height: fit-content;
+  padding: 2.5rem;
+  border-radius: 10px;
+  outline: 4px solid #facbcb;
+  margin-bottom: 3rem;
+  /* min-height: 50rem; */
 `;
 
+export const Header = styled.div`
+  border-bottom: 1px solid #b9b9b9;
+`;
 export const TitleDiv = styled.div`
   display: flex;
-  border-bottom: 1px solid #b9b9b9;
-  justify-content: space-between;
+  align-items: center;
 `;
+
 export const Title = styled(H2)`
   display: flex;
   align-items: flex-end;
   margin: 0;
+  font-size: 1.5rem;
 `;
 
-export const Summary = styled(Body1)`
-  height: fit-content;
-  padding-top: 1rem;
-  width: 100%;
-  overflow: auto;
+export const HeaderBottom = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
 `;
 
 export const WriteDate = styled.p`
   margin: 0;
+  /* width: 100%; */
   display: flex;
-  align-items: flex-end;
-`;
-
-export const ThumbDiv = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  margin: auto;
-  width: 40%;
-  padding-top: 3rem;
-  overflow: hidden;
-`;
-export const ThumbNail = styled.img`
-  max-width: 100%;
-  height: auto;
-`;
-
-export const HashDiv = styled.div`
-  display: flex;
-  margin-bottom: 1rem;
-  width: 50%;
-  flex-wrap: wrap;
-`;
-
-export const Hash = styled.div`
-  padding: 10px;
-  margin-right: 1rem;
-  font-weight: bold;
-  border-radius: 10px;
-  background-color: #0091f7;
-  color: #fff;
-`;
-
-export const BottomDiv = styled.div`
-  display: flex;
-  justify-content: space-between;
-  height: 55px;
-  margin-bottom: 1rem;
+  justify-content: flex-end;
+  padding-bottom: 0.5rem;
 `;
 
 export const IconDiv = styled.div`
   display: flex;
-`;
 
-export const IconWrap = styled.div`
-  position: relative;
-  transition: all 0.3s;
-  &:hover {
-    .tooltip {
-      visibility: visible;
-    }
+  &.edit {
+    padding-right: 0.5rem;
   }
 `;
 
+export const BackIcon = styled(RiArrowLeftLine)`
+  font-size: 1.5rem;
+  padding: 0 1rem 1rem 0;
+  transition: all 0.2s;
+  color: #737373;
+  &:hover {
+    color: #000000;
+  }
+
+  cursor: pointer;
+`;
 export const EditIcon = styled(TbEdit)`
-  font-size: 50px;
-  width: 70px;
+  font-size: 25px;
+  padding-bottom: 0.5rem;
   transition: all 0.3s;
+  cursor: pointer;
   color: #f3a9a1;
   &:hover {
     color: #df7d72;
-    font-size: 53px;
   }
-  cursor: pointer;
 `;
+
 
 export const PortIcon = styled(TbList)`
   font-size: 50px;
@@ -126,16 +105,8 @@ export const PortIcon = styled(TbList)`
   cursor: pointer;
 `;
 
-export const AttachDiv = styled.div`
-  display: flex;
-`;
 
-export const AttachList = styled.div`
-  display: flex;
-  align-items: center;
-  width: 100%;
-  flex-wrap: wrap;
-`;
+
 export const Attach = styled.a`
   text-decoration: none;
   color: black;
@@ -156,30 +127,116 @@ export const Attach = styled.a`
   }
 `;
 
-export const AttachIcon = styled(TbFiles)`
-  font-size: 50px;
-  color: #ffc3c3;
+
+export const ContentDiv = styled.div`
+  position: relative;
+  width: 100%;
+  /* outline: solid; */
+  /* overflow: auto; */
+`;
+export const FileContainer = styled.div`
+  position: absolute;
+  top: 0;
+  right: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  cursor: pointer;
 `;
 
-export const ToolTip = styled.span`
-  position: absolute;
-  bottom: 3.5rem;
-  left: -3.2rem;
-  visibility: hidden;
-  width: 150px;
+export const ShowFile = styled.div`
   display: flex;
-  flex-direction: row-reverse;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+
+  background-color: #f3eed9;
+  padding: 0.5rem;
+  border-radius: 0.3rem;
 
   &:hover {
+    background-color: #dad4bc;
   }
 `;
 
-export const ToolTipText = styled.p`
-  width: fit-content;
+export const FileIcon = styled(RiFileDownloadLine)``;
+
+export const Text = styled.p`
   margin: 0;
-  font-size: 1rem;
-  background-color: #f8af87;
-  color: #fff;
-  border-radius: 6px;
-  padding: 4px 6px;
+  font-size: 0.8rem;
+  margin-left: 0.1rem;
+`;
+
+export const FileList = styled.div`
+  margin-top: 0.5rem;
+  width: 10rem;
+  padding: 0.5rem;
+  background-color: white;
+  box-shadow: 0 0 2px 2px #eeeeee;
+  border-radius: 0.3rem;
+  font-size: 0.8rem;
+`;
+
+export const FileItem = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  &:hover {
+    & .name {
+      height: auto;
+      word-break: break-all;
+    }
+  }
+
+  & + & {
+    margin-top: 0.3rem;
+  }
+`;
+
+export const FileName = styled.div`
+  width: 8.3rem;
+  height: 1rem;
+  overflow: hidden;
+  margin: 0;
+  margin-right: 2px;
+`;
+
+export const DownBox = styled.a`
+  font-size: 0.8rem;
+  width: 0.8rem;
+  height: 0.8rem;
+  color: #333333 !important;
+
+  &:hover {
+    font-size: 0.85rem;
+    color: #b0a992 !important;
+  }
+
+  &:active {
+    font-size: 0.85rem;
+    color: #b0a992 !important;
+  }
+`;
+
+export const DownIcon = styled(RiDownloadLine)``;
+
+export const Tags = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+`;
+
+export const Tag = styled.p`
+  background-color: #ffe4de;
+  padding: 0.5rem;
+  margin-top: 0.5rem;
+  border-radius: 0.3rem;
+  font-size: 0.85rem;
+
+  & + & {
+    margin-left: 0.5rem;
+  }
 `;

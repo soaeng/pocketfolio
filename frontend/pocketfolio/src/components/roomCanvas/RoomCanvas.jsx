@@ -24,7 +24,11 @@ const RoomCanvas = props => {
   const edit = props.edit;
   const theme = props.theme;
   const loadConnect = props.loadConnect;
+  const offCaptrue = props.offCaptrue;
+  const capture = props.capture;
+  const data = props.data;
   const changeNowIdx = props.changeNowIdx;
+  const changeSidebar = props.changeSidebar;
 
   return (
     <Canvas
@@ -32,7 +36,12 @@ const RoomCanvas = props => {
       raycaster={{params: {Line: {threshold: 0.15}}}}
       camera={{position: [-30, 30, 30], fov: 20}}
     >
-      {/* <Capture /> */}
+      <Capture
+        offCaptrue={offCaptrue}
+        capture={capture}
+        data={data}
+        changeSidebar
+      ={changeSidebar}/>
       <ambientLight intensity={0.5} />
       <directionalLight
         castShadow

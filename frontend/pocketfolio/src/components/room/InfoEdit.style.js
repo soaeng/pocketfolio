@@ -11,7 +11,10 @@ export const Container = styled.div`
   position: relative;
   color: #333333;
   width: 30rem;
-  /* height: 80vh; */
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
   @media screen and (max-width: 35rem) {
     width: 85vw;
@@ -20,9 +23,9 @@ export const Container = styled.div`
 
 export const CancelBox = styled.div`
   position: absolute;
-  top: -0.8rem;
+  top: 0;
   right: 0;
-  width: 1.5rem;
+  width: 1.7rem;
   aspect-ratio: 1/1;
 `;
 
@@ -37,13 +40,30 @@ export const Title = styled.h2`
   text-align: center;
 `;
 
+export const DivContainer = styled.div`
+  width: 20.3rem;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+`;
+
 export const Div = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 100%;
 
   &.open {
     align-items: flex-start;
+  }
+
+  &.save {
+    /* justify-content: end; */
+  }
+
+  &.tf {
+    width: fit-content;
   }
 
   & + & {
@@ -54,13 +74,17 @@ export const Div = styled.div`
 export const Name = styled.h4`
   margin: 0.6rem 0;
   margin-right: 1rem;
+
+  &.privacy {
+    margin-left: 2rem;
+  }
 `;
 
 export const NameInput = styled.input`
-  padding: 0.6rem;
+  padding: 0.7rem;
   border: 2px solid #ffe4de;
   border-radius: 0.3rem;
-  width: 15rem;
+  width: 14rem;
   font-size: 1rem;
 
   @media screen and (max-width: 35rem) {
@@ -74,10 +98,11 @@ export const NameInput = styled.input`
 `;
 
 export const SelectBox = styled.div`
-  padding: 0.6rem;
+  padding: 0.7rem;
   border: 2px solid #ffe4de;
   border-radius: 0.3rem;
   position: relative;
+  width: 14rem;
 
   &.open {
     border-color: #f6b9ab;
@@ -90,9 +115,9 @@ export const Selected = styled.div`
   justify-content: space-between;
 
   &.open {
-    padding-bottom: 0.6rem;
+    padding-bottom: 0.7rem;
     border-bottom: 2px solid #f6b9ab;
-    margin-bottom: 0.6rem;
+    margin-bottom: 0.7rem;
   }
 `;
 
@@ -101,7 +126,7 @@ export const SelectOption = styled.div`
   width: 9rem;
 
   & + & {
-    padding-top: 0.6rem;
+    padding-top: 0.7rem;
   }
 
   &.close {
@@ -119,6 +144,7 @@ export const SelectOption = styled.div`
 
 export const IconDiv = styled.div`
   font-size: 1.2rem;
+  height: 1.2rem;
 `;
 
 export const ShowIcon = styled(RiArrowDownSFill)``;
@@ -142,7 +168,9 @@ export const Btn = styled.div`
   border-radius: 0.5rem;
   background-color: #f6b9ab;
   color: white;
+  font-size: 1.1rem;
   font-weight: bold;
+  margin-bottom: 0.5rem;
 
   &:hover {
     background-color: #da9d8f;
