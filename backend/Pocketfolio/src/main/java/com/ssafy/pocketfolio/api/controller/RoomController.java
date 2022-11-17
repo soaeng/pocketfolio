@@ -31,6 +31,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/rooms")
 @RequiredArgsConstructor
+@CrossOrigin("*")
 @Tag(name = "RoomController", description = "마이룸 API")
 public class RoomController {
 
