@@ -40,8 +40,8 @@ const RoomCanvas = props => {
         offCaptrue={offCaptrue}
         capture={capture}
         data={data}
-        changeSidebar
-      ={changeSidebar}/>
+        changeSidebar={changeSidebar}
+      />
       <ambientLight intensity={0.5} />
       <directionalLight
         castShadow
