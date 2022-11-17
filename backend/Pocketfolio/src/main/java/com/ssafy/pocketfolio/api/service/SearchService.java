@@ -8,5 +8,7 @@ public interface SearchService {
 
     SearchRes searchPortfolio(String keyword, Integer sort, Integer size, Integer page);
 
+    SearchRes searchUser(Long myUserSeq, String keyword, Integer sort, Integer size, Integer page);
+
 
 }
