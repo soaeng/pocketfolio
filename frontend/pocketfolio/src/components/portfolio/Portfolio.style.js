@@ -35,7 +35,7 @@ export const CardWrapper = styled.div`
 
   &.myroomwrapper {
     height: fit-content;
-    
+    margin-bottom: 2rem;
   }
 `;
 export const HeaderDiv = styled.div`
