@@ -1,7 +1,13 @@
 import React, {useState, useEffect} from 'react';
 import {useNavigate} from 'react-router-dom';
 import {useDispatch, useSelector} from 'react-redux';
-import {logout, getMyFollowing, getMyFollower} from '../../store/oauthSlice';
+import {
+  logout,
+  getMyFollowing,
+  getMyFollower,
+  unfollowNumFunc,
+  followFunc,
+} from '../../store/oauthSlice';
 import {deleteAllToken} from '../../api/jwt';
 import {
   Dropdown,
@@ -21,6 +27,9 @@ import {
   FollowImg,
   FollowName,
   ScrollBox,
+  IconDiv,
+  AlreadyFollowIcon,
+  FollowIcon,
 } from './Dropdown.style';
 
 const DropDown = ({user}) => {
@@ -34,7 +43,43 @@ const DropDown = ({user}) => {
   const [followList, setFollowList] = useState([]);
   const [followingList, setFollowingList] = useState([]);
 
-  // 마이포켓 이동 => 수정 필요
+  // 팔로우
+  const handleFollow = async (e, list) => {
+    const {payload} = await dispatch(followFunc(list.userSeq));
+    setFollowingList([...followingList, {...list, followSeq: payload}]);
+    setFollowList(
+      followList.map(followListItem => {
+        if (list.userSeq === followListItem.userSeq) {
+          return {...followListItem, followSeq: payload};
+        } else {
+          return followListItem;
+        }
+      }),
+    );
+    console.log(payload, '팔로우번호');
+  };
+
+  // 언팔로우
+  const handleUnFollow = async (e, followSeq) => {
+    setFollowingList(
+      followingList.filter(
+        followListItem => followListItem.followSeq !== followSeq,
+      ),
+    );
+    setFollowList(
+      followList.map(followListItem => {
+        if (followSeq === followListItem.followSeq) {
+          return {...followListItem, followSeq: 0};
+        } else {
+          return followListItem;
+        }
+      }),
+    );
+    const {payload} = await dispatch(unfollowNumFunc(followSeq));
+    console.log(payload, '팔로우여부');
+  };
+
+  // 마이포켓 이동
   const myPocketClickHandler = () => {
     navigate('/port');
   };
@@ -88,6 +133,17 @@ const DropDown = ({user}) => {
                   }
                 ></FollowImg>
                 <FollowName>{name}</FollowName>
+                <IconDiv
+                  onClick={e => {
+                    if (followSeq !== 0) {
+                      handleUnFollow(e, followSeq);
+                    } else {
+                      handleFollow(e, userSeq);
+                    }
+                  }}
+                >
+                  {followSeq !== 0 ? <AlreadyFollowIcon /> : <FollowIcon />}
+                </IconDiv>
               </FollowListBox>
             </>
           );
@@ -112,6 +168,17 @@ const DropDown = ({user}) => {
                   }
                 ></FollowImg>
                 <FollowName>{name}</FollowName>
+                <IconDiv
+                  onClick={e => {
+                    if (followSeq !== 0) {
+                      handleUnFollow(e, followSeq);
+                    } else {
+                      handleFollow(e, list);
+                    }
+                  }}
+                >
+                  {followSeq !== 0 ? <AlreadyFollowIcon /> : <FollowIcon />}
+                </IconDiv>
               </FollowListBox>
             </>
           );
@@ -137,14 +204,14 @@ const DropDown = ({user}) => {
               setDropDownState(dropDownState === 2 ? 1 : 2);
             }}
           >
-            팔로워 | {user.followerTotal}
+            팔로워 | {followList.length}
           </FollowList1>
           <FollowList1
             onClick={() => {
               setDropDownState(dropDownState === 3 ? 1 : 3);
             }}
           >
-            팔로잉 | {user.followingTotal}
+            팔로잉 | {followingList.length}
           </FollowList1>
         </FollowList>
       </ProfileList>

@@ -33,12 +33,14 @@ export const PocketImgDiv = styled.div`
   cursor: pointer;
 
   &:hover {
-    scale: 1.2;
+    scale: 1.1;
   }
 `;
 
 export const PocketThumbnail = styled.img`
-  width: 90%;
+  width: 250px;
+  height: 250px;
+  object-fit: cover;
 `;
 
 // 프로필 컴포넌트
@@ -99,4 +101,10 @@ export const LikeShowDiv = styled.div`
 
 export const Item3 = styled.div`
   padding-right: 0.5rem;
+`;
+
+export const IconDiv = styled.div`
+  height: 100%;
+  width: 100%;
+  cursor: pointer;
 `;

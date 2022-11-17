@@ -37,6 +37,7 @@ const Items = props => {
   });
 
   return (
+    arranges &&
     <group>
       {arranges.map((arrange, idx) => (
         <Item

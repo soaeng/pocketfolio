@@ -1,166 +1,104 @@
-// styled Component
 import styled from 'styled-components';
-import {H3, Body1, Body2} from '../../styles/styles.style';
 import {AiOutlineSearch} from 'react-icons/ai';
 
-// Main Carousel
-export const Container = styled.div``;
-
-// Main Carousel Slider
-// Main Carousel 배경색 container
-export const ColorBox = styled.div`
-  z-index: -1;
-  position: absolute;
-  margin-top: 5%;
-  width: 70%;
-  height: 280px;
-  padding: 1% 0 1% 3%;
-  border-radius: 0 0 15% 0;
-  transition: all 0.5s;
-
-  @media screen and (max-width: 1024px) {
-    height: 260px;
-  }
-
-  @media screen and (max-width: 900px) {
-    height: 230px;
-  }
-
-  @media screen and (max-width: 600px) {
-    height: 180px;
-  } ;
+export const Container = styled.div`
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #333333;
 `;
 
-// carousel 전체 div
-export const Content = styled.div`
+export const InnerContainer = styled.div`
+  width: 70%;
+
+  @media screen and (max-width: 1200px) {
+    width: 80%;
+  }
+
+  @media screen and (max-width: 1000px) {
+    width: 90%;
+  }
+
+  @media screen and (max-width: 770px) {
+    width: 80%;
+  }
+`;
+
+export const TopContainer = styled.div`
+  width: 100%;
+  aspect-ratio: 13/5;
   display: flex;
-  overflow-x: auto;
-  scroll-behavior: smooth;
-  ::-webkit-scrollbar {
+  align-items: center;
+`;
+
+export const CanvasWrapper = styled.div`
+  width: 63%;
+  margin-right: 1rem;
+  height: calc(100% + 2rem);
+  border-radius: 1rem;
+  overflow: hidden;
+
+  background-color: ${props => props.color};
+
+  @media screen and (max-width: 770px) {
+    width: 100%;
+  }
+`;
+
+export const PortContainer = styled.div`
+  width: calc(37% - 2rem);
+  padding: 1rem;
+  border-radius: 1rem;
+  height: calc(100% - 8px);
+
+  border: ${props => props.color && '4px solid'};
+  border-color: ${props => props.color};
+
+  @media screen and (max-width: 770px) {
     display: none;
   }
 `;
 
-export const Item = styled.div`
-  width: 100%;
-  flex-direction: row;
-  flex: none;
+export const PortList = styled.ol`
+  list-style: none;
+  padding: 0;
 `;
 
-export const Items = styled.div`
-  margin-top: 3%;
-  display: flex;
-  justify-content: center;
-  border-radius: 0 0 15% 0;
-`;
+export const PortItem = styled.li`
+  width: calc(100% - 2rem);
+  padding: 1rem;
+  font-size: 1.2rem;
 
-export const ContentItem = styled.div`
-  padding-top: 3%;
-  padding-left: 3%;
-`;
-
-// 이미지 컨테이너
-export const ImageContainer = styled.img`
-  background-color: beige;
-  border-radius: 10px;
-  width: 60vw;
-
-  @media screen and (max-width: 1024px) {
-    width: 50vw;
+  &:hover {
+    background-color: ${props => props.color};
+    border-radius: 1rem;
   }
 `;
 
-// Move to Room Button
-export const RoomButton = styled.button`
-  z-index: 9;
-  width: 200px;
-  margin-top: 1rem;
-  padding: 0.8rem 1rem;
-  border-radius: 24px;
-  border: none;
-  background-color: #fff;
-  color: #333;
+export const Num = styled.span`
+  margin-right: 1rem;
+  font-size: 2rem;
   font-weight: bold;
-  font-size: 16px;
-  cursor: pointer;
+  color: #c3c3c3;
 `;
 
-export const RecCarouselContainer = styled.div`
-  position: relative;
+export const Name = styled.p`
+  display: inline;
+  margin: 0;
 `;
 
-// 글자 component 스타일
-export const Title = styled(H3)`
-  font-weight:bold;
-`;
-
-export const Text = styled(Body2)`
-  color: white;
-`;
-
-// Carousel 버튼
-export const CarouselNav = styled.div`
-  display: flex;
-  position: absolute;
-  flex-direction: column;
-  top: 280px;
-
-  @media screen and (max-width: 1440px) {
-    top: 280px;
-  }
-
-  @media screen and (max-width: 1024px) {
-    top: 250px;
-  }
-
-  @media screen and (max-width: 900px) {
-    top: 220px;
-  }
-
-  @media screen and (max-width: 600px) {
-    top: 180px;
-  } ;
-`;
-
-export const Text1 = styled(Body2)`
-  color: #333;
-`;
-
-// CarouselNavButton 색 변경
-export const CarouselNavButton = styled.button`
-  margin-left: 10px;
-  margin-bottom: 8px;
-  width: 5%;
-  padding-bottom: 50%;
-  border-radius: 50%;
-  border: none;
-  box-shadow: 0 0 2px gray;
-  background-color: white;
-  opacity: 80%;
-`;
-
-export const CarouselNavButtonNone = styled.button`
-  margin-left: 10px;
-  margin-bottom: 8px;
-  width: 5%;
-  padding-bottom: 50%;
-  border-radius: 50%;
-  border: none;
-  background-color: white;
-  opacity: 50%;
-`;
-
-// SearchInput
 export const SearchContainer = styled.div`
   display: flex;
   align-items: center;
   border-radius: 16px;
-  border: 0.5px solid #bbb;
-  width: 40%;
+  width: 60%;
   height: 40px;
   min-width: 200px;
   padding: 0px 30px;
+  border: 0.12rem solid #bbb;
 `;
+
 export const SearchInput = styled.input`
   width: 80%;
   height: 25px;
@@ -186,6 +124,8 @@ export const SearchIcon = styled(AiOutlineSearch)`
 `;
 
 export const SearchDiv = styled.div`
-display:flex;
-justify-content:center;
-margin-top:5%`
+  display: flex;
+  justify-content: center;
+  margin: 2rem 0;
+  width: 100%;
+`;

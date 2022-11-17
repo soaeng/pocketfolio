@@ -7,14 +7,9 @@ import {
   ImgDiv,
   TitleDiv,
   Title,
-  LikeDiv,
-  LikeContent,
   Thumbnail,
-  Count,
   IconDiv,
   DeleteIcon,
-  Heart,
-  Eye,
 } from './Card.style';
 import DeleteModal from './DeleteModal';
 
@@ -50,16 +45,6 @@ const Card = props => {
           <TitleDiv>
             <Title>{pocketData.name}</Title>
           </TitleDiv>
-          {/* <LikeDiv>
-            <LikeContent>
-              <Heart />
-              <Count>{pocketData.like}</Count>
-            </LikeContent>
-            <LikeContent>
-              <Eye />
-              <Count>{pocketData.hit}</Count>
-            </LikeContent>
-          </LikeDiv>  */}
         </PortDiv>
       </Item>
       {isOpen && (

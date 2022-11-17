@@ -1,6 +1,22 @@
 import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
 import {http, postAxios} from '../api/axios';
 
+// 메인페이지 데이터 조회
+export const getMain = createAsyncThunk(
+  'getMain',
+  async (data, {rejectWithValue}) => {
+    try {
+      const res = await http.get(`main`);
+      console.log(res)
+      if (res.status === 200) return res.data;
+    } catch (error) {
+      console.log('마이룸 목록 조회에러', error);
+      return rejectWithValue(error);
+    }
+  },
+);
+
+
 // 마이룸 목록 조회
 export const getRoomList = createAsyncThunk(
   'getRoomList',
@@ -112,7 +128,7 @@ export const roomLike = createAsyncThunk(
   async (roomSeq, {rejectWithValue}) => {
     try {
       const res = await http.post(`rooms/like/${roomSeq}`);
-      if (res.status === 201) return res.data;
+      if (res.status === 201) return true;
     } catch (error) {
       console.log('마이룸 좋아요 에러', error);
       return rejectWithValue(error);

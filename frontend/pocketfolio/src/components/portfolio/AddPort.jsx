@@ -1,3 +1,4 @@
+// AddPort
 import React, {useState} from 'react';
 import {useDispatch} from 'react-redux';
 import {useNavigate} from 'react-router-dom';
@@ -8,6 +9,7 @@ import {
   ContentDiv,
   Title,
   BottomBox,
+  AttachWrap,
   InputDiv,
   HashInput,
   HashOutter,
@@ -24,10 +26,8 @@ import Nav from '../common/Nav';
 import Editor from './Editor';
 import {Body1} from '../../styles/styles.style';
 import SaveModal from './SaveModal';
-import {registPortfolio} from '../../store/portSlice';
 import toast, {Toaster} from 'react-hot-toast';
-// import ReactHtmlParser from 'html-react-parser';
- 
+
 const AddPort = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -69,11 +69,24 @@ const AddPort = () => {
 
   // 해시태그 입력창에서 엔터 눌렀을 때,
   const onKeyUp = e => {
-    // 해시태그 배열에 추가 후 입력 창 초기화 (공백값 제외)
-    if (e.keyCode === 13 && e.target.value.trim() !== '') {
-      setHashArr(hashArr => [...hashArr, hashtag]);
+    const hashInput = e.target.value;
 
-      setHashtag('');
+    // 해시태그 배열에 추가 후 입력 창 초기화
+    // 빈문자, 공백, 특수문자 입력 불가
+    if (e.keyCode === 13 && hashInput.trim() !== '') {
+      // 특수문자, 공백 정규식
+      const special = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/gi;
+      const space = /\s/g;
+
+      if (special.test(hashInput) || space.test(hashInput)) {
+        toast.error('공백 및 특수문자 입력 불가', {
+          position: 'bottom-left',
+          duration: 2000,
+        });
+      } else {
+        setHashArr(hashArr => [...hashArr, hashtag]);
+        setHashtag('');
+      }
     }
   };
 
@@ -106,11 +119,6 @@ const AddPort = () => {
     if (e.target.files[0] !== undefined) {
       setAttachList(attachList => [...attachList, e.target.files[0]]);
     }
-    // const formData = new FormData()
-    // formData.append('file', e.target.files[0])
-    // for (let value of formData.values()) {
-    //   console.log(value);
-    // }
   };
 
   // 파일 첨부 취소
@@ -198,12 +206,12 @@ const AddPort = () => {
     }
     form.append('thumbnail', thumbNail);
     compareImgList();
-    
+
     const move = setTimeout(() => {
       navigate(`/port`);
     }, 1500);
 
-    dispatch(registPortfolio(form))
+    dispatch(toast.promise.registPortfolio(form))
       .unwrap()
       .then(res => {
         closeModal();
@@ -211,14 +219,6 @@ const AddPort = () => {
         move();
       });
   };
-
-  // 태그가 적용된 뷰어
-  const Viewer = ({content}) => (
-    <div
-      className="ck-content"
-      dangerouslySetInnerHTML={{__html: content}}
-    ></div>
-  );
 
   return (
     <Background>
@@ -239,7 +239,7 @@ const AddPort = () => {
       />
       <Wrapper className="wrapper">
         <ContentDiv>
-          <Label>제목</Label>
+          {/* <Label>제목</Label> */}
           <Title
             autoComplete="off"
             placeholder="포트폴리오 제목"
@@ -249,7 +249,7 @@ const AddPort = () => {
         </ContentDiv>
 
         <ContentDiv>
-          <Label>본문</Label>
+          {/* <Label>본문</Label> */}
           <Editor
             portContent={portContent}
             setPortContent={setPortContent}
@@ -280,10 +280,12 @@ const AddPort = () => {
           </BottomBox>
 
           <BottomBox className="attachWrap">
-            <Label className="attachLabel">파일첨부</Label>
-            <IconDiv>
-              <Add onClick={handleButtonClick}></Add>
-            </IconDiv>
+            <AttachWrap>
+              <Label className="attachLabel">파일첨부</Label>
+              <IconDiv>
+                <Add onClick={handleButtonClick}></Add>
+              </IconDiv>
+            </AttachWrap>
             <input
               type="file"
               ref={fileInput}
@@ -304,10 +306,12 @@ const AddPort = () => {
           </BottomBox>
 
           <BottomBox>
-            <Label>썸네일</Label>
-            <IconDiv>
-              <Add onClick={thumbButtonClick}></Add>
-            </IconDiv>
+            <AttachWrap>
+              <Label>썸네일</Label>
+              <IconDiv>
+                <Add onClick={thumbButtonClick}></Add>
+              </IconDiv>
+            </AttachWrap>
             <input
               type="file"
               ref={thumbNailInput}
@@ -326,6 +330,7 @@ const AddPort = () => {
           </BottomBox>
         </ContentDiv>
       </Wrapper>
+
       <BtnDiv>
         <StyledBtn className="cancel" onClick={clickCancel}>
           <Body1>취소</Body1>

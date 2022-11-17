@@ -108,11 +108,26 @@ const PortfolioEdit = () => {
 
   // 해시태그 입력창에서 엔터 눌렀을 때,
   const onKeyUp = e => {
-    // 해시태그 배열에 추가 후 입력 창 초기화 (공백값 제외)
-    if (e.keyCode === 13 && e.target.value.trim() !== '') {
-      setHashArr(hashArr => [...hashArr, hashtag]);
+    const hashInput = e.target.value;
 
-      setHashtag('');
+    /// 해시태그 배열에 추가 후 입력 창 초기화
+    // 빈문자, 공백, 특수문자 입력 불가
+    if (e.keyCode === 13 && hashInput.trim() !== '') {
+      // 특수문자, 공백 정규식
+      const special = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/gi;
+      const space = /\s/g;
+      
+      if (special.test(hashInput) || space.test(hashInput)) {
+ 
+        toast.error('공백 및 특수문자 입력 불가', {
+          position: 'bottom-left',
+          duration: 2000,
+        });
+       
+      } else {
+        setHashArr(hashArr => [...hashArr, hashtag]);
+        setHashtag('');
+      }
     }
   };
 
@@ -227,8 +242,6 @@ const PortfolioEdit = () => {
     }
   };
 
-  console.log('업로드 기록',uploadImg, '최종등록', resultImg)
-  
 
   // 포트폴리오 제출 함수
   const savePortFolio = () => {

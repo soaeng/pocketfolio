@@ -4,6 +4,8 @@ import {
   RiHomeSmileLine,
   RiLoginCircleLine,
   RiContactsLine,
+  RiUserFollowFill,
+  RiUserAddLine,
 } from 'react-icons/ri';
 
 // 드롭다운
@@ -138,4 +140,20 @@ export const ScrollBox = styled.div`
     background-color: #ffd8d7;
     border-radius: 0.2rem;
   }
+`;
+
+export const FollowIcon = styled(RiUserAddLine)`
+  width: 100%;
+  height: 100%;
+`;
+
+export const AlreadyFollowIcon = styled(RiUserFollowFill)`
+  width: 100%;
+  height: 100%;
+`;
+
+export const IconDiv = styled.div`
+  cursor: pointer;
+  width: 1.3rem;
+  height: 1.3rem;
 `;

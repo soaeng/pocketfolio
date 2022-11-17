@@ -104,6 +104,11 @@ export const DivTest = styled.div`
   flex-direction: column;
 `;
 
+export const Tabs = styled.div`
+  height: 100%;
+  min-width: 150px;
+`;
+
 export const Tab = styled(Body3)`
   display: flex;
   justify-content: center;
@@ -122,14 +127,14 @@ export const Tab = styled(Body3)`
   }
 
   background-color: ${props => {
-    return props.searchMode === props.children ? '#e75452' : '#fff';
+    return props.searchMode === props.name ? '#e75452' : '#fff';
   }};
 
   border: ${props => {
-    return props.searchMode === props.children ? 'none' : '1px solid #e75452';
+    return props.searchMode === props.name ? 'none' : '1px solid #e75452';
   }};
 
   color: ${props => {
-    return props.searchMode === props.children ? '#fff' : '#e75452';
+    return props.searchMode === props.name ? '#fff' : '#e75452';
   }};
 `;
