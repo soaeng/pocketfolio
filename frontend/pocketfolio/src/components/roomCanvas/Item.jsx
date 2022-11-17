@@ -23,6 +23,8 @@ const Item = props => {
   const handleDel = props.handleDel;
   const loadConnect = props.loadConnect;
   const changeNowIdx = props.changeNowIdx;
+  const openPortDetail = props.openPortDetail;
+  const setSidebar = props.setSidebar;
 
   const {nodes, materials} = useGLTF(arrange.item.asset);
   const _materials = new MeshStandardMaterial(
@@ -77,6 +79,33 @@ const Item = props => {
   };
 
   useCursor(hovered);
+
+  const meshProps = {
+    'material-color': hovered && !selected ? 'lightgray' : 'white',
+    onPointerOver: e => !selected && (setHovered(true), e.stopPropagation()),
+    onPointerOut: () => setHovered(false),
+    onClick: e => {
+      if (e.object !== selectedMesh) {
+        e.stopPropagation();
+        setSelectedMesh(e.object);
+        setCntEnabled(false);
+        changeNowIdx(idx);
+        if (arrange.portSeq && !edit) {
+          openPortDetail(arrange.portSeq);
+        }
+      }
+    },
+    onPointerMissed: e => {
+      if (e.button === 0) {
+        if (!edit) {
+          cntRef.current.enabled = true;
+          api.refresh(boundaryRef.current).clip().fit();
+          setSelectedMesh('');
+          setSidebar('');
+        }
+      }
+    },
+  };
   return (
     <PivotControls
       anchor={[1, 2, -1]}
@@ -109,33 +138,11 @@ const Item = props => {
         ref={ref}
         raycast={meshBounds}
         castShadow
-        {...props}
         geometry={nodes[arrange.item.nameEng].geometry}
         material={_materials}
         rotation={[0, arrange.rotation, 0]}
         dispose={null}
-        material-color={hovered && !selected ? 'lightgray' : 'white'}
-        onPointerOver={e =>
-          !selected && (setHovered(true), e.stopPropagation())
-        }
-        onPointerOut={() => setHovered(false)}
-        onClick={e => {
-          if (e.object !== selectedMesh) {
-            e.stopPropagation();
-            setSelectedMesh(e.object);
-            setCntEnabled(false);
-            changeNowIdx(idx);
-          }
-        }}
-        onPointerMissed={e => {
-          if (e.button === 0) {
-            if (!edit) {
-              cntRef.current.enabled = true;
-              api.refresh(boundaryRef.current).clip().fit();
-              setSelectedMesh('');
-            }
-          }
-        }}
+        {...(edit || arrange.portSeq ? {...meshProps} : {})}
       />
     </PivotControls>
   );

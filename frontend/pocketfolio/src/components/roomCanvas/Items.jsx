@@ -15,16 +15,18 @@ const Items = props => {
   const arranges = props.arranges;
   const loadConnect = props.loadConnect;
   const changeNowIdx = props.changeNowIdx;
+  const openPortDetail = props.openPortDetail;
+  const setSidebar = props.setSidebar;
 
   useEffect(() => {
-    setSelectedMesh(false);
+    setSelectedMesh('');
     api.refresh(boundaryRef.current).clip().fit();
   }, [edit, api]);
 
   useFrame((state, dt) => {
     if (selectedMesh) {
       if (!edit) {
-        cntRef.current.enabled = false;
+        cntRef.current.enabled = '';
         cntRef.current.setAzimuthalAngle(selectedMesh.rotation._y);
         cntRef.current.setPolarAngle(Math.PI / 2);
         api.refresh(selectedMesh).clip().fit();
@@ -39,7 +41,7 @@ const Items = props => {
     <group>
       {arranges.map((arrange, idx) => (
         <Item
-          key={arrange.nameEng + idx}
+          key={idx}
           selectedMesh={selectedMesh}
           setSelectedMesh={setSelectedMesh}
           boundaryRef={boundaryRef}
@@ -52,6 +54,8 @@ const Items = props => {
           idx={idx}
           loadConnect={loadConnect}
           changeNowIdx={changeNowIdx}
+          openPortDetail={openPortDetail}
+          setSidebar={setSidebar}
         />
       ))}
     </group>

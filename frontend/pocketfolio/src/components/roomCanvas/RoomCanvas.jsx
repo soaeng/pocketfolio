@@ -28,6 +28,8 @@ const RoomCanvas = props => {
   const capture = props.capture;
   const data = props.data;
   const changeNowIdx = props.changeNowIdx;
+  const openPortDetail = props.openPortDetail;
+  const setSidebar = props.setSidebar;
   const changeSidebar = props.changeSidebar;
 
   return (
@@ -73,6 +75,8 @@ const RoomCanvas = props => {
           handleDel={handleDel}
           loadConnect={loadConnect}
           changeNowIdx={changeNowIdx}
+          openPortDetail={openPortDetail}
+          setSidebar={setSidebar}
         />
       </Theme>
 

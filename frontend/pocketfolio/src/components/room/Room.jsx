@@ -204,6 +204,8 @@ const Room = () => {
             handleDel={handleDel}
             loadConnect={loadConnect}
             changeNowIdx={changeNowIdx}
+            openPortDetail={openPortDetail}
+            setSidebar={setSidebar}
             data={data}
             capture={capture}
             offCaptrue={offCaptrue}
