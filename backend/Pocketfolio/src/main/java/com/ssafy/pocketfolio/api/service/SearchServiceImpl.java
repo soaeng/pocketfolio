@@ -3,9 +3,11 @@ package com.ssafy.pocketfolio.api.service;
 import com.ssafy.pocketfolio.api.dto.response.SearchPortfolioListRes;
 import com.ssafy.pocketfolio.api.dto.response.SearchRes;
 import com.ssafy.pocketfolio.api.dto.response.SearchRoomListRes;
+import com.ssafy.pocketfolio.api.dto.response.SearchUserListRes;
 import com.ssafy.pocketfolio.db.repository.SearchRepository;
 import com.ssafy.pocketfolio.db.view.SearchPortfolioListView;
 import com.ssafy.pocketfolio.db.view.SearchRoomListView;
+import com.ssafy.pocketfolio.db.view.SearchUserListView;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
@@ -145,6 +147,47 @@ public class SearchServiceImpl implements SearchService {
 
         List<SearchPortfolioListRes> list = new ArrayList<>();
         viewPage.getContent().forEach(e -> list.add(new SearchPortfolioListRes(e)));
+
+        result = new SearchRes(list, viewPage.getTotalPages(), viewPage.getTotalElements());
+
+        return result;
+    }
+
+    @Override
+    public SearchRes searchUser(Long myUserSeq, String keyword, Integer sort, Integer size, Integer page) {
+        SearchRes result;
+
+        if (myUserSeq == null) {
+            myUserSeq = 0L;
+        }
+
+        if (keyword == null || keyword.isEmpty()) { // QueryDSL로 바꾸면 "like %%" 자체를 없애고 검색
+            keyword = ""; // like %%
+        }
+
+        if (sort == null || sort < 1 || sort > SORT_USER_NUM_MAX) {
+            sort = SORT_USER_BY_FOLLOWER; // default
+        }
+
+        if (size == null || size < 1) {
+            size = SEARCH_DEFAULT_SIZE;
+        }
+
+        if (page == null || page < 1) {
+            page = 1;
+        }
+        page--;
+
+        Pageable pageable = PageRequest.of(page, size);
+        Page<SearchUserListView> viewPage;
+        switch (sort) {
+            default: // SORT_USER_BY_FOLLOWER
+                viewPage = searchRepository.searchUserOrderByFollower(myUserSeq, keyword, pageable);
+                break;
+        }
+
+        List<SearchUserListRes> list = new ArrayList<>();
+        viewPage.getContent().forEach(e -> list.add(new SearchUserListRes(e)));
 
         result = new SearchRes(list, viewPage.getTotalPages(), viewPage.getTotalElements());
 

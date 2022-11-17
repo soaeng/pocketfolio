@@ -3,6 +3,7 @@ package com.ssafy.pocketfolio.db.repository;
 import com.ssafy.pocketfolio.db.entity.Room;
 import com.ssafy.pocketfolio.db.view.SearchPortfolioListView;
 import com.ssafy.pocketfolio.db.view.SearchRoomListView;
+import com.ssafy.pocketfolio.db.view.SearchUserListView;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -100,9 +101,16 @@ public interface SearchRepository extends JpaRepository<Room, Long> {
     // 포트폴리오 검색: 끝
 
     // 유저 검색: 시작
-
-
-
+    @Query(value = "select u.user_seq as userSeq, u.name, u.profile_pic as profilePic, u.describe, " +
+            "(select count(*) from follow where user_to = u.user_seq) as followerTotal, " +
+            "(select count(*) from follow where user_from = u.user_seq) as followingTotal, " +
+            "(select count(*) from follow where user_from = :myUserSeq and user_to = u.user_seq) as hasFollowed " +
+            "from user u " +
+            "where u.name like %:keyword% " +
+            "order by followerTotal desc",
+            countQuery = "select count(*) from user u where u.name like %:keyword% and :myUserSeq = :myUserSeq",
+            nativeQuery = true)
+    Page<SearchUserListView> searchUserOrderByFollower(@Param("myUserSeq") Long myUserSeq, @Param("keyword") String keyword, Pageable pageable);
     // 유저 검색: 끝
 
     // 포켓 검색 All Category 따로: 시작
