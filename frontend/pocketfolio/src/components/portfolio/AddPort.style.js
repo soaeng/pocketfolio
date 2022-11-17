@@ -65,14 +65,15 @@ export const Header = styled.div`
 
 export const Label = styled.div`
   font-weight: bold;
-  margin-bottom: 0.5rem;
-
+  width: fit-content;
+  display: flex;
+  align-items: center;
   &.attachLabel {
-    /* margin: 0; */
   }
 `;
 
 export const ContentDiv = styled.div`
+  width: 100%;
   &.bottom {
     display: flex;
   }
@@ -80,28 +81,20 @@ export const ContentDiv = styled.div`
 `;
 
 export const Title = styled.input`
-  width: 98%;
+  width: 100%;
   height: 2rem;
-  font-size: 1rem;
   border: 0.5px solid #bababa;
   border-radius: 0.5rem;
-  padding: 0.5rem;
-`;
-
-export const Img = styled.img`
-  &.pencil {
-    width: 30px;
-    height: 29px;
-    padding: 11px;
-    background-color: #d9d9d9;
-    border-radius: 0.5rem 0 0 0.5rem;
-  }
-
-  &.hashtag {
-    width: 30px;
-    height: 29px;
+  padding: 0.3rem 0;
+  /* border: 0.5px solid #ffbcbc; */
+    :focus {
+      outline: 0.5px solid #fcb4b4;
+    }
+  ::placeholder {
+    padding: 1rem;
   }
 `;
+
 
 export const InputDiv = styled.div`
   display: flex;
@@ -142,23 +135,25 @@ export const BtnDiv = styled.div`
   display: flex;
   justify-content: flex-end;
   width: 60%;
+  padding-bottom: 2rem;
 `;
 
 export const StyledBtn = styled.button`
   p {
     margin: 0;
+    font-size: 1rem;
   }
   &.cancel {
-    width: 6rem;
-    height: 2.8rem;
+    width: 5rem;
+    height: 2.5rem;
     background-color: rgba(255, 255, 255, 0.08);
     box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.3),
       0px 1px 3px 1px rgba(0, 0, 0, 0.15);
     border: 0;
     border-radius: 100px;
     color: #e75452;
-    font-weight: 1000;
-    font-size: 20px;
+    font-weight: 700;
+    font-size: 10px;
     cursor: pointer;
 
     &:hover {
@@ -167,8 +162,8 @@ export const StyledBtn = styled.button`
   }
 
   &.save {
-    width: 6rem;
-    height: 2.8rem;
+    width: 5rem;
+    height: 2.5rem;
     margin-left: 1rem;
     background-color: #e75452;
     box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.3),
@@ -194,6 +189,13 @@ export const BottomBox = styled.div`
   display: flex;
   flex-direction: column;
   width: 20rem;
+  &.hashWrap {
+    width: 30%;
+  }
+`;
+
+export const AttachWrap = styled.div`
+  display: flex;
 `;
 
 export const FileIcon = styled(RiFileAddLine)`
@@ -237,8 +239,12 @@ export const Cancel = styled(RiCloseLine)`
 `;
 
 export const Add = styled(RiAddCircleLine)`
-  font-size: 25px;
-  color: #e75452;
-  /* margin-bottom: 0.5rem; */
+  font-size: 18px;
+  padding-left: 1rem;
+  color: #fa8f8d;
+  transition: all 0.3s;
+  &:hover {
+    color: #e75452;
+  }
   cursor: pointer;
 `;
