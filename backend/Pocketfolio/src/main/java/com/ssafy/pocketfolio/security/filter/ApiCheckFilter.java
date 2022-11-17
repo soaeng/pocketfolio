@@ -39,9 +39,11 @@ public class ApiCheckFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
         log.info("REQUESTURI: " + request.getRequestURI());
-        log.info("this uri need token: " + needToken(request));
 
-        if (needToken(request)) {
+        boolean isNeedToken = needToken(request);
+        log.info("this uri need token: " + isNeedToken);
+
+        if (isNeedToken) {
 
             log.info("ApiCheckFilter.................................................");
 

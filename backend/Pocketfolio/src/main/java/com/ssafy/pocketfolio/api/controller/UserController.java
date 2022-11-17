@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 
 @Log4j2
 @RestController
@@ -75,29 +74,6 @@ public class UserController {
                 log.error("사용 불가능 토큰");
                 status = HttpStatus.FORBIDDEN;
             }
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            status = HttpStatus.INTERNAL_SERVER_ERROR;
-        }
-
-        return new ResponseEntity<>(result, status);
-    }
-
-    @Operation(summary = "회원 검색", description = "회원 리스트 검색", responses = { // TODO: 회원 검색
-            @ApiResponse(responseCode = "200", description = "회원 리스트 검색 성공", content = @Content(schema = @Schema(implementation = UserRes.class))),
-            @ApiResponse(responseCode = "404", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = UserRes.class))),
-            @ApiResponse(responseCode = "500", description = "서버 에러", content = @Content(schema = @Schema(implementation = UserRes.class)))
-    })
-    @GetMapping("/search")
-    public ResponseEntity<List<UserRes>> findUserList(@RequestParam String type, @RequestParam String keyword, @RequestParam String sort) {
-        log.debug("Controller: findUserList()");
-        HttpStatus status;
-
-        List<UserRes> result = null;
-
-        try {
-            result = userService.findUserList(type, keyword, sort);
-            status = HttpStatus.OK;
         } catch (Exception e) {
             log.error(e.getMessage());
             status = HttpStatus.INTERNAL_SERVER_ERROR;
@@ -169,55 +145,32 @@ public class UserController {
         return new ResponseEntity<>(result, status);
     }
 
-//    @Operation(summary = "회원가입 (redirect)", description = "여기로 요청하는 게 아니라 \"/api/oauth2/authorization/google\"로 요청해야 함", responses = {
-//            @ApiResponse(responseCode = "201", description = "회원 정보 수정 성공", content = @Content(schema = @Schema(implementation = LoginRes.class))),
-//            @ApiResponse(responseCode = "404", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = LoginRes.class))),
-//            @ApiResponse(responseCode = "500", description = "서버 에러", content = @Content(schema = @Schema(implementation = LoginRes.class)))
+//    @Operation(summary = "토큰 재발급", description = "리프레쉬 토큰을 이용하여 액세스 토큰 재발급", responses = {
+//            @ApiResponse(responseCode = "200", description = "회원 정보 조회 성공", content = @Content(schema = @Schema(implementation = String.class))),
+//            @ApiResponse(responseCode = "403", description = "사용 불가능 토큰", content = @Content(schema = @Schema(implementation = String.class))),
+//            @ApiResponse(responseCode = "500", description = "서버 에러", content = @Content(schema = @Schema(implementation = String.class)))
 //    })
-//    @GetMapping("/oauth/signup") // redirect from social login
-//    public ResponseEntity<LoginRes> signUp(@RequestParam String accessToken, @RequestParam String refreshToken) {
-//        log.info("Controller: signUp() -- redirect --");
-//
+//    @GetMapping("/refresh")
+//    public ResponseEntity<String> refreshToken(HttpServletRequest request) {
+//        log.debug("Controller: refreshToken()");
 //        HttpStatus status;
-//        LoginRes result = new LoginRes();
+//
+//        String newToken = null;
 //
 //        try {
-//            if (accessToken != null && !accessToken.isEmpty() && refreshToken != null && !refreshToken.isEmpty()) {
-//                result = new LoginRes(accessToken, refreshToken);
-//                status = HttpStatus.CREATED;
+//            long userSeq = (Long) request.getAttribute("userSeq");
+//            if (userSeq > 0) {
+//                result = JWTUtil
+//                status = HttpStatus.OK;
 //            } else {
-//                log.error("토큰 발급 실패");
-//                status = HttpStatus.INTERNAL_SERVER_ERROR;
+//                log.error("사용 불가능 토큰");
+//                status = HttpStatus.FORBIDDEN;
 //            }
 //        } catch (Exception e) {
+//            log.error(e.getMessage());
 //            status = HttpStatus.INTERNAL_SERVER_ERROR;
 //        }
-//        return new ResponseEntity<>(result, status);
-//    }
 //
-//    @Operation(summary = "로그인 (redirect)", description = "여기로 요청하는 게 아니라 \"/api/oauth2/authorization/google\"로 요청해야 함", responses = {
-//            @ApiResponse(responseCode = "201", description = "회원 정보 수정 성공", content = @Content(schema = @Schema(implementation = LoginRes.class))),
-//            @ApiResponse(responseCode = "404", description = "존재하지 않는 리소스 접근", content = @Content(schema = @Schema(implementation = LoginRes.class))),
-//            @ApiResponse(responseCode = "500", description = "서버 에러", content = @Content(schema = @Schema(implementation = LoginRes.class)))
-//    })
-//    @GetMapping("/oauth/login") // redirect from social login
-//    public ResponseEntity<LoginRes> login(@RequestParam String accessToken, @RequestParam String refreshToken) {
-//        log.info("Controller: login() -- redirect --");
-//
-//        HttpStatus status;
-//        LoginRes result = new LoginRes();
-//
-//        try {
-//            if (accessToken != null && !accessToken.isEmpty() && refreshToken != null && !refreshToken.isEmpty()) {
-//                result = new LoginRes(accessToken, refreshToken);
-//                status = HttpStatus.CREATED;
-//            } else {
-//                log.error("토큰 발급 실패");
-//                status = HttpStatus.INTERNAL_SERVER_ERROR;
-//            }
-//        } catch (Exception e) {
-//            status = HttpStatus.INTERNAL_SERVER_ERROR;
-//        }
 //        return new ResponseEntity<>(result, status);
 //    }
 
