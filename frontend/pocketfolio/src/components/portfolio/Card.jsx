@@ -11,7 +11,8 @@ import {
   LikeContent,
   Thumbnail,
   Count,
-  Button,
+  IconDiv,
+  DeleteIcon,
   Heart,
   Eye,
 } from './Card.style';
@@ -32,11 +33,9 @@ const Card = props => {
   return (
     <Wrapper>
       <Item>
-        <Button
-          className={isDelete ? 'delete' : ''}
-          onClick={openModal}
-          src={process.env.PUBLIC_URL + '/assets/images/minus.png'}
-        ></Button>
+        <IconDiv className={isDelete ? 'delete' : ''} onClick={openModal}>
+          <DeleteIcon></DeleteIcon>
+        </IconDiv>
 
         <PortDiv onClick={moveMyRoom}>
           <ImgDiv>

@@ -1,6 +1,6 @@
 import {useParams} from 'react-router-dom';
 import {useEffect, useState} from 'react';
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch} from 'react-redux';
 import {useNavigate} from 'react-router-dom';
 import {getportDetail} from '../../store/portSlice';
 import Nav from '../common/Nav';
@@ -9,55 +9,39 @@ import {
   Background,
   Container,
   Content,
+  Header,
   TitleDiv,
   Title,
+  HeaderBottom,
   WriteDate,
-  Summary,
-  ThumbDiv,
-  ThumbNail,
-  HashDiv,
-  Hash,
-  BottomDiv,
   IconDiv,
-  IconWrap,
+  BackIcon,
   EditIcon,
-  PortIcon,
-  AttachDiv,
-  AttachList,
-  Attach,
-  AttachIcon,
-  ToolTip,
-  ToolTipText,
+  FileContainer,
+  ShowFile,
+  FileIcon,
+  Text,
+  FileList,
+  FileItem,
+  FileName,
+  DownBox,
+  DownIcon,
+  ContentDiv,
+  Tags,
+  Tag,
 } from './PortDetail.style';
 
 const PortDetail = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  // 유저 정보 가져오기
-  const user = useSelector(state => state.oauth.user);
   // portSeq
   const params = useParams();
   const port_id = parseInt(params.port_id);
 
   // 포트폴리오 내용
   const [portDetail, setPortDetail] = useState({});
-
   // 작성일
   const [createDate, setCreateDate] = useState('');
-
-  // 포트폴리오 본문 파싱
-  const Viewer = ({content}) => (
-    <div>
-      <ThumbDiv>
-        <ThumbNail src={portDetail.thumbnail}></ThumbNail>
-        <p>썸네일</p>
-      </ThumbDiv>
-      <Summary
-        className="ck-content"
-        dangerouslySetInnerHTML={{__html: content}}
-      ></Summary>
-    </div>
-  );
 
   // 포트폴리오 상세 내용 조회
   useEffect(() => {
@@ -81,61 +65,62 @@ const PortDetail = () => {
   const movePortList = () => {
     navigate('/port');
   };
+
+  const [showFiles, setShowFiles] = useState(false);
+  console.log(portDetail.summary);
   return (
     <Background>
       <Nav></Nav>
       <Container>
         <Content>
-          <TitleDiv>
-            <Title>{portDetail.name}</Title>
-            <WriteDate>수정일 : {createDate}</WriteDate>
-          </TitleDiv>
-          <div className="뷰어">
-            <Viewer content={portDetail.summary}>
-              <span>안녕</span>
-            </Viewer>
-          </div>
-          <HashDiv>
-            {portDetail.tags !== undefined
-              ? portDetail.tags.map((item, idx) => (
-                  <Hash key={idx}># {item}</Hash>
-                ))
-              : null}
-          </HashDiv>
-          <BottomDiv>
-            <AttachDiv>
-              <IconDiv>
-                <AttachIcon></AttachIcon>
+          <Header>
+            <IconDiv>
+              <BackIcon onClick={movePortList}></BackIcon>
+            </IconDiv>
+            <TitleDiv>
+              <Title>{portDetail.name}</Title>
+            </TitleDiv>
+            <HeaderBottom>
+              <IconDiv onClick={moveEdit} className='edit'>
+                <EditIcon></EditIcon>
               </IconDiv>
-              <AttachList>
-                {portDetail.urls !== undefined ? (
-                  portDetail.urls.map((item, idx) => (
-                    <Attach href={item.url} key={idx}>
-                      {item.name}
-                    </Attach>
-                  ))
-                ) : (
-                  <Attach>첨부파일 없음</Attach>
+              <WriteDate>수정일 : {createDate}</WriteDate>
+            </HeaderBottom>
+          </Header>
+
+          <ContentDiv>
+            <div dangerouslySetInnerHTML={{__html: portDetail.summary}}></div>
+            {portDetail.urls && portDetail.urls.length && (
+              <FileContainer>
+                <ShowFile onClick={() => setShowFiles(!showFiles)}>
+                  <IconDiv>
+                    <FileIcon />
+                  </IconDiv>
+                  <Text>첨부파일</Text>
+                </ShowFile>
+                {showFiles && (
+                  <FileList>
+                    {portDetail.urls.map((url, idx) => (
+                      <FileItem>
+                        <FileName className="name">{url.name}</FileName>
+                        <DownBox href={url.url}>
+                          <DownIcon />
+                        </DownBox>
+                      </FileItem>
+                    ))}
+                  </FileList>
                 )}
-              </AttachList>
-            </AttachDiv>
-            {user.userSeq === portDetail.userSeq ? (
-              <IconDiv>
-                <IconWrap>
-                  <PortIcon onClick={movePortList}></PortIcon>
-                  <ToolTip className="tooltip">
-                    <ToolTipText>포트폴리오 목록</ToolTipText>
-                  </ToolTip>
-                </IconWrap>
-                <IconWrap>
-                  <EditIcon onClick={moveEdit}></EditIcon>
-                  <ToolTip className="tooltip">
-                    <ToolTipText>포트폴리오 수정</ToolTipText>
-                  </ToolTip>
-                </IconWrap>
-              </IconDiv>
-            ) : null}
-          </BottomDiv>
+              </FileContainer>
+            )}
+          </ContentDiv>
+
+          {portDetail.tags && (
+            <Tags>
+              {portDetail.tags.map((tag, idx) => (
+                <Tag key={idx}>{`# ${tag}`}</Tag>
+              ))}
+            </Tags>
+          )}
         </Content>
       </Container>
     </Background>

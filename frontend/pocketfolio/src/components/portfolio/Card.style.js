@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import {RiHeart3Fill, RiEyeLine} from 'react-icons/ri';
+import {HiMinusCircle} from 'react-icons/hi'
 
 export const Wrapper = styled.div`
   display: flex;
@@ -29,6 +30,8 @@ export const ImgDiv = styled.div`
   justify-content: center;
   /* height: 9rem;
   width: 12rem; */
+  
+  padding: 10px;
   overflow: hidden;
 
   /* 2안 */
@@ -39,8 +42,11 @@ export const ImgDiv = styled.div`
 
 export const Thumbnail = styled.img`
   max-width: 100%;
+
   height: auto;
   cursor: pointer;
+  background-color: #fef9ff;
+  border-radius: 0.5rem ;
 `;
 
 export const TitleDiv = styled.div`
@@ -89,15 +95,13 @@ export const Img = styled.img`
 
 export const Count = styled.span``;
 
-export const Button = styled.img`
-  /* visibility: hidden; */
+export const IconDiv = styled.div`
+  visibility: hidden;
   opacity: 0;
   position: absolute;
   left: 10.7rem;
   top: -1rem;
-  width: 35px;
-  height: 35px;
-  transition: all ease-in-out 0.3s;
+  transition: all ease-in-out 0.1s;
 
   &.delete {
     visibility: visible;
@@ -110,3 +114,7 @@ export const Button = styled.img`
 
 export const Heart = styled(RiHeart3Fill)``;
 export const Eye = styled(RiEyeLine)``;
+export const DeleteIcon = styled(HiMinusCircle)`
+  font-size: 2.5rem;
+  color: #ff3434;
+`;
