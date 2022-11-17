@@ -16,23 +16,23 @@ export const Background = styled.div`
   flex-direction: column;
 
   .ck.ck-editor__editable:not(.ck-editor__nested-editable) {
-    height: 400px;
+    height: 300px;
     background-color: white;
     border: 0.5px solid #bababa;
     &::-webkit-scrollbar {
-      width: 10px;
-      height: 10px;
+      display: block;
+      width: 9px;
     }
 
     &::-webkit-scrollbar-thumb {
-      height: 5%;
-      background-color: #3c2e9b;
-      border-radius: 2rem;
+      background-color: #ff9392;
+      height: 15px;
+      border-radius: 0.2rem;
     }
 
     &::-webkit-scrollbar-track {
-      background-color: #d7dcff;
-      border-radius: 2rem;
+      background-color: #ffd8d7;
+      border-radius: 0.2rem;
     }
   }
 
@@ -134,7 +134,7 @@ export const HashOutter = styled.div`
   font-weight: bold;
   font-size: 1rem;
   line-height: 20px;
-  margin-right: 5px;
+  margin: 5px;
   cursor: pointer;
 `;
 

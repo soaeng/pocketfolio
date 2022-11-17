@@ -127,35 +127,6 @@ export const Attach = styled.a`
   }
 `;
 
-export const AttachIcon = styled(TbFiles)`
-  font-size: 50px;
-  color: #ffc3c3;
-`;
-
-export const ToolTip = styled.span`
-  position: absolute;
-  bottom: 3.5rem;
-  left: -3.2rem;
-  visibility: hidden;
-  width: 150px;
-  display: flex;
-  flex-direction: row-reverse;
-
-  &:hover {
-  }
-`;
-
-export const ToolTipText = styled.p`
-  width: fit-content;
-  margin: 0;
-  font-size: 1rem;
-  background-color: #f8af87;
-  color: #fff;
-  border-radius: 6px;
-  padding: 4px 6px;
-`;
-
-// 승승코드
 
 export const ContentDiv = styled.div`
   position: relative;
