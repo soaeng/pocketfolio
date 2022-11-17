@@ -71,6 +71,9 @@ public class RoomServiceImpl implements RoomService {
         Room room = RoomReq.toEntity(req, thumbnailUrl, userRepository.getReferenceById(userSeq));
         long roomSeq = roomRepository.save(room).getRoomSeq();
         log.debug("저장된 방 번호: " + roomSeq);
+        if (roomCategoryRepository.existsByRoom_RoomSeq(roomSeq)) {
+            roomCategoryRepository.deleteAllByRoom_RoomSeq(roomSeq);
+        }
         RoomCategory roomCategory = RoomCategory.builder()
                 .category(categoryRepository.getReferenceById(req.getCategory()))
                 .room(roomRepository.getReferenceById(roomSeq))
@@ -191,8 +194,8 @@ public class RoomServiceImpl implements RoomService {
     public Long updateRoomInfo(long userSeq, long roomSeq, RoomReq req, MultipartFile thumbnail) throws IOException {
         log.debug("[PATCH] Service - updateRoomInfo");
         Room room = roomRepository.findById(roomSeq).orElseThrow(() -> new IllegalArgumentException("해당 방을 찾을 수 없습니다."));
-        RoomCategory roomCategory = roomCategoryRepository.findByRoom_RoomSeqAndCategory_CategorySeq(roomSeq, req.getCategory());
-
+        RoomCategory roomCategory = roomCategoryRepository.findByRoom_RoomSeq(roomSeq);
+        log.debug("room category: " + roomCategory.toString());
         if (room.getUser().getUserSeq() != userSeq) {
             log.error("권한 없음");
             return null;

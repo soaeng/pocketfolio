@@ -32,7 +32,7 @@ public class RoomCategory {
 	private Room room;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="category_seq", nullable=false, updatable=false)
+	@JoinColumn(name="category_seq", nullable=false)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	@NotNull
 	private Category category;
