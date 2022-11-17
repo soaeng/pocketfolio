@@ -14,6 +14,7 @@ import EditTheme from './EditTheme';
 // 마이룸
 const Room = () => {
   // url로 받아온 roomSeq
+
   const params = useParams();
   const roomSeq = parseInt(params.roomSeq);
   const dispatch = useDispatch();
@@ -24,6 +25,7 @@ const Room = () => {
   const [nowIdx, setNowIdx] = useState(0);
   const [nowTheme, setNowTheme] = useState('');
   const [reload, setReload] = useState(false);
+  const [capture, setCapture] = useState(false);
   const [nowPort, setNowPort] = useState(null);
   const [arranges, setArranges] = useState(null);
   const prevArranges = useRef();
@@ -165,13 +167,21 @@ const Room = () => {
     };
 
     const res = await dispatch(updateArranges({roomSeq, body}));
-    if (res) getData();
+    if (res) {
+      getData();
+      setCapture(true);
+    }
   };
 
   // 포트폴리오 상세보기
   const openPortDetail = portSeq => {
     setSidebar('portDetail');
     setNowPort(portSeq);
+  };
+
+  // handleCapture
+  const offCaptrue = () => {
+    setCapture(false);
   };
 
   return (
@@ -194,6 +204,10 @@ const Room = () => {
             handleDel={handleDel}
             loadConnect={loadConnect}
             changeNowIdx={changeNowIdx}
+            data={data}
+            capture={capture}
+            offCaptrue={offCaptrue}
+            changeSidebar={changeSidebar}
           />
           <Toaster
             position="bottom-left"

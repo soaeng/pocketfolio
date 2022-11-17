@@ -54,14 +54,14 @@ const InfoEdit = ({closeInfoEdit, data, handleReload}) => {
 
     form.append('room', new Blob([json], {type: 'application/json'}));
 
-    const res = await dispatch(
+    const {payload} = await dispatch(
       updateRoom({
         roomSeq: data.room.roomSeq,
         data: form,
       }),
     );
 
-    if (res) handleReload();
+    if (payload) handleReload();
   }
 
   useEffect(() => {
@@ -119,7 +119,7 @@ const InfoEdit = ({closeInfoEdit, data, handleReload}) => {
             </SelectBox>
           </Div>
 
-          <Div className='tf'>
+          <Div className="tf">
             <Name>메인 설정</Name>
             <TFBox onClick={() => setIsMain(!isMain)}>
               {isMain ? <TIcon /> : <FIcon />}
@@ -135,7 +135,6 @@ const InfoEdit = ({closeInfoEdit, data, handleReload}) => {
             <Btn onClick={sendData}>저장</Btn>
           </Div>
         </DivContainer>
-
       </Container>
     </Modal>
   );
