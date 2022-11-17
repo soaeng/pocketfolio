@@ -24,7 +24,6 @@ import {
 import UserProfile from '../common/UserProfile';
 
 const PocketSearch = ({data, handleLike, handleDisLike}) => {
-  // console.log(data, 123);
   const [roomModal, setRoomModal] = useState(false); //프로필 모달 보이게 안보이게
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -50,7 +49,7 @@ const PocketSearch = ({data, handleLike, handleDisLike}) => {
     };
   });
 
-  // port 클릭시 이동 => 수정필요
+  // 마아포켓 클릭시 이동
   const pocketClickHandler = roomSeq => {
     navigate(`/room/${roomSeq}`);
   };
@@ -62,13 +61,11 @@ const PocketSearch = ({data, handleLike, handleDisLike}) => {
     if (user) {
       if (isLiked) {
         const {payload} = await dispatch(roomDislike(roomSeq));
-        console.log(payload, 111);
         if (payload) {
           handleDisLike(roomSeq);
         }
       } else {
         const {payload} = await dispatch(roomLike(roomSeq));
-        console.log(payload, 222);
         if (payload) {
           handleLike(roomSeq);
         }

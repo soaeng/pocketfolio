@@ -1,4 +1,6 @@
 import React, {useState} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
+import {unfollowFunc, followFunc} from '../../store/oauthSlice';
 import {
   UserCard,
   UserItem,
@@ -7,49 +9,64 @@ import {
   UserImg,
   UserInfoContainer,
   UserFollowBtn,
+  IconDiv,
+  AlreadyFollowIcon,
+  FollowIcon,
 } from './UserSearch.style';
 
-// 임시데이터(card)
-const items = [
-  {
-    icon: 'face', //사용자 이름
-    copy: '01. Lorem ipsum dolor sit amet, consectetur adipiscing elit.', //사용자 describe
-  },
-  {
-    icon: 'pets',
-    copy: '02. Sed do eiusmod tempor incididunt ut labore.',
-  },
-  {
-    icon: 'stars',
-    copy: '03. Consectetur adipiscing elit.',
-  },
-];
+const UserSearch = ({data}) => {
+  console.log(data, 123456)
+  const user = useSelector(state => state.oauth.user);
+  const dispatch = useDispatch();
 
-const UserSearch = () => {
-  const [item, setItem] = useState(items);
+  const [follow, setFollow] = useState(data.hasFollowed);
+
+  // 팔로우, 언팔로우
+  async function handleFollow() {
+    if (user) {
+      if (follow) {
+        const {payload} = await dispatch(unfollowFunc(data.userSeq));
+        if (payload) {
+          setFollow(false);
+        }
+      } else {
+        const {payload} = await dispatch(followFunc(data.userSeq));
+        if (payload) {
+          setFollow(true);
+        }
+      }
+    }
+  }
 
   return (
     <>
       <UserCard>
-        {item.map(it => {
-          const {icon, copy} = it;
+        {data.map(it => {
+          const {userSeq, name, profilePic, describe, followerTotal, followingTotal, hasFollowed} = it;
           return (
             <UserItem>
               <UserContainer>
                 {/* 사용자 프로필 사진 */}
                 <UserImgContainer>
                   <UserImg
-                    src={process.env.PUBLIC_URL + '/assets/images/room.png'}
+                    src={profilePic ? profilePic : '/assets/images/user.png'}
                   />
                 </UserImgContainer>
                 {/* 사용자 정보 */}
                 <UserInfoContainer>
-                  <div>{icon}</div>
-                  <div>{copy}</div>
+                  <div>{name}</div>
+                  <div>{describe}</div>
+                  <div>{followerTotal}</div>
+                  <div>{followingTotal}</div>
                 </UserInfoContainer>
               </UserContainer>
               {/* 팔로우 버튼 */}
-              <UserFollowBtn>팔로우</UserFollowBtn>
+              {/* 팔로우 | 로그인한 상태이고, 방 주인이 아닌 경우 가능 */}
+          {user && user.userSeq !== data.userSeq && (
+            <IconDiv className="follow" onClick={handleFollow}>
+              {follow ? <AlreadyFollowIcon /> : <FollowIcon />}
+            </IconDiv>
+          )}
             </UserItem>
           );
         })}

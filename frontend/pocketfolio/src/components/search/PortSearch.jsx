@@ -18,71 +18,40 @@ import {
   Item3,
   ShowIcon,
 } from './PortSearch.style';
-// 임시데이터(card)
-const items = [
-  {
-    icon: 'face',
-    copy: '01. Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-  },
-  {
-    icon: 'pets',
-    copy: '02. Sed do eiusmod tempor incididunt ut labore.',
-  },
-  {
-    icon: 'stars',
-    copy: '03. Consectetur adipiscing elit.',
-  },
-  {
-    icon: 'invert_colors',
-    copy: '04. Ut enim ad minim veniam, quis nostrud exercitation.',
-  },
-  {
-    icon: 'psychology',
-    copy: '05. Llamco nisi ut aliquip ex ea commodo consequat.',
-  },
-  {
-    icon: 'brightness_7',
-    copy: '06. Misi ut aliquip ex ea commodo consequat.',
-  },
-  {
-    icon: 'brightness',
-    copy: '07. Misi ut aliquip ex ea commodo consequat.',
-  },
-];
 
-const PortSearch = () => {
-  const [item, setItem] = useState(items);
+const PortSearch = ({data, handleLike, handleDisLike}) => {
+  console.log(data, 123)
 
   const navigate = useNavigate();
 
   // pocket 클릭시 이동 => 수정필요
-  const pocketClickHandler = () => {
-    navigate('/room/1');
+  const pocketClickHandler = roomSeq => {
+    navigate(`/room/${roomSeq}`);
   };
 
   // port 클릭시 이동 => 수정필요
-  const portClickHandler = () => {
-    navigate('/port');
+  const portClickHandler = portSeq => {
+    navigate(`/portfolios/${portSeq}`);
   };
 
   return (
     <>
       <PortCard>
-        {item.map(it => {
-          const {icon, copy} = it;
+        {data.map(it => {
+          const {portSeq, name, roomSeq, roomName, roomThumbnail, userSeq, userName, userProfilePic, like, hit, tags} = it;
           return (
-            <PortItem>
+            <PortItem key={roomSeq}>
               {/* 마이포켓 썸네일 */}
               <PortImgDiv>
                 <PortThumbnail
-                  src={process.env.PUBLIC_URL + '/assets/images/room.png'}
+                  src={roomThumbnail ? roomThumbnail : '/assets/images/room.png'}
                 />
                 {/* 호버시 보이는 버튼 */}
                 <HoverDiv>
-                  <PortSearchButton onClick={pocketClickHandler}>
+                  <PortSearchButton onClick={e => pocketClickHandler(roomSeq)}>
                     마이포켓 가기
                   </PortSearchButton>
-                  <PortSearchButton onClick={portClickHandler}>
+                  <PortSearchButton onClick={e => portClickHandler(portSeq)}>
                     포트폴리오 보기
                   </PortSearchButton>
                 </HoverDiv>
@@ -97,7 +66,7 @@ const PortSearch = () => {
                     />
                   </PortUserImgContainer>
                   {/* 이름 */}
-                  <PortUserName>{icon}</PortUserName>
+                  <PortUserName>{name}</PortUserName>
                 </PortUserDiv>
                 {/* <div>{copy}</div> */}
                 {/* 좋아요, 클릭 컴포넌트 */}

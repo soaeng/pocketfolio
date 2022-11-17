@@ -155,10 +155,8 @@ const Search = () => {
     const scrollTop = document.documentElement.scrollTop;
     const clientHeight = document.documentElement.clientHeight;
 
-    // console.log('스크롤 이벤트 발생');
-
     if (scrollTop + clientHeight >= scrollHeight) {
-      // console.log('페이지 끝에 스크롤이 닿았음');
+      console.log('페이지 끝에 스크롤이 닿았음');
       setPage(prev => prev + 1);
     }
   };
@@ -194,7 +192,7 @@ const Search = () => {
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
-  }, []);
+  }, [page]);
 
   // 내비게이트 발생 시 검색
   useEffect(() => {
@@ -348,11 +346,15 @@ const Search = () => {
             <FilterDiv>
               <Filter options={filterOptions} setSort={setSort} />
             </FilterDiv>
-            <PortSearch />{' '}
+            <PortSearch               
+              data={data}
+              handleLike={handleLike}
+              handleDisLike={handleDisLike}
+            />
           </>
         ) : null}
         {/* 유저 검색 */}
-        {searchMode === 'user' && data ? <UserSearch /> : null}
+        {searchMode === 'user' && data ? <UserSearch data={data}/> : null}
       </DivTest>
     </>
   );

@@ -1,5 +1,9 @@
 // styled Component
 import styled from 'styled-components';
+import {
+  RiUserFollowFill,
+  RiUserAddLine,
+} from 'react-icons/ri';
 
 // Card 모양
 export const UserCard = styled.div`
@@ -71,4 +75,32 @@ export const UserFollowBtn = styled.button`
     background-color: #c13136;
     color: #eeeeee;
   }
+`;
+
+export const IconDiv = styled.div`
+  cursor: pointer;
+  width: 1.3rem;
+  height: 1.3rem;
+
+  &.follow {
+    margin-right: 0.7rem;
+  }
+
+  &.edit {
+    margin-right: 0.7rem;
+  }
+
+  &:hover {
+    color: black;
+  }
+`;
+
+export const FollowIcon = styled(RiUserAddLine)`
+  width: 100%;
+  height: 100%;
+`;
+
+export const AlreadyFollowIcon = styled(RiUserFollowFill)`
+  width: 100%;
+  height: 100%;
 `;

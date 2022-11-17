@@ -1,6 +1,11 @@
 // styled Component
 import styled from 'styled-components';
 
+import {
+  RiUserFollowFill,
+  RiUserAddLine,
+} from 'react-icons/ri';
+
 export const UserProfileItem = styled.div`
   display: flex;
   position: absolute;
@@ -51,4 +56,20 @@ export const UserProfileFollowBtn = styled.button`
     background-color: #c13136;
     color: #eeeeee;
   }
+`;
+
+export const FollowIcon = styled(RiUserAddLine)`
+  width: 100%;
+  height: 100%;
+`;
+
+export const AlreadyFollowIcon = styled(RiUserFollowFill)`
+  width: 100%;
+  height: 100%;
+`;
+
+export const IconDiv = styled.div`
+  cursor: pointer;
+  width: 1.3rem;
+  height: 1.3rem;
 `;
