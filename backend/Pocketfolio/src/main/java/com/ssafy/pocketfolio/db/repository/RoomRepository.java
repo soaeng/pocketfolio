@@ -27,4 +27,10 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
             "HAVING categorySeq = ?1 " +
             "ORDER BY count(`rl`.`user_seq`) DESC LIMIT 8 ; ", nativeQuery = true)
     List<Room> findAllByCategorySeq(long categorySeq);
+    // 좋아요 한 방 8개
+    @Query(value = "SELECT `r`.* FROM `room` AS `r` JOIN `room_like` AS `rl` ON `r`.`room_seq` = `rl`.`room_seq` WHERE `rl`.`user_seq` = ?1 ORDER BY rand() LIMIT 8;", nativeQuery = true)
+    List<Room> findRoomLikeByUser_UserSeqOrderByRandom(long userSeq);
+    // 팔로우 한 사람 방 8개
+    @Query(value = "SELECT `r`.* FROM `room` AS `r` JOIN (SELECT `user_to` FROM `follow` WHERE `user_from` = ?1) AS `f` ON `r`.`user_seq` = `f`.`user_to` WHERE `r`.`is_main` = 'T' ORDER BY rand() LIMIT 8 ;", nativeQuery = true)
+    List<Room> findFollowByUser_UserSeqFromOrderByRandom(long userSeq);
 }

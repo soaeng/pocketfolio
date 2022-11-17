@@ -451,22 +451,25 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     @Transactional(readOnly = true)
-    public MainPocketListRes findMainRandomRoom(long userSeq, String type) {
+    public List<MainPocketListRes> findMainRandomRoom(long userSeq, String type) {
         log.debug("[GET] Service - findMainRoomList");
+        List<MainPocketListRes> pocketList = new ArrayList<>();
         try {
-            long roomSeq = 0L;
+            List<Room> rooms = new ArrayList<>();
             if (type.equals("like")) {
-                roomSeq = roomLikeRepository.findRoomLikeByUser_UserSeqOrderByRandom(userSeq);
+                rooms = roomRepository.findRoomLikeByUser_UserSeqOrderByRandom(userSeq);
             } else if (type.equals("follow")) {
-                roomSeq = followRepository.findFollowByUserFromOrderByRand(userSeq);
+                rooms = roomRepository.findFollowByUser_UserSeqFromOrderByRandom(userSeq);
             }
-            Room room = roomRepository.findById(roomSeq).orElse(new Room());
-            String category = categoryRepository.findCategoryByRoomSeq(roomSeq);
-            boolean follow = followRepository.existsByUserFrom_UserSeqAndUserTo_UserSeq(userSeq, room.getUser().getUserSeq());
-            boolean like = roomLikeRepository.existsByUser_UserSeqAndRoom_RoomSeq(userSeq, roomSeq);
-            int likeCount = roomLikeRepository.countAllByRoom_RoomSeq(roomSeq).intValue();
-            int hitCount = roomHitRepository.countAllByRoom_RoomSeq(roomSeq).intValue();
-            return MainPocketListRes.toDto(room, category, follow, like, likeCount, hitCount, room.getUser());
+            for (Room room : rooms) {
+                boolean follow = followRepository.existsByUserFrom_UserSeqAndUserTo_UserSeq(userSeq, room.getUser().getUserSeq());
+                boolean like = roomLikeRepository.existsByUser_UserSeqAndRoom_RoomSeq(userSeq, room.getRoomSeq());
+                String category = categoryRepository.findCategoryByRoomSeq(room.getRoomSeq());
+                int likeCount = roomLikeRepository.countAllByRoom_RoomSeq(room.getRoomSeq()).intValue();
+                int hitCount = roomHitRepository.countAllByRoom_RoomSeq(room.getRoomSeq()).intValue();
+                pocketList.add(MainPocketListRes.toDto(room, category, follow, like, likeCount, hitCount, room.getUser()));
+            }
+            return pocketList;
         } catch (Exception e) {
             log.error(e.getMessage());
             return null;

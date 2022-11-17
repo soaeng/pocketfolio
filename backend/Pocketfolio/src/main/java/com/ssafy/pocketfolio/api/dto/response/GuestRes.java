@@ -14,6 +14,8 @@ public class GuestRes {
     private String userName;
     @Schema(description = "방문자 프로필")
     private String profile;
+    @Schema(description = "방문자 대표 방")
+    private Long roomSeq;
     @Schema(description = "방문일")
     private String hitDate;
 
@@ -26,6 +28,7 @@ public class GuestRes {
                 .userSeq(view.getUserSeq())
                 .userName(view.getUserName())
                 .profile(view.getProfile())
+                .roomSeq(view.getRoomSeq())
                 .hitDate(view.getHitDate())
                 .build();
     }

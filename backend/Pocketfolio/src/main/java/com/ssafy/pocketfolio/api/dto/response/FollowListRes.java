@@ -25,6 +25,9 @@ public class FollowListRes {
     @Schema(description = "프로필 사진 파일 url", maxLength = 255, example = "/img/J2EeRo2d.jpg")
     private String profilePic;
 
+    @Schema(description = "유저의 메인 방")
+    private Long roomSeq;
+
     public FollowListRes(User user) {
         userSeq = user.getUserSeq();
         name = user.getName();
@@ -36,5 +39,6 @@ public class FollowListRes {
         userSeq = followListView.getUserSeq();
         name = followListView.getName();
         profilePic = followListView.getProfilePic();
+        roomSeq = followListView.getRoomSeq();
     }
 }

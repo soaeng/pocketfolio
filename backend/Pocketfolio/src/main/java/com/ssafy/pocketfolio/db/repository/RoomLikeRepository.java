@@ -14,7 +14,4 @@ public interface RoomLikeRepository extends JpaRepository<RoomLike, Long> {
     List<RoomLike> findAllByUser_UserSeq(long userSeq);
     @Query(value = "SELECT room_seq FROM room_like GROUP BY room_seq ORDER BY count(user_seq) DESC LIMIT ?1", nativeQuery = true)
     List<Long> findRoomBestList(int limit);
-
-    @Query(value = "SELECT `room_seq` FROM `room_like` WHERE `user_seq` = ?1 ORDER BY rand() LIMIT 1;", nativeQuery = true)
-    Long findRoomLikeByUser_UserSeqOrderByRandom(long userSeq);
 }

@@ -123,7 +123,7 @@ public interface RoomService {
      * @param type 좋아요 / 팔료우 구분 (like, follow)
      * @return 포켓 정보
      */
-    MainPocketListRes findMainRandomRoom(long userSeq, String type);
+    List<MainPocketListRes> findMainRandomRoom(long userSeq, String type);
 
     /**
      * 카테고리별 추천
