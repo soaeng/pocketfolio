@@ -75,7 +75,7 @@ const Search = () => {
   // 카테고리
   const [category, setCategory] = useState(0);
   // 카테고리(3개: 포켓, 포트폴리오, 유저)
-  const [searchMode, setSearchMode] = useState('pocket');
+  const [searchMode, setSearchMode] = useState('room');
   // 정렬
   const [sort, setSort] = useState(1);
   // 페이지당 보이는 개수
@@ -84,6 +84,8 @@ const Search = () => {
   const [data, setData] = useState([]);
   // 검색어
   const [word, setWord] = useState('');
+  // 페이지
+  const [page, setPage] = useState(1);
   // 특정 유저정보 담을 상태
   const [userInfo, setUserInfo] = useState([]);
 
@@ -105,12 +107,12 @@ const Search = () => {
     const params = {
       search: location.state.search,
       sort: location.state.sort,
-      category: location.state.category,
+      // category: location.state.category,
+      category: 2047,
       size: size,
       page: location.state.page,
     };
     const {payload} = await dispatch(getSearch({params, searchMode}));
-
     setData(payload);
   };
 
@@ -137,19 +139,24 @@ const Search = () => {
       state: {
         search: word,
         sort: sort,
-        category: category,
+        // category: category,
+        category: 2047,
         size: size,
         page: 1,
       },
     });
+    getData();
     setWord(''); //submit 후 창 비우기
   };
 
   // 검색어 창 엔터시 입력
   const keyDownHandler = event => {
     if (event.key === 'Enter') {
-      setWord(word);
-      onSubmit(event);
+      //아무것도 입력하지 않은 경우 submit 방지
+      if (word.length !== 0) {
+        setWord(word);
+        onSubmit(event);
+      }
     }
   };
 
@@ -160,8 +167,6 @@ const Search = () => {
 
     window.scrollTo({top: 0, behavior: 'smooth'});
   };
-
-  const [page, setPage] = useState(1);
 
   // 스크롤 test
   const handleScroll = () => {
@@ -209,58 +214,69 @@ const Search = () => {
           />
         </Container>
         {/* 카테고리 */}
+        {/* <Tabs> */}
         <Tab
           searchMode={searchMode}
-          onClick={e => selectSearchMode(e, '마이포켓')}
+          name={'room'}
+          onClick={e => selectSearchMode(e, 'room')}
         >
           마이포켓
         </Tab>
         <Tab
           searchMode={searchMode}
-          onClick={e => selectSearchMode(e, '포트폴리오')}
+          name={'portfolio'}
+          onClick={e => selectSearchMode(e, 'portfolio')}
         >
           포트폴리오
         </Tab>
-        <Tab searchMode={searchMode} onClick={e => selectSearchMode(e, '유저')}>
+        <Tab
+          searchMode={searchMode}
+          name={'user'}
+          onClick={e => selectSearchMode(e, 'user')}
+        >
           유저
         </Tab>
+        {/* </Tabs> */}
       </Container1>
       {/* 태그 */}
-      <TagContainer>
-        {tags.map((tag, idx) => {
-          return (
-            <Tag
-              category={category}
-              onClick={e => selectCategory(e, 2 ** (tags.length - idx - 1))}
-              key={idx}
-              style={
-                !!((2 ** (tags.length - idx - 1)) & category)
-                  ? {
-                      backgroundColor: '#e75452',
-                      color: '#fff',
-                      border: 'none',
-                    }
-                  : {
-                      backgroundColor: '#fff',
-                      color: 'darkgray',
-                      border: '1px solid darkgray',
-                    }
-              }
-            >
-              {tag}
-            </Tag>
-          );
-        })}
-      </TagContainer>
+      {searchMode === 'portfolio' ? null : (
+        <TagContainer>
+          {tags.map((tag, idx) => {
+            return (
+              <Tag
+                category={category}
+                onClick={e => selectCategory(e, 2 ** (tags.length - idx - 1))}
+                key={idx}
+                style={
+                  !!((2 ** (tags.length - idx - 1)) & category)
+                    ? {
+                        backgroundColor: '#e75452',
+                        color: '#fff',
+                        border: 'none',
+                      }
+                    : {
+                        backgroundColor: '#fff',
+                        color: 'darkgray',
+                        border: '1px solid darkgray',
+                      }
+                }
+              >
+                {tag}
+              </Tag>
+            );
+          })}
+        </TagContainer>
+      )}
       <DivTest>
         {/* 필터 */}
+
         <FilterDiv>
           <Filter options={filterOptions} setSort={setSort} />
         </FilterDiv>
         {/* 검색 리스트 목록 */}
-        <PocketSearch />
-        <PortSearch />
-        <UserSearch />
+        {searchMode === 'room' ? <PocketSearch /> : null}
+        {searchMode === 'portfolio' ? <PortSearch /> : null}
+        {searchMode === 'user' ? <UserSearch /> : null}
       </DivTest>
     </>
   );

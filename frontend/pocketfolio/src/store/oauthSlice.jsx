@@ -68,7 +68,7 @@ export const followFunc = createAsyncThunk(
   async (userSeq, {rejectWithValue}) => {
     try {
       const res = await http.post(`follows/${userSeq}`);
-      if (res.status === 201) return true;
+      if (res.status === 201) return res.data;
     } catch (error) {
       console.log('팔로우 에러', error);
       return rejectWithValue(error);
@@ -82,6 +82,20 @@ export const unfollowFunc = createAsyncThunk(
   async (userSeq, {rejectWithValue}) => {
     try {
       const res = await http.delete(`follows/user/${userSeq}`);
+      if (res.status === 200) return true;
+    } catch (error) {
+      console.log('팔로우 취소 에러', error);
+      return rejectWithValue(error);
+    }
+  },
+);
+
+// 팔로우 취소 (팔로우 번호)
+export const unfollowNumFunc = createAsyncThunk(
+  'unfollownum',
+  async (followSeq, {rejectWithValue}) => {
+    try {
+      const res = await http.delete(`follows/${followSeq}`);
       if (res.status === 200) return true;
     } catch (error) {
       console.log('팔로우 취소 에러', error);
