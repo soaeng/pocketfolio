@@ -38,6 +38,7 @@ export const LoginCanvas = ({outerDivRef}) => {
         autoRotateSpeed={1}
         enablePan={false}
         enableZoom={false}
+        maxPolarAngle={Math.PI / 1.9}
       />
       {/* <mesh
         scale={30}
