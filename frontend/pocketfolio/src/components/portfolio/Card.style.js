@@ -17,8 +17,6 @@ export const Item = styled.div`
   border-radius: 1rem;
   background-color: #fff0f0;
   box-shadow: 0px 2px 5px 1px rgba(0, 0, 0, 0.25);
-
-
 `;
 
 export const PortDiv = styled.div`
@@ -42,7 +40,7 @@ export const ImgDiv = styled.div`
 
 export const Thumbnail = styled.img`
   max-width: 100%;
-
+  aspect-ratio: 1/1;  
   height: auto;
   cursor: pointer;
   background-color: #fef9ff;

@@ -96,11 +96,6 @@ const Portfolio = () => {
     });
   };
 
-  // const createPocket = () => {
-  //   alert('포켓 생성');
-  //   // dispatch(createRoom())
-  // };
-
   return (
     <Background>
       <Nav className="nav"></Nav>
