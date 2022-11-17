@@ -5,6 +5,7 @@ import {
   RiHeart3Line,
   RiHeart3Fill,
   RiEyeLine,
+  RiPencilFill,
 } from 'react-icons/ri';
 
 export const Container = styled.div`
@@ -102,9 +103,22 @@ export const IconDiv = styled.div`
   &.follow {
     margin-right: 0.7rem;
   }
+
+  &.edit {
+    margin-right: 0.7rem;
+  }
+
+  &:hover {
+    color: black;
+  }
 `;
 
 export const FollowIcon = styled(RiUserAddLine)`
+  width: 100%;
+  height: 100%;
+`;
+
+export const EditIcon = styled(RiPencilFill)`
   width: 100%;
   height: 100%;
 `;

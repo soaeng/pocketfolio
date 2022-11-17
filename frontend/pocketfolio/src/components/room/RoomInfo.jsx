@@ -10,6 +10,7 @@ import {
   RoomCategory,
   IconDiv,
   FollowIcon,
+  EditIcon,
   AlreadyFollowIcon,
   LikeShowFollowContainer,
   LikeShowDiv,
@@ -23,9 +24,10 @@ import {useDispatch, useSelector} from 'react-redux';
 import {roomDislike, roomLike} from '../../store/roomSlice';
 import {unfollowFunc, followFunc} from '../../store/oauthSlice';
 import HitDetail from './HitDetail';
+import InfoEdit from './InfoEdit';
 
 // 마이룸 상단 방정보
-const RoomInfo = ({data, sidebar, edit}) => {
+const RoomInfo = ({data, sidebar, edit, handleReload}) => {
   const user = useSelector(state => state.oauth.user);
   const dispatch = useDispatch();
 
@@ -34,6 +36,7 @@ const RoomInfo = ({data, sidebar, edit}) => {
   const [like, setLike] = useState(data.like);
   const [likeCount, setLikeCount] = useState(data.likeCount);
   const [follow, setFollow] = useState(data.follow);
+  const [infoEdit, setInfoEdit] = useState(false);
 
   // 팔로우, 언팔로우
   async function handleFollow() {
@@ -93,6 +96,11 @@ const RoomInfo = ({data, sidebar, edit}) => {
     setHitDetail(false);
   };
 
+  // info Edit
+  const closeInfoEdit = () => {
+    setInfoEdit(false);
+  };
+
   return edit ? null : (
     <Container className={sidebar ? 'sidebar' : null}>
       <Box>
@@ -120,6 +128,12 @@ const RoomInfo = ({data, sidebar, edit}) => {
             </IconDiv>
           )}
 
+          {user && user.userSeq === data.room.userSeq && (
+            <IconDiv className="edit" onClick={() => setInfoEdit(true)}>
+              <EditIcon />
+            </IconDiv>
+          )}
+
           {/* 좋아요 */}
           <LikeShowDiv>
             <IconDiv onClick={handleLike}>
@@ -140,6 +154,13 @@ const RoomInfo = ({data, sidebar, edit}) => {
 
       {detail && <RoomDetail closeDetail={closeDetail} data={data} />}
       {hitDetail && <HitDetail closeHit={closeHit} data={data} />}
+      {infoEdit && (
+        <InfoEdit
+          closeInfoEdit={closeInfoEdit}
+          data={data}
+          handleReload={handleReload}
+        />
+      )}
     </Container>
   );
 };

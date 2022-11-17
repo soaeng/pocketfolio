@@ -1,40 +1,23 @@
 import styled from 'styled-components';
-import {Body1, H2} from '../../styles/styles.style';
+import {Body1, H2, H3} from '../../styles/styles.style';
+import {RiCloseFill} from 'react-icons/ri';
 
 export const Overlay = styled.div`
-  background-color: red;
   .modal.close {
     animation-name: fade-out;
   }
-  .modal button {
-    outline: none;
-    border: 0;
-  }
-
   .modal.close > section {
     animation-name: slide;
   }
   .modal > section > header {
     position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     color: #ffffff;
     background-color: #ffb9ae;
-    padding: 1rem;
+    padding: 0.7rem;
     border-radius: 0.5rem 0.5rem 0 0;
-    /* font-size: 2rem; */
-    /* font-weight: 700; */
-  }
-  .modal > section > header button {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    width: 30px;
-    font-size: 21px;
-    font-weight: 700;
-    text-align: center;
-    color: #999;
-    background-color: transparent;
-  }
-  .modal > section > p {
   }
 
   @keyframes modal-bg-show {
@@ -97,22 +80,30 @@ export const ModalWrap = styled.div`
   animation-fill-mode: forwards;
   cursor: default;
 
-  /* 나중에 지울 것 */
 `;
 
 export const Contents = styled.section`
   background-color: #fff;
-  width: 60%;
-  height: 80%;
+  width: 50rem;
+  height: 30rem;
   border-radius: 0.5rem;
   animation-duration: 0.25s;
   animation-timing-function: ease-out;
   animation-name: slideUp;
   animation-fill-mode: forwards;
+`;
+
+export const Body = styled.div`
+  display: flex;
+  justify-content: center;
+  position: relative;
+  margin: 0 auto;
+  flex-direction: column;
   overflow: auto;
+  height: 80%;
+  width: 100%;
   &::-webkit-scrollbar {
     width: 5px;
-    /* height: 5px; */
   }
 
   &::-webkit-scrollbar-thumb {
@@ -127,15 +118,6 @@ export const Contents = styled.section`
   }
 `;
 
-export const Body = styled.div`
-  display: flex;
-  margin: 1rem auto;
-  flex-direction: column;
-  /* border: 1px black solid; */
-  height: 70%;
-  width: 70%;
-`;
-
 export const Box = styled.div`
   margin-bottom: 2rem;
   display: flex;
@@ -146,7 +128,6 @@ export const Box = styled.div`
     flex-direction: row;
     width: 100%;
     /* justify-content: space-between; */
-    /* outline: solid black; */
   }
 
   &.mainset {
@@ -166,10 +147,24 @@ export const Text = styled(Body1)`
 `;
 
 export const Head = styled(H2)`
+  font-size: 2rem;
   margin: 0;
 `;
 
+export const IconDiv = styled.div`
+  position: absolute;
+  display: flex;
+  align-items: center;
+  right: 5%;
+  font-size: 2rem;
+`;
+
+export const CloseIcon = styled(RiCloseFill)`
+  cursor: pointer;
+`;
+
 export const InputDiv = styled.div``;
+
 export const Input = styled.input`
   border-radius: 0.2rem;
   padding: 0.5rem;
@@ -180,18 +175,20 @@ export const Input = styled.input`
     text-align: center;
     font-size: 1rem;
     font-weight: bold;
+    border: 0.5px solid #ffbcbc;
+    :focus {
+      outline: 0.5px solid #fcb4b4;
+    }
   }
-  &.themedrop {
-    /* visibility: hidden; */
+  &.themeselect {
     display: none;
-  }
+    transition: all 0.1s;
 
-  &.maincheck {
-    /* width: 100%; */
-  }
-  :checked + img {
-    border-radius: 1rem;
-    background-color: #fdd7d7;
+    :checked + img {
+      border-radius: 1rem;
+      background-color: #f7c6c6;
+      scale: 1;
+    }
   }
 `;
 
@@ -199,16 +196,27 @@ export const Label = styled.label``;
 
 export const ThemeDiv = styled.div`
   display: grid;
+  width: 95%;
   grid-template-columns: repeat(4, 1fr);
   grid-gap: 10px;
 `;
 
-export const Theme = styled.div``;
+export const Theme = styled.div`
+  :hover {
+    border-radius: 1rem;
+    background-color: #fff4f1;
+  }
+`;
 
 export const ThemeImg = styled.img`
   max-width: 100%;
   height: auto;
   cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover {
+    scale: 1.1;
+  }
 `;
 
 export const ThemeTitle = styled.div`

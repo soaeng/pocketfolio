@@ -11,6 +11,8 @@ import {
   TextDiv,
   Text,
   Head,
+  IconDiv,
+  CloseIcon,
   Input,
   Label,
   ThemeDiv,
@@ -24,7 +26,7 @@ import {
 import {getRoomCategory, createRoom} from '../../store/roomSlice';
 
 const AddPocket = props => {
-  const {open, close, save} = props;
+  const {open, close, save, reLander, setReLander} = props;
   const dispatch = useDispatch();
   // 포켓 이름
   const [pocketName, setPocketName] = useState('');
@@ -88,10 +90,6 @@ const AddPocket = props => {
       name: '전체 공개',
     },
     {
-      data: 'S',
-      name: '링크 공유',
-    },
-    {
       data: 'C',
       name: '비공개',
     },
@@ -104,7 +102,6 @@ const AddPocket = props => {
   // 룸 카테고리 불러오기
   useEffect(() => {
     dispatch(getRoomCategory()).then(res => {
-      console.log(res);
       setCategoryList(res.payload);
     });
   }, []);
@@ -145,7 +142,7 @@ const AddPocket = props => {
     setThumbNail(file);
   };
 
-  // 메인 설정 여부 
+  // 메인 설정 여부
   const changeMain = e => {
     if (main === 'T') {
       setMain('F');
@@ -166,11 +163,12 @@ const AddPocket = props => {
     });
     form.append('room', new Blob([pocket], {type: 'application/json'}));
     form.append('thumbnail', thumbNail);
-    
-    dispatch(createRoom(form))
-    .then(res => {
-      
-    })
+    dispatch(createRoom(form)).then(res => {
+      if (res.payload.status === 201) {
+        setReLander(!reLander)
+        close();
+      }
+    });
   };
 
   return (
@@ -179,8 +177,12 @@ const AddPocket = props => {
         <Contents>
           <header>
             <Head>포켓 만들기</Head>
+            <IconDiv 
+              className='close'
+              onClick={close}>
+              <CloseIcon></CloseIcon>
+            </IconDiv>
           </header>
-
           <Body>
             {/* 포켓 이름 입력 */}
             <Box>
@@ -218,7 +220,7 @@ const AddPocket = props => {
             </Box>
 
             {/* 테마 선택 */}
-            <Box>
+            {/* <Box>
               <Text>테마</Text>
               <ThemeDiv>
                 {themeList.map((item, idx) => (
@@ -226,7 +228,7 @@ const AddPocket = props => {
                     <Label>
                       <Input
                         type="radio"
-                        className="themedrop"
+                        className="themeselect"
                         value={item.name}
                         checked={selectedTheme === `${item.name}`}
                         onChange={changeTheme}
@@ -238,7 +240,7 @@ const AddPocket = props => {
                   </Theme>
                 ))}
               </ThemeDiv>
-            </Box>
+            </Box> */}
 
             <Box className="mainset">
               {/* 메인 설정 */}
@@ -251,13 +253,13 @@ const AddPocket = props => {
               ></Input>
 
               {/* 썸네일 첨부 */}
-              <Text>썸네일</Text>
+              {/* <Text>썸네일</Text>
               <Input
                 type="file"
                 accept="image/*"
                 onChange={uploadThumbnail}
                 // style={{display: 'none'}}
-              />
+              /> */}
             </Box>
 
             <BtnDiv>

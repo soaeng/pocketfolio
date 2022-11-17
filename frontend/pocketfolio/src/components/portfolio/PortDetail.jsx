@@ -81,7 +81,6 @@ const PortDetail = () => {
   const movePortList = () => {
     navigate('/port');
   };
-
   return (
     <Background>
       <Nav></Nav>

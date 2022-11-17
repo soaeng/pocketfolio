@@ -17,26 +17,12 @@ export const getRoomList = createAsyncThunk(
 );
 
 // 마이룸 생성
-/**
-  {
-    "room": {
-      "name": "string",
-      "theme": 0,
-      "isMain": "string",
-      "privacy": "string",
-      "created": "2022-11-09T13:34:30.302Z",
-      "updated": "2022-11-09T13:34:30.302Z"
-    },
-    "thumbnail": "string"
-  }
- */
 export const createRoom = createAsyncThunk(
   'createRoom',
   async (data, {rejectWithValue}) => {
     try {
       const res = await postAxios.post(`rooms`, data);
-      console.log('성공')
-      if (res.status === 201) return res.data;
+      if (res.status === 201) return res;
     } catch (error) {
       console.log('마이룸 생성에러', error);
       return rejectWithValue(error);
@@ -74,26 +60,15 @@ export const delRoom = createAsyncThunk(
 );
 
 // 마이룸 수정
-/**
-  {  
-    "room": {
-      "name": "string",
-      "theme": 0,
-      "isMain": "string",
-      "privacy": "string",
-      "created": "2022-11-09T13:36:26.614Z",
-      "updated": "2022-11-09T13:36:26.614Z"
-    },
-    "thumbnail": "string"
-  }
- */
 export const updateRoom = createAsyncThunk(
   'updateRoom',
   async (data, {rejectWithValue}) => {
     try {
-      const res = await http.patch(`rooms/info/${data.roomSeq}`, data);
-
-      if (res.status === 201) return res.data;
+      const res = await postAxios.patch(
+        `rooms/info/${data.roomSeq}`,
+        data.data,
+      );
+      if (res.status === 201) return true;
     } catch (error) {
       console.log('마이룸 수정 에러', error);
       return rejectWithValue(error);

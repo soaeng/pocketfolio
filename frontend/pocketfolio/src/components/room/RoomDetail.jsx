@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import {
   Container,
   UserName,
@@ -7,10 +8,22 @@ import {
   Introduction,
   LinkIcon,
   LinkText,
+  ExtraContainer,
+  ExtraItem,
+  ImgBox,
+  Img,
+  LikeHitBox,
+  LikeHitIconDiv,
+  HitIcon,
+  LikeIcon,
+  HitLikeCount,
+  ExtraName,
 } from './RoomDetail.style';
 
 // 마이룸 상세정보
 const RoomDetail = ({closeDetail, data}) => {
+  const navigate = useNavigate()
+
   return (
     <Container onClick={closeDetail}>
       <UserName>{data.owner.name}</UserName>
@@ -25,6 +38,38 @@ const RoomDetail = ({closeDetail, data}) => {
         </LinkDiv>
       )}
       <Introduction>{data.owner.describe}</Introduction>
+
+      {data.owner.rooms.length > 0 && (
+        <ExtraContainer>
+          {data.owner.rooms.map((room, idx) => (
+            <ExtraItem onClick={() => navigate(`/room/${room.roomSeq}`)}>
+              <ImgBox>
+                <Img
+                  src={
+                    room.thumbnail
+                      ? room.thumbnail
+                      : process.env.PUBLIC_URL + '/assets/images/room_01.png'
+                  }
+                />
+
+                <LikeHitBox>
+                  <LikeHitIconDiv>
+                    <LikeIcon />
+                  </LikeHitIconDiv>
+                  <HitLikeCount>{room.like}</HitLikeCount>
+
+                  <LikeHitIconDiv>
+                    <HitIcon />
+                  </LikeHitIconDiv>
+                  <HitLikeCount>{room.hit}</HitLikeCount>
+                </LikeHitBox>
+
+              </ImgBox>
+              <ExtraName>{room.name}</ExtraName>
+            </ExtraItem>
+          ))}
+        </ExtraContainer>
+      )}
     </Container>
   );
 };

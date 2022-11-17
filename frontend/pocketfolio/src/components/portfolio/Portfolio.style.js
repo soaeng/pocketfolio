@@ -22,11 +22,22 @@ export const Background = styled.div`
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
-  margin: 5rem auto;
+  margin: 2rem auto;
   justify-content: space-evenly;
-  width: 50rem;
+  width: 60vw;
+  padding-bottom: 5rem;
 `;
 
+export const CardWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-top: 1rem;
+
+  &.myroomwrapper {
+    height: fit-content;
+    
+  }
+`;
 export const HeaderDiv = styled.div`
   display: flex;
   justify-content: space-between;
@@ -40,44 +51,21 @@ export const Header = styled.span`
   border-bottom: 2px solid;
 `;
 
-export const CardWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin-top: 1rem;
-
-  &.myroomwrapper {
-    height: 20rem;
-  }
-`;
-
 export const Text = styled.h2`
   font-size: 1.4rem;
   margin: 0;
+  text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   &.portfolios {
   }
 `;
 
 export const CardList = styled.div`
   &.roomlists {
-    display: flex;
-    align-items: flex-end;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    align-items: center;
     height: 100%;
-    overflow-x: auto;
-
-    &::-webkit-scrollbar {
-      height: 120%;
-    }
-
-    &::-webkit-scrollbar-thumb {
-      height: 5%;
-      background-color: #3c2e9b;
-      border-radius: 2rem;
-    }
-
-    &::-webkit-scrollbar-track {
-      background-color: #d7dcff;
-      border-radius: 2rem;
-    }
+    
   }
 
   &.portlists {
@@ -90,12 +78,12 @@ export const CardList = styled.div`
 
     &::-webkit-scrollbar-thumb {
       height: 5%;
-      background-color: #3c2e9b;
+      background-color: #ffc7bb;
       border-radius: 2rem;
     }
 
     &::-webkit-scrollbar-track {
-      background-color: #d7dcff;
+      background-color: #fbddd7;
       border-radius: 2rem;
     }
   }
@@ -103,40 +91,37 @@ export const CardList = styled.div`
 
 export const BtnDiv = styled.div`
   display: flex;
-  padding-bottom: 0.5rem;
 `;
 
 export const IconDiv = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 3rem;
-  height: 2rem;
-  background-color: #ff9392;
-  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.3),
-    0px 1px 3px 1px rgba(0, 0, 0, 0.15);
+  width: 2.5rem;
+  height: 2.5rem;
+  /* background-color: #ff9392; */
+  /* box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.3),
+    0px 1px 3px 1px rgba(0, 0, 0, 0.15); */
   border: 0;
-  border-radius: 10px;
-
+  border-radius: 50%;
+  background-color: white;
   font-size: 20px;
   transition: all 0.3s;
 
   cursor: pointer;
 
   :hover {
-    background-color: #fbb9b7;
+    background-color: #ebebeb;
   }
 
   :active {
-    background-color: #f4716f;
+    background-color: #c7c7c7;
   }
 
   &.addPortIcon {
-    margin-right: 1rem;
   }
 
   &.addPocketIcon {
-    margin-right: 1rem;
   }
 
   p {
@@ -145,19 +130,19 @@ export const IconDiv = styled.button`
 `;
 
 export const AddPortIcon = styled(RiFileAddFill)`
-  color: #ffffff;
+  color: #000000;
 `;
 
 export const TrashIcon = styled(RiDeleteBinFill)`
-  color: #ffffff;
+  color: #000000;
 `;
 
 export const TrashIconX = styled(RiDeleteBin2Fill)`
-  color: #ffffff;
+  color: #000000;
 `;
 
 export const AddPocketIcon = styled(RiFolderAddFill)`
-  color: #ffffff;
+  color: #000000;
 `;
 
 export const DelIcon = styled(RiCloseCircleLine)`
