@@ -1,7 +1,8 @@
 import React, {useState, useEffect, useRef} from 'react';
 import {useNavigate} from 'react-router-dom';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {getUserInfo} from '../../store/oauthSlice';
+import {roomDislike, roomLike} from '../../store/roomSlice';
 
 import {
   PocketCard,
@@ -16,66 +17,17 @@ import {
   LikeIcon,
   Item3,
   ShowIcon,
+  DislikeIcon,
+  IconDiv,
 } from './PocketSearch.style';
 
 import UserProfile from '../common/UserProfile';
 
-// 임시데이터(card)
-const items = [
-  {
-    icon: 'face',
-    copy: '01. Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-  },
-  {
-    icon: 'pets',
-    copy: '02. Sed do eiusmod tempor incididunt ut labore.',
-  },
-  {
-    icon: 'stars',
-    copy: '03. Consectetur adipiscing elit.',
-  },
-  {
-    icon: 'invert_colors',
-    copy: '04. Ut enim ad minim veniam, quis nostrud exercitation.',
-  },
-  {
-    icon: 'psychology',
-    copy: '05. Llamco nisi ut aliquip ex ea commodo consequat.',
-  },
-  {
-    icon: 'brightness_7',
-    copy: '06. Misi ut aliquip ex ea commodo consequat.',
-  },
-  {
-    icon: 'brightness',
-    copy: '07. Misi ut aliquip ex ea commodo consequat.',
-  },
-  {
-    icon: 'brightness',
-    copy: '07. Misi ut aliquip ex ea commodo consequat.',
-  },
-  {
-    icon: 'brightness',
-    copy: '07. Misi ut aliquip ex ea commodo consequat.',
-  },
-  {
-    icon: 'brightness',
-    copy: '07. Misi ut aliquip ex ea commodo consequat.',
-  },
-  {
-    icon: 'brightness',
-    copy: '07. Misi ut aliquip ex ea commodo consequat.',
-  },
-  {
-    icon: 'brightness',
-    copy: '07. Misi ut aliquip ex ea commodo consequat.',
-  },
-];
-
-const PocketSearch = () => {
-  const [item, setItem] = useState(items);
+const PocketSearch = ({data, handleLike, handleDisLike}) => {
+  // console.log(data, 123);
   const [visible, setVisible] = useState(false); //프로필 모달 보이게 안보이게
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   // dropdown 외부 클릭시 dropdown창 꺼지게 하기(modal 같은 기능 구현)
   const modalRef = useRef(null);
@@ -98,24 +50,68 @@ const PocketSearch = () => {
     };
   });
 
-  const navigate = useNavigate();
-
   // port 클릭시 이동 => 수정필요
-  const pocketClickHandler = () => {
-    navigate('/room/1');
+  const pocketClickHandler = roomSeq => {
+    navigate(`/room/${roomSeq}`);
   };
+
+  const user = useSelector(state => state.oauth.user);
+
+  // 좋아요, 좋아요 취소
+  async function handleLikeDislike(e, roomSeq, isLiked) {
+    if (user) {
+      if (isLiked) {
+        const {payload} = await dispatch(roomDislike(roomSeq));
+        console.log(payload, 111);
+        if (payload) {
+          handleDisLike(roomSeq);
+        }
+      } else {
+        const {payload} = await dispatch(roomLike(roomSeq));
+        console.log(payload, 222);
+        if (payload) {
+          handleLike(roomSeq);
+        }
+      }
+    }
+  }
+  // 특정 유저정보 담을 상태
+  const [userInfo, setUserInfo] = useState([]);
+
+  // 특정 유저정보 조회 함수
+  // const bringUserInfo = async
+  // const getUserInfo = async userSeq => {
+  //   const {payload} = await dispatch(getUserInfo(userSeq));
+  //   setUserInfo(payload);
+  //   console.log(payload, '특정 유저정보');
+  // };
+
+  useEffect(() => {
+    getUserInfo();
+  }, []);
 
   return (
     <>
       <PocketCard>
-        {item.map(it => {
-          const {icon, copy} = it;
+        {data.map(it => {
+          const {
+            categoryName,
+            hit,
+            name,
+            roomSeq,
+            thumbnail,
+            userName,
+            userProfilePic,
+            userSeq,
+            isLiked,
+            like,
+          } = it;
           return (
-            <PocketItem>
+            <PocketItem key={roomSeq}>
               {/* 마이포켓 썸네일 */}
-              <PocketImgDiv onClick={pocketClickHandler}>
+              <PocketImgDiv onClick={e => pocketClickHandler(roomSeq)}>
                 <PocketThumbnail
-                  src={process.env.PUBLIC_URL + '/assets/images/room.png'}
+                  src={thumbnail ? thumbnail : '/assets/images/room_01.png'}
                 />
               </PocketImgDiv>
               {/* 프로필 컴포넌트 */}
@@ -128,20 +124,27 @@ const PocketSearch = () => {
                   {/* 프로필 사진 */}
                   <PocketUserImgContainer>
                     <PocketUserImg
-                      src={process.env.PUBLIC_URL + '/assets/images/room.png'}
+                      src={
+                        userProfilePic
+                          ? userProfilePic
+                          : '/assets/images/user.png'
+                      }
                     />
                   </PocketUserImgContainer>
                   {/* 이름 */}
-                  <div>{icon}</div>
+                  <div>{userName}</div>
                   {visible && <UserProfile />}
                 </PocketUserDiv>
-                {/* <div>{copy}</div> */}
                 {/* 좋아요, 클릭 컴포넌트 */}
                 <LikeShowDiv>
-                  <LikeIcon />
-                  <Item3>2</Item3>
+                  <IconDiv
+                    onClick={e => handleLikeDislike(e, roomSeq, isLiked)}
+                  >
+                    {isLiked ? <LikeIcon /> : <DislikeIcon />}
+                  </IconDiv>
+                  <Item3>{like}</Item3>
                   <ShowIcon />
-                  <div>5</div>
+                  <div>{hit}</div>
                 </LikeShowDiv>
               </PocketUserInfoContainer>
             </PocketItem>

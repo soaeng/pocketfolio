@@ -2,7 +2,6 @@ import React, {useState, useEffect} from 'react';
 import {useLocation, useNavigate} from 'react-router-dom';
 import {useDispatch} from 'react-redux';
 import {getSearch} from '../../store/searchSlice';
-import {getUserInfo} from '../../store/oauthSlice';
 
 import Nav from '../common/Nav';
 import {
@@ -29,14 +28,16 @@ import UserSearch from './UserSearch';
 // 임시데이터(tag)
 const tags = [
   'All',
-  '웹기술',
+  '개발',
+  '사운드',
+  '게임 디자인',
   '미술',
-  '웹 디자이너',
-  'Python',
-  'Django',
-  'React',
-  '순수미술',
-  '작곡',
+  '광고',
+  '패션',
+  '제품 디자인',
+  'UI/UX',
+  '일러스트레이션',
+  '그래픽 디자인',
   '기타',
 ];
 
@@ -59,6 +60,7 @@ const Filter = props => {
         <SelectOption
           value={option.value}
           defaultValue={props.defaultValue === option.value}
+          key={option.value}
         >
           {option.name}
         </SelectOption>
@@ -86,8 +88,6 @@ const Search = () => {
   const [word, setWord] = useState('');
   // 페이지
   const [page, setPage] = useState(1);
-  // 특정 유저정보 담을 상태
-  const [userInfo, setUserInfo] = useState([]);
 
   /** params: 이진수 */
   const selectCategory = (e, bin_int) => {
@@ -113,19 +113,8 @@ const Search = () => {
       page: location.state.page,
     };
     const {payload} = await dispatch(getSearch({params, searchMode}));
-    setData(payload);
+    setData(payload.list);
   };
-
-  // 특정 유저정보 조회 함수
-  // const getUserInfo = async () => {
-  //   const {payload} = await dispatch(getUserInfo(userSeq));
-  //   setUserInfo(payload);
-  //   console.log(payload, '특정 유저정보');
-  // };
-
-  // useEffect(() => {
-  //   getUserInfo();
-  // }, []);
 
   // 입력창 변화 감지
   const onChange = e => {
@@ -152,11 +141,8 @@ const Search = () => {
   // 검색어 창 엔터시 입력
   const keyDownHandler = event => {
     if (event.key === 'Enter') {
-      //아무것도 입력하지 않은 경우 submit 방지
-      if (word.length !== 0) {
-        setWord(word);
-        onSubmit(event);
-      }
+      setWord(word);
+      onSubmit(event);
     }
   };
 
@@ -182,6 +168,32 @@ const Search = () => {
     }
   };
 
+  // 좋아요
+  const handleLike = roomSeq => {
+    setData(
+      data.map(dataItem => {
+        if (dataItem.roomSeq === roomSeq) {
+          return {...dataItem, like: dataItem.like + 1, isLiked: true};
+        } else {
+          return dataItem;
+        }
+      }),
+    );
+  };
+
+  // 좋아요 취소
+  const handleDisLike = roomSeq => {
+    setData(
+      data.map(dataItem => {
+        if (dataItem.roomSeq === roomSeq) {
+          return {...dataItem, like: dataItem.like - 1, isLiked: false};
+        } else {
+          return dataItem;
+        }
+      }),
+    );
+  };
+
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);
     getData();
@@ -191,7 +203,7 @@ const Search = () => {
   }, []);
 
   useEffect(() => {
-    console.log(data);
+    // console.log(data);
   }, [data]);
 
   return (
@@ -274,9 +286,15 @@ const Search = () => {
           <Filter options={filterOptions} setSort={setSort} />
         </FilterDiv>
         {/* 검색 리스트 목록 */}
-        {searchMode === 'room' ? <PocketSearch /> : null}
-        {searchMode === 'portfolio' ? <PortSearch /> : null}
-        {searchMode === 'user' ? <UserSearch /> : null}
+        {searchMode === 'room' && data ? (
+          <PocketSearch
+            data={data}
+            handleLike={handleLike}
+            handleDisLike={handleDisLike}
+          />
+        ) : null}
+        {searchMode === 'portfolio' && data ? <PortSearch /> : null}
+        {searchMode === 'user' && data ? <UserSearch /> : null}
       </DivTest>
     </>
   );
