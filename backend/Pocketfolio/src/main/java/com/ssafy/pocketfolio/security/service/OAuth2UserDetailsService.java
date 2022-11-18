@@ -15,6 +15,7 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
@@ -60,7 +61,8 @@ public class OAuth2UserDetailsService extends DefaultOAuth2UserService {
             email = oAuth2User.getAttribute("email");
             name = oAuth2User.getAttribute("name");
         } else if (clientName.equals("Kakao")) {
-            email = oAuth2User.getAttribute("kakao_account");
+            Map<String, Object> kakaoAccount = oAuth2User.getAttribute("kakao_account");
+            email = (String) kakaoAccount.get("email");
         }
 
         log.info("EMAIL: " + email);
