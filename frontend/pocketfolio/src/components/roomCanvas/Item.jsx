@@ -53,7 +53,6 @@ const Item = props => {
     1,
   ];
   const pivotRef = useRef();
-  console.log(selectedMesh);
   useEffect(() => {
     if (selectedMesh === ref.current) {
       setSelected(true);
