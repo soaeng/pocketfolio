@@ -10,7 +10,7 @@ import {
 export const UserProfileItem = styled.div`
   display: flex;
   position: fixed;
-  justify-content: space-between;
+  justify-content: center;
   flex-direction: column;
   align-items: center;
   background-color: #fff;
@@ -19,7 +19,8 @@ export const UserProfileItem = styled.div`
   margin: 10px;
   padding: 25px;
   border-radius: 16px;
-  box-shadow: 0px 2px 5px 1px rgba(0, 0, 0, 0.25);
+  border: 3px solid #ff9392;
+  /* box-shadow: 0 2px 3px 0 rgba(34, 36, 38, 0.15); */
   z-index: 99999;
   left: 50%;
   bottom: 8%;
@@ -37,7 +38,9 @@ export const UserProfileContainer = styled.div`
 
 export const UserInfo = styled.div`
   display: flex;
+  flex-direction: row;
   align-items: center;
+  width: 100%;
   
 `
 
@@ -48,15 +51,15 @@ export const UserProfileImgContainer = styled.div`
 `;
 
 export const UserProfileImg = styled.img`
-  width: 100px;
-  height: 100px;
+  width: 130px;
+  height: 130px;
   object-fit: cover;
   border-radius: 50%;
 `;
 
 export const UserDiv = styled.div`
   display: flex;
-  align-items: baseline;
+  align-items: center;
 `
 
 // 유저 정보 담는 div
@@ -64,7 +67,7 @@ export const UserProfileInfoContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   padding: 10px;
 `;
 
@@ -83,10 +86,11 @@ export const FollowDiv = styled.div`
   display: flex;
   flex-direction: row;
   padding: 10px 0;
+  z-index: 9999999;
 `
 
 export const UserFollowDiv = styled.div`
-  padding: 0 5px;
+  padding-right: 10px;
 `
 export const FollowIcon = styled(RiUserAddLine)`
   width: 100%;
@@ -102,13 +106,14 @@ export const IconDiv = styled.div`
   cursor: pointer;
   width: 1.3rem;
   height: 1.3rem;
+  padding: 10px;
 `;
 
 // 취소 버튼
 export const CancelBox = styled.div`
   position: absolute;
-  top: 0;
-  right: 0;
+  top: 10px;
+  right: 10px;
   width: 1.7rem;
   aspect-ratio: 1/1;
   cursor: pointer;
@@ -120,14 +125,20 @@ export const CancelIcon = styled(RiCloseFill)`
 `;
 
 // 마이포켓 정보
-export const RoomInfoDiv = styled.div``
+export const RoomInfoDiv = styled.div`
+  cursor: pointer;
+`
 
 export const RoomInfoImg = styled.img`
   height: 200px;
   width: 200px;
+  object-fit: cover;
 `
 
 export const ScrollBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
   height: 250px;
   overflow-y: auto;
 
@@ -147,3 +158,20 @@ export const ScrollBox = styled.div`
     border-radius: 0.2rem;
   }
 `;
+
+export const RoomBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+`
+
+export const RoomName = styled.div`
+  font-size: large;
+  font-weight: bold;
+`
+
+export const ProfileLine = styled.hr`
+  border-top: 1px solid lightgray;
+  margin: 0;
+`

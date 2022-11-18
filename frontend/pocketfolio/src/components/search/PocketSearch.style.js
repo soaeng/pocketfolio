@@ -73,6 +73,10 @@ export const PocketUserInfoContainer = styled.div`
   }
 `;
 
+export const PocketName = styled.div`
+  padding-left:10px;
+`
+
 export const PocketUserDiv = styled.div`
   display: flex;
   justify-content: space-between;
@@ -97,7 +101,7 @@ export const ShowIcon = styled(RiEyeLine)`
 
 export const LikeShowDiv = styled.div`
   display: flex;
-  align-items: center;
+  align-items: stretch;
 `;
 
 export const Item3 = styled.div`

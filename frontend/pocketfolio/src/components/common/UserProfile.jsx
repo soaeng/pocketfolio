@@ -28,6 +28,9 @@ import {
   RoomInfoImg,
   UserDiv,
   ScrollBox,
+  RoomBox,
+  RoomName,
+  ProfileLine,
 } from './UserProfile.style';
 
 const UserProfile = (props) => {
@@ -82,7 +85,6 @@ const UserProfile = (props) => {
   const onErrorImg = (e) => {
     e.target.src = '/assets/images/room_01.png'
   }
-  
 
   return (
     <>
@@ -114,28 +116,31 @@ const UserProfile = (props) => {
                   </IconDiv>
                 )}
               </UserDiv>
-              <UserProDescDiv>{userInfo.describe}</UserProDescDiv>
-              <UserProDescDiv>{userInfo.email}</UserProDescDiv>
               <FollowDiv>
                 <UserFollowDiv>팔로워 : {follow ? userInfo.followerTotal + 1 : userInfo.followerTotal}</UserFollowDiv>
                 <UserFollowDiv>팔로잉 : {userInfo.followingTotal}</UserFollowDiv>
               </FollowDiv>
+              <UserProDescDiv>{userInfo.describe}</UserProDescDiv>
+              <UserProDescDiv>{userInfo.email}</UserProDescDiv>
+              
             </UserProfileInfoContainer>
           </UserInfo>
           <div>
-            <hr/>
+            <ProfileLine/>
           </div>
           <ScrollBox>
           {userInfo.rooms && userInfo.rooms.map((room) => {
             const {roomSeq, thumbnail, isFollowing, like, name, category} = room
             return (
               <>
-                <div>{name}</div>
-                <RoomInfoDiv onClick={e => roomClickHandler(roomSeq)}>
-                  <RoomInfoImg
-                    onError={onErrorImg}
-                    src={thumbnail ? thumbnail : '/assets/images/room_01.png'}/>
-                </RoomInfoDiv>
+                <RoomBox>
+                  <RoomName>{name}</RoomName>
+                  <RoomInfoDiv onClick={e => roomClickHandler(roomSeq)}>
+                    <RoomInfoImg
+                      onError={onErrorImg}
+                      src={thumbnail ? thumbnail : '/assets/images/room_01.png'}/>
+                  </RoomInfoDiv>
+                </RoomBox>
               </>
             )
           })}</ScrollBox>

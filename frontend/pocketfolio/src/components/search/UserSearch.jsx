@@ -56,7 +56,6 @@ const User = ({userSeq, name, profilePic, describe, followerTotal, followingTota
     const bringUserInfo = async userSeq => {
       const {payload} = await dispatch(getUserInfo(userSeq));
       setUserInfo(payload);
-      console.log(payload, '특정 유저정보');
     };
   
     useEffect(() => {
@@ -103,41 +102,7 @@ const User = ({userSeq, name, profilePic, describe, followerTotal, followingTota
 
 const UserSearch = ({data}) => {
   const user = useSelector(state => state.oauth.user);
-  const dispatch = useDispatch();
-  const [userModal, setUserModal] = useState(false); //프로필 모달 보이게 안보이게
   
-  // 모달 닫는 함수
-  const closeUserModal = (e) => {
-    setUserModal(false);
-  };
-
-  // 팔로우, 언팔로우
-  const handleFollow = async (userSeq, follow) => {
-    if (user) {
-      if (follow) {
-        const {payload} = await dispatch(unfollowFunc(userSeq));
-        if (payload) {
-          // setFollow(false);
-        }
-      } else {
-        const {payload} = await dispatch(followFunc(userSeq));
-        if (payload) {
-          // setFollow(true);
-        }
-      }
-    }
-  }
-
-  // 특정 유저정보 담을 상태
-  const [userInfo, setUserInfo] = useState([]);
-
-  // 특정 유저정보 조회 함수
-  const bringUserInfo = async userSeq => {
-    const {payload} = await dispatch(getUserInfo(userSeq));
-    setUserInfo(payload);
-    console.log(payload, '특정 유저정보');
-  };
-
   useEffect(() => {
     getUserInfo();
   }, []);
@@ -146,9 +111,6 @@ const UserSearch = ({data}) => {
     <>
       <UserCard>
         {data.map(props => {
-          // const {userSeq, name, profilePic, describe, followerTotal, followingTotal} = it;
-          // let {hasFollowed} = it;
-          
           return(
             <User {...props} user={user}/>)
           })}
