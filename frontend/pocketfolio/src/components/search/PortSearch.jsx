@@ -38,7 +38,7 @@ const PortSearch = ({data, handleLike, handleDisLike}) => {
 
   // 이미지 오류인 경우 기본 이미지 보이게
   const onErrorImg = (e) => {
-    e.target.src = '/assets/images/room_01.png'
+    e.target.src = '/assets/images/logo3.png'
   }
 
   // dropdown 외부 클릭시 dropdown창 꺼지게 하기(modal 같은 기능 구현)

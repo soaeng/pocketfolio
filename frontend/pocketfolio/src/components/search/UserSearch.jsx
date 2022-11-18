@@ -49,18 +49,23 @@ const User = ({userSeq, name, profilePic, describe, followerTotal, followingTota
     }
   }
 
-    // 특정 유저정보 담을 상태
+  // 이미지 오류인 경우 기본 이미지 보이게
+  const onErrorImg = (e) => {
+    e.target.src = '/assets/images/logo3.png'
+  }
+
+  // 특정 유저정보 담을 상태
     const [userInfo, setUserInfo] = useState([]);
 
-    // 특정 유저정보 조회 함수
-    const bringUserInfo = async userSeq => {
-      const {payload} = await dispatch(getUserInfo(userSeq));
-      setUserInfo(payload);
-    };
-  
-    useEffect(() => {
-      getUserInfo();
-    }, []);
+  // 특정 유저정보 조회 함수
+  const bringUserInfo = async userSeq => {
+    const {payload} = await dispatch(getUserInfo(userSeq));
+    setUserInfo(payload);
+  };
+
+  useEffect(() => {
+    getUserInfo();
+  }, []);
 
   return(
     <UserItem>
@@ -82,6 +87,7 @@ const User = ({userSeq, name, profilePic, describe, followerTotal, followingTota
           }}
         >
           <UserImg
+            onError={onErrorImg}
             src={profilePic ? profilePic : '/assets/images/user.png'}
           />
         </UserImgContainer>
