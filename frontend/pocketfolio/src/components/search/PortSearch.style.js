@@ -20,6 +20,7 @@ export const PortItem = styled.div`
   width: 20%;
   height: 20%;
   min-width: 280px;
+  max-height: 340px;
   transition: 0.5s ease;
   border-radius: 16px;
   box-shadow: 0px 2px 5px 1px rgba(0, 0, 0, 0.25);
@@ -30,6 +31,8 @@ export const PortItem = styled.div`
 export const PortImgDiv = styled.div`
   display: flex;
   justify-content: center;
+  height: 70%;
+  min-height: 250px;
   border-radius: 8px;
 
   &:hover {
@@ -38,7 +41,9 @@ export const PortImgDiv = styled.div`
 `;
 
 export const PortThumbnail = styled.img`
-  width: 90%;
+  width: 250px;
+  height: 250px;
+  object-fit: cover;
 `;
 
 // 호버시
@@ -84,6 +89,7 @@ export const PortUserInfoContainer = styled.div`
   justify-content: space-between;
   align-items: center;
   padding-top: 5px;
+  padding-left: 5px;
 
   @media screen and (max-width: 900px) {
     flex-direction: column;
@@ -112,11 +118,21 @@ export const PortUserImg = styled.img`
   border-radius: 50%;
 `;
 
-export const PortUserName = styled.div``;
+export const PortUserName = styled.div`
+  padding-left: 5px;
+`
+
+// 좋아요 클릭수 컴포넌트
+export const LikeShowDiv = styled.div`
+  display: flex;
+  align-items: center;
+  padding-right: 5px;
+`;
 
 export const LikeIcon = styled(RiHeart3Fill)`
   width: 100%;
   height: 100%;
+  padding-right: 5px;
 `;
 
 export const DislikeIcon = styled(RiHeart3Line)`
@@ -127,14 +143,28 @@ export const DislikeIcon = styled(RiHeart3Line)`
 export const ShowIcon = styled(RiEyeLine)`
   width: 100%;
   height: 100%;
-  cursor: default;
-`;
-
-export const LikeShowDiv = styled.div`
-  display: flex;
-  align-items: center;
+  padding-right: 5px;
 `;
 
 export const Item3 = styled.div`
   padding-right: 0.5rem;
 `;
+
+export const IconDiv = styled.div`
+  height: 100%;
+  width: 100%;
+  cursor: pointer;
+`;
+
+export const TagsDiv = styled.div`
+  display: flex;
+`
+
+export const Tag = styled.div`
+  padding: 2%;
+  margin: 1%;
+  /* max-height: 15px; */
+  background-color: #f3a9a1;
+  color: white;
+  border-radius: 0.5rem;
+`

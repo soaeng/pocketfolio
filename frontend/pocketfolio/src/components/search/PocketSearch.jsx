@@ -72,6 +72,7 @@ const PocketSearch = ({data, handleLike, handleDisLike}) => {
       }
     }
   }
+  
   // 특정 유저정보 담을 상태
   const [userInfo, setUserInfo] = useState([]);
 
