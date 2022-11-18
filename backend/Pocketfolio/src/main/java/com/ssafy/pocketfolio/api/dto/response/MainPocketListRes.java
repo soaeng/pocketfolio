@@ -13,6 +13,8 @@ public class MainPocketListRes {
     private long roomSeq;
     @Schema(description = "방 이름")
     private String roomName;
+    @Schema(description = "썸네일")
+    private String thumbnail;
     @Schema(description = "방 카테고리")
     private String roomCategory;
     @Schema(description = "팔로우 여부")
@@ -34,6 +36,7 @@ public class MainPocketListRes {
         return MainPocketListRes.builder()
                 .roomSeq(room.getRoomSeq())
                 .roomName(room.getName())
+                .thumbnail(room.getThumbnail())
                 .roomCategory(category)
                 .follow(follow)
                 .like(like)
