@@ -28,26 +28,26 @@ const PocketSearch = ({data, handleLike, handleDisLike}) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  // dropdown 외부 클릭시 dropdown창 꺼지게 하기(modal 같은 기능 구현)
-  const modalRef = useRef(null);
+  // // dropdown 외부 클릭시 dropdown창 꺼지게 하기(modal 같은 기능 구현)
+  // const modalRef = useRef(null);
 
-  useEffect(() => {
-    // 이벤트 핸들러 함수
-    const handler = event => {
-      // mousedown 이벤트가 발생한 영역이 모달창이 아닐 때, 모달창 제거 처리
-      if (modalRef.current && !modalRef.current.contains(event.target)) {
-        setRoomModal(false);
-      }
-    };
+  // useEffect(() => {
+  //   // 이벤트 핸들러 함수
+  //   const handler = event => {
+  //     // mousedown 이벤트가 발생한 영역이 모달창이 아닐 때, 모달창 제거 처리
+  //     if (modalRef.current && !modalRef.current.contains(event.target)) {
+  //       setRoomModal(false);
+  //     }
+  //   };
 
-    // 이벤트 핸들러 등록
-    document.addEventListener('mousedown', handler);
+  //   // 이벤트 핸들러 등록
+  //   document.addEventListener('mousedown', handler);
 
-    return () => {
-      // 이벤트 핸들러 해제
-      document.removeEventListener('mousedown', handler);
-    };
-  });
+  //   return () => {
+  //     // 이벤트 핸들러 해제
+  //     document.removeEventListener('mousedown', handler);
+  //   };
+  // });
 
   // 마아포켓 클릭시 이동
   const pocketClickHandler = roomSeq => {
@@ -111,7 +111,7 @@ const PocketSearch = ({data, handleLike, handleDisLike}) => {
                 />
               </PocketImgDiv>
               {/* 프로필 컴포넌트 */}
-              <PocketUserInfoContainer ref={modalRef}>
+              <PocketUserInfoContainer>
                 <PocketUserDiv
                   onClick={e => {
                     setRoomModal(roomSeq);

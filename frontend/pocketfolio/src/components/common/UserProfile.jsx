@@ -72,10 +72,11 @@ const UserProfile = ({userInfo}) => {
             // console.log(isFollowing, 1234)
             return (
               <>
-                <div onClick={e => roomClickHandler(roomSeq)}> {/* 확인 필요*/}
+                <div onClick={e => roomClickHandler(roomSeq)}>
                   <img src={thumbnail ? thumbnail : process.env.PUBLIC_URL + '/assets/images/room_01.png'}/>
                 </div>
-                {/* 팔로우 | 로그인한 상태이고, 방 주인이 아닌 경우 가능 */} {/* 확인 필요*/}
+                {/* 팔로우 버튼 */}
+                {/* 팔로우 | 로그인한 상태이고, 방 주인이 아닌 경우 가능 */}
                 {user && user.userSeq !== userInfo.userSeq && (
                   <IconDiv onClick={handleFollow}>
                     {follow ? <AlreadyFollowIcon /> : <FollowIcon />}
@@ -85,9 +86,6 @@ const UserProfile = ({userInfo}) => {
             )
           })}
         </UserProfileContainer>
-        {/* 팔로우 버튼 */}
-        
-        <UserProfileFollowBtn>팔로우</UserProfileFollowBtn>
       </UserProfileItem>
     </>
   );

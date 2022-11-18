@@ -77,7 +77,7 @@ const Search = () => {
   const [category, setCategory] = useState(2 ** tags.length - 1);
   // 카테고리(3개: 포켓, 포트폴리오, 유저)
   const [searchMode, setSearchMode] = useState('room');
-  // 정렬
+  // 정렬 필터
   const [sort, setSort] = useState(1);
   // 페이지당 보이는 개수
   const size = 20;
@@ -215,6 +215,19 @@ const Search = () => {
     });
   }, [category]);
 
+  // 마이포켓, 포트폴리오, 유저 변경 시 검색
+  useEffect(() => {
+    navigate('/search', {
+      state: {
+        search: word,
+        sort: sort,
+        category: category,
+        size: size,
+        page: 1,
+      },
+    });
+  }, [searchMode]);
+
   // 정렬 변경 시 검색
   useEffect(() => {
     navigate('/search', {
@@ -273,7 +286,7 @@ const Search = () => {
         {/* </Tabs> */}
       </Container1>
       {/* 태그 */}
-      {searchMode === 'portfolio' ? null : (
+      {searchMode === 'room' ? (
         <TagContainer>
           <Tag
             style={
@@ -324,7 +337,7 @@ const Search = () => {
             );
           })}
         </TagContainer>
-      )}
+      ) : null}
       <DivTest>
         {/* 포켓 검색 */}
         {searchMode === 'room' && data ? (
