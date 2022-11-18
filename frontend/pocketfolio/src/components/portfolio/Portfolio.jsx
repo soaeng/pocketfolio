@@ -51,12 +51,6 @@ const Portfolio = () => {
   // 포켓 생성 모달 개폐 변수
   const [openPockMod, setOpenPockMod] = useState(false);
 
-  // 포켓 생성 모달 개폐 함수
-  const openPockModal = () => {
-    setOpenPockMod(!openPockMod);
-  };
-
-  
   // 포트폴리오 목록 불러오기
   useEffect(() => {
     dispatch(getMyPocket()).then(res => {
@@ -119,12 +113,12 @@ const Portfolio = () => {
             <Text className="myrooms">소듕한 포켓들</Text>
             <BtnDiv>
               <IconDiv className="addPocketIcon">
-                <AddPocketIcon onClick={openPockModal}></AddPocketIcon>
+                <AddPocketIcon onClick={()=>setOpenPockMod(true)}></AddPocketIcon>
                 <AddPocket
                   open={openPockMod}
-                  close={openPockModal}
+                  close={()=>setOpenPockMod(false)}
                   reLander={reLander}
-                  setReLander={setReLander} 
+                  setReLander={setReLander}
                   // save={createPocket}
                 ></AddPocket>
               </IconDiv>
@@ -136,7 +130,7 @@ const Portfolio = () => {
           <CardList className="roomlists">
             {pocketList.length > 0
               ? pocketList.map((item, idx) => (
-                  <Card key={idx} pocketData={item} isDelete={isDelete}></Card>
+                  <Card key={idx} pocketData={item} isDelete={isDelete} reLander={reLander} setReLander={setReLander}></Card>
                 ))
               : null}
           </CardList>
@@ -194,7 +188,7 @@ const Portfolio = () => {
                           <DeleteModal
                             onClose={() => setIsOpen(false)}
                             text={'포트폴리오를'}
-                            item={item}
+                            seq={item.portSeq}
                             deleteFunc={deletePortHandle}
                           ></DeleteModal>
                         )}

@@ -25,9 +25,10 @@ export const PortDiv = styled.div`
 
 export const ImgDiv = styled.div`
   display: flex;
+
   justify-content: center;
-  /* height: 9rem;
-  width: 12rem; */
+  height: 11rem;
+  width: 10rem;
   
   padding: 10px;
   overflow: hidden;
@@ -39,12 +40,17 @@ export const ImgDiv = styled.div`
 `;
 
 export const Thumbnail = styled.img`
-  max-width: 100%;
-  aspect-ratio: 1/1;  
-  height: auto;
+  width:100%;
+  height:100%;
   cursor: pointer;
   background-color: #fef9ff;
   border-radius: 0.5rem ;
+  transition: all 0.2s;
+  object-fit: cover;
+
+  :hover{
+    background-color: #e5e5e5;
+  }
 `;
 
 export const TitleDiv = styled.div`
@@ -97,7 +103,7 @@ export const IconDiv = styled.div`
   visibility: hidden;
   opacity: 0;
   position: absolute;
-  left: 10.7rem;
+  left: 10rem;
   top: -1rem;
   transition: all ease-in-out 0.1s;
 
