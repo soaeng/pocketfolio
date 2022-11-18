@@ -10,6 +10,7 @@ import {useState, useEffect, useRef} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {getRoomInfo, updateArranges} from '../../store/roomSlice';
 import EditTheme from './EditTheme';
+import NoRoom from './NoRoom';
 
 // 마이룸
 const Room = () => {
@@ -284,7 +285,7 @@ const Room = () => {
       />
     </Container>
   ) : (
-    <>없어</>
+    <NoRoom/>
   );
 };
 
