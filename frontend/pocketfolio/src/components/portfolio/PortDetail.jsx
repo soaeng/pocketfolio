@@ -67,7 +67,7 @@ const PortDetail = () => {
   };
 
   const [showFiles, setShowFiles] = useState(false);
-  console.log(portDetail.summary);
+  
   return (
     <Background>
       <Nav></Nav>

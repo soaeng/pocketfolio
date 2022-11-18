@@ -130,7 +130,7 @@ const Portfolio = () => {
           <CardList className="roomlists">
             {pocketList.length > 0
               ? pocketList.map((item, idx) => (
-                  <Card key={idx} pocketData={item} isDelete={isDelete}></Card>
+                  <Card key={idx} pocketData={item} isDelete={isDelete} reLander={reLander} setReLander={setReLander}></Card>
                 ))
               : null}
           </CardList>
@@ -188,7 +188,7 @@ const Portfolio = () => {
                           <DeleteModal
                             onClose={() => setIsOpen(false)}
                             text={'포트폴리오를'}
-                            item={item}
+                            seq={item.portSeq}
                             deleteFunc={deletePortHandle}
                           ></DeleteModal>
                         )}
