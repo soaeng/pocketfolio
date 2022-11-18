@@ -73,7 +73,7 @@ public interface SearchRepository extends JpaRepository<Room, Long> {
             "group_concat(distinct t.name) as tags " +
             "from portfolio p inner join arrange a on p.port_seq = a.port_seq inner join room r on a.room_seq = r.room_seq " +
             "inner join tag t on a.port_seq = t.port_seq inner join user u on p.user_seq = u.user_seq " +
-            "where p.name like %:keyword% or p.summary like %:keyword% group by p.port_seq " +
+            "where p.name like %:keyword% or p.summary like %:keyword% group by p.port_seq, r.room_seq " +
             "order by p.updated desc",
             countQuery = "select count(distinct(p.port_seq)) " +
                     "from portfolio p inner join arrange a on p.port_seq = a.port_seq inner join room r on a.room_seq = r.room_seq " +
@@ -90,7 +90,7 @@ public interface SearchRepository extends JpaRepository<Room, Long> {
             "group_concat(distinct t.name) as tags " +
             "from portfolio p inner join arrange a on p.port_seq = a.port_seq inner join room r on a.room_seq = r.room_seq " +
             "inner join tag t on a.port_seq = t.port_seq inner join user u on p.user_seq = u.user_seq " +
-            "where p.name like %:keyword% or p.summary like %:keyword% group by p.port_seq " +
+            "where p.name like %:keyword% or p.summary like %:keyword% group by p.port_seq, r.room_seq " +
             "order by followerTotal desc",
             countQuery = "select count(distinct(p.port_seq)) " +
                     "from portfolio p inner join arrange a on p.port_seq = a.port_seq inner join room r on a.room_seq = r.room_seq " +
