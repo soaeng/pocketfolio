@@ -12,10 +12,10 @@ const MainTheme = props => {
   }
 
   return (
-    <Bounds fit clip observe margin={type === 'island' ? 2 : 1.2}>
+    <Bounds clip observe margin={type === 'island' ? 2 : 1.2}>
       {type === 'island' && (
         <mesh ref={props.boundaryRef} visible={false}>
-          <boxGeometry args={[25, 25, 25]} />
+          <boxGeometry args={[40, 40, 40]} />
         </mesh>
       )}
       {arr.map(_name => (
@@ -25,7 +25,6 @@ const MainTheme = props => {
     </Bounds>
   );
 };
-
 
 function ThemeMesh(props) {
   const name = props.name;
