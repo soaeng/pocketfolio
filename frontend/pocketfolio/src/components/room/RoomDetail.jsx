@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 import {
   Container,
   UserName,
@@ -22,7 +22,7 @@ import {
 
 // 마이룸 상세정보
 const RoomDetail = ({closeDetail, data}) => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   return (
     <Container onClick={closeDetail}>
@@ -42,7 +42,10 @@ const RoomDetail = ({closeDetail, data}) => {
       {data.owner.rooms.length > 0 && (
         <ExtraContainer>
           {data.owner.rooms.map((room, idx) => (
-            <ExtraItem onClick={() => navigate(`/room/${room.roomSeq}`)}>
+            <ExtraItem
+              onClick={() => navigate(`/room/${room.roomSeq}`)}
+              key={idx}
+            >
               <ImgBox>
                 <Img
                   src={
@@ -50,6 +53,10 @@ const RoomDetail = ({closeDetail, data}) => {
                       ? room.thumbnail
                       : process.env.PUBLIC_URL + '/assets/images/room_01.png'
                   }
+                  onError={e => {
+                    e.target.src =
+                      process.env.PUBLIC_URL + '/assets/images/logo3.png';
+                  }}
                 />
 
                 <LikeHitBox>
@@ -63,7 +70,6 @@ const RoomDetail = ({closeDetail, data}) => {
                   </LikeHitIconDiv>
                   <HitLikeCount>{room.hit}</HitLikeCount>
                 </LikeHitBox>
-
               </ImgBox>
               <ExtraName>{room.name}</ExtraName>
             </ExtraItem>

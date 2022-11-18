@@ -112,6 +112,10 @@ const CarouselRec = ({rec, idx}) => {
                       ? item.thumbnail
                       : process.env.PUBLIC_URL + '/assets/images/room_01.png'
                   }
+                  onError={e => {
+                    e.target.src =
+                      process.env.PUBLIC_URL + '/assets/images/logo3.png';
+                  }}
                   alt="썸네일"
                 />
                 <LikeHitDiv className="icon">
@@ -130,7 +134,7 @@ const CarouselRec = ({rec, idx}) => {
                 <Name>{item.roomName}</Name>
               </InfoBox>
 
-              <Shadow className="shadow"/>
+              <Shadow className="shadow" />
             </ItemContainer>
           ))}
         </ItemList>

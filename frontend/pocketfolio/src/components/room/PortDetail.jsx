@@ -89,7 +89,7 @@ const PortDetail = ({nowPort, roomDto}) => {
               {showFiles && (
                 <FileList>
                   {data.urls.map((url, idx) => (
-                    <FileItem>
+                    <FileItem key={idx}>
                       <FileName className="name">{url.name}</FileName>
                       <DownBox href={url.url}>
                         <DownIcon />
@@ -105,7 +105,7 @@ const PortDetail = ({nowPort, roomDto}) => {
         {data.tags && (
           <Tags>
             {data.tags.map((tag, idx) => (
-              <Tag>{`# ${tag}`}</Tag>
+              <Tag key={idx}>{`# ${tag}`}</Tag>
             ))}
           </Tags>
         )}

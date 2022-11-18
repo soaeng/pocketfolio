@@ -7,7 +7,6 @@ export const getMain = createAsyncThunk(
   async (data, {rejectWithValue}) => {
     try {
       const res = await http.get(`main`);
-      console.log(res)
       if (res.status === 200) return res.data;
     } catch (error) {
       console.log('마이룸 목록 조회에러', error);
