@@ -40,6 +40,7 @@ public class RoomServiceImpl implements RoomService {
     private final MultipartFileHandler fileHandler;
     private final FollowRepository followRepository;
     private final TagRepository tagRepository;
+    private final RelationRepository relationRepository;
 
     private final int BEST_LIMIT = 12;
 
@@ -331,7 +332,8 @@ public class RoomServiceImpl implements RoomService {
                 log.error("이미 좋아요 추가한 방");
                 return false;
             } else {
-                return roomLikeRepository.save(RoomLike.builder().room(room).user(user).build()) != null;
+                roomLikeRepository.save(RoomLike.builder().room(room).user(user).build());
+                return true;
             }
         }
         log.error("본인 방");
@@ -456,10 +458,18 @@ public class RoomServiceImpl implements RoomService {
         List<MainPocketListRes> pocketList = new ArrayList<>();
         try {
             List<Room> rooms = new ArrayList<>();
-            if (type.equals("like")) {
-                rooms = roomRepository.findRoomLikeByUser_UserSeqOrderByRandom(userSeq);
-            } else if (type.equals("follow")) {
-                rooms = roomRepository.findFollowByUser_UserSeqFromOrderByRandom(userSeq);
+            switch (type) {
+                case "like":
+                    rooms = roomRepository.findRoomLikeByUser_UserSeqOrderByRandom(userSeq);
+                    break;
+                case "follow":
+                    rooms = roomRepository.findFollowByUser_UserSeqFromOrderByRandom(userSeq);
+                    break;
+                case "recommend":
+                    Relation relation = relationRepository.findByUserSeq_UserSeq(userSeq);
+                    List<Long> roomSeqs = Arrays.stream(relation.getRoomList().split(",")).map(Long::parseLong).collect(Collectors.toList());
+                    rooms = roomRepository.findAllByRoomSeqIn(roomSeqs);
+                    break;
             }
             for (Room room : rooms) {
                 boolean follow = followRepository.existsByUserFrom_UserSeqAndUserTo_UserSeq(userSeq, room.getUser().getUserSeq());
