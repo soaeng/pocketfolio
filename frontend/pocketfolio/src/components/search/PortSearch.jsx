@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {useNavigate} from 'react-router-dom';
 import {useDispatch, useSelector} from 'react-redux';
 import {getUserInfo} from '../../store/oauthSlice';
@@ -17,31 +17,55 @@ import {
   PortUserImg,
   PortUserName,
   LikeIcon,
+  DislikeIcon,
   LikeShowDiv,
   Item3,
   ShowIcon,
-  TagsDiv,
-  Tag,
+  IconDiv,
 } from './PortSearch.style';
 
+import UserProfile from '../common/UserProfile';
+
 const PortSearch = ({data, handleLike, handleDisLike}) => {
-  const [roomModal, setRoomModal] = useState(false); //프로필 모달 보이게 안보이게
+  const [userModal, setUserModal] = useState(false); //프로필 모달 보이게 안보이게
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const user = useSelector(state => state.oauth.user);
+  // 모달 닫는 함수
+  const closeUserModal = (e) => {
+    setUserModal(false);
+  };
 
   // 이미지 오류인 경우 기본 이미지 보이게
   const onErrorImg = (e) => {
     e.target.src = '/assets/images/room_01.png'
   }
 
-  // pocket 클릭시 이동 => 수정필요
+  // dropdown 외부 클릭시 dropdown창 꺼지게 하기(modal 같은 기능 구현)
+  const modalRef = useRef(null);
+
+  useEffect(() => {
+    // 이벤트 핸들러 함수
+    const handler = event => {
+      // mousedown 이벤트가 발생한 영역이 모달창이 아닐 때, 모달창 제거 처리
+      if (modalRef.current && !modalRef.current.contains(event.target)) {
+        setUserModal(false);
+      }
+    };
+    // 이벤트 핸들러 등록
+    document.addEventListener('mousedown', handler);
+    return () => {
+      // 이벤트 핸들러 해제
+      document.removeEventListener('mousedown', handler);
+    };
+    });
+
+  // pocket 클릭시 이동
   const pocketClickHandler = roomSeq => {
     navigate(`/room/${roomSeq}`);
   };
 
-  // port 클릭시 이동 => 수정필요
+  // port 클릭시 이동
   const portClickHandler = portSeq => {
     navigate(`/port/${portSeq}`);
   };
@@ -66,7 +90,7 @@ const PortSearch = ({data, handleLike, handleDisLike}) => {
         {data.map(it => {
           const {portSeq, name, roomSeq, roomName, roomThumbnail, userSeq, userName, userProfilePic, like, hit, tags} = it;
           return (
-            <PortItem key={portSeq}>
+            <PortItem key={portSeq} ref={modalRef}>
               {/* 마이포켓 썸네일 */}
               <PortImgDiv>
                 <PortThumbnail
@@ -85,7 +109,12 @@ const PortSearch = ({data, handleLike, handleDisLike}) => {
               </PortImgDiv>
               {/* 프로필 컴포넌트 */}
               <PortUserInfoContainer>
-                <PortUserDiv>
+                <PortUserDiv
+                  onClick={e => {
+                    setUserModal(roomSeq);
+                    bringUserInfo(userSeq);
+                  }}
+                >
                   {/* 프로필 사진 */}
                   <PortUserImgContainer>
                     <PortUserImg
@@ -95,25 +124,15 @@ const PortSearch = ({data, handleLike, handleDisLike}) => {
                   {/* 이름 */}
                   <PortUserName>{name}</PortUserName>
                 </PortUserDiv>
+                {roomSeq === userModal && <UserProfile userInfo={userInfo} closeUserModal={closeUserModal}/>}
                 {/* 좋아요, 클릭수 컴포넌트 */}
                 <LikeShowDiv>
-                {/* <IconDiv
-                    onClick={e => handleLikeDislike(e, roomSeq, isLiked)}
-                  >
-                    {isLiked ? <LikeIcon /> : <DislikeIcon />}
-                  </IconDiv> */}
-                  <LikeIcon/>
+                  <LikeIcon />
                   <Item3>{like}</Item3>
                   <ShowIcon />
                   <div>{hit}</div>
                 </LikeShowDiv>
               </PortUserInfoContainer>
-              {/* 태그 */}
-              {/* <TagsDiv>
-                {tags && tags.map(tag => {
-                  return (<Tag>{tag}</Tag>)
-                })}
-              </TagsDiv> */}
             </PortItem>
           );
         })}
