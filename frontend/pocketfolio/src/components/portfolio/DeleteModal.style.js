@@ -23,7 +23,6 @@ export const ModalWrap = styled.div`
   z-index: 100;
   transform: translate(-50%, -50%);
   /* 애니메이션 */
-  
 `;
 
 export const Contents = styled.div`
@@ -47,23 +46,28 @@ export const StyledBtn = styled.button`
     margin: 0;
   }
   &.cancel {
-    width: 6rem;
-    height: 2.8rem;
-    background-color: rgba(255, 255, 255, 0.08);
+    width: 5.5rem;
+    height: 2.5rem;
+    background-color: white;
     box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.3),
       0px 1px 3px 1px rgba(0, 0, 0, 0.15);
     border: 0;
     border-radius: 100px;
-    color: #2c2365;
+    color: #e75452;
     font-weight: 1000;
     font-size: 20px;
+    margin-right: 0.5rem;
     cursor: pointer;
+
+    &:hover {
+      background-color: #f6f1f1;
+    }
   }
 
   &.delete {
-    width: 6rem;
-    height: 2.8rem;
-    background-color: #2c2365;
+    width: 5.5rem;
+    height: 2.5rem;
+    background-color: #e75452;
     box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.3),
       0px 1px 3px 1px rgba(0, 0, 0, 0.15);
     border: 0;
@@ -72,5 +76,9 @@ export const StyledBtn = styled.button`
     font-weight: 1000;
     font-size: 20px;
     cursor: pointer;
+
+    &:hover {
+      background-color: #fb706d;
+    }
   }
 `;
