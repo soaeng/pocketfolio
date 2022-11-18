@@ -7,7 +7,7 @@ import {Container, CanvasWrapper, EditBox, Btn} from './Room.style';
 import toast, {Toaster} from 'react-hot-toast';
 import {useParams} from 'react-router-dom';
 import {useState, useEffect, useRef} from 'react';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {getRoomInfo, updateArranges} from '../../store/roomSlice';
 import EditTheme from './EditTheme';
 
@@ -18,6 +18,7 @@ const Room = () => {
   const params = useParams();
   const roomSeq = parseInt(params.roomSeq);
   const dispatch = useDispatch();
+  const user = useSelector(state => state.oauth.user);
 
   const [sidebar, setSidebar] = useState('');
   const [edit, setEdit] = useState(false);
@@ -65,22 +66,24 @@ const Room = () => {
   // 방 정보 불러오기
   const getData = async () => {
     const res = await dispatch(getRoomInfo(roomSeq));
-    console.log(res);
-    if (res.error || res.payload.room.privacy === 'C') {
-      console.log(res.payload);
-      setData(null);
-      setArranges(null);
-      setNowTheme('');
-    } else {
-      setData(res.payload);
-      setArranges(res.payload.arranges);
-      setNowTheme(res.payload.room.theme);
+    console.log(res.payload)
+    if (!res.error) {
+      if (res.payload.room.privacy === 'O' || user && (res.payload.room.privacy === 'C' && res.payload.owner.userSeq === user.userSeq)) {
+        setData(res.payload);
+        setArranges(res.payload.arranges);
+        setNowTheme(res.payload.room.theme);
+      }
     }
+    else {
+          setData(null);
+          setArranges(null);
+          setNowTheme('');
+        }
   };
 
   useEffect(() => {
     getData();
-  }, [roomSeq, reload]);
+  }, [roomSeq, reload, user]);
 
   // 포커싱 중인 아이템
   const changeNowIdx = idx => {
