@@ -80,7 +80,6 @@ const AddPocket = props => {
       isMain: main ? 'T' : 'F',
       privacy: privacy ? 'O' : 'C',
     });
-    console.log(pocket);
     form.append('room', new Blob([pocket], {type: 'application/json'}));
     form.append('thumbnail', '');
     // dispatch(createRoom(form)).then(res => {
@@ -93,8 +92,10 @@ const AddPocket = props => {
 
   console.log(selectedCate);
   return (
-    <Overlay>
-      <ModalWrap className={open ? 'modal open' : 'modal close'}>
+    <Overlay >
+      <ModalWrap
+
+       className={open ? 'modal open' : 'modal close'}>
         <Contents>
           <header>
             <Head>포켓 만들기</Head>
