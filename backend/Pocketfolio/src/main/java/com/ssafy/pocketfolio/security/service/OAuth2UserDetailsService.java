@@ -55,14 +55,17 @@ public class OAuth2UserDetailsService extends DefaultOAuth2UserService {
 
         String email = null;
         String name = null;
-        String key = (String) oAuth2User.getAttributes().get(userNameAttributeName);
+        String key = null;
 
         if (clientName.equals("Google")) {
             email = oAuth2User.getAttribute("email");
             name = oAuth2User.getAttribute("name");
+            key = (String) oAuth2User.getAttributes().get(userNameAttributeName);
         } else if (clientName.equals("Kakao")) {
+            log.info("this is kakao");
             Map<String, Object> kakaoAccount = oAuth2User.getAttribute("kakao_account");
             email = (String) kakaoAccount.get("email");
+            key = Long.toString((Long) oAuth2User.getAttributes().get("id"));
         }
 
         log.info("EMAIL: " + email);
