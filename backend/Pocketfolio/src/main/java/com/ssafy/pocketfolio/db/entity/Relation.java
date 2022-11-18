@@ -13,7 +13,9 @@ import javax.persistence.*;
 @AllArgsConstructor
 @ToString
 @Entity
-@Table(name="relation")
+@Table(name="relation" ,uniqueConstraints = {
+        @UniqueConstraint(name="UK_RELATION", columnNames={"user_seq"})
+})
 public class Relation {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
