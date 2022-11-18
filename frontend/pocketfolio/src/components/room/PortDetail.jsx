@@ -36,8 +36,8 @@ const PortDetail = ({nowPort, roomDto}) => {
   async function loadData() {
     const {payload} = await dispatch(getportDetail(nowPort));
     setData(payload);
-    console.log(payload);
-    console.log(roomDto);
+    // console.log(payload);
+    // console.log(roomDto);
   }
 
   useEffect(() => {
@@ -76,7 +76,7 @@ const PortDetail = ({nowPort, roomDto}) => {
 
         <ContentDiv>
           <Content dangerouslySetInnerHTML={{__html: data.summary}} />
-          {console.log(data.urls)}
+          {/* {console.log(data.urls)} */}
 
           {data.urls && data.urls.length && (
             <FileContainer>

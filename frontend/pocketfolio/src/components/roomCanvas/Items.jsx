@@ -16,49 +16,58 @@ const Items = props => {
   const loadConnect = props.loadConnect;
   const changeNowIdx = props.changeNowIdx;
   const openPortDetail = props.openPortDetail;
-  const setSidebar = props.setSidebar;
+  const nowPort = props.nowPort;
+  const changeSidebar = props.changeSidebar;
+  const roomSeq = props.roomSeq;
 
   useEffect(() => {
     setSelectedMesh('');
     api.refresh(boundaryRef.current).clip().fit();
   }, [edit, api]);
 
-  useFrame((state, dt) => {
-    if (selectedMesh) {
-      if (!edit) {
-        cntRef.current.enabled = '';
-        cntRef.current.setAzimuthalAngle(selectedMesh.rotation._y);
-        cntRef.current.setPolarAngle(Math.PI / 2);
-        api.refresh(selectedMesh).clip().fit();
-      } else {
-        cntRef.current.enabled = true;
-      }
-    }
-  });
+  useEffect(() => {
+    setSelectedMesh('');
+    api.refresh(boundaryRef.current).clip().fit();
+  }, [roomSeq]);
+
+  // useFrame((state, dt) => {
+  //   if (selectedMesh) {
+  //     if (!edit) {
+  //       cntRef.current.enabled = '';
+  //       cntRef.current.setAzimuthalAngle(selectedMesh.rotation._y);
+  //       cntRef.current.setPolarAngle(Math.PI / 2);
+  //       api.refresh(selectedMesh).clip().fit();
+  //     } else {
+  //       cntRef.current.enabled = true;
+  //     }
+  //   }
+  // });
 
   return (
-    arranges &&
-    <group>
-      {arranges.map((arrange, idx) => (
-        <Item
-          key={idx}
-          selectedMesh={selectedMesh}
-          setSelectedMesh={setSelectedMesh}
-          boundaryRef={boundaryRef}
-          arrange={arrange}
-          edit={edit}
-          setCntEnabled={setCntEnabled}
-          cntRef={cntRef}
-          handleArrange={handleArrange}
-          handleDel={handleDel}
-          idx={idx}
-          loadConnect={loadConnect}
-          changeNowIdx={changeNowIdx}
-          openPortDetail={openPortDetail}
-          setSidebar={setSidebar}
-        />
-      ))}
-    </group>
+    arranges && (
+      <group>
+        {arranges.map((arrange, idx) => (
+          <Item
+            key={idx}
+            selectedMesh={selectedMesh}
+            setSelectedMesh={setSelectedMesh}
+            boundaryRef={boundaryRef}
+            arrange={arrange}
+            edit={edit}
+            setCntEnabled={setCntEnabled}
+            cntRef={cntRef}
+            handleArrange={handleArrange}
+            handleDel={handleDel}
+            idx={idx}
+            loadConnect={loadConnect}
+            changeNowIdx={changeNowIdx}
+            openPortDetail={openPortDetail}
+            nowPort={nowPort}
+            changeSidebar={changeSidebar}
+          />
+        ))}
+      </group>
+    )
   );
 };
 
