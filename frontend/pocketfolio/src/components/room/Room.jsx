@@ -64,10 +64,18 @@ const Room = () => {
 
   // 방 정보 불러오기
   const getData = async () => {
-    const {payload} = await dispatch(getRoomInfo(roomSeq));
-    setData(payload);
-    setArranges(payload.arranges);
-    setNowTheme(payload.room.theme);
+    const res = await dispatch(getRoomInfo(roomSeq));
+    console.log(res);
+    if (res.error || res.payload.room.privacy === 'C') {
+      console.log(res.payload);
+      setData(null);
+      setArranges(null);
+      setNowTheme('');
+    } else {
+      setData(res.payload);
+      setArranges(res.payload.arranges);
+      setNowTheme(res.payload.room.theme);
+    }
   };
 
   useEffect(() => {
@@ -184,89 +192,89 @@ const Room = () => {
     setCapture(false);
   };
 
-  return (
-    data && (
-      <Container className={sidebar ? 'active' : ''}>
-        <RoomNav sidebar={sidebar} edit={edit} />
-        <RoomInfo
-          sidebar={sidebar}
+  return data ? (
+    <Container className={sidebar ? 'active' : ''}>
+      <RoomNav sidebar={sidebar} edit={edit} />
+      <RoomInfo
+        sidebar={sidebar}
+        edit={edit}
+        data={data}
+        handleReload={handleReload}
+      />
+      <CanvasWrapper className={sidebar ? 'active' : ''}>
+        {edit && <EditTheme nowTheme={nowTheme} changeTheme={changeTheme} />}
+        <RoomCanvas
           edit={edit}
-          data={data}
-          handleReload={handleReload}
-        />
-        <CanvasWrapper className={sidebar ? 'active' : ''}>
-          {edit && <EditTheme nowTheme={nowTheme} changeTheme={changeTheme} />}
-          <RoomCanvas
-            edit={edit}
-            theme={nowTheme}
-            arranges={arranges}
-            handleArrange={handleArrange}
-            handleDel={handleDel}
-            loadConnect={loadConnect}
-            changeNowIdx={changeNowIdx}
-            openPortDetail={openPortDetail}
-            setSidebar={setSidebar}
-            data={data}
-            capture={capture}
-            offCaptrue={offCaptrue}
-            changeSidebar={changeSidebar}
-          />
-          <Toaster
-            position="bottom-left"
-            containerStyle={{
-              position: 'absolute',
-            }}
-            toastOptions={{
-              duration: 3000,
-              style: {
-                background: '#fff',
-                color: '#333333',
-                fontSize: '0.85rem',
-              },
-            }}
-          />
-          {edit ? (
-            <EditBox>
-              <Btn
-                onClick={e => {
-                  setEdit(false);
-                  setSidebar('');
-                  saveArrange(e);
-                }}
-              >
-                저장
-              </Btn>
-              <Btn onClick={offEdit}>취소</Btn>
-            </EditBox>
-          ) : null}
-        </CanvasWrapper>
-
-        {sidebar || edit ? null : (
-          <Menu
-            roomSeq={roomSeq}
-            changeSidebar={changeSidebar}
-            copyURL={copyURL}
-            onEdit={onEdit}
-            data={data}
-          />
-        )}
-
-        <Sidebar
-          sidebar={sidebar}
-          changeSidebar={changeSidebar}
-          edit={edit}
-          roomSeq={roomSeq}
-          data={data}
-          appendArrange={appendArrange}
+          theme={nowTheme}
           arranges={arranges}
-          nowIdx={nowIdx}
-          connectPort={connectPort}
-          disconnectPort={disconnectPort}
+          handleArrange={handleArrange}
+          handleDel={handleDel}
+          loadConnect={loadConnect}
+          changeNowIdx={changeNowIdx}
           openPortDetail={openPortDetail}
-          nowPort={nowPort}
+          setSidebar={setSidebar}
+          data={data}
+          capture={capture}
+          offCaptrue={offCaptrue}
+          changeSidebar={changeSidebar}
         />
-      </Container>
-    )
+        <Toaster
+          position="bottom-left"
+          containerStyle={{
+            position: 'absolute',
+          }}
+          toastOptions={{
+            duration: 3000,
+            style: {
+              background: '#fff',
+              color: '#333333',
+              fontSize: '0.85rem',
+            },
+          }}
+        />
+        {edit ? (
+          <EditBox>
+            <Btn
+              onClick={e => {
+                setEdit(false);
+                setSidebar('');
+                saveArrange(e);
+              }}
+            >
+              저장
+            </Btn>
+            <Btn onClick={offEdit}>취소</Btn>
+          </EditBox>
+        ) : null}
+      </CanvasWrapper>
+
+      {sidebar || edit ? null : (
+        <Menu
+          roomSeq={roomSeq}
+          changeSidebar={changeSidebar}
+          copyURL={copyURL}
+          onEdit={onEdit}
+          data={data}
+        />
+      )}
+
+      <Sidebar
+        sidebar={sidebar}
+        changeSidebar={changeSidebar}
+        edit={edit}
+        roomSeq={roomSeq}
+        data={data}
+        appendArrange={appendArrange}
+        arranges={arranges}
+        nowIdx={nowIdx}
+        connectPort={connectPort}
+        disconnectPort={disconnectPort}
+        openPortDetail={openPortDetail}
+        nowPort={nowPort}
+      />
+    </Container>
+  ) : (
+    <>없어</>
   );
 };
 

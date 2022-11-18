@@ -33,7 +33,7 @@ export const TopContainer = styled.div`
 `;
 
 export const CanvasWrapper = styled.div`
-  width: 63%;
+  width: ${props => (props.user ? '63%' : '100%')};
   margin-right: 1rem;
   height: calc(100% + 2rem);
   border-radius: 1rem;
@@ -48,6 +48,7 @@ export const CanvasWrapper = styled.div`
 
 export const PortContainer = styled.div`
   width: calc(37% - 2rem);
+  display: ${props => props.user ? 'block': 'none'};
   padding: 1rem;
   border-radius: 1rem;
   height: calc(100% - 8px);

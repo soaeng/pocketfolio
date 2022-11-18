@@ -25,6 +25,18 @@ const Main = () => {
   const dispatch = useDispatch();
   const user = useSelector(state => state.oauth.user);
 
+  const themeColor = {
+    room_01: '#fff4f1',
+    room_02: '#eaf3d9',
+    room_03: '#f3e9d9',
+    room_04: '#ffe4de',
+    room_05: '#dfffc8',
+    island: '#cee7ff',
+    apartment_01: '#fef0dd',
+    apartment_02: '#fbebcd',
+    apartment_03: '#d8e6fd',
+  };
+
   const [mainRoom, setMainRoom] = useState({});
   const [categoryRec, setCategoryRec] = useState([]);
   const [portfolios, setPortfolios] = useState([]);
@@ -70,35 +82,10 @@ const Main = () => {
       setCategoryRec(payload.categoryRec);
       setPortfolios(payload.portfolios);
 
-      const theme = payload.mainRoom.theme.split('_');
-
-      const name = theme[0];
-      const num = theme[1];
-
-      // 테마에 따른 배경색
-      if (name === 'room') {
-        if (num === '01') {
-          setColor('#fff4f1');
-        } else if (num === '02') {
-          setColor('#eaf3d9');
-        } else if (num === '03') {
-          setColor('#f3e9d9');
-        } else if (num === '04') {
-          setColor('#ffe4de');
-        } else if (num === '05') {
-          setColor('#dfffc8');
-        }
-      } else if (name === 'island') {
-        setColor('#cee7ff');
-      } else if (name === 'apartment') {
-        const num = theme[1];
-        if (num === '01') {
-          setColor('#fef0dd');
-        } else if (num === '02') {
-          setColor('#fbebcd');
-        } else if (num === '03') {
-          setColor('#d8e6fd');
-        }
+      if (payload.mainRoom) {
+        setColor(themeColor[payload.mainRoom.theme]);
+      } else {
+        setColor('#733ede');
       }
     }
   }
@@ -112,23 +99,24 @@ const Main = () => {
       <Nav />
       <InnerContainer>
         <TopContainer>
-          <CanvasWrapper color={color}>
+          <CanvasWrapper color={color} user={mainRoom ? true : false}>
             <MainCanvas mainRoom={mainRoom} color={color} />
           </CanvasWrapper>
 
-          <PortContainer color={color}>
+          <PortContainer color={color} user={mainRoom ? true : false}>
             <PortList>
-              {portfolios.map((port, idx) => (
-                <PortItem
-                  color={color}
-                  onClick={() => navigate(`/port/${port.portSeq}`)}
-                >
-                  <Num color={color}>
-                    {idx + 1 < 10 ? `0${idx + 1}` : `${idx + 1}`}
-                  </Num>
-                  <Name>{port.name}</Name>
-                </PortItem>
-              ))}
+              {portfolios &&
+                portfolios.map((port, idx) => (
+                  <PortItem
+                    color={color}
+                    onClick={() => navigate(`/port/${port.portSeq}`)}
+                  >
+                    <Num color={color}>
+                      {idx + 1 < 10 ? `0${idx + 1}` : `${idx + 1}`}
+                    </Num>
+                    <Name>{port.name}</Name>
+                  </PortItem>
+                ))}
             </PortList>
           </PortContainer>
         </TopContainer>
