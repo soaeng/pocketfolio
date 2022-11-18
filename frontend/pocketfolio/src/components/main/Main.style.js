@@ -60,7 +60,7 @@ export const PortContainer = styled.div`
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
   scroll-behavior: smooth;
-  
+
   &::-webkit-scrollbar {
     display: none; /* Chrome, Safari, Opera*/
   }
@@ -74,6 +74,7 @@ export const PortList = styled.ol`
   list-style: none;
   padding: 0;
   margin: 0;
+  height: 100%;
 `;
 
 export const PortItem = styled.li`

@@ -1,5 +1,5 @@
+import {useEffect, useState, useRef} from 'react';
 import {useNavigate} from 'react-router-dom';
-import {useDispatch, useSelector} from 'react-redux';
 import {
   Container,
   InnerContainer,
@@ -17,13 +17,17 @@ import {
 } from './Main.style';
 import MainCanvas from './MainCanvas';
 import Nav from '../common/Nav';
-import {getMain} from '../../store/roomSlice';
-import {useEffect, useState} from 'react';
 import CarouselRec from './CarouselRec';
+import {useDispatch, useSelector} from 'react-redux';
+import {getMain} from '../../store/roomSlice';
+import {useInterval} from '../../hook/hook';
 
 const Main = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  const portRef = useRef();
+  const [h, setH] = useState(0);
   const user = useSelector(state => state.oauth.user);
 
   const themeColor = {
@@ -41,6 +45,8 @@ const Main = () => {
   const [mainRoom, setMainRoom] = useState(null);
   const [categoryRec, setCategoryRec] = useState(null);
   const [portfolios, setPortfolios] = useState(null);
+  const [nowCnt, setNowCnt] = useState(0);
+  const [portCnt, setPortCnt] = useState(0);
   const [color, setColor] = useState('');
 
   // 검색어
@@ -74,6 +80,27 @@ const Main = () => {
     }
   };
 
+  // 움직이기
+  useInterval(() => {
+    if (0 <= nowCnt && nowCnt < portCnt) {
+      setNowCnt(nowCnt + 1);
+    } else {
+      setNowCnt(0);
+    }
+
+    const port = document.querySelector(`.port${nowCnt}`);
+    setH(h + port?.clientHeight);
+
+    portRef.current.style.transition = 'all 3s ease-in-out';
+
+    if (nowCnt) {
+      portRef.current.style.transform = `translateY(-${h}px)`;
+    } else {
+      portRef.current.style.transform = `none`;
+      setH(0);
+    }
+  }, 3000);
+
   // 데이터 불러오기
   async function loadData() {
     const res = await dispatch(getMain());
@@ -82,6 +109,10 @@ const Main = () => {
       setMainRoom(res.payload.mainRoom);
       setCategoryRec(res.payload.categoryRec);
       setPortfolios(res.payload.portfolios);
+
+      if (res.payload.portfolios.length > 0) {
+        setPortCnt(res.payload.portfolios.length - 1);
+      }
 
       if (res.payload.mainRoom) {
         setColor(themeColor[res.payload.mainRoom.theme]);
@@ -100,15 +131,23 @@ const Main = () => {
       <Nav />
       <InnerContainer>
         <TopContainer>
-          <CanvasWrapper color={color} user={mainRoom ? true : false} onClick={() => mainRoom.roomSeq && navigate(`/room/${mainRoom.roomSeq}`)}>
+          <CanvasWrapper
+            color={color}
+            user={mainRoom ? true : false}
+            onClick={() =>
+              mainRoom.roomSeq && navigate(`/room/${mainRoom.roomSeq}`)
+            }
+          >
             <MainCanvas mainRoom={mainRoom} color={color} />
           </CanvasWrapper>
 
           <PortContainer color={color} user={mainRoom ? true : false}>
-            <PortList>
+            <PortList ref={portRef}>
               {portfolios &&
                 portfolios.map((port, idx) => (
                   <PortItem
+                    key={idx}
+                    className={`port${idx}`}
                     color={color}
                     onClick={() => navigate(`/port/${port.portSeq}`)}
                   >
@@ -134,14 +173,13 @@ const Main = () => {
           </SearchContainer>
         </SearchDiv>
 
-          {categoryRec &&
-            categoryRec.map(
-              (rec, idx) =>
-                rec.recommend.length > 0 && (
-                  <CarouselRec key={idx} rec={rec} idx={idx} />
-                ),
-            )}
-
+        {categoryRec &&
+          categoryRec.map(
+            (rec, idx) =>
+              rec.recommend.length > 0 && (
+                <CarouselRec key={idx} rec={rec} idx={idx} />
+              ),
+          )}
       </InnerContainer>
     </Container>
   );
