@@ -1,5 +1,9 @@
 // styled Component
 import styled from 'styled-components';
+import {
+  RiUserFollowFill,
+  RiUserAddLine,
+} from 'react-icons/ri';
 
 // Card 모양
 export const UserCard = styled.div`
@@ -8,67 +12,95 @@ export const UserCard = styled.div`
   flex-wrap: wrap;
   overflow-x: auto;
   scroll-behavior: smooth;
-  padding: 0 5%;
+  padding: 3% 5%;
 `;
 
 export const UserItem = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
+  flex-direction: column;
   margin: 10px;
   padding: 10px;
-  width: 90%;
-  /* min-width: 280px; */
+  width: 20%;
+  height: 20%;
+  min-width: 280px;
+  min-height: 320px;
   border-radius: 16px;
   box-shadow: 0px 2px 5px 1px rgba(0, 0, 0, 0.25);
 `;
 
+// 유저 정보 담는 div
 export const UserContainer = styled.div`
   display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 `;
 
-export const RecCarImgDiv = styled.div`
+// 프로필 사진 div
+export const UserImgContainer = styled.div`
   display: flex;
   justify-content: center;
-  height: 70%;
+  transition: all 0.2s;
+  cursor: pointer;
+
+  &:hover {
+    scale: 1.1;
+  }
 `;
 
-export const RecCarThumbnail = styled.img`
-  width: 90%;
-`;
-
-// Avatar Container
-export const UserImgContainer = styled.div`
-  padding: 0.5rem;
-  height: 3.5rem;
-  /* align-items: center; */
-`;
-
-// Avatar Img
+// 프로필 사진
 export const UserImg = styled.img`
-  height: 50px;
-  width: 50px;
+  width: 200px;
+  height: 200px;
   object-fit: cover;
   border-radius: 50%;
-  cursor: pointer;
 `;
 
+// 유저 정보 담는 div
 export const UserInfoContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
 `;
 
-export const UserFollowBtn = styled.button`
-  padding: 0.5rem 1rem;
-  margin: 15px;
-  border-radius: 16px;
-  border: none;
-  background-color: #e75452;
-  color: #fff;
-  cursor: pointer;
+export const UserNameDiv = styled.div`
+  padding: 20px 10px 5px 10px;
+  font-size: large;
+  font-weight: bold;
+`
 
-  &:hover {
-    background-color: #c13136;
-    color: #eeeeee;
-  }
+export const UserDescDiv = styled.div``
+
+export const FollowDiv = styled.div`
+  display: flex;
+  flex-direction: row;
+  padding: 10px 0;
+`
+
+export const UserFollowDiv = styled.div`
+  padding: 0 5px;
+`
+
+// 팔로우 div
+export const Icon = styled.div`
+  display: flex;
+  justify-content: flex-end;
+`
+export const IconDiv = styled.div`
+  cursor: pointer;
+  width: 1.5rem;
+  height: 1.5rem;
+`;
+
+// 팔로우 아이콘
+export const FollowIcon = styled(RiUserAddLine)`
+  width: 100%;
+  height: 100%;
+`;
+
+// 언팔로우 아이콘
+export const AlreadyFollowIcon = styled(RiUserFollowFill)`
+  width: 100%;
+  height: 100%;
 `;

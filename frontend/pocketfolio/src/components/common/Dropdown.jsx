@@ -56,7 +56,6 @@ const DropDown = ({user}) => {
         }
       }),
     );
-    console.log(payload, '팔로우번호');
   };
 
   // 언팔로우
@@ -76,7 +75,6 @@ const DropDown = ({user}) => {
       }),
     );
     const {payload} = await dispatch(unfollowNumFunc(followSeq));
-    console.log(payload, '팔로우여부');
   };
 
   // 마이포켓 이동
@@ -99,7 +97,6 @@ const DropDown = ({user}) => {
   const getFollowing = async () => {
     const {payload} = await dispatch(getMyFollowing());
     setFollowingList(payload);
-    console.log(payload, '팔로잉 목록');
   };
 
   useEffect(() => {
@@ -110,7 +107,6 @@ const DropDown = ({user}) => {
   const getFollow = async () => {
     const {payload} = await dispatch(getMyFollower());
     setFollowList(payload);
-    console.log(payload, '팔로우 목록');
   };
 
   useEffect(() => {

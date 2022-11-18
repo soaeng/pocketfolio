@@ -22,7 +22,6 @@ export const PocketItem = styled.div`
   border-radius: 16px;
   box-shadow: 0px 2px 5px 1px rgba(0, 0, 0, 0.25);
   flex: none;
-  /* background-color: blue; */
 `;
 
 export const PocketImgDiv = styled.div`
@@ -33,7 +32,7 @@ export const PocketImgDiv = styled.div`
   cursor: pointer;
 
   &:hover {
-    scale: 1.1;
+    scale: 1.05;
   }
 `;
 
@@ -63,8 +62,10 @@ export const PocketUserImg = styled.img`
 export const PocketUserInfoContainer = styled.div`
   display: flex;
   flex-direction: row;
+  min-width: 250px;
   justify-content: space-between;
   align-items: center;
+  padding: 5% 3% 0 3%;
 
   @media screen and (max-width: 900px) {
     flex-direction: column;

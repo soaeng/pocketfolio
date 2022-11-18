@@ -9,11 +9,13 @@ import {
 import {H3, Body1} from '../../styles/styles.style';
 
 const DeleteModal = props => {
-  const {onClose, text, item, deleteFunc} = props;
+  const {onClose, text, seq, deleteFunc} = props;
 
   const handleClose = () => {
     onClose();
   };
+
+  
 
   return (
     <Overlay>
@@ -34,7 +36,7 @@ const DeleteModal = props => {
               className="delete"
               onClick={event => {
                 event.stopPropagation();
-                deleteFunc(item.portSeq);
+                deleteFunc(seq);
               }}
             >
               <Body1>삭제</Body1>

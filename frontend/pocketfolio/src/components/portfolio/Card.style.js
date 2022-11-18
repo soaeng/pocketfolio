@@ -103,7 +103,7 @@ export const IconDiv = styled.div`
   visibility: hidden;
   opacity: 0;
   position: absolute;
-  left: 10.7rem;
+  left: 10rem;
   top: -1rem;
   transition: all ease-in-out 0.1s;
 

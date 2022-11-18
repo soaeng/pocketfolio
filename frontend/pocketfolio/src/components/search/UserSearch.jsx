@@ -1,4 +1,8 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
+import {unfollowFunc, followFunc} from '../../store/oauthSlice';
+import {getUserInfo} from '../../store/oauthSlice';
+
 import {
   UserCard,
   UserItem,
@@ -6,53 +10,148 @@ import {
   UserImgContainer,
   UserImg,
   UserInfoContainer,
-  UserFollowBtn,
+  Icon,
+  IconDiv,
+  AlreadyFollowIcon,
+  FollowIcon,
+  UserNameDiv,
+  UserDescDiv,
+  FollowDiv,
+  UserFollowDiv,
 } from './UserSearch.style';
 
-// 임시데이터(card)
-const items = [
-  {
-    icon: 'face', //사용자 이름
-    copy: '01. Lorem ipsum dolor sit amet, consectetur adipiscing elit.', //사용자 describe
-  },
-  {
-    icon: 'pets',
-    copy: '02. Sed do eiusmod tempor incididunt ut labore.',
-  },
-  {
-    icon: 'stars',
-    copy: '03. Consectetur adipiscing elit.',
-  },
-];
+import UserProfile from '../common/UserProfile';
 
-const UserSearch = () => {
-  const [item, setItem] = useState(items);
+const User = ({userSeq, name, profilePic, describe, followerTotal, followingTotal, hasFollowed, user}) => {
+  const dispatch = useDispatch();
+  const [userModal, setUserModal] = useState(false); //프로필 모달 보이게 안보이게
+  const [follow, setFollow] = useState('');
+
+  // 모달 닫는 함수
+  const closeUserModal = (e) => {
+    setUserModal(false);
+  };
+
+  // 팔로우, 언팔로우
+  const handleFollow = async (userSeq, follow) => {
+    if (user) {
+      if (follow) {
+        const {payload} = await dispatch(unfollowFunc(userSeq));
+        if (payload) {
+          setFollow(false);
+        }
+      } else {
+        const {payload} = await dispatch(followFunc(userSeq));
+        if (payload) {
+          setFollow(true);
+        }
+      }
+    }
+  }
+
+    // 특정 유저정보 담을 상태
+    const [userInfo, setUserInfo] = useState([]);
+
+    // 특정 유저정보 조회 함수
+    const bringUserInfo = async userSeq => {
+      const {payload} = await dispatch(getUserInfo(userSeq));
+      setUserInfo(payload);
+      console.log(payload, '특정 유저정보');
+    };
+  
+    useEffect(() => {
+      getUserInfo();
+    }, []);
+
+  return(
+    <UserItem>
+      {/* 팔로우 버튼 */}
+      {/* 팔로우 | 로그인한 상태이고, 방 주인이 아닌 경우 가능 */}
+      {user && user.userSeq !== userSeq && (
+        <Icon>
+          <IconDiv className="follow" onClick={e => handleFollow(userSeq, follow)}>
+            {follow||hasFollowed ? <AlreadyFollowIcon /> : <FollowIcon />}
+          </IconDiv>
+        </Icon>
+      )}
+      <UserContainer>
+        {/* 사용자 프로필 사진 */}
+        <UserImgContainer                   
+          onClick={e => {
+            setUserModal(userSeq);
+            bringUserInfo(userSeq);
+          }}
+        >
+          <UserImg
+            src={profilePic ? profilePic : '/assets/images/user.png'}
+          />
+        </UserImgContainer>
+        {userSeq === userModal && <UserProfile userInfo={userInfo} closeUserModal={closeUserModal}/>}
+        {/* 유저 정보 */}
+        <UserInfoContainer>
+          <UserNameDiv>{name}</UserNameDiv>
+          {/* <UserDescDiv>{describe}</UserDescDiv> */}
+          <FollowDiv>
+            <UserFollowDiv>팔로우 | {followerTotal}</UserFollowDiv>
+            <UserFollowDiv>팔로잉 | {followingTotal}</UserFollowDiv>
+          </FollowDiv>
+        </UserInfoContainer>
+      </UserContainer>
+    </UserItem>
+  )
+}
+
+const UserSearch = ({data}) => {
+  const user = useSelector(state => state.oauth.user);
+  const dispatch = useDispatch();
+  const [userModal, setUserModal] = useState(false); //프로필 모달 보이게 안보이게
+  
+  // 모달 닫는 함수
+  const closeUserModal = (e) => {
+    setUserModal(false);
+  };
+
+  // 팔로우, 언팔로우
+  const handleFollow = async (userSeq, follow) => {
+    if (user) {
+      if (follow) {
+        const {payload} = await dispatch(unfollowFunc(userSeq));
+        if (payload) {
+          // setFollow(false);
+        }
+      } else {
+        const {payload} = await dispatch(followFunc(userSeq));
+        if (payload) {
+          // setFollow(true);
+        }
+      }
+    }
+  }
+
+  // 특정 유저정보 담을 상태
+  const [userInfo, setUserInfo] = useState([]);
+
+  // 특정 유저정보 조회 함수
+  const bringUserInfo = async userSeq => {
+    const {payload} = await dispatch(getUserInfo(userSeq));
+    setUserInfo(payload);
+    console.log(payload, '특정 유저정보');
+  };
+
+  useEffect(() => {
+    getUserInfo();
+  }, []);
 
   return (
     <>
       <UserCard>
-        {item.map(it => {
-          const {icon, copy} = it;
-          return (
-            <UserItem>
-              <UserContainer>
-                {/* 사용자 프로필 사진 */}
-                <UserImgContainer>
-                  <UserImg
-                    src={process.env.PUBLIC_URL + '/assets/images/room.png'}
-                  />
-                </UserImgContainer>
-                {/* 사용자 정보 */}
-                <UserInfoContainer>
-                  <div>{icon}</div>
-                  <div>{copy}</div>
-                </UserInfoContainer>
-              </UserContainer>
-              {/* 팔로우 버튼 */}
-              <UserFollowBtn>팔로우</UserFollowBtn>
-            </UserItem>
-          );
-        })}
+        {data.map(props => {
+          // const {userSeq, name, profilePic, describe, followerTotal, followingTotal} = it;
+          // let {hasFollowed} = it;
+          
+          return(
+            <User {...props} user={user}/>)
+          })}
       </UserCard>
     </>
   );

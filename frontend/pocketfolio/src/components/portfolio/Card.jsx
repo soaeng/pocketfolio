@@ -1,5 +1,6 @@
 import {React, useState} from 'react';
 import {useNavigate} from 'react-router-dom';
+import {useDispatch} from 'react-redux';
 import {
   Wrapper,
   Item,
@@ -12,12 +13,13 @@ import {
   DeleteIcon,
 } from './Card.style';
 import DeleteModal from './DeleteModal';
+import { delRoom } from '../../store/roomSlice';
 
 const Card = props => {
   const navigate = useNavigate();
-
+  const dispatch = useDispatch();
   const [isOpen, setIsOpen] = useState(false);
-  const {isDelete, pocketData} = props;
+  const {isDelete, pocketData, reLander, setReLander} = props;
   const openModal = () => {
     setIsOpen(true);
   };
@@ -25,6 +27,16 @@ const Card = props => {
     navigate(`/room/${pocketData.roomSeq}`);
   };
 
+
+  const deletePocket = (seq) => {
+    console.log(seq)
+    dispatch(delRoom(seq))
+      .then(res => {
+        if(res.payload) {
+          setReLander(!reLander)
+        }
+      })
+  }
   return (
     <Wrapper>
       <Item>
@@ -53,6 +65,8 @@ const Card = props => {
             setIsOpen(false);
           }}
           text={'포켓을'}
+          seq={pocketData.roomSeq}
+          deleteFunc={deletePocket}
         />
       )}
     </Wrapper>
