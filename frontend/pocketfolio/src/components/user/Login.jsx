@@ -56,15 +56,6 @@ const Login = () => {
           <LoginText>카카오로 시작하기</LoginText>
         </LoginDiv>
 
-        <LoginDiv className="github">
-          <LoginIconDiv className="github">
-            <LoginIcon
-              src={process.env.PUBLIC_URL + '/assets/images/logo_github.png'}
-            />
-          </LoginIconDiv>
-          <LoginText>깃허브로 시작하기</LoginText>
-        </LoginDiv>
-
         <CommentText>소셜 로그인으로 간편하게 즐겨보세요</CommentText>
       </LoginContainer>
     </Container>
