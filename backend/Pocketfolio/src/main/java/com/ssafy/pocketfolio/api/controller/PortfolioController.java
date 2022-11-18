@@ -35,7 +35,7 @@ public class PortfolioController {
 
     @Operation(summary = "포트폴리오 등록", description = "포트폴리오 등록 시 포트폴리오 정보는 application/json 형식, thumbnail은 이미지 파일, files은 첨부파일(다중 첨부 가능)", responses = {
             @ApiResponse(responseCode = "201", description = "포트폴리오 등록 성공", content = @Content(schema = @Schema(implementation = Long.class))),
-            @ApiResponse(responseCode = "403", description = "사용 불가능 토큰", content = @Content(schema = @Schema(implementation = UserRes.class))),
+            @ApiResponse(responseCode = "403", description = "사용 불가능 토큰", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
             @ApiResponse(responseCode = "500", description = "서버 에러", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     @PostMapping
@@ -44,8 +44,8 @@ public class PortfolioController {
             @RequestPart(value="portfolio") PortfolioReq portfolio,
             @RequestPart(value = "thumbnail", required = false) MultipartFile thumbnail,
             @RequestPart(value = "files", required = false) List<MultipartFile> files,
-            @RequestPart("uploadImg") List<Long> uploadImg,
-            @RequestPart("resultImg") List<Long> resultImg) {
+            @RequestPart(value = "uploadImg", required = false) List<Long> uploadImg,
+            @RequestPart(value = "resultImg", required = false) List<Long> resultImg) {
         log.debug("[POST] Controller - Portfolio");
         Long response = null;
         HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
@@ -54,6 +54,7 @@ public class PortfolioController {
             long userSeq = (Long) request.getAttribute("userSeq");
             if (userSeq > 0) {
                 response = portfolioService.insertPortfolio(portfolio, thumbnail, userSeq, files, uploadImg, resultImg);
+                log.debug("response: " + response);
                 status = (response > 0) ? HttpStatus.CREATED : HttpStatus.INTERNAL_SERVER_ERROR;
             } else {
                 log.error("사용 불가능 토큰");
@@ -115,7 +116,7 @@ public class PortfolioController {
     
     @Operation(summary = "포트폴리오 수정", description = "포트폴리오 수정", responses = {
             @ApiResponse(responseCode = "201", description = "포트폴리오 수정 성공 후 수정된 포트폴리오 번호 반환", content = @Content(schema = @Schema(implementation = Long.class))),
-            @ApiResponse(responseCode = "403", description = "사용 불가능 토큰", content = @Content(schema = @Schema(implementation = UserRes.class))),
+            @ApiResponse(responseCode = "403", description = "사용 불가능 토큰", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
             @ApiResponse(responseCode = "500", description = "서버 에러", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     @PatchMapping("/{portSeq}")
@@ -144,7 +145,7 @@ public class PortfolioController {
 
     @Operation(summary = "포트폴리오 삭제", description = "포트폴리오 삭제", responses = {
             @ApiResponse(responseCode = "200", description = "포트폴리오 삭제 성공", content = @Content(schema = @Schema(implementation = Boolean.class))),
-            @ApiResponse(responseCode = "403", description = "사용 불가능 토큰", content = @Content(schema = @Schema(implementation = UserRes.class))),
+            @ApiResponse(responseCode = "403", description = "사용 불가능 토큰", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
             @ApiResponse(responseCode = "500", description = "서버 에러", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     @DeleteMapping("/{portSeq}")

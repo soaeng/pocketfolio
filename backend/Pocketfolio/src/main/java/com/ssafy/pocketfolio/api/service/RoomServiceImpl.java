@@ -320,22 +320,21 @@ public class RoomServiceImpl implements RoomService {
 
         User user = userRepository.findById(userSeq).orElseThrow(() -> new IllegalArgumentException("해당 사용자를 찾을 수 없습니다."));
         Room room = roomRepository.findById(roomSeq).orElseThrow(() -> new IllegalArgumentException("해당 방을 찾을 수 없습니다."));
+        log.debug("user: " + user.toString());
+        log.debug("room: " + room.toString());
 
         // 본인 방이 아닌 경우 + 좋아요 이력 없는 경우 좋아요
         if (userSeq != room.getUser().getUserSeq()) {
-            if (roomLikeRepository.existsByUser_UserSeq(userSeq)) {
+            log.debug("..");
+
+            if (roomLikeRepository.existsByUser_UserSeqAndRoom_RoomSeq(userSeq, roomSeq)) {
                 log.error("이미 좋아요 추가한 방");
                 return false;
             } else {
-                try{
-                    roomLikeRepository.save(RoomLike.builder().room(room).user(user).build());
-                    return true;
-                } catch (Exception e) {
-                    log.error(e.getMessage());
-                    return false;
-                }
+                return roomLikeRepository.save(RoomLike.builder().room(room).user(user).build()) != null;
             }
         }
+        log.error("본인 방");
         return false;
     }
 
@@ -348,12 +347,13 @@ public class RoomServiceImpl implements RoomService {
 
         // 본인 방이 아닌 경우 + 좋아요 이력 있는 경우 좋아요
         if (userSeq != room.getUser().getUserSeq()) {
-            if (!roomLikeRepository.existsByUser_UserSeq(userSeq)) {
+            if (!roomLikeRepository.existsByUser_UserSeqAndRoom_RoomSeq(userSeq, roomSeq)) {
                 log.error("좋아요 이력 없음");
                 return false;
             } else {
                 try {
                     roomLikeRepository.deleteByRoom_RoomSeqAndUser_UserSeq(roomSeq, userSeq);
+                    log.debug("좋아요 취소 완료");
                     return true;
                 } catch (Exception e) {
                     log.error(e.getMessage());
