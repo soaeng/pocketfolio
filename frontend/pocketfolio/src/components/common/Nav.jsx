@@ -34,7 +34,7 @@ function Nav() {
         onClick={logoClickHandler}
         src={process.env.PUBLIC_URL + '/assets/images/logo4.png'}
       />
-      {user ? (
+      {!user ? (
         <NavBotton onClick={loginClickHandler}>로그인/회원가입</NavBotton>
       ) : (
         <LoginDiv>
