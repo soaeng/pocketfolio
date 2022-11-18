@@ -120,7 +120,7 @@ public interface RoomService {
     /**
      * 좋아요, 팔로우 한 포켓 랜덤 추천
      * @param userSeq 회원 번호
-     * @param type 좋아요 / 팔료우 구분 (like, follow)
+     * @param type 좋아요 / 팔료우 구분 (like, follow, recommend)
      * @return 포켓 정보
      */
     List<MainPocketListRes> findMainRandomRoom(long userSeq, String type);

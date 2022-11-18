@@ -56,11 +56,8 @@ public class MainController {
                 response.put("likePocket", roomService.findMainRandomRoom(userSeq, "like"));
                 // 팔로우 랜덤 포켓
                 response.put("followPocket", roomService.findMainRandomRoom(userSeq, "follow"));
-
-            } else {
-                // 토큰이 잘못 된 상태거나 토큰이 없으면 게스로 처리
-                // 랜딩에 있는 마이룸, 검색, 카테고리별 추천
-//                response = roomService.getGuestMain();
+                // 비슷한 포켓
+                response.put("relation", roomService.findMainRandomRoom(userSeq, "recommend"));
             }
             // 카테고리 추천
             response.put("categoryRec", roomService.findCategoryRecList(userSeq));
