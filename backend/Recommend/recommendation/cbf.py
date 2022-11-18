@@ -18,11 +18,14 @@ USER = os.environ["MYSQL_USER"] # MySQL user
 PASSWORD = os.environ["MYSQL_PASS"] # MySQL password
 PORT = int(os.environ["MYSQL_PORT"]) # MySQL port
 
-
-# DB 연결
-db = pymysql.connect(host=HOST, port=PORT, user=USER, passwd=PASSWORD, db=DB, charset='utf8', autocommit=True, cursorclass=pymysql.cursors.DictCursor)
-#  cursor생성
-cursor = db.cursor()
+def connect_db():
+    global HOST, PORT, USER, PASSWORD, DB
+    
+    # DB 연결
+    db = pymysql.connect(host=HOST, port=PORT, user=USER, passwd=PASSWORD, db=DB, charset='utf8', autocommit=True, cursorclass=pymysql.cursors.DictCursor)
+    #  cursor생성
+    cursor = db.cursor()
+    return db, cursor
 
 
 okt = Okt()
@@ -70,6 +73,7 @@ def get_key(val, dict):
 
 
 def get_recommendations(user_seq, cosine_sim):
+    db, cursor = connect_db()
     
     idx = seq_2_idx[0]
     
@@ -85,7 +89,8 @@ def get_recommendations(user_seq, cosine_sim):
     relation = list(df["room_seq"].iloc[room_list])
     print(relation)
     relation = ",".join(map(str, relation))
-    sql = "INSERT INTO `relation` (user_seq, room_list) VALUES (" + str(user_seq) + ", '" + relation + "');"
+    sql = "INSERT INTO `relation` (user_seq, room_list) VALUES (" + str(user_seq) + ", '" + relation + "') \
+        ON DUPLICATE KEY UPDATE room_list = '" + relation + "';"
     cursor.execute(sql)
     db.close()
     
@@ -93,6 +98,7 @@ def get_recommendations(user_seq, cosine_sim):
 
 
 def recomm(user_seq):
+    db, cursor = connect_db()
     user_seq = user_seq
     global df, seq_2_idx
     
@@ -106,8 +112,10 @@ def recomm(user_seq):
 
     cursor.execute(port_sql)
     result = cursor.fetchall()
-
-    ports = result[0].get("portfolios")
+    if len(result) != 0:
+        ports = result[0].get("portfolios")
+    else:
+        ports = ""
 
     # Tag 조회
     tag_sql = "SELECT GROUP_CONCAT(DISTINCT(`t`.`name`) SEPARATOR '') AS `tags` \
@@ -119,7 +127,10 @@ def recomm(user_seq):
 
     cursor.execute(tag_sql)
     result = cursor.fetchall()
-    tags = result[0].get("tags")
+    if len(result) != 0:
+        tags = result[0].get("tags")
+    else:
+        tags = ""
 
     user_feat = ports + tags
     df = pd.DataFrame({"room_seq": [0], "feat": [user_feat]})
@@ -134,7 +145,13 @@ def recomm(user_seq):
 
     cursor.execute(port_sql)
     result = cursor.fetchall()
+    
     df_ports = pd.DataFrame(result)
+    # 포트폴리오 없을 시 빈 데이터 프레임 생성
+    
+    if df_ports.empty:
+        df_ports = pd.DataFrame({"room_seq": [], "portfolios": []})
+    
 
     # Tag 조회
     tag_sql = "SELECT `r`.`room_seq`, GROUP_CONCAT(DISTINCT(`t`.`name`) SEPARATOR '') AS `tags` \
@@ -146,12 +163,14 @@ def recomm(user_seq):
 
     cursor.execute(tag_sql)
     result = cursor.fetchall()
+    db.close()
+    
     df_tags = pd.DataFrame(result)
 
     # 태그 없을 시 빈 데이터 프레임 생성
     if df_tags.empty:
         df_tags = pd.DataFrame({"room_seq": [], "tags": []})
-        
+    
     # portfolio, tag 데이터 프레임 병합
     df_rooms = pd.merge(df_ports, df_tags, how="outer")
 
