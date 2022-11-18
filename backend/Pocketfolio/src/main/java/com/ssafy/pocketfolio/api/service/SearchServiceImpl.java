@@ -146,7 +146,13 @@ public class SearchServiceImpl implements SearchService {
         }
 
         List<SearchPortfolioListRes> list = new ArrayList<>();
-        viewPage.getContent().forEach(e -> list.add(new SearchPortfolioListRes(e)));
+        viewPage.getContent().forEach(e -> {
+            if (e.getArrangeSeq() != null) {
+                list.add(new SearchPortfolioListRes(e, searchRepository.searchPortfolioAddedRoom(e.getArrangeSeq()).orElse(null)));
+            } else {
+                list.add(new SearchPortfolioListRes(e));
+            }
+        });
 
         result = new SearchRes(list, viewPage.getTotalPages(), viewPage.getTotalElements());
 

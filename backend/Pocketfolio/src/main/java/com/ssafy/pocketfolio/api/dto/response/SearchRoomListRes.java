@@ -25,9 +25,9 @@ public class SearchRoomListRes {
     @Schema(description = "방 주인 프로필 사진 url")
     private String userProfilePic;
     @Schema(description = "좋아요 수")
-    private Integer like;
+    private Long like;
     @Schema(description = "조회수")
-    private Integer hit;
+    private Long hit;
     @Schema(description = "좋아요 여부")
     private Boolean isLiked;
     @Schema(description = "카테고리 이름")

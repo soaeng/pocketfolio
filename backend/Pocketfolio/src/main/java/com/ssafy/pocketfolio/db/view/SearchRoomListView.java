@@ -7,8 +7,8 @@ public interface SearchRoomListView {
     public Long getUserSeq();
     public String getUserName();
     public String getUserProfilePic();
-    public Integer getLike();
-    public Integer getHit();
+    public Long getLike();
+    public Long getHit();
     public Integer getIsLiked();
     public String getCategoryName();
 
