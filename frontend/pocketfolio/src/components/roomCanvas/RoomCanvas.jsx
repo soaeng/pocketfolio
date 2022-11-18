@@ -12,7 +12,6 @@ import Items from './Items';
 import Capture from '../room/Capture';
 
 softShadows();
-const range = 2;
 
 const RoomCanvas = props => {
   const cntRef = useRef();
@@ -29,8 +28,8 @@ const RoomCanvas = props => {
   const data = props.data;
   const changeNowIdx = props.changeNowIdx;
   const openPortDetail = props.openPortDetail;
-  const setSidebar = props.setSidebar;
   const changeSidebar = props.changeSidebar;
+  const nowPort = props.nowPort;
 
   return (
     <Canvas
@@ -76,7 +75,9 @@ const RoomCanvas = props => {
           loadConnect={loadConnect}
           changeNowIdx={changeNowIdx}
           openPortDetail={openPortDetail}
-          setSidebar={setSidebar}
+          nowPort={nowPort}
+          changeSidebar={changeSidebar}
+          roomSeq={data.room.roomSeq}
         />
       </Theme>
 

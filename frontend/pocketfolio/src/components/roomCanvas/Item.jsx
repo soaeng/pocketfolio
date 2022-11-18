@@ -24,8 +24,8 @@ const Item = props => {
   const loadConnect = props.loadConnect;
   const changeNowIdx = props.changeNowIdx;
   const openPortDetail = props.openPortDetail;
-  const setSidebar = props.setSidebar;
-
+  const nowPort = props.nowPort;
+  const changeSidebar = props.changeSidebar;
   const {nodes, materials} = useGLTF(arrange.item.asset);
   const _materials = new MeshStandardMaterial(
     materials[Object.keys(materials)[0]],
@@ -53,6 +53,7 @@ const Item = props => {
     1,
   ];
   const pivotRef = useRef();
+  console.log(selectedMesh);
   useEffect(() => {
     if (selectedMesh === ref.current) {
       setSelected(true);
@@ -60,6 +61,13 @@ const Item = props => {
       setSelected(false);
     }
   }, [selectedMesh]);
+
+  useEffect(() => {
+    if (arrange.portSeq === nowPort) {
+      setSelectedMesh(ref.current);
+      api.refresh(ref.current).clip().fit();
+    }
+  }, [nowPort]);
 
   const handleRotate = e => {
     handleArrange(
@@ -101,7 +109,7 @@ const Item = props => {
           cntRef.current.enabled = true;
           api.refresh(boundaryRef.current).clip().fit();
           setSelectedMesh('');
-          setSidebar('');
+          changeSidebar('');
         }
       }
     },
