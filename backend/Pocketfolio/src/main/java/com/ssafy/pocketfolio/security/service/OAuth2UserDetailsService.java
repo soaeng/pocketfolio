@@ -59,16 +59,8 @@ public class OAuth2UserDetailsService extends DefaultOAuth2UserService {
         if (clientName.equals("Google")) {
             email = oAuth2User.getAttribute("email");
             name = oAuth2User.getAttribute("name");
-        } else if (clientName.equals("Naver")) {
-            email = oAuth2User.getAttribute("email");
-            name = oAuth2User.getAttribute("name");
         } else if (clientName.equals("Kakao")) {
-            email = oAuth2User.getAttribute("email");
-            name = oAuth2User.getAttribute("nickname");
-        } else if (clientName.equals("Facebook")) {
-
-        } else if (clientName.equals("Github")) {
-
+            email = oAuth2User.getAttribute("kakao_account");
         }
 
         log.info("EMAIL: " + email);
