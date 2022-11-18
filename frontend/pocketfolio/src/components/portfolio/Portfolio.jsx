@@ -110,7 +110,7 @@ const Portfolio = () => {
       <Container>
         <CardWrapper className="myroomwrapper">
           <HeaderDiv>
-            <Text className="myrooms">소듕한 포켓들</Text>
+            <Text className="myrooms">포켓들</Text>
             <BtnDiv>
               <IconDiv className="addPocketIcon">
                 <AddPocketIcon onClick={()=>setOpenPockMod(true)}></AddPocketIcon>
@@ -137,7 +137,7 @@ const Portfolio = () => {
         </CardWrapper>
         <CardWrapper>
           <HeaderDiv>
-            <Text className="portfolios">소중한 포트폴리오들</Text>
+            <Text className="portfolios">포트폴리오들</Text>
             <BtnDiv>
               <IconDiv className="addPortIcon" onClick={movePortCreate}>
                 <AddPortIcon />
@@ -162,10 +162,9 @@ const Portfolio = () => {
               </Tbody>
               {portList.length > 0
                 ? portList.map((item, idx) => (
-                    <Tbody>
+                    <Tbody key={idx}>
                       <Tr
                         className="portlist"
-                        key={idx}
                         onClick={() => movePortDetail({item})}
                       >
                         <Td className={(idx + 1) % 2 ? 'odd' : 'even'}>
