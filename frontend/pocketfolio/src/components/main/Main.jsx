@@ -19,6 +19,7 @@ import MainCanvas from './MainCanvas';
 import Nav from '../common/Nav';
 import {getMain} from '../../store/roomSlice';
 import {useEffect, useState} from 'react';
+import Carousel from './Carousel';
 
 const Main = () => {
   const navigate = useNavigate();
@@ -75,19 +76,21 @@ const Main = () => {
 
   // 데이터 불러오기
   async function loadData() {
-    const {payload} = await dispatch(getMain());
+    const res = await dispatch(getMain());
 
-    if (payload) {
-      setMainRoom(payload.mainRoom);
-      setCategoryRec(payload.categoryRec);
-      setPortfolios(payload.portfolios);
+    console.log(res)
 
-      if (payload.mainRoom) {
-        setColor(themeColor[payload.mainRoom.theme]);
-      } else {
-        setColor('#733ede');
-      }
-    }
+    // if (!res.error) {
+    //   setMainRoom(res.payload.mainRoom);
+    //   setCategoryRec(res.payload.categoryRec);
+    //   setPortfolios(res.payload.portfolios);
+
+    //   if (res.payload.mainRoom) {
+    //     setColor(themeColor[res.payload.mainRoom.theme]);
+    //   } else {
+    //     setColor('#733ede');
+    //   }
+    // }
   }
 
   useEffect(() => {
@@ -98,7 +101,7 @@ const Main = () => {
     <Container>
       <Nav />
       <InnerContainer>
-        <TopContainer>
+        {/* <TopContainer>
           <CanvasWrapper color={color} user={mainRoom ? true : false}>
             <MainCanvas mainRoom={mainRoom} color={color} />
           </CanvasWrapper>
@@ -131,7 +134,14 @@ const Main = () => {
               value={word}
             />
           </SearchContainer>
-        </SearchDiv>
+        </SearchDiv> */}
+
+        {/* {categoryRec && categoryRec.map(
+          (rec, idx) =>
+            rec && rec.recommend.length !== 0 && (
+              <Carousel key={idx} rec={rec} idx={idx} />
+            ),
+        )} */}
       </InnerContainer>
     </Container>
   );

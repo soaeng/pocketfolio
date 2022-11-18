@@ -48,13 +48,21 @@ export const CanvasWrapper = styled.div`
 
 export const PortContainer = styled.div`
   width: calc(37% - 2rem);
-  display: ${props => props.user ? 'block': 'none'};
+  display: ${props => (props.user ? 'block' : 'none')};
+  height: calc(100% - 8px);
   padding: 1rem;
   border-radius: 1rem;
-  height: calc(100% - 8px);
-
   border: ${props => props.color && '4px solid'};
   border-color: ${props => props.color};
+
+  overflow-y: scroll;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+  scroll-behavior: smooth;
+  
+  &::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera*/
+  }
 
   @media screen and (max-width: 770px) {
     display: none;
@@ -64,6 +72,7 @@ export const PortContainer = styled.div`
 export const PortList = styled.ol`
   list-style: none;
   padding: 0;
+  margin: 0;
 `;
 
 export const PortItem = styled.li`
