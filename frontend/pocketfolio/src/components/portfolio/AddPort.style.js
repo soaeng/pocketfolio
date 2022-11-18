@@ -216,12 +216,12 @@ export const ItemList = styled.div`
   }
 
   &::-webkit-scrollbar-thumb {
-    background-color: #3c2e9b;
+    background-color: #ff9392;
     border-radius: 2rem;
   }
 
   &::-webkit-scrollbar-track {
-    background-color: #d7dcff;
+    background-color: #ffd8d7;
     border-radius: 2rem;
   }
 `;
