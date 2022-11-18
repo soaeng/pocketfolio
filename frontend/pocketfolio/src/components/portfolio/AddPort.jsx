@@ -27,6 +27,7 @@ import Editor from './Editor';
 import {Body1} from '../../styles/styles.style';
 import SaveModal from './SaveModal';
 import toast, {Toaster} from 'react-hot-toast';
+import { registPortfolio } from '../../store/portSlice';
 
 const AddPort = () => {
   const navigate = useNavigate();
@@ -207,16 +208,12 @@ const AddPort = () => {
     form.append('thumbnail', thumbNail);
     compareImgList();
 
-    const move = setTimeout(() => {
-      navigate(`/port`);
-    }, 1500);
-
-    dispatch(toast.promise.registPortfolio(form))
+    dispatch(registPortfolio(form))
       .unwrap()
       .then(res => {
         closeModal();
         toast.success('포트폴리오가 작성 되었습니다.');
-        move();
+        navigate(`/port`);
       });
   };
 

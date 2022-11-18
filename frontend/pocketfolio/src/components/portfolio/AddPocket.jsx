@@ -29,13 +29,13 @@ const AddPocket = props => {
   const {open, close, reLander, setReLander} = props;
   const dispatch = useDispatch();
   // 포켓 이름
-  const [pocketName, setPocketName] = useState('');
+  const [pocketName, setPocketName] = useState();
   // 카테고리 리스트
   const [categoryList, setCategoryList] = useState([]);
   // 카테고리 변수
-  const [selectedCate, setSelectedCate] = useState('');
+  const [selectedCate, setSelectedCate] = useState({name: '기타', categorySeq: 1 });
   // 공개범위 변수
-  const [privacy, setPrivacy] = useState(false);
+  const [privacy, setPrivacy] = useState(true);
 
   // 메인 설정 변수
   const [main, setMain] = useState(false);
@@ -52,8 +52,13 @@ const AddPocket = props => {
   useEffect(() => {
     dispatch(getRoomCategory()).then(res => {
       setCategoryList(res.payload);
+      setPocketName('');
+      setSelectedCate({name: '기타', categorySeq: 1 });
+      setPrivacy(true);
+      setMain(false);
+      setDropdown(false);
     });
-  }, []);
+  }, [open]);
 
   useEffect(() => {
     // open 값이 true -> false 가 되는 것을 감지 (즉, 모달창을 닫을 때)
@@ -82,15 +87,14 @@ const AddPocket = props => {
     });
     form.append('room', new Blob([pocket], {type: 'application/json'}));
     form.append('thumbnail', '');
-    // dispatch(createRoom(form)).then(res => {
-    //   if (res.payload.status === 201) {
-    //     setReLander(!reLander);
-    //     close();
-    //   }
-    // });
+    dispatch(createRoom(form)).then(res => {
+      if (res.payload.status === 201) {
+        setReLander(!reLander);
+        close();
+      }
+    });
   };
 
-  console.log(selectedCate);
   return (
     <Overlay >
       <ModalWrap
