@@ -61,16 +61,18 @@ public class PortfolioServiceImpl implements PortfolioService {
         log.debug("저장된 포트폴리오 번호: " + portSeq);
 
         // 원래의 이미지 목록에서 변경된 내용 있는지 확인
-        if (!uploadImg.equals(resultImg)) {
-            uploadImg.removeAll(resultImg);
-            // 삭제할 db의
-            List<Image> deleteImageList = imageRepository.findAllByImageSeqIn(uploadImg);
-            for (Image image : deleteImageList) {
-                fileHandler.deleteFile(image.getUrl(), "portfolio/image");
+        if (resultImg != null) {
+            if (!uploadImg.equals(resultImg)) {
+                uploadImg.removeAll(resultImg);
+                List<Image> deleteImageList = imageRepository.findAllByImageSeqIn(uploadImg);
+                for (Image image : deleteImageList) {
+                    fileHandler.deleteFile(image.getUrl(), "portfolio/image");
+                }
+                imageRepository.deleteAllByImageSeqIn(uploadImg);
             }
-            imageRepository.deleteAllByImageSeqIn(uploadImg);
         }
 
+        log.debug("저장된 포트폴리오 번호: " + portSeq);
         // 태그가 있다면 저장
         if (req.getTags() != null) {
             saveTags(req.getTags(), portfolio);
