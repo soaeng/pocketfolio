@@ -117,14 +117,12 @@ const PortfolioEdit = () => {
       // 특수문자, 공백 정규식
       const special = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/gi;
       const space = /\s/g;
-      
+
       if (special.test(hashInput) || space.test(hashInput)) {
- 
         toast.error('공백 및 특수문자 입력 불가', {
           position: 'bottom-left',
           duration: 2000,
         });
-       
       } else {
         setHashArr(hashArr => [...hashArr, hashtag]);
         setHashtag('');
@@ -207,7 +205,7 @@ const PortfolioEdit = () => {
       name: null,
       url: null,
     });
-    setIsChangeThumb(false)
+    setIsChangeThumb(false);
   };
 
   // Editor에서 이미지 추가 시 실행
@@ -242,7 +240,6 @@ const PortfolioEdit = () => {
       });
     }
   };
-
 
   // 포트폴리오 제출 함수
   const savePortFolio = () => {
@@ -295,7 +292,6 @@ const PortfolioEdit = () => {
       .unwrap()
       .then(res => {
         closeModal();
-        toast.success('포트폴리오가 수정 되었습니다.');
         navigate(`/port/${port_id}`);
       });
   };
@@ -399,7 +395,7 @@ const PortfolioEdit = () => {
               onChange={uploadThumbnail}
               style={{display: 'none'}}
             />
-            {thumbData.name !== undefined && thumbData.name !== null  ? (
+            {thumbData.name !== undefined && thumbData.name !== null ? (
               <Item>
                 {thumbData.name}
                 <IconDiv>

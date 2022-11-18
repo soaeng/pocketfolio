@@ -212,7 +212,6 @@ const AddPort = () => {
       .unwrap()
       .then(res => {
         closeModal();
-        toast.success('포트폴리오가 작성 되었습니다.');
         navigate(`/port`);
       });
   };

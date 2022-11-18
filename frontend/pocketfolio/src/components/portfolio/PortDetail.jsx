@@ -1,8 +1,10 @@
 import {useParams} from 'react-router-dom';
 import {useEffect, useState} from 'react';
 import {useDispatch} from 'react-redux';
-import {useNavigate} from 'react-router-dom';
+import {useNavigate, useLocation} from 'react-router-dom';
 import {getportDetail} from '../../store/portSlice';
+import toast, {Toaster} from 'react-hot-toast';
+
 import Nav from '../common/Nav';
 
 import {
@@ -34,6 +36,7 @@ import {
 const PortDetail = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
   // portSeq
   const params = useParams();
   const port_id = parseInt(params.port_id);
@@ -67,9 +70,25 @@ const PortDetail = () => {
   };
 
   const [showFiles, setShowFiles] = useState(false);
-  
+  console.log(location.state);
   return (
     <Background>
+      {location.state && (
+        <Toaster
+          position="top-center"
+          containerStyle={{
+            position: 'absolute',
+          }}
+          toastOptions={{
+            duration: 3000,
+            style: {
+              background: '#fff',
+              color: '#333333',
+              fontSize: '0.85rem',
+            },
+          }}
+        />
+      )}
       <Nav></Nav>
       <Container>
         <Content>
@@ -81,7 +100,7 @@ const PortDetail = () => {
               <Title>{portDetail.name}</Title>
             </TitleDiv>
             <HeaderBottom>
-              <IconDiv onClick={moveEdit} className='edit'>
+              <IconDiv onClick={moveEdit} className="edit">
                 <EditIcon></EditIcon>
               </IconDiv>
               <WriteDate>수정일 : {createDate}</WriteDate>
