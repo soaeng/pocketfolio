@@ -33,6 +33,9 @@ const Room = () => {
 
   const changeSidebar = state => {
     setSidebar(state);
+    if (!state) {
+      setNowPort(null);
+    }
   };
 
   // edit myroom
@@ -66,19 +69,23 @@ const Room = () => {
   // 방 정보 불러오기
   const getData = async () => {
     const res = await dispatch(getRoomInfo(roomSeq));
-    console.log(res.payload)
+    console.log(res.payload);
     if (!res.error) {
-      if (res.payload.room.privacy === 'O' || user && (res.payload.room.privacy === 'C' && res.payload.owner.userSeq === user.userSeq)) {
+      if (
+        res.payload.room.privacy === 'O' ||
+        (user &&
+          res.payload.room.privacy === 'C' &&
+          res.payload.owner.userSeq === user.userSeq)
+      ) {
         setData(res.payload);
         setArranges(res.payload.arranges);
         setNowTheme(res.payload.room.theme);
       }
+    } else {
+      setData(null);
+      setArranges(null);
+      setNowTheme('');
     }
-    else {
-          setData(null);
-          setArranges(null);
-          setNowTheme('');
-        }
   };
 
   useEffect(() => {
@@ -215,11 +222,11 @@ const Room = () => {
           loadConnect={loadConnect}
           changeNowIdx={changeNowIdx}
           openPortDetail={openPortDetail}
-          setSidebar={setSidebar}
           data={data}
           capture={capture}
           offCaptrue={offCaptrue}
           changeSidebar={changeSidebar}
+          nowPort={nowPort}
         />
         <Toaster
           position="bottom-left"

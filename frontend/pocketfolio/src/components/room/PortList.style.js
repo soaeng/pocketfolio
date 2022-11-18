@@ -24,3 +24,24 @@ export const Title = styled.h2`
     margin-bottom: 1.25rem;
   }
 `;
+
+export const Box = styled.div`
+  width: calc(100% - 2rem);
+  background-color: #fff4f1;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  color: #333333;
+
+  & + & {
+    margin-top: 1rem;
+  }
+
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  cursor: pointer;
+`;
+
+export const ContentTitle = styled.h3`
+  margin: 0.7rem 0;
+`;
