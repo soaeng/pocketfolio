@@ -114,6 +114,19 @@ const Search = () => {
     setData(payload.list);
   };
 
+  // 스크롤시 데이터 불러오는 함수
+  const getDataScroll = async () => {
+    const params = {
+      search: location.state.search,
+      sort: location.state.sort,
+      category: location.state.category,
+      size: size,
+      page,
+    };
+    const {payload} = await dispatch(getSearch({params, searchMode}));
+    setData([...data, ...payload.list]);
+  };
+
   // 입력창 변화 감지
   const onChange = e => {
     setWord(e.target.value);
@@ -163,7 +176,7 @@ const Search = () => {
 
   useEffect(() => {
     console.log('page ? ', page);
-    getData();
+    getDataScroll();
   }, [page]);
 
   useEffect(() => {
@@ -300,7 +313,7 @@ const Search = () => {
                 ? {
                     backgroundColor: '#e75452',
                     color: '#fff',
-                    border: 'none',
+                    border: '1px solid #fff',
                   }
                 : {
                     backgroundColor: '#fff',
@@ -329,7 +342,7 @@ const Search = () => {
                     ? {
                         backgroundColor: '#e75452',
                         color: '#fff',
-                        border: 'none',
+                        border: '1px solid #fff',
                       }
                     : {
                         backgroundColor: '#fff',

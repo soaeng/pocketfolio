@@ -1,8 +1,12 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { useNavigate } from 'react-router-dom';
 import {useDispatch, useSelector} from 'react-redux';
 
 import {unfollowFunc, followFunc} from '../../store/oauthSlice';
+
+import {
+  getMyFollowing,
+} from '../../store/oauthSlice';
 
 import {
   UserProfileItem,
@@ -23,15 +27,34 @@ import {
   RoomInfoDiv,
   RoomInfoImg,
   UserDiv,
+  ScrollBox,
 } from './UserProfile.style';
-import { useEffect } from 'react';
 
-const UserProfile = ({closeUserModal, userInfo}) => {
+const UserProfile = (props) => {
+  const closeUserModal = props.closeUserModal;
+  const userInfo = props.userInfo;
   const user = useSelector(state => state.oauth.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const [follow, setFollow] = useState('');
+  const [followingList, setFollowingList] = useState([]);
+
+  // 팔로잉 목록 가져오기
+  const getFollowing = async () => {
+    const {payload} = await dispatch(getMyFollowing());
+    setFollowingList(payload);
+  };
+
+  useEffect(() => {
+    getFollowing();
+  }, []);
+
+  useEffect(() => {
+    followingList.forEach(element => {if (element.userSeq === userInfo.userSeq) {
+      setFollow(true);
+    }});
+  }, [followingList]);
 
   // room 이동
   const roomClickHandler = roomSeq => {
@@ -55,9 +78,11 @@ const UserProfile = ({closeUserModal, userInfo}) => {
     }
   }
 
-  // useEffect(() => {
-  //   setFollow();
-  // }, [follow]);
+  // 이미지 오류인 경우 기본 이미지 보이게
+  const onErrorImg = (e) => {
+    e.target.src = '/assets/images/room_01.png'
+  }
+  
 
   return (
     <>
@@ -85,14 +110,14 @@ const UserProfile = ({closeUserModal, userInfo}) => {
                 {/* 팔로우 | 로그인한 상태이고, 방 주인이 아닌 경우 가능 */}
                 {user && user.userSeq !== userInfo.userSeq && (
                   <IconDiv onClick={handleFollow}>
-                    {follow ? <AlreadyFollowIcon /> : <FollowIcon />}
+                    {follow|| (userInfo.rooms && userInfo.rooms[0].isFollowing) ? <AlreadyFollowIcon /> : <FollowIcon />}
                   </IconDiv>
                 )}
               </UserDiv>
               <UserProDescDiv>{userInfo.describe}</UserProDescDiv>
               <UserProDescDiv>{userInfo.email}</UserProDescDiv>
               <FollowDiv>
-                <UserFollowDiv>팔로워 : {userInfo.followerTotal}</UserFollowDiv>
+                <UserFollowDiv>팔로워 : {follow ? userInfo.followerTotal + 1 : userInfo.followerTotal}</UserFollowDiv>
                 <UserFollowDiv>팔로잉 : {userInfo.followingTotal}</UserFollowDiv>
               </FollowDiv>
             </UserProfileInfoContainer>
@@ -100,18 +125,20 @@ const UserProfile = ({closeUserModal, userInfo}) => {
           <div>
             <hr/>
           </div>
+          <ScrollBox>
           {userInfo.rooms && userInfo.rooms.map((room) => {
             const {roomSeq, thumbnail, isFollowing, like, name, category} = room
             return (
               <>
                 <div>{name}</div>
                 <RoomInfoDiv onClick={e => roomClickHandler(roomSeq)}>
-                  <RoomInfoImg src={thumbnail ? thumbnail : '/assets/images/room_01.png'}/>
+                  <RoomInfoImg
+                    onError={onErrorImg}
+                    src={thumbnail ? thumbnail : '/assets/images/room_01.png'}/>
                 </RoomInfoDiv>
-
               </>
             )
-          })}
+          })}</ScrollBox>
         </UserProfileContainer>
       </UserProfileItem>
     </>

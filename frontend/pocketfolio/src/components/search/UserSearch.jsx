@@ -22,19 +22,20 @@ import {
 
 import UserProfile from '../common/UserProfile';
 
-const UserSearch = ({data}) => {
-  const user = useSelector(state => state.oauth.user);
+const User = ({userSeq, name, profilePic, describe, followerTotal, followingTotal, hasFollowed, user}) => {
   const dispatch = useDispatch();
-
-  const [roomModal, setRoomModal] = useState(false); //프로필 모달 보이게 안보이게
-
-  // 팔로우 상태 저장할 곳
+  const [userModal, setUserModal] = useState(false); //프로필 모달 보이게 안보이게
   const [follow, setFollow] = useState('');
 
+  // 모달 닫는 함수
+  const closeUserModal = (e) => {
+    setUserModal(false);
+  };
+
   // 팔로우, 언팔로우
-  const handleFollow = async (userSeq, hasFollowed) => {
+  const handleFollow = async (userSeq, follow) => {
     if (user) {
-      if (hasFollowed) {
+      if (follow) {
         const {payload} = await dispatch(unfollowFunc(userSeq));
         if (payload) {
           setFollow(false);
@@ -48,9 +49,84 @@ const UserSearch = ({data}) => {
     }
   }
 
-  useEffect(() => {
-    handleFollow();
-  }, [follow]);
+    // 특정 유저정보 담을 상태
+    const [userInfo, setUserInfo] = useState([]);
+
+    // 특정 유저정보 조회 함수
+    const bringUserInfo = async userSeq => {
+      const {payload} = await dispatch(getUserInfo(userSeq));
+      setUserInfo(payload);
+      console.log(payload, '특정 유저정보');
+    };
+  
+    useEffect(() => {
+      getUserInfo();
+    }, []);
+
+  return(
+    <UserItem>
+      {/* 팔로우 버튼 */}
+      {/* 팔로우 | 로그인한 상태이고, 방 주인이 아닌 경우 가능 */}
+      {user && user.userSeq !== userSeq && (
+        <Icon>
+          <IconDiv className="follow" onClick={e => handleFollow(userSeq, follow)}>
+            {follow||hasFollowed ? <AlreadyFollowIcon /> : <FollowIcon />}
+          </IconDiv>
+        </Icon>
+      )}
+      <UserContainer>
+        {/* 사용자 프로필 사진 */}
+        <UserImgContainer                   
+          onClick={e => {
+            setUserModal(userSeq);
+            bringUserInfo(userSeq);
+          }}
+        >
+          <UserImg
+            src={profilePic ? profilePic : '/assets/images/user.png'}
+          />
+        </UserImgContainer>
+        {userSeq === userModal && <UserProfile userInfo={userInfo} closeUserModal={closeUserModal}/>}
+        {/* 유저 정보 */}
+        <UserInfoContainer>
+          <UserNameDiv>{name}</UserNameDiv>
+          {/* <UserDescDiv>{describe}</UserDescDiv> */}
+          <FollowDiv>
+            <UserFollowDiv>팔로우 | {followerTotal}</UserFollowDiv>
+            <UserFollowDiv>팔로잉 | {followingTotal}</UserFollowDiv>
+          </FollowDiv>
+        </UserInfoContainer>
+      </UserContainer>
+    </UserItem>
+  )
+}
+
+const UserSearch = ({data}) => {
+  const user = useSelector(state => state.oauth.user);
+  const dispatch = useDispatch();
+  const [userModal, setUserModal] = useState(false); //프로필 모달 보이게 안보이게
+  
+  // 모달 닫는 함수
+  const closeUserModal = (e) => {
+    setUserModal(false);
+  };
+
+  // 팔로우, 언팔로우
+  const handleFollow = async (userSeq, follow) => {
+    if (user) {
+      if (follow) {
+        const {payload} = await dispatch(unfollowFunc(userSeq));
+        if (payload) {
+          // setFollow(false);
+        }
+      } else {
+        const {payload} = await dispatch(followFunc(userSeq));
+        if (payload) {
+          // setFollow(true);
+        }
+      }
+    }
+  }
 
   // 특정 유저정보 담을 상태
   const [userInfo, setUserInfo] = useState([]);
@@ -69,45 +145,13 @@ const UserSearch = ({data}) => {
   return (
     <>
       <UserCard>
-        {data.map(it => {
-          const {userSeq, name, profilePic, describe, followerTotal, followingTotal, hasFollowed} = it;
-          return (
-            <UserItem>
-              {/* 팔로우 버튼 */}
-              {/* 팔로우 | 로그인한 상태이고, 방 주인이 아닌 경우 가능 */}
-              {user && user.userSeq !== userSeq && (
-                <Icon>
-                  <IconDiv className="follow" onClick={e => handleFollow(userSeq, hasFollowed)}>
-                    {hasFollowed !== false ? <AlreadyFollowIcon /> : <FollowIcon />}
-                  </IconDiv>
-                </Icon>
-              )}
-              <UserContainer>
-                {/* 사용자 프로필 사진 */}
-                <UserImgContainer                   
-                  onClick={e => {
-                    setRoomModal(userSeq);
-                    bringUserInfo(userSeq);
-                  }}
-                >
-                  <UserImg
-                    src={profilePic ? profilePic : '/assets/images/user.png'}
-                  />
-                  {userSeq === roomModal && <UserProfile userInfo={userInfo}/>}
-                </UserImgContainer>
-                {/* 유저 정보 */}
-                <UserInfoContainer>
-                  <UserNameDiv>{name}</UserNameDiv>
-                  {/* <UserDescDiv>{describe}</UserDescDiv> */}
-                  <FollowDiv>
-                    <UserFollowDiv>팔로우 | {followerTotal}</UserFollowDiv>
-                    <UserFollowDiv>팔로잉 | {followingTotal}</UserFollowDiv>
-                  </FollowDiv>
-                </UserInfoContainer>
-              </UserContainer>
-            </UserItem>
-          );
-        })}
+        {data.map(props => {
+          // const {userSeq, name, profilePic, describe, followerTotal, followingTotal} = it;
+          // let {hasFollowed} = it;
+          
+          return(
+            <User {...props} user={user}/>)
+          })}
       </UserCard>
     </>
   );

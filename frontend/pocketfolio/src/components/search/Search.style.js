@@ -50,6 +50,7 @@ export const SearchIcon = styled(AiOutlineSearch)`
 // Tag 전체를 감싸는 것
 export const TagContainer = styled.div`
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
   padding: 1%;
 `;

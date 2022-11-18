@@ -126,3 +126,24 @@ export const RoomInfoImg = styled.img`
   height: 200px;
   width: 200px;
 `
+
+export const ScrollBox = styled.div`
+  height: 250px;
+  overflow-y: auto;
+
+  &::-webkit-scrollbar {
+    display: block;
+    width: 9px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #ff9392;
+    height: 15px;
+    border-radius: 0.2rem;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: #ffd8d7;
+    border-radius: 0.2rem;
+  }
+`;

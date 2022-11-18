@@ -53,7 +53,7 @@ export const HoverDiv = styled.div`
   position: absolute;
   justify-content: center;
   padding: 10px;
-  height: 29%;
+  height: 32%;
   min-width: 260px;
   opacity: 0;
   cursor: pointer;

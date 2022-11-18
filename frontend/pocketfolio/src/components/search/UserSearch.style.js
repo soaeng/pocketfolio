@@ -42,6 +42,10 @@ export const UserImgContainer = styled.div`
   justify-content: center;
   transition: all 0.2s;
   cursor: pointer;
+
+  &:hover {
+    scale: 1.1;
+  }
 `;
 
 // 프로필 사진

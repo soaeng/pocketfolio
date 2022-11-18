@@ -25,12 +25,16 @@ import {
 } from './PortSearch.style';
 
 const PortSearch = ({data, handleLike, handleDisLike}) => {
-  console.log(data, 123)
   const [roomModal, setRoomModal] = useState(false); //프로필 모달 보이게 안보이게
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const user = useSelector(state => state.oauth.user);
+
+  // 이미지 오류인 경우 기본 이미지 보이게
+  const onErrorImg = (e) => {
+    e.target.src = '/assets/images/room_01.png'
+  }
 
   // pocket 클릭시 이동 => 수정필요
   const pocketClickHandler = roomSeq => {
@@ -66,6 +70,7 @@ const PortSearch = ({data, handleLike, handleDisLike}) => {
               {/* 마이포켓 썸네일 */}
               <PortImgDiv>
                 <PortThumbnail
+                  onError={onErrorImg}
                   src={roomThumbnail ? roomThumbnail : '/assets/images/room.png'}
                 />
                 {/* 호버시 보이는 버튼 */}
@@ -103,11 +108,12 @@ const PortSearch = ({data, handleLike, handleDisLike}) => {
                   <div>{hit}</div>
                 </LikeShowDiv>
               </PortUserInfoContainer>
-              <TagsDiv>
+              {/* 태그 */}
+              {/* <TagsDiv>
                 {tags && tags.map(tag => {
                   return (<Tag>{tag}</Tag>)
                 })}
-              </TagsDiv>
+              </TagsDiv> */}
             </PortItem>
           );
         })}

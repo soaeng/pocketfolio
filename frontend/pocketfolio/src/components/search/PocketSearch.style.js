@@ -22,7 +22,6 @@ export const PocketItem = styled.div`
   border-radius: 16px;
   box-shadow: 0px 2px 5px 1px rgba(0, 0, 0, 0.25);
   flex: none;
-  /* background-color: blue; */
 `;
 
 export const PocketImgDiv = styled.div`
