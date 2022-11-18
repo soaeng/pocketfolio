@@ -101,9 +101,9 @@ public class UserServiceImpl implements UserService {
         userRepository.deleteById(userSeq);
     }
 
-    @Override // 12345
-    public List<UserRes> findUserList(String type, String keyword, String sort) {
-        return null;
+    @Override
+    public boolean isSameRefreshToken(long userSeq, String refreshToken) {
+        User user = userRepository.findById(userSeq).orElseThrow(() -> new IllegalArgumentException("유저가 존재하지 않습니다."));
+        return refreshToken.equals(user.getToken());
     }
-
 }

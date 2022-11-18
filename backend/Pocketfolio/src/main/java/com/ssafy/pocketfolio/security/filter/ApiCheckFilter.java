@@ -2,6 +2,7 @@ package com.ssafy.pocketfolio.security.filter;
 
 import com.ssafy.pocketfolio.security.util.JWTUtil;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -22,6 +23,9 @@ public class ApiCheckFilter extends OncePerRequestFilter {
     private String[] postForGuestPatterns;
     private JWTUtil jwtUtil;
 
+    @Value("${server.servlet.context-path:''}")
+    private String contextPath;
+
     public ApiCheckFilter(String[] patterns, String[] postForGuestPatterns, JWTUtil jwtUtil){
         this.antPathMatcher = new AntPathMatcher();
         this.patterns = patterns;
@@ -38,18 +42,36 @@ public class ApiCheckFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
-        log.info("REQUESTURI: " + request.getRequestURI());
-
-        boolean isNeedToken = needToken(request);
-        log.info("this uri need token: " + isNeedToken);
-
-        if (isNeedToken) {
-
-            log.info("ApiCheckFilter.................................................");
-
+        String requestURI = request.getRequestURI();
+        log.info("REQUEST URI: " + requestURI);
+        if (antPathMatcher.match(contextPath + "/users/refresh", requestURI)) {
+            log.info("refresh token");
             Long userSeq = checkAuthHeaderAndExtractUserSeq(request);
-            request.setAttribute("userSeq", userSeq); // setAttribute 위치 어디로 할지 고민 1
+            if (userSeq > 0) {
+                try {
+                    String accessToken = jwtUtil.generateAccessToken(Long.toString(userSeq));
+                    request.setAttribute("refreshToken", request.getHeader("Authorization").substring(7));
+                    request.setAttribute("accessToken", accessToken);
+                } catch (Exception e) {
+                    log.error(e.getMessage());
+                    userSeq = -1L;
+                }
+            }
+            request.setAttribute("userSeq", userSeq);
+        } else {
+            log.info("this uri need token: " + needToken(request));
 
+            boolean isNeedToken = needToken(request);
+            log.info("this uri need token: " + isNeedToken);
+
+            if (isNeedToken) {
+
+                log.info("ApiCheckFilter.................................................");
+
+                Long userSeq = checkAuthHeaderAndExtractUserSeq(request);
+                request.setAttribute("userSeq", userSeq); // setAttribute 위치 어디로 할지 고민 1
+
+            }
         }
 
         filterChain.doFilter(request, response);
@@ -62,7 +84,7 @@ public class ApiCheckFilter extends OncePerRequestFilter {
         String authHeader = request.getHeader("Authorization");
 
         if (!StringUtils.hasText(authHeader)) {
-            return 0L;
+            return 0L; // 게스트
         }
 
         if (authHeader.startsWith("Bearer ")) {
@@ -70,7 +92,7 @@ public class ApiCheckFilter extends OncePerRequestFilter {
 
             String token = authHeader.substring(7);
             if ("null".equals(token)) {
-                return 0L;
+                return 0L; // 게스트
             }
 
             userSeq = jwtUtil.validateAndExtractUserSeq(token);

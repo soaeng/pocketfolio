@@ -145,34 +145,43 @@ public class UserController {
         return new ResponseEntity<>(result, status);
     }
 
-//    @Operation(summary = "토큰 재발급", description = "리프레쉬 토큰을 이용하여 액세스 토큰 재발급", responses = {
-//            @ApiResponse(responseCode = "200", description = "회원 정보 조회 성공", content = @Content(schema = @Schema(implementation = String.class))),
-//            @ApiResponse(responseCode = "403", description = "사용 불가능 토큰", content = @Content(schema = @Schema(implementation = String.class))),
-//            @ApiResponse(responseCode = "500", description = "서버 에러", content = @Content(schema = @Schema(implementation = String.class)))
-//    })
-//    @GetMapping("/refresh")
-//    public ResponseEntity<String> refreshToken(HttpServletRequest request) {
-//        log.debug("Controller: refreshToken()");
-//        HttpStatus status;
-//
-//        String newToken = null;
-//
-//        try {
-//            long userSeq = (Long) request.getAttribute("userSeq");
-//            if (userSeq > 0) {
-//                result = JWTUtil
-//                status = HttpStatus.OK;
-//            } else {
-//                log.error("사용 불가능 토큰");
-//                status = HttpStatus.FORBIDDEN;
-//            }
-//        } catch (Exception e) {
-//            log.error(e.getMessage());
-//            status = HttpStatus.INTERNAL_SERVER_ERROR;
-//        }
-//
-//        return new ResponseEntity<>(result, status);
-//    }
+    @Operation(summary = "토큰 재발급", description = "리프레쉬 토큰을 이용하여 액세스 토큰 재발급", responses = {
+            @ApiResponse(responseCode = "200", description = "재발급 성공", content = @Content(schema = @Schema(implementation = String.class))),
+            @ApiResponse(responseCode = "403", description = "사용 불가능 리프레쉬 토큰 (액세스 토큰 재발급 불가능)", content = @Content(schema = @Schema(implementation = String.class))),
+            @ApiResponse(responseCode = "500", description = "서버 에러", content = @Content(schema = @Schema(implementation = String.class)))
+    })
+    @GetMapping("/refresh")
+    public ResponseEntity<String> refreshToken(HttpServletRequest request) {
+        log.debug("Controller: refreshToken()");
+        HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
+
+        String newAccessToken = null;
+
+        try {
+            long userSeq = (Long) request.getAttribute("userSeq");
+            if (userSeq > 0) {
+                String refreshToken = (String) request.getAttribute("refreshToken");
+                if (userService.isSameRefreshToken(userSeq, refreshToken)) {
+                    newAccessToken = (String) request.getAttribute("accessToken");
+                    if (newAccessToken != null) {
+                        status = HttpStatus.OK;
+                    } else {
+                        log.error("액세스 토큰 재생성 실패");
+                    }
+                } else {
+                    log.error("리프레쉬 토큰 불일치: 액세스 토큰 재발급 불가능");
+                    status = HttpStatus.FORBIDDEN;
+                }
+            } else {
+                log.error("사용 불가능 리프레쉬 토큰: 액세스 토큰 재발급 불가능");
+                status = HttpStatus.FORBIDDEN;
+            }
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
+
+        return new ResponseEntity<>(newAccessToken, status);
+    }
 
 //    @Operation(summary = "로그아웃", description = "로그아웃", responses = {
 //            @ApiResponse(responseCode = "201", description = "회원 정보 수정 성공", content = @Content(schema = @Schema(implementation = Boolean.class))),

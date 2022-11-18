@@ -65,6 +65,10 @@ public class SecurityConfig {
 ////            auth.antMatchers("/sample/member").hasRole("USER");
 //        });
 
+//        http.authorizeHttpRequests((auth) -> {
+//            auth.anyRequest().permitAll();
+//        });
+
 //        http.formLogin(); // 인가 및 인증이 안 되면 로그인 페이지로 이동
         http.csrf().disable(); // CSRF 토큰 발행 X
 //        http.oauth2Login(); // OAuth 로그인
