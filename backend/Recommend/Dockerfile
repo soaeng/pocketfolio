@@ -1,12 +1,11 @@
 # ./Dockerfile 
-FROM openjdk:11
+FROM python:3.8
+WORKDIR /var/jenkins_home/workspace/backend/backend/Recommend
 
+RUN apt-get update && apt-get install -y g++ default-jdk
 ENV JAVA_HOME /usr/lib/jvm/java-11-openjdk-amd64
 RUN export JAVA_HOME
 RUN echo $JAVA_HOME
-
-FROM python:3.8
-WORKDIR /var/jenkins_home/workspace/backend/backend/Recommend
 
 ## Install packages
 COPY requirements.txt ./
