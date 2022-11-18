@@ -39,7 +39,7 @@ export const LoginContainer = styled.div`
 
 export const LogoDiv = styled.div`
   height: 16%;
-  margin-bottom: 1rem;
+  margin-bottom: 2rem;
 `;
 
 export const LogoImg = styled.img`
