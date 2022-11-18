@@ -100,7 +100,7 @@ const Main = () => {
       <Nav />
       <InnerContainer>
         <TopContainer>
-          <CanvasWrapper color={color} user={mainRoom ? true : false}>
+          <CanvasWrapper color={color} user={mainRoom ? true : false} onClick={() => mainRoom.roomSeq && navigate(`/room/${mainRoom.roomSeq}`)}>
             <MainCanvas mainRoom={mainRoom} color={color} />
           </CanvasWrapper>
 

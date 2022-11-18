@@ -87,8 +87,10 @@ const RoomInfo = ({data, sidebar, edit, handleReload}) => {
 
   // hit Detail
   const togglehit = () => {
-    setDetail(false);
-    setHitDetail(!hitDetail);
+    if (user && user.userSeq === data.room.userSeq) {
+      setDetail(false);
+      setHitDetail(!hitDetail);
+    }
   };
 
   const closeHit = () => {

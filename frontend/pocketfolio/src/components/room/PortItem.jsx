@@ -20,7 +20,7 @@ const PortItem = ({item, openPortDetail}) => {
         <Title>{`${item.name}`}</Title>
         <TagBox>
           {item.tags.map((tag, idx) => (
-            <Tag>{`# ${tag}`}</Tag>
+            <Tag key={idx}>{`# ${tag}`}</Tag>
           ))}
         </TagBox>
       </ContentBox>

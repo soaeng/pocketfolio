@@ -18,18 +18,18 @@ import {
 import {useDispatch} from 'react-redux';
 import {getVisitors} from '../../store/roomSlice';
 import {useEffect, useState} from 'react';
+import {useNavigate} from 'react-router-dom';
 
 const HitDetail = ({closeHit, data}) => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [visitors, setVisitors] = useState([]);
-  const [today, setToday] = useState(0);
   const [hitStat, setHitStat] = useState([]);
   const [max, setMax] = useState(0);
 
   async function getHitData() {
     const {payload} = await dispatch(getVisitors(data.room.roomSeq));
     setVisitors(payload.guests);
-    setToday(payload.today);
 
     // 객체 데이터를 배열로
     const value = Object.entries(payload.hitStat.hitStat).reverse();
@@ -51,7 +51,7 @@ const HitDetail = ({closeHit, data}) => {
     <Container>
       <ChartContainer>
         {hitStat.map((item, idx) => (
-          <DateContainer>
+          <DateContainer key={idx}>
             <GraphBox>
               <KeyFrameBox>
                 <Graph style={{height: `${(item[1] / max) * 100}%`}}>
@@ -68,7 +68,10 @@ const HitDetail = ({closeHit, data}) => {
       <ListContainer>
         <Title>최근 방문자 목록</Title>
         {visitors.map((visitor, idx) => (
-          <UserItem>
+          <UserItem
+            onClick={() => navigate(`/room/${visitor.roomSeq}`)}
+            key={idx}
+          >
             <UserImgBox>
               <UserImg
                 src={
@@ -76,6 +79,10 @@ const HitDetail = ({closeHit, data}) => {
                     ? visitor.userProfile
                     : process.env.PUBLIC_URL + '/assets/images/logo3.png'
                 }
+                onError={e => {
+                  e.target.src =
+                    process.env.PUBLIC_URL + '/assets/images/logo3.png';
+                }}
               />
             </UserImgBox>
             <UserName>{visitor.userName}</UserName>

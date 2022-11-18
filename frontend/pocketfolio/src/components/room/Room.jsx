@@ -70,7 +70,7 @@ const Room = () => {
   // 방 정보 불러오기
   const getData = async () => {
     const res = await dispatch(getRoomInfo(roomSeq));
-    console.log(res.payload);
+
     if (!res.error) {
       if (
         res.payload.room.privacy === 'O' ||
