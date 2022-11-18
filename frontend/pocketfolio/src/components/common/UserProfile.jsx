@@ -10,13 +10,23 @@ import {
   UserProfileImgContainer,
   UserProfileImg,
   UserProfileInfoContainer,
-  UserProfileFollowBtn,
   IconDiv,
   FollowIcon,
   AlreadyFollowIcon,
+  CancelBox,
+  CancelIcon,
+  UserFollowDiv,
+  UserProNameDiv,
+  UserProDescDiv,
+  FollowDiv,
+  UserInfo,
+  RoomInfoDiv,
+  RoomInfoImg,
+  UserDiv,
 } from './UserProfile.style';
+import { useEffect } from 'react';
 
-const UserProfile = ({userInfo}) => {
+const UserProfile = ({closeUserModal, userInfo}) => {
   const user = useSelector(state => state.oauth.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -45,36 +55,32 @@ const UserProfile = ({userInfo}) => {
     }
   }
 
+  // useEffect(() => {
+  //   setFollow();
+  // }, [follow]);
+
   return (
     <>
       <UserProfileItem>
+        <CancelBox onClick={closeUserModal}>
+          <CancelIcon />
+        </CancelBox>
         <UserProfileContainer>
-          {/* 사용자 프로필 사진 */}
-          <UserProfileImgContainer>
-            <UserProfileImg
-              src={
-                userInfo.profilePic
-                  ? userInfo.profilePic
-                  : '/assets/images/user.png'
-              }
-            />
-          </UserProfileImgContainer>
-          {/* 사용자 정보 */}
-          <UserProfileInfoContainer>
-            <div>{userInfo.name}</div>
-            <div>{userInfo.describe}</div>
-            <div>팔로워 : {userInfo.followerTotal}</div>
-            <div>팔로잉 : {userInfo.followingTotal}</div>
-          </UserProfileInfoContainer>
-          {/* <div>{rooms}</div> */}
-          {userInfo.rooms && userInfo.rooms.map((room) => {
-            const {roomSeq, thumbnail, isFollowing} = room
-            // console.log(isFollowing, 1234)
-            return (
-              <>
-                <div onClick={e => roomClickHandler(roomSeq)}>
-                  <img src={thumbnail ? thumbnail : process.env.PUBLIC_URL + '/assets/images/room_01.png'}/>
-                </div>
+          <UserInfo>
+            {/* 사용자 프로필 사진 */}
+            <UserProfileImgContainer>
+              <UserProfileImg
+                src={
+                  userInfo.profilePic
+                    ? userInfo.profilePic
+                    : '/assets/images/user.png'
+                }
+              />
+            </UserProfileImgContainer>
+            {/* 사용자 정보 */}
+            <UserProfileInfoContainer>
+              <UserDiv>
+                <UserProNameDiv>{userInfo.name}</UserProNameDiv>
                 {/* 팔로우 버튼 */}
                 {/* 팔로우 | 로그인한 상태이고, 방 주인이 아닌 경우 가능 */}
                 {user && user.userSeq !== userInfo.userSeq && (
@@ -82,6 +88,27 @@ const UserProfile = ({userInfo}) => {
                     {follow ? <AlreadyFollowIcon /> : <FollowIcon />}
                   </IconDiv>
                 )}
+              </UserDiv>
+              <UserProDescDiv>{userInfo.describe}</UserProDescDiv>
+              <UserProDescDiv>{userInfo.email}</UserProDescDiv>
+              <FollowDiv>
+                <UserFollowDiv>팔로워 : {userInfo.followerTotal}</UserFollowDiv>
+                <UserFollowDiv>팔로잉 : {userInfo.followingTotal}</UserFollowDiv>
+              </FollowDiv>
+            </UserProfileInfoContainer>
+          </UserInfo>
+          <div>
+            <hr/>
+          </div>
+          {userInfo.rooms && userInfo.rooms.map((room) => {
+            const {roomSeq, thumbnail, isFollowing, like, name, category} = room
+            return (
+              <>
+                <div>{name}</div>
+                <RoomInfoDiv onClick={e => roomClickHandler(roomSeq)}>
+                  <RoomInfoImg src={thumbnail ? thumbnail : '/assets/images/room_01.png'}/>
+                </RoomInfoDiv>
+
               </>
             )
           })}

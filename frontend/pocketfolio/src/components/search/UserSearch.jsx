@@ -50,7 +50,7 @@ const UserSearch = ({data}) => {
 
   useEffect(() => {
     handleFollow();
-  }, []);
+  }, [follow]);
 
   // 특정 유저정보 담을 상태
   const [userInfo, setUserInfo] = useState([]);

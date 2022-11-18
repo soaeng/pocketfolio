@@ -24,9 +24,14 @@ import {
 import UserProfile from '../common/UserProfile';
 
 const PocketSearch = ({data, handleLike, handleDisLike}) => {
-  const [roomModal, setRoomModal] = useState(false); //프로필 모달 보이게 안보이게
+  const [userModal, setUserModal] = useState(false); //프로필 모달 보이게 안보이게
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  // 모달 닫는 함수
+  const closeUserModal = () => {
+    setUserModal(false);
+  };
 
   // // dropdown 외부 클릭시 dropdown창 꺼지게 하기(modal 같은 기능 구현)
   // const modalRef = useRef(null);
@@ -115,7 +120,7 @@ const PocketSearch = ({data, handleLike, handleDisLike}) => {
               <PocketUserInfoContainer>
                 <PocketUserDiv
                   onClick={e => {
-                    setRoomModal(roomSeq);
+                    setUserModal(roomSeq);
                     bringUserInfo(userSeq);
                   }}
                 >
@@ -131,7 +136,7 @@ const PocketSearch = ({data, handleLike, handleDisLike}) => {
                   </PocketUserImgContainer>
                   {/* 이름 */}
                   <div>{userName}</div>
-                  {roomSeq === roomModal && <UserProfile userInfo={userInfo} />}
+                  {roomSeq === userModal && <UserProfile userInfo={userInfo} closeUserModal={closeUserModal}/>}
                 </PocketUserDiv>
                 {/* 좋아요, 클릭 컴포넌트 */}
                 <LikeShowDiv>

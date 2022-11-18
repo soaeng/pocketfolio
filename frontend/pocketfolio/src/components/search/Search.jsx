@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {useLocation, useNavigate} from 'react-router-dom';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {getSearch} from '../../store/searchSlice';
 
 import Nav from '../common/Nav';
@@ -161,6 +161,19 @@ const Search = () => {
     }
   };
 
+  useEffect(() => {
+    console.log('page ? ', page);
+    getData();
+  }, [page]);
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+  
+
   // 좋아요
   const handleLike = roomSeq => {
     setData(
@@ -186,13 +199,6 @@ const Search = () => {
       }),
     );
   };
-
-  useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, [page]);
 
   // 내비게이트 발생 시 검색
   useEffect(() => {
