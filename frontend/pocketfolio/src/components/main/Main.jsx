@@ -86,7 +86,7 @@ const Main = () => {
       if (res.payload.mainRoom) {
         setColor(themeColor[res.payload.mainRoom.theme]);
       } else {
-        setColor('#733ede');
+        setColor('#cbb6f4');
       }
     }
   }
