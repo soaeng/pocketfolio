@@ -2,11 +2,12 @@ import styled from 'styled-components';
 import {AiOutlineSearch} from 'react-icons/ai';
 
 export const Container = styled.div`
-  width: 100vw;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   color: #333333;
+  padding-bottom: 10rem;
 `;
 
 export const InnerContainer = styled.div`
@@ -34,7 +35,7 @@ export const TopContainer = styled.div`
 
 export const CanvasWrapper = styled.div`
   width: ${props => (props.user ? '63%' : '100%')};
-  margin-right: 1rem;
+  margin-right: ${props => (props.user ? '1rem' : '0')};
   height: calc(100% + 2rem);
   border-radius: 1rem;
   overflow: hidden;
@@ -48,13 +49,21 @@ export const CanvasWrapper = styled.div`
 
 export const PortContainer = styled.div`
   width: calc(37% - 2rem);
-  display: ${props => props.user ? 'block': 'none'};
+  display: ${props => (props.user ? 'block' : 'none')};
+  height: calc(100% - 8px);
   padding: 1rem;
   border-radius: 1rem;
-  height: calc(100% - 8px);
-
   border: ${props => props.color && '4px solid'};
   border-color: ${props => props.color};
+
+  overflow-y: scroll;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+  scroll-behavior: smooth;
+  
+  &::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera*/
+  }
 
   @media screen and (max-width: 770px) {
     display: none;
@@ -64,6 +73,7 @@ export const PortContainer = styled.div`
 export const PortList = styled.ol`
   list-style: none;
   padding: 0;
+  margin: 0;
 `;
 
 export const PortItem = styled.li`
@@ -130,3 +140,4 @@ export const SearchDiv = styled.div`
   margin: 2rem 0;
   width: 100%;
 `;
+

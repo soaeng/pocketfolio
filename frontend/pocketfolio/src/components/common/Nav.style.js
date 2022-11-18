@@ -25,44 +25,6 @@ export const NavLogoImg = styled.img`
   cursor: pointer;
 `;
 
-// Nav Search
-export const NavSearchContainer = styled.div`
-  display: flex;
-  align-items: center;
-  border-radius: 16px;
-  border: 1px solid #bbb;
-  width: 40%;
-  min-width: 200px;
-  padding: 5px 30px;
-
-  @media screen and (max-width: 900px) {
-    display: none;
-  }
-`;
-
-export const NavSearchInput = styled.input`
-  width: 100%;
-  height: 25px;
-  border: none;
-  padding: 0 10px;
-  font-size: 15px;
-
-  &::placeholder {
-    font-size: 15px;
-  }
-
-  &:focus {
-    border: none;
-    outline: none;
-    padding: 0 10px;
-  }
-
-  @media screen and (max-width: 900px) {
-    display: none;
-  }
-`;
-
-export const NavSearchIcon = styled(AiOutlineSearch)``;
 
 // Nav Button
 export const NavBotton = styled.button`

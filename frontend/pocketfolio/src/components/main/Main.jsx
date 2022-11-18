@@ -19,6 +19,7 @@ import MainCanvas from './MainCanvas';
 import Nav from '../common/Nav';
 import {getMain} from '../../store/roomSlice';
 import {useEffect, useState} from 'react';
+import CarouselRec from './CarouselRec';
 
 const Main = () => {
   const navigate = useNavigate();
@@ -37,9 +38,9 @@ const Main = () => {
     apartment_03: '#d8e6fd',
   };
 
-  const [mainRoom, setMainRoom] = useState({});
-  const [categoryRec, setCategoryRec] = useState([]);
-  const [portfolios, setPortfolios] = useState([]);
+  const [mainRoom, setMainRoom] = useState(null);
+  const [categoryRec, setCategoryRec] = useState(null);
+  const [portfolios, setPortfolios] = useState(null);
   const [color, setColor] = useState('');
 
   // 검색어
@@ -75,15 +76,15 @@ const Main = () => {
 
   // 데이터 불러오기
   async function loadData() {
-    const {payload} = await dispatch(getMain());
+    const res = await dispatch(getMain());
 
-    if (payload) {
-      setMainRoom(payload.mainRoom);
-      setCategoryRec(payload.categoryRec);
-      setPortfolios(payload.portfolios);
+    if (!res.error) {
+      setMainRoom(res.payload.mainRoom);
+      setCategoryRec(res.payload.categoryRec);
+      setPortfolios(res.payload.portfolios);
 
-      if (payload.mainRoom) {
-        setColor(themeColor[payload.mainRoom.theme]);
+      if (res.payload.mainRoom) {
+        setColor(themeColor[res.payload.mainRoom.theme]);
       } else {
         setColor('#733ede');
       }
@@ -132,6 +133,15 @@ const Main = () => {
             />
           </SearchContainer>
         </SearchDiv>
+
+          {categoryRec &&
+            categoryRec.map(
+              (rec, idx) =>
+                rec.recommend.length > 0 && (
+                  <CarouselRec key={idx} rec={rec} idx={idx} />
+                ),
+            )}
+
       </InnerContainer>
     </Container>
   );
