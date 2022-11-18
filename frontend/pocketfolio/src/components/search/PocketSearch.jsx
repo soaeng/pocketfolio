@@ -36,7 +36,7 @@ const PocketSearch = ({data, handleLike, handleDisLike}) => {
 
   // 이미지 오류인 경우 기본 이미지 보이게
   const onErrorImg = (e) => {
-    e.target.src = '/assets/images/room_01.png'
+    e.target.src = '/assets/images/logo3.png'
   }
 
   // 마아포켓 클릭시 이동
