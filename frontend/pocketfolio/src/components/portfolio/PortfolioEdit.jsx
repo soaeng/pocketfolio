@@ -8,6 +8,7 @@ import {
   ContentDiv,
   Title,
   BottomBox,
+  AttachWrap,
   InputDiv,
   HashInput,
   HashOutter,
@@ -295,10 +296,7 @@ const PortfolioEdit = () => {
       .then(res => {
         closeModal();
         toast.success('포트폴리오가 수정 되었습니다.');
-        const move = setTimeout(() => {
-          navigate(`/port/${port_id}`);
-        }, 1500);
-        move();
+        navigate(`/port/${port_id}`);
       });
   };
 
@@ -362,10 +360,12 @@ const PortfolioEdit = () => {
           </BottomBox>
 
           <BottomBox className="attachWrap">
-            <Label className="attachLabel">파일첨부</Label>
-            <IconDiv className="file">
-              <Add onClick={handleButtonClick}></Add>
-            </IconDiv>
+            <AttachWrap>
+              <Label className="attachLabel">파일첨부</Label>
+              <IconDiv>
+                <Add onClick={handleButtonClick}></Add>
+              </IconDiv>
+            </AttachWrap>
             <input
               type="file"
               ref={fileInput}
@@ -386,10 +386,12 @@ const PortfolioEdit = () => {
           </BottomBox>
 
           <BottomBox>
-            <Label>썸네일</Label>
-            <IconDiv>
-              <Add onClick={thumbButtonClick}></Add>
-            </IconDiv>
+            <AttachWrap>
+              <Label>썸네일</Label>
+              <IconDiv>
+                <Add onClick={thumbButtonClick}></Add>
+              </IconDiv>
+            </AttachWrap>
             <input
               type="file"
               ref={thumbNailInput}
@@ -397,7 +399,7 @@ const PortfolioEdit = () => {
               onChange={uploadThumbnail}
               style={{display: 'none'}}
             />
-            {thumbData.name !== undefined && thumbData.name !== null ? (
+            {thumbData.name !== undefined && thumbData.name !== null  ? (
               <Item>
                 {thumbData.name}
                 <IconDiv>

@@ -80,7 +80,7 @@ const AddPocket = props => {
     const form = new FormData();
     const pocket = JSON.stringify({
       name: pocketName,
-      theme: 'room_01.png',
+      theme: 'room_01',
       category: selectedCate.categorySeq,
       isMain: main ? 'T' : 'F',
       privacy: privacy ? 'O' : 'C',
