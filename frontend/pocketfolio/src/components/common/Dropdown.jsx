@@ -30,6 +30,7 @@ import {
   IconDiv,
   AlreadyFollowIcon,
   FollowIcon,
+  FollowBox,
 } from './Dropdown.style';
 
 const DropDown = ({user}) => {
@@ -121,14 +122,16 @@ const DropDown = ({user}) => {
           return (
             <>
               <FollowListBox>
-                <FollowImg
-                  src={
-                    profilePic
-                      ? profilePic
-                      : process.env.PUBLIC_URL + '/assets/images/user.png'
-                  }
-                ></FollowImg>
-                <FollowName>{name}</FollowName>
+                <FollowBox>
+                  <FollowImg
+                    src={
+                      profilePic
+                        ? profilePic
+                        : process.env.PUBLIC_URL + '/assets/images/user.png'
+                    }
+                  ></FollowImg>
+                  <FollowName>{name}</FollowName>
+                </FollowBox>
                 <IconDiv
                   onClick={e => {
                     if (followSeq !== 0) {
@@ -144,7 +147,7 @@ const DropDown = ({user}) => {
             </>
           );
         });
-      } else return <div>팔로잉 없음</div>;
+      } else return <div></div>;
     }
   };
 
@@ -156,14 +159,16 @@ const DropDown = ({user}) => {
           return (
             <>
               <FollowListBox>
-                <FollowImg
-                  src={
-                    profilePic
-                      ? profilePic
-                      : process.env.PUBLIC_URL + '/assets/images/user.png'
-                  }
-                ></FollowImg>
-                <FollowName>{name}</FollowName>
+                <FollowBox>
+                  <FollowImg
+                    src={
+                      profilePic
+                        ? profilePic
+                        : process.env.PUBLIC_URL + '/assets/images/user.png'
+                    }
+                  ></FollowImg>
+                  <FollowName>{name}</FollowName>
+                </FollowBox>
                 <IconDiv
                   onClick={e => {
                     if (followSeq !== 0) {
@@ -179,7 +184,7 @@ const DropDown = ({user}) => {
             </>
           );
         });
-      } else return <div>팔로우 없음</div>;
+      } else return <div></div>;
     }
   };
 

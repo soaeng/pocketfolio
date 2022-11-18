@@ -104,10 +104,14 @@ export const ProfileLine = styled.hr`
 // follow list
 export const FollowListBox = styled.div`
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-between;
   align-items: center;
   padding: 5px 15px;
 `;
+
+export const FollowBox = styled.div`
+  display: flex;
+`
 
 // follow Avatar Img
 export const FollowImg = styled.img`

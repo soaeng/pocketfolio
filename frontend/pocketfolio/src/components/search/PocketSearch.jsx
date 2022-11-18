@@ -19,6 +19,7 @@ import {
   ShowIcon,
   DislikeIcon,
   IconDiv,
+  PocketName,
 } from './PocketSearch.style';
 
 import UserProfile from '../common/UserProfile';
@@ -37,25 +38,6 @@ const PocketSearch = ({data, handleLike, handleDisLike}) => {
   const onErrorImg = (e) => {
     e.target.src = '/assets/images/room_01.png'
   }
-
-  // dropdown 외부 클릭시 dropdown창 꺼지게 하기(modal 같은 기능 구현)
-  const modalRef = useRef(null);
-
-  useEffect(() => {
-    // 이벤트 핸들러 함수
-    const handler = event => {
-      // mousedown 이벤트가 발생한 영역이 모달창이 아닐 때, 모달창 제거 처리
-      if (modalRef.current && !modalRef.current.contains(event.target)) {
-        setUserModal(false);
-      }
-    };
-    // 이벤트 핸들러 등록
-    document.addEventListener('mousedown', handler);
-    return () => {
-      // 이벤트 핸들러 해제
-      document.removeEventListener('mousedown', handler);
-    };
-  });
 
   // 마아포켓 클릭시 이동
   const pocketClickHandler = roomSeq => {
@@ -88,7 +70,6 @@ const PocketSearch = ({data, handleLike, handleDisLike}) => {
   const bringUserInfo = async userSeq => {
     const {payload} = await dispatch(getUserInfo(userSeq));
     setUserInfo(payload);
-    console.log(payload, '특정 유저정보');
   };
 
   useEffect(() => {
@@ -112,7 +93,7 @@ const PocketSearch = ({data, handleLike, handleDisLike}) => {
             like,
           } = it;
           return (
-            <PocketItem key={roomSeq} ref={modalRef}>
+            <PocketItem key={roomSeq}>
               {/* 마이포켓 썸네일 */}
               <PocketImgDiv onClick={e => pocketClickHandler(roomSeq)}>
                 <PocketThumbnail
@@ -139,7 +120,7 @@ const PocketSearch = ({data, handleLike, handleDisLike}) => {
                     />
                   </PocketUserImgContainer>
                   {/* 이름 */}
-                  <div>{userName}</div>
+                  <PocketName>{userName}</PocketName>
                 </PocketUserDiv>
                 {roomSeq === userModal && <UserProfile userInfo={userInfo} closeUserModal={closeUserModal}/>}
                 {/* 좋아요, 클릭 컴포넌트 */}

@@ -119,20 +119,18 @@ export const PortUserImg = styled.img`
 `;
 
 export const PortUserName = styled.div`
-  padding-left: 5px;
+  padding-left: 10px;
 `
 
 // 좋아요 클릭수 컴포넌트
 export const LikeShowDiv = styled.div`
   display: flex;
   align-items: center;
-  padding-right: 5px;
 `;
 
 export const LikeIcon = styled(RiHeart3Fill)`
   width: 100%;
   height: 100%;
-  padding-right: 5px;
 `;
 
 export const DislikeIcon = styled(RiHeart3Line)`
@@ -143,7 +141,6 @@ export const DislikeIcon = styled(RiHeart3Line)`
 export const ShowIcon = styled(RiEyeLine)`
   width: 100%;
   height: 100%;
-  padding-right: 5px;
 `;
 
 export const Item3 = styled.div`
@@ -153,18 +150,4 @@ export const Item3 = styled.div`
 export const IconDiv = styled.div`
   height: 100%;
   width: 100%;
-  cursor: pointer;
 `;
-
-export const TagsDiv = styled.div`
-  display: flex;
-`
-
-export const Tag = styled.div`
-  padding: 2%;
-  margin: 1%;
-  /* max-height: 15px; */
-  background-color: #f3a9a1;
-  color: white;
-  border-radius: 0.5rem;
-`
