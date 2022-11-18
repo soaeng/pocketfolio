@@ -37,6 +37,7 @@ const DeleteModal = props => {
               onClick={event => {
                 event.stopPropagation();
                 deleteFunc(seq);
+                handleClose()
               }}
             >
               <Body1>삭제</Body1>
