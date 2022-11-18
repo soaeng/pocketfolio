@@ -66,7 +66,6 @@ const CarouselRec = ({rec, idx}) => {
   // 전체 아이템 개수 가져오기
   useEffect(() => {
     setTotalCnt(rec.recommend.length - 1);
-    const item = document.querySelector('.item');
 
     if (slideRef.current.scrollWidth >= slideRef.current.clientWidth) {
       setTotalCnt(0);
@@ -102,6 +101,7 @@ const CarouselRec = ({rec, idx}) => {
         <ItemList ref={slideRef}>
           {rec.recommend.map((item, idx) => (
             <ItemContainer
+              key={idx}
               className="item"
               onClick={() => navigate(`/room/${item.roomSeq}`)}
             >
