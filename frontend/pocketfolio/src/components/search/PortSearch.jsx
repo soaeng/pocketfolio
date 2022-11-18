@@ -77,7 +77,6 @@ const PortSearch = ({data, handleLike, handleDisLike}) => {
   const bringUserInfo = async userSeq => {
     const {payload} = await dispatch(getUserInfo(userSeq));
     setUserInfo(payload);
-    console.log(payload, '특정 유저정보');
   };
 
   useEffect(() => {

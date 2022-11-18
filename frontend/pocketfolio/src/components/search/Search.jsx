@@ -169,13 +169,11 @@ const Search = () => {
     const clientHeight = document.documentElement.clientHeight;
 
     if (scrollTop + clientHeight >= scrollHeight) {
-      console.log('페이지 끝에 스크롤이 닿았음');
       setPage(prev => prev + 1);
     }
   };
 
   useEffect(() => {
-    console.log('page ? ', page);
     getDataScroll();
   }, [page]);
 
