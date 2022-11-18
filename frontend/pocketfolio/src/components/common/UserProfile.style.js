@@ -1,54 +1,149 @@
 // styled Component
 import styled from 'styled-components';
 
+import {
+  RiCloseFill,
+  RiUserFollowFill,
+  RiUserAddLine,
+} from 'react-icons/ri';
+
 export const UserProfileItem = styled.div`
   display: flex;
-  position: absolute;
+  position: fixed;
   justify-content: space-between;
+  flex-direction: column;
+  align-items: center;
   background-color: #fff;
+  width: 30rem;
+  height: 30rem;
   margin: 10px;
-  padding: 10px;
+  padding: 25px;
   border-radius: 16px;
   box-shadow: 0px 2px 5px 1px rgba(0, 0, 0, 0.25);
+  z-index: 99999;
+  left: 50%;
+  bottom: 8%;
+  transform: translate(-50%, 0);
+
+  @media screen and (max-width: 35rem) {
+    width: 85vw;
+  }
 `;
 
 export const UserProfileContainer = styled.div`
   display: flex;
+  flex-direction: column;
 `;
 
-// Avatar Container
+export const UserInfo = styled.div`
+  display: flex;
+  align-items: center;
+  
+`
+
+// 유저 프로필 사진
 export const UserProfileImgContainer = styled.div`
-  padding: 0.5rem;
-  height: 3.5rem;
-  /* align-items: center; */
+  display: flex;
+  justify-content: center;
 `;
 
-// Avatar Img
 export const UserProfileImg = styled.img`
-  height: 50px;
-  width: 50px;
+  width: 100px;
+  height: 100px;
   object-fit: cover;
   border-radius: 50%;
-  cursor: pointer;
 `;
 
+export const UserDiv = styled.div`
+  display: flex;
+  align-items: baseline;
+`
+
+// 유저 정보 담는 div
 export const UserProfileInfoContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
+  padding: 10px;
 `;
 
-export const UserProfileFollowBtn = styled.button`
-  padding: 0.5rem 1rem;
-  margin: 15px;
-  border-radius: 16px;
-  border: none;
-  background-color: #e75452;
-  color: #fff;
-  cursor: pointer;
+export const UserProNameDiv = styled.div`
+  padding: 10px 0;
+  font-size: large;
+  font-weight: bold;
+`
 
-  &:hover {
-    background-color: #c13136;
-    color: #eeeeee;
+export const UserProDescDiv = styled.div`
+  padding: 10px 0;
+`
+
+// 팔로우 버튼(팔로우 언팔로우 가능)
+export const FollowDiv = styled.div`
+  display: flex;
+  flex-direction: row;
+  padding: 10px 0;
+`
+
+export const UserFollowDiv = styled.div`
+  padding: 0 5px;
+`
+export const FollowIcon = styled(RiUserAddLine)`
+  width: 100%;
+  height: 100%;
+`;
+
+export const AlreadyFollowIcon = styled(RiUserFollowFill)`
+  width: 100%;
+  height: 100%;
+`;
+
+export const IconDiv = styled.div`
+  cursor: pointer;
+  width: 1.3rem;
+  height: 1.3rem;
+`;
+
+// 취소 버튼
+export const CancelBox = styled.div`
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 1.7rem;
+  aspect-ratio: 1/1;
+  cursor: pointer;
+`;
+
+export const CancelIcon = styled(RiCloseFill)`
+  width: 100%;
+  height: 100%;
+`;
+
+// 마이포켓 정보
+export const RoomInfoDiv = styled.div``
+
+export const RoomInfoImg = styled.img`
+  height: 200px;
+  width: 200px;
+`
+
+export const ScrollBox = styled.div`
+  height: 250px;
+  overflow-y: auto;
+
+  &::-webkit-scrollbar {
+    display: block;
+    width: 9px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #ff9392;
+    height: 15px;
+    border-radius: 0.2rem;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: #ffd8d7;
+    border-radius: 0.2rem;
   }
 `;

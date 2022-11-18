@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {useLocation, useNavigate} from 'react-router-dom';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {getSearch} from '../../store/searchSlice';
 
 import Nav from '../common/Nav';
@@ -77,7 +77,7 @@ const Search = () => {
   const [category, setCategory] = useState(2 ** tags.length - 1);
   // 카테고리(3개: 포켓, 포트폴리오, 유저)
   const [searchMode, setSearchMode] = useState('room');
-  // 정렬
+  // 정렬 필터
   const [sort, setSort] = useState(1);
   // 페이지당 보이는 개수
   const size = 20;
@@ -112,6 +112,19 @@ const Search = () => {
     };
     const {payload} = await dispatch(getSearch({params, searchMode}));
     setData(payload.list);
+  };
+
+  // 스크롤시 데이터 불러오는 함수
+  const getDataScroll = async () => {
+    const params = {
+      search: location.state.search,
+      sort: location.state.sort,
+      category: location.state.category,
+      size: size,
+      page,
+    };
+    const {payload} = await dispatch(getSearch({params, searchMode}));
+    setData([...data, ...payload.list]);
   };
 
   // 입력창 변화 감지
@@ -155,13 +168,24 @@ const Search = () => {
     const scrollTop = document.documentElement.scrollTop;
     const clientHeight = document.documentElement.clientHeight;
 
-    // console.log('스크롤 이벤트 발생');
-
     if (scrollTop + clientHeight >= scrollHeight) {
-      // console.log('페이지 끝에 스크롤이 닿았음');
+      console.log('페이지 끝에 스크롤이 닿았음');
       setPage(prev => prev + 1);
     }
   };
+
+  useEffect(() => {
+    console.log('page ? ', page);
+    getDataScroll();
+  }, [page]);
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+  
 
   // 좋아요
   const handleLike = roomSeq => {
@@ -189,13 +213,6 @@ const Search = () => {
     );
   };
 
-  useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
-
   // 내비게이트 발생 시 검색
   useEffect(() => {
     getData();
@@ -216,6 +233,19 @@ const Search = () => {
       },
     });
   }, [category]);
+
+  // 마이포켓, 포트폴리오, 유저 변경 시 검색
+  useEffect(() => {
+    navigate('/search', {
+      state: {
+        search: word,
+        sort: sort,
+        category: category,
+        size: size,
+        page: 1,
+      },
+    });
+  }, [searchMode]);
 
   // 정렬 변경 시 검색
   useEffect(() => {
@@ -275,7 +305,7 @@ const Search = () => {
         {/* </Tabs> */}
       </Container1>
       {/* 태그 */}
-      {searchMode === 'portfolio' ? null : (
+      {searchMode === 'room' ? (
         <TagContainer>
           <Tag
             style={
@@ -283,7 +313,7 @@ const Search = () => {
                 ? {
                     backgroundColor: '#e75452',
                     color: '#fff',
-                    border: 'none',
+                    border: '1px solid #fff',
                   }
                 : {
                     backgroundColor: '#fff',
@@ -312,7 +342,7 @@ const Search = () => {
                     ? {
                         backgroundColor: '#e75452',
                         color: '#fff',
-                        border: 'none',
+                        border: '1px solid #fff',
                       }
                     : {
                         backgroundColor: '#fff',
@@ -326,7 +356,7 @@ const Search = () => {
             );
           })}
         </TagContainer>
-      )}
+      ) : null}
       <DivTest>
         {/* 포켓 검색 */}
         {searchMode === 'room' && data ? (
@@ -348,11 +378,15 @@ const Search = () => {
             <FilterDiv>
               <Filter options={filterOptions} setSort={setSort} />
             </FilterDiv>
-            <PortSearch />{' '}
+            <PortSearch               
+              data={data}
+              handleLike={handleLike}
+              handleDisLike={handleDisLike}
+            />
           </>
         ) : null}
         {/* 유저 검색 */}
-        {searchMode === 'user' && data ? <UserSearch /> : null}
+        {searchMode === 'user' && data ? <UserSearch data={data}/> : null}
       </DivTest>
     </>
   );

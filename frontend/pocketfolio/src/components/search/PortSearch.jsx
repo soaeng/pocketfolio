@@ -1,5 +1,8 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {useNavigate} from 'react-router-dom';
+import {useDispatch, useSelector} from 'react-redux';
+import {getUserInfo} from '../../store/oauthSlice';
+import {roomDislike, roomLike} from '../../store/roomSlice';
 
 import {
   PortCard,
@@ -17,72 +20,65 @@ import {
   LikeShowDiv,
   Item3,
   ShowIcon,
+  TagsDiv,
+  Tag,
 } from './PortSearch.style';
-// 임시데이터(card)
-const items = [
-  {
-    icon: 'face',
-    copy: '01. Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-  },
-  {
-    icon: 'pets',
-    copy: '02. Sed do eiusmod tempor incididunt ut labore.',
-  },
-  {
-    icon: 'stars',
-    copy: '03. Consectetur adipiscing elit.',
-  },
-  {
-    icon: 'invert_colors',
-    copy: '04. Ut enim ad minim veniam, quis nostrud exercitation.',
-  },
-  {
-    icon: 'psychology',
-    copy: '05. Llamco nisi ut aliquip ex ea commodo consequat.',
-  },
-  {
-    icon: 'brightness_7',
-    copy: '06. Misi ut aliquip ex ea commodo consequat.',
-  },
-  {
-    icon: 'brightness',
-    copy: '07. Misi ut aliquip ex ea commodo consequat.',
-  },
-];
 
-const PortSearch = () => {
-  const [item, setItem] = useState(items);
-
+const PortSearch = ({data, handleLike, handleDisLike}) => {
+  const [roomModal, setRoomModal] = useState(false); //프로필 모달 보이게 안보이게
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const user = useSelector(state => state.oauth.user);
+
+  // 이미지 오류인 경우 기본 이미지 보이게
+  const onErrorImg = (e) => {
+    e.target.src = '/assets/images/room_01.png'
+  }
+
   // pocket 클릭시 이동 => 수정필요
-  const pocketClickHandler = () => {
-    navigate('/room/1');
+  const pocketClickHandler = roomSeq => {
+    navigate(`/room/${roomSeq}`);
   };
 
   // port 클릭시 이동 => 수정필요
-  const portClickHandler = () => {
-    navigate('/port');
+  const portClickHandler = portSeq => {
+    navigate(`/port/${portSeq}`);
   };
+
+  // 특정 유저정보 담을 상태
+  const [userInfo, setUserInfo] = useState([]);
+
+  // 특정 유저정보 조회 함수
+  const bringUserInfo = async userSeq => {
+    const {payload} = await dispatch(getUserInfo(userSeq));
+    setUserInfo(payload);
+    console.log(payload, '특정 유저정보');
+  };
+
+  useEffect(() => {
+    getUserInfo();
+  }, []);
 
   return (
     <>
       <PortCard>
-        {item.map(it => {
-          const {icon, copy} = it;
+        {data.map(it => {
+          const {portSeq, name, roomSeq, roomName, roomThumbnail, userSeq, userName, userProfilePic, like, hit, tags} = it;
           return (
-            <PortItem>
+            <PortItem key={portSeq}>
               {/* 마이포켓 썸네일 */}
               <PortImgDiv>
                 <PortThumbnail
-                  src={process.env.PUBLIC_URL + '/assets/images/room.png'}
+                  onError={onErrorImg}
+                  src={roomThumbnail ? roomThumbnail : '/assets/images/room.png'}
                 />
                 {/* 호버시 보이는 버튼 */}
                 <HoverDiv>
-                  <PortSearchButton onClick={pocketClickHandler}>
+                  <PortSearchButton onClick={e => pocketClickHandler(roomSeq)}>
                     마이포켓 가기
                   </PortSearchButton>
-                  <PortSearchButton onClick={portClickHandler}>
+                  <PortSearchButton onClick={e => portClickHandler(portSeq)}>
                     포트폴리오 보기
                   </PortSearchButton>
                 </HoverDiv>
@@ -93,21 +89,31 @@ const PortSearch = () => {
                   {/* 프로필 사진 */}
                   <PortUserImgContainer>
                     <PortUserImg
-                      src={process.env.PUBLIC_URL + '/assets/images/room.png'}
+                      src={userProfilePic ? userProfilePic : '/assets/images/room.png'}
                     />
                   </PortUserImgContainer>
                   {/* 이름 */}
-                  <PortUserName>{icon}</PortUserName>
+                  <PortUserName>{name}</PortUserName>
                 </PortUserDiv>
-                {/* <div>{copy}</div> */}
-                {/* 좋아요, 클릭 컴포넌트 */}
+                {/* 좋아요, 클릭수 컴포넌트 */}
                 <LikeShowDiv>
-                  <LikeIcon />
-                  <Item3>2</Item3>
+                {/* <IconDiv
+                    onClick={e => handleLikeDislike(e, roomSeq, isLiked)}
+                  >
+                    {isLiked ? <LikeIcon /> : <DislikeIcon />}
+                  </IconDiv> */}
+                  <LikeIcon/>
+                  <Item3>{like}</Item3>
                   <ShowIcon />
-                  <div>5</div>
+                  <div>{hit}</div>
                 </LikeShowDiv>
               </PortUserInfoContainer>
+              {/* 태그 */}
+              {/* <TagsDiv>
+                {tags && tags.map(tag => {
+                  return (<Tag>{tag}</Tag>)
+                })}
+              </TagsDiv> */}
             </PortItem>
           );
         })}
