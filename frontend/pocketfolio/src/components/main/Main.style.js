@@ -2,11 +2,12 @@ import styled from 'styled-components';
 import {AiOutlineSearch} from 'react-icons/ai';
 
 export const Container = styled.div`
-  width: 100vw;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   color: #333333;
+  padding-bottom: 10rem;
 `;
 
 export const InnerContainer = styled.div`
@@ -34,7 +35,7 @@ export const TopContainer = styled.div`
 
 export const CanvasWrapper = styled.div`
   width: ${props => (props.user ? '63%' : '100%')};
-  margin-right: 1rem;
+  margin-right: ${props => (props.user ? '1rem' : '0')};
   height: calc(100% + 2rem);
   border-radius: 1rem;
   overflow: hidden;
@@ -139,3 +140,4 @@ export const SearchDiv = styled.div`
   margin: 2rem 0;
   width: 100%;
 `;
+

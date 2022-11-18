@@ -19,7 +19,7 @@ import MainCanvas from './MainCanvas';
 import Nav from '../common/Nav';
 import {getMain} from '../../store/roomSlice';
 import {useEffect, useState} from 'react';
-import Carousel from './Carousel';
+import CarouselRec from './CarouselRec';
 
 const Main = () => {
   const navigate = useNavigate();
@@ -38,9 +38,9 @@ const Main = () => {
     apartment_03: '#d8e6fd',
   };
 
-  const [mainRoom, setMainRoom] = useState({});
-  const [categoryRec, setCategoryRec] = useState([]);
-  const [portfolios, setPortfolios] = useState([]);
+  const [mainRoom, setMainRoom] = useState(null);
+  const [categoryRec, setCategoryRec] = useState(null);
+  const [portfolios, setPortfolios] = useState(null);
   const [color, setColor] = useState('');
 
   // 검색어
@@ -78,19 +78,17 @@ const Main = () => {
   async function loadData() {
     const res = await dispatch(getMain());
 
-    console.log(res)
+    if (!res.error) {
+      setMainRoom(res.payload.mainRoom);
+      setCategoryRec(res.payload.categoryRec);
+      setPortfolios(res.payload.portfolios);
 
-    // if (!res.error) {
-    //   setMainRoom(res.payload.mainRoom);
-    //   setCategoryRec(res.payload.categoryRec);
-    //   setPortfolios(res.payload.portfolios);
-
-    //   if (res.payload.mainRoom) {
-    //     setColor(themeColor[res.payload.mainRoom.theme]);
-    //   } else {
-    //     setColor('#733ede');
-    //   }
-    // }
+      if (res.payload.mainRoom) {
+        setColor(themeColor[res.payload.mainRoom.theme]);
+      } else {
+        setColor('#733ede');
+      }
+    }
   }
 
   useEffect(() => {
@@ -101,7 +99,7 @@ const Main = () => {
     <Container>
       <Nav />
       <InnerContainer>
-        {/* <TopContainer>
+        <TopContainer>
           <CanvasWrapper color={color} user={mainRoom ? true : false}>
             <MainCanvas mainRoom={mainRoom} color={color} />
           </CanvasWrapper>
@@ -134,14 +132,16 @@ const Main = () => {
               value={word}
             />
           </SearchContainer>
-        </SearchDiv> */}
+        </SearchDiv>
 
-        {/* {categoryRec && categoryRec.map(
-          (rec, idx) =>
-            rec && rec.recommend.length !== 0 && (
-              <Carousel key={idx} rec={rec} idx={idx} />
-            ),
-        )} */}
+          {categoryRec &&
+            categoryRec.map(
+              (rec, idx) =>
+                rec.recommend.length > 0 && (
+                  <CarouselRec key={idx} rec={rec} idx={idx} />
+                ),
+            )}
+
       </InnerContainer>
     </Container>
   );
