@@ -53,7 +53,6 @@ export const Wrapper = styled.div`
   justify-content: space-around;
   margin-top: 3rem;
   width: 60%;
-  /* height: 75%; */
 `;
 
 export const Header = styled.div`
@@ -86,15 +85,13 @@ export const Title = styled.input`
   border: 0.5px solid #bababa;
   border-radius: 0.5rem;
   padding: 0.3rem 0;
-  /* border: 0.5px solid #ffbcbc; */
-    :focus {
-      outline: 0.5px solid #fcb4b4;
-    }
+  :focus {
+    outline: 0.5px solid #fcb4b4;
+  }
   ::placeholder {
     padding: 1rem;
   }
 `;
-
 
 export const InputDiv = styled.div`
   display: flex;
