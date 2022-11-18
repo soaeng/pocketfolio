@@ -1,99 +1,48 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useEffect} from 'react';
 import {useDispatch} from 'react-redux';
 import {
   Overlay,
   ModalWrap,
   Body,
   Contents,
-  BtnDiv,
-  StyledBtn,
   Box,
-  TextDiv,
   Text,
   Head,
   IconDiv,
   CloseIcon,
   Input,
-  Label,
-  ThemeDiv,
-  Theme,
-  ThemeImg,
-  ThemeTitle,
   DropDiv,
-  Select,
-  Option,
+  CheckIcon,
+  BlankIcon,
+  CheckDiv,
+  SelectBox,
+  Selected,
+  SelectOption,
+  ShowIcon,
+  NoshowIcon,
+  BtnDiv,
+  StyledBtn,
 } from './AddPocket.style';
 import {getRoomCategory, createRoom} from '../../store/roomSlice';
 
 const AddPocket = props => {
-  const {open, close, save, reLander, setReLander} = props;
+  const {open, close, reLander, setReLander} = props;
   const dispatch = useDispatch();
   // 포켓 이름
   const [pocketName, setPocketName] = useState('');
   // 카테고리 리스트
   const [categoryList, setCategoryList] = useState([]);
   // 카테고리 변수
-  const [selectedCate, setSelectedCate] = useState(1);
+  const [selectedCate, setSelectedCate] = useState('');
   // 공개범위 변수
-  const [selectedRange, setSelectedRange] = useState('O');
-  // 테마 변수
-  const [selectedTheme, setSelectedTheme] = useState('room_01');
+  const [privacy, setPrivacy] = useState(false);
+
   // 메인 설정 변수
-  const [main, setMain] = useState('T');
-  // 썸네일 변수
-  const [thumbNail, setThumbNail] = useState('');
+  const [main, setMain] = useState(false);
 
-  // 테마 종류
-  const themeList = [
-    {
-      src: '/assets/images/room_01.png',
-      name: 'room_01',
-    },
-    {
-      src: '/assets/images/room_02.png',
-      name: 'room_02',
-    },
-    {
-      src: '/assets/images/room_03.png',
-      name: 'room_03',
-    },
-    {
-      src: '/assets/images/room_04.png',
-      name: 'room_04',
-    },
-    {
-      src: '/assets/images/room_05.png',
-      name: 'room_05',
-    },
-    {
-      src: '/assets/images/apartment_01.png',
-      name: 'apartment_01',
-    },
-    {
-      src: '/assets/images/apartment_02.png',
-      name: 'apartment_02',
-    },
-    {
-      src: '/assets/images/apartment_03.png',
-      name: 'apartment_03',
-    },
-    {
-      src: '/assets/images/island.png',
-      name: 'island',
-    },
-  ];
+  // 드롭다운 개폐 변수
+  const [dropdown, setDropdown] = useState(false);
 
-  // 공개, 비공개, 링크 공유
-  const publicRange = [
-    {
-      data: 'O',
-      name: '전체 공개',
-    },
-    {
-      data: 'C',
-      name: '비공개',
-    },
-  ];
   // 현재 트랜지션 효과를 보여주고 있는 중이라는 상태 값
   const [animate, setAnimate] = useState(false);
   // 실제 컴포넌트가 사라지는 시점을 지연시키기 위한 값
@@ -121,151 +70,99 @@ const AddPocket = props => {
     setPocketName(e.target.value);
   };
 
-  // 카테고리 설정
-  const changeCategory = e => {
-    setSelectedCate(e.target.value);
-  };
-
-  // 공개범위 설정
-  const changeRange = e => {
-    setSelectedRange(e.target.value);
-  };
-
-  // 테마 설정
-  const changeTheme = e => {
-    setSelectedTheme(e.target.value);
-  };
-
-  // 썸네일 첨부
-  const uploadThumbnail = e => {
-    const file = e.target.files[0];
-    setThumbNail(file);
-  };
-
-  // 메인 설정 여부
-  const changeMain = e => {
-    if (main === 'T') {
-      setMain('F');
-    } else {
-      setMain('T');
-    }
-  };
-
   // 데이터 제출
   const createPocket = () => {
     const form = new FormData();
     const pocket = JSON.stringify({
       name: pocketName,
-      theme: selectedTheme,
-      category: parseInt(selectedCate),
-      isMain: main,
-      privacy: selectedRange,
+      theme: 'room_01.png',
+      category: selectedCate.categorySeq,
+      isMain: main ? 'T' : 'F',
+      privacy: privacy ? 'O' : 'C',
     });
+    console.log(pocket);
     form.append('room', new Blob([pocket], {type: 'application/json'}));
-    form.append('thumbnail', thumbNail);
-    dispatch(createRoom(form)).then(res => {
-      if (res.payload.status === 201) {
-        setReLander(!reLander)
-        close();
-      }
-    });
+    form.append('thumbnail', '');
+    // dispatch(createRoom(form)).then(res => {
+    //   if (res.payload.status === 201) {
+    //     setReLander(!reLander);
+    //     close();
+    //   }
+    // });
   };
 
+  console.log(selectedCate);
   return (
     <Overlay>
       <ModalWrap className={open ? 'modal open' : 'modal close'}>
         <Contents>
           <header>
             <Head>포켓 만들기</Head>
-            <IconDiv 
-              className='close'
-              onClick={close}>
+            <IconDiv className="close" onClick={close}>
               <CloseIcon></CloseIcon>
             </IconDiv>
           </header>
           <Body>
             {/* 포켓 이름 입력 */}
-            <Box>
+            <Box className="title">
               <Text>포켓이름</Text>
               <Input
                 className="title"
                 autoComplete="off"
-                placeholder="이름을 입력 해주세요"
                 onChange={changePocketName}
               />
             </Box>
 
-            {/* 카테고리 & 공개범위 설정 */}
+            {/* 카테고리 */}
             <Box className="dropselect">
               <DropDiv>
                 <Text>카테고리</Text>
-                <Select onChange={changeCategory} value={selectedCate}>
-                  {categoryList.map((item, idx) => (
-                    <Option key={idx} value={item.categorySeq}>
-                      {item.name}
-                    </Option>
-                  ))}
-                </Select>
-              </DropDiv>
-              <DropDiv>
-                <Text>공개범위</Text>
-                <Select onChange={changeRange} value={selectedRange}>
-                  {publicRange.map((item, idx) => (
-                    <Option key={idx} value={item.name}>
-                      {item.name}
-                    </Option>
-                  ))}
-                </Select>
+                <SelectBox className={dropdown && 'open'}>
+                  <Selected
+                    onClick={() => setDropdown(!dropdown)}
+                    className={dropdown && 'open'}
+                  >
+                    <SelectOption className="selected">
+                      {selectedCate.name}
+                    </SelectOption>
+                    <IconDiv>
+                      {dropdown ? <NoshowIcon /> : <ShowIcon />}
+                    </IconDiv>
+                  </Selected>
+
+                  {categoryList.map(
+                    (item, idx) =>
+                      item.categorySeq !== selectedCate.categorySeq && (
+                        <SelectOption
+                          key={idx}
+                          className={!dropdown && 'close'}
+                          onClick={() => {
+                            setSelectedCate(item);
+                            setDropdown(!dropdown);
+                          }}
+                        >
+                          {item.name}
+                        </SelectOption>
+                      ),
+                  )}
+                </SelectBox>
               </DropDiv>
             </Box>
 
-            {/* 테마 선택 */}
-            {/* <Box>
-              <Text>테마</Text>
-              <ThemeDiv>
-                {themeList.map((item, idx) => (
-                  <Theme key={idx}>
-                    <Label>
-                      <Input
-                        type="radio"
-                        className="themeselect"
-                        value={item.name}
-                        checked={selectedTheme === `${item.name}`}
-                        onChange={changeTheme}
-                      ></Input>
-                      <ThemeImg
-                        src={process.env.PUBLIC_URL + item.src}
-                      ></ThemeImg>
-                    </Label>
-                  </Theme>
-                ))}
-              </ThemeDiv>
-            </Box> */}
+            <Box className="mainprivacy">
+              {/* 메인 & 공개 설정 */}
+              <Text>메인 설정</Text>
+              <CheckDiv onClick={() => setMain(!main)}>
+                {main ? <CheckIcon /> : <BlankIcon />}
+              </CheckDiv>
 
-            <Box className="mainset">
-              {/* 메인 설정 */}
-              <Text>메인 포켓 설정</Text>
-              <Input
-                type="checkbox"
-                className="maincheck"
-                onChange={changeMain}
-                checked={main === 'T'}
-              ></Input>
-
-              {/* 썸네일 첨부 */}
-              {/* <Text>썸네일</Text>
-              <Input
-                type="file"
-                accept="image/*"
-                onChange={uploadThumbnail}
-                // style={{display: 'none'}}
-              /> */}
+              <Text className="privacy">공개 설정</Text>
+              <CheckDiv onClick={() => setPrivacy(!privacy)}>
+                {privacy ? <CheckIcon /> : <BlankIcon />}
+              </CheckDiv>
             </Box>
 
             <BtnDiv>
-              <StyledBtn className="cancel" onClick={close}>
-                취소
-              </StyledBtn>
               <StyledBtn className="save" onClick={createPocket}>
                 저장
               </StyledBtn>

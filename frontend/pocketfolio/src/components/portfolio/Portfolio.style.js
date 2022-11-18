@@ -124,9 +124,7 @@ export const IconDiv = styled.button`
   &.addPocketIcon {
   }
 
-  p {
-    margin: 0;
-  }
+
 `;
 
 export const AddPortIcon = styled(RiFileAddFill)`

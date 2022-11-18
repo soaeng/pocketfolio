@@ -1,16 +1,21 @@
 import styled from 'styled-components';
 import {Body1, H2, H3} from '../../styles/styles.style';
-import {RiCloseFill} from 'react-icons/ri';
+import {
+  RiArrowDownSFill,
+  RiArrowUpSFill,
+  RiCloseFill,
+  RiCheckboxBlankLine,
+  RiCheckboxFill,
+} from 'react-icons/ri';
 
 export const Overlay = styled.div`
   .modal.close {
-    animation-name: fade-out;
+    /* animation-name: fade-out; */
   }
   .modal.close > section {
     animation-name: slide;
   }
   .modal > section > header {
-    position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -79,13 +84,10 @@ export const ModalWrap = styled.div`
   animation-name: fadeIn;
   animation-fill-mode: forwards;
   cursor: default;
-
 `;
 
 export const Contents = styled.section`
   background-color: #fff;
-  width: 50rem;
-  height: 30rem;
   border-radius: 0.5rem;
   animation-duration: 0.25s;
   animation-timing-function: ease-out;
@@ -96,12 +98,12 @@ export const Contents = styled.section`
 export const Body = styled.div`
   display: flex;
   justify-content: center;
-  position: relative;
-  margin: 0 auto;
   flex-direction: column;
   overflow: auto;
-  height: 80%;
-  width: 100%;
+  width: 30rem;
+  padding: 2rem;
+  padding-bottom: 1rem;
+
   &::-webkit-scrollbar {
     width: 5px;
   }
@@ -119,44 +121,38 @@ export const Body = styled.div`
 `;
 
 export const Box = styled.div`
-  margin-bottom: 2rem;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
   align-items: center;
-  &.dropselect {
-    flex-direction: row;
-    width: 100%;
-    /* justify-content: space-between; */
-  }
-
-  &.mainset {
-  }
-`;
-
-export const TextDiv = styled.div`
-  outline: solid black;
-  display: flex;
+  margin-bottom: 2rem;
   justify-content: center;
 `;
-export const Text = styled(Body1)`
+
+export const Text = styled.h4`
   display: flex;
   color: black;
-  margin-bottom: 1.3rem !important;
   font-family: 'NanumSquareBold' !important ;
+  margin: 0.6rem 0;
+  margin-right: 1rem;
+
+  &.privacy {
+    margin-left: 2rem;
+  }
 `;
 
 export const Head = styled(H2)`
+  position: relative;
   font-size: 2rem;
   margin: 0;
 `;
 
 export const IconDiv = styled.div`
-  position: absolute;
-  display: flex;
-  align-items: center;
-  right: 5%;
-  font-size: 2rem;
+  &.close {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    right: 5%;
+    font-size: 2rem;
+  }
 `;
 
 export const CloseIcon = styled(RiCloseFill)`
@@ -169,119 +165,115 @@ export const Input = styled.input`
   border-radius: 0.2rem;
   padding: 0.5rem;
 
-  /* border: 1px black; */
   &.title {
-    width: 30%;
-    text-align: center;
     font-size: 1rem;
-    font-weight: bold;
-    border: 0.5px solid #ffbcbc;
+    border-radius: 0.3rem;
+    border: 2px solid #ffe4de;
+    width: 14rem;
+    font-size: 1rem;
     :focus {
-      outline: 0.5px solid #fcb4b4;
+      outline: none;
+      border-color: #f6b9ab;
     }
   }
-  &.themeselect {
-    display: none;
-    transition: all 0.1s;
-
-    :checked + img {
-      border-radius: 1rem;
-      background-color: #f7c6c6;
-      scale: 1;
-    }
-  }
-`;
-
-export const Label = styled.label``;
-
-export const ThemeDiv = styled.div`
-  display: grid;
-  width: 95%;
-  grid-template-columns: repeat(4, 1fr);
-  grid-gap: 10px;
-`;
-
-export const Theme = styled.div`
-  :hover {
-    border-radius: 1rem;
-    background-color: #fff4f1;
-  }
-`;
-
-export const ThemeImg = styled.img`
-  max-width: 100%;
-  height: auto;
-  cursor: pointer;
-  transition: all 0.2s;
-
-  &:hover {
-    scale: 1.1;
-  }
-`;
-
-export const ThemeTitle = styled.div`
-  color: black;
 `;
 
 export const DropDiv = styled.div`
-  padding: 0 1.5rem;
-  /* outline: solid black; */
-  margin: 0 1rem;
+  display: flex;
 `;
-
-export const Select = styled.select`
-  width: fit-content;
-`;
-
-export const Option = styled.option``;
 
 export const BtnDiv = styled.div`
   display: flex;
   justify-content: center;
   padding: 12px 16px;
-  text-align: right;
 `;
 
 export const StyledBtn = styled.button`
-  padding: 6px 12px;
-  color: #fff;
-  background-color: #6c757d;
-  border-radius: 5px;
-  font-size: 13px;
-  &.cancel {
-    width: 5.5rem;
-    height: 2.5rem;
-    background-color: white;
-    box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.3),
-      0px 1px 3px 1px rgba(0, 0, 0, 0.15);
-    border: 0;
-    border-radius: 100px;
-    color: #e75452;
-    font-weight: 1000;
-    font-size: 20px;
-    margin-right: 0.5rem;
-    cursor: pointer;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-size: 18px;
+  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.3),
+    0px 1px 3px 1px rgba(0, 0, 0, 0.15);
+  border: 0;
+  font-weight: 1000;
+  transition: all 0.2s;
+  cursor: pointer;
 
+  &.cancel {
+    background-color: white;
+    color: #ffa08b;
+    margin-right: 0.5rem;
     &:hover {
       background-color: #f6f1f1;
     }
   }
 
   &.save {
-    width: 5.5rem;
-    height: 2.5rem;
-    background-color: #e75452;
-    box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.3),
-      0px 1px 3px 1px rgba(0, 0, 0, 0.15);
-    border: 0;
-    border-radius: 100px;
+    background-color: #ffa08b;
     color: #ffffff;
-    font-weight: 1000;
-    font-size: 20px;
-    cursor: pointer;
-
     &:hover {
       background-color: #fb706d;
     }
   }
 `;
+
+export const CheckIcon = styled(RiCheckboxFill)`
+  color: #f6b9ab;
+`;
+export const BlankIcon = styled(RiCheckboxBlankLine)`
+  color: #f6b9ab;
+`;
+
+export const CheckDiv = styled.div`
+  font-size: 1.4rem;
+  height: 1.4rem;
+`;
+
+export const SelectBox = styled.div`
+  padding: 0.5rem;
+  border: 2px solid #ffe4de;
+  border-radius: 0.3rem;
+  position: relative;
+  width: 14rem;
+  font-size: 1rem;
+  &.open {
+    border-color: #f6b9ab;
+  }
+`;
+
+export const Selected = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  text-align: left;
+
+  &.open {
+    padding-bottom: 0.7rem;
+    border-bottom: 2px solid #f6b9ab;
+    margin-bottom: 0.7rem;
+  }
+`;
+
+export const SelectOption = styled.div`
+  display: block;
+  width: 9rem;
+  font-size: 1rem;
+  & + & {
+    padding-top: 0.7rem;
+  }
+
+  &.close {
+    display: none;
+  }
+
+  &:hover {
+    font-weight: bold;
+  }
+
+  &.selected {
+    font-weight: initial;
+  }
+`;
+
+export const ShowIcon = styled(RiArrowDownSFill)``;
+export const NoshowIcon = styled(RiArrowUpSFill)``;
