@@ -24,16 +24,20 @@ import {
   StyledBtn,
 } from './AddPocket.style';
 import {getRoomCategory, createRoom} from '../../store/roomSlice';
+import toast, {Toaster} from 'react-hot-toast';
 
 const AddPocket = props => {
   const {open, close, reLander, setReLander} = props;
   const dispatch = useDispatch();
   // 포켓 이름
-  const [pocketName, setPocketName] = useState();
+  const [pocketName, setPocketName] = useState('');
   // 카테고리 리스트
   const [categoryList, setCategoryList] = useState([]);
   // 카테고리 변수
-  const [selectedCate, setSelectedCate] = useState({name: '기타', categorySeq: 1 });
+  const [selectedCate, setSelectedCate] = useState({
+    name: '기타',
+    categorySeq: 1,
+  });
   // 공개범위 변수
   const [privacy, setPrivacy] = useState(true);
 
@@ -53,7 +57,7 @@ const AddPocket = props => {
     dispatch(getRoomCategory()).then(res => {
       setCategoryList(res.payload);
       setPocketName('');
-      setSelectedCate({name: '기타', categorySeq: 1 });
+      setSelectedCate({name: '기타', categorySeq: 1});
       setPrivacy(true);
       setMain(false);
       setDropdown(false);
@@ -77,29 +81,46 @@ const AddPocket = props => {
 
   // 데이터 제출
   const createPocket = () => {
-    const form = new FormData();
-    const pocket = JSON.stringify({
-      name: pocketName,
-      theme: 'room_01',
-      category: selectedCate.categorySeq,
-      isMain: main ? 'T' : 'F',
-      privacy: privacy ? 'O' : 'C',
-    });
-    form.append('room', new Blob([pocket], {type: 'application/json'}));
-    form.append('thumbnail', '');
-    dispatch(createRoom(form)).then(res => {
-      if (res.payload.status === 201) {
-        setReLander(!reLander);
-        close();
-      }
-    });
+    
+    if (pocketName.length === 0 || pocketName.length > 20) {
+      toast.error('제목은 1~20자 사이로 지어주세요');
+    } else {
+      const form = new FormData();
+      const pocket = JSON.stringify({
+        name: pocketName,
+        theme: 'room_01',
+        category: selectedCate.categorySeq,
+        isMain: main ? 'T' : 'F',
+        privacy: privacy ? 'O' : 'C',
+      });
+      form.append('room', new Blob([pocket], {type: 'application/json'}));
+      form.append('thumbnail', '');
+      dispatch(createRoom(form)).then(res => {
+        if (res.payload.status === 201) {
+          setReLander(!reLander);
+          close();
+        }
+      });
+    }
   };
 
   return (
-    <Overlay >
-      <ModalWrap
-
-       className={open ? 'modal open' : 'modal close'}>
+    <Overlay>
+      <Toaster
+        position="top-center"
+        containerStyle={{
+          position: 'absolute',
+        }}
+        toastOptions={{
+          duration: 2000,
+          style: {
+            background: '#fff',
+            color: '#333333',
+            fontSize: '0.85rem',
+          },
+        }}
+      />
+      <ModalWrap className={open ? 'modal open' : 'modal close'}>
         <Contents>
           <header>
             <Head>포켓 만들기</Head>
@@ -168,7 +189,7 @@ const AddPocket = props => {
             </Box>
 
             <BtnDiv>
-              <StyledBtn className="save" onClick={createPocket}>
+              <StyledBtn className="save" onClick={()=>createPocket()}>
                 저장
               </StyledBtn>
             </BtnDiv>

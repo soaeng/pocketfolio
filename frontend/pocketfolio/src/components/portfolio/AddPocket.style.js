@@ -188,7 +188,7 @@ export const BtnDiv = styled.div`
   padding: 12px 16px;
 `;
 
-export const StyledBtn = styled.button`
+export const StyledBtn = styled.div`
   padding: 0.5rem 1rem;
   border-radius: 0.5rem;
   font-size: 18px;
