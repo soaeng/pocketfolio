@@ -94,7 +94,7 @@ const PortSearch = ({data, handleLike, handleDisLike}) => {
               <PortImgDiv>
                 <PortThumbnail
                   onError={onErrorImg}
-                  src={roomThumbnail ? roomThumbnail : '/assets/images/room_01.png'}
+                  src={roomThumbnail ? roomThumbnail : '/assets/images/room_01.PNG'}
                 />
                 {/* 호버시 보이는 버튼 */}
                 <HoverDiv>

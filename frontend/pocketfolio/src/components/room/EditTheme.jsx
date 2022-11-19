@@ -12,11 +12,11 @@ const EditTheme = ({nowTheme, changeTheme}) => {
   const [open, setOpen] = useState(false);
   const themeList = [
     {
-      src: '/assets/images/room_01.png',
+      src: '/assets/images/room_01.PNG',
       name: 'room_01',
     },
     {
-      src: '/assets/images/room_02.png',
+      src: '/assets/images/room_02.PNG',
       name: 'room_02',
     },
     {
@@ -55,16 +55,16 @@ const EditTheme = ({nowTheme, changeTheme}) => {
         <Icon />
       </IconBox>
 
-        <ThemeBox className={!open && 'close'}>
-          {themeList.map((theme, idx) => (
-            <ImgBox
-              className={nowTheme == theme.name && 'now'}
-              onClick={() => changeTheme(theme.name)}
-            >
-              <Img src={process.env.PUBLIC_URL + theme.src} />
-            </ImgBox>
-          ))}
-        </ThemeBox>
+      <ThemeBox className={!open && 'close'}>
+        {themeList.map((theme, idx) => (
+          <ImgBox
+            className={nowTheme == theme.name && 'now'}
+            onClick={() => changeTheme(theme.name)}
+          >
+            <Img src={process.env.PUBLIC_URL + theme.src} />
+          </ImgBox>
+        ))}
+      </ThemeBox>
     </Container>
   );
 };

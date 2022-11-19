@@ -98,7 +98,7 @@ const PocketSearch = ({data, handleLike, handleDisLike}) => {
               <PocketImgDiv onClick={e => pocketClickHandler(roomSeq)}>
                 <PocketThumbnail
                   onError={onErrorImg}
-                  src={thumbnail ? thumbnail : '/assets/images/room_01.png'}
+                  src={thumbnail ? thumbnail : '/assets/images/room_01.PNG'}
                 />
               </PocketImgDiv>
               {/* 프로필 컴포넌트 */}
