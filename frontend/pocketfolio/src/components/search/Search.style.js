@@ -82,11 +82,16 @@ export const TopButtonIcon = styled(CiCircleChevUp)`
   height: 100%;
 `;
 
+export const SelectBox = styled.div`
+  padding: 10px 10.5% 0 10.5%;
+`
+
 export const Select = styled.select`
   padding: 5px;
   border-radius: 8px;
   border: 2px solid lightcoral;
   font-size: 16px;
+  width: 100px;
 `;
 
 export const SelectOption = styled.option`
@@ -96,7 +101,10 @@ export const SelectOption = styled.option`
 export const FilterDiv = styled.div`
   display: flex;
   justify-content: flex-end;
-  margin-right: 125px;
+  align-content: center;
+  flex-direction: column;
+  align-items: flex-end;
+  flex-wrap: wrap;
 `;
 
 export const DivTest = styled.div`

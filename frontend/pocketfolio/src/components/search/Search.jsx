@@ -17,8 +17,8 @@ import {
   SelectOption,
   FilterDiv,
   DivTest,
-  Tabs,
   Tab,
+  SelectBox,
 } from './Search.style';
 
 import PocketSearch from './PocketSearch';
@@ -54,17 +54,19 @@ const Filter = props => {
   };
 
   return (
-    <Select onChange={handleChange}>
-      {props.options.map(option => (
-        <SelectOption
-          value={option.value}
-          defaultValue={props.defaultValue === option.value}
-          key={option.value}
-        >
-          {option.name}
-        </SelectOption>
-      ))}
-    </Select>
+    <SelectBox>
+      <Select onChange={handleChange}>
+        {props.options.map(option => (
+          <SelectOption
+            value={option.value}
+            defaultValue={props.defaultValue === option.value}
+            key={option.value}
+          >
+            {option.name}
+          </SelectOption>
+        ))}
+      </Select>
+    </SelectBox>
   );
 };
 
@@ -360,14 +362,14 @@ const Search = () => {
         {searchMode === 'room' && data ? (
           <>
             {/* 필터 */}
-            <FilterDiv>
-              <Filter options={filterOptions} setSort={setSort} />
-            </FilterDiv>
-            <PocketSearch
-              data={data}
-              handleLike={handleLike}
-              handleDisLike={handleDisLike}
-            />
+              <FilterDiv>
+                <Filter options={filterOptions} setSort={setSort} />
+                <PocketSearch
+                  data={data}
+                  handleLike={handleLike}
+                  handleDisLike={handleDisLike}
+                />
+              </FilterDiv>
           </>
         ) : null}
         {/* 포트폴리오 검색 */}
@@ -375,12 +377,12 @@ const Search = () => {
           <>
             <FilterDiv>
               <Filter options={filterOptions} setSort={setSort} />
+              <PortSearch               
+                data={data}
+                handleLike={handleLike}
+                handleDisLike={handleDisLike}
+              />
             </FilterDiv>
-            <PortSearch               
-              data={data}
-              handleLike={handleLike}
-              handleDisLike={handleDisLike}
-            />
           </>
         ) : null}
         {/* 유저 검색 */}
