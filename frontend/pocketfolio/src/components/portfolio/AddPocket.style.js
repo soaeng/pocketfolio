@@ -256,8 +256,8 @@ export const Selected = styled.div`
 
 export const SelectOption = styled.div`
   display: block;
-  width: 9rem;
-  font-size: 1rem;
+  width: 7rem;
+  text-align: left;
   & + & {
     padding-top: 0.7rem;
   }

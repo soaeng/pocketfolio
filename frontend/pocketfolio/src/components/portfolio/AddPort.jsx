@@ -12,6 +12,7 @@ import {
   AttachWrap,
   InputDiv,
   HashInput,
+  FeedbackText,
   HashOutter,
   HashList,
   BtnDiv,
@@ -19,6 +20,7 @@ import {
   IconDiv,
   ItemList,
   Item,
+  FileName,
   Cancel,
   Add,
 } from './AddPort.style';
@@ -27,7 +29,7 @@ import Editor from './Editor';
 import {Body1} from '../../styles/styles.style';
 import SaveModal from './SaveModal';
 import toast, {Toaster} from 'react-hot-toast';
-import { registPortfolio } from '../../store/portSlice';
+import {registPortfolio} from '../../store/portSlice';
 
 const AddPort = () => {
   const navigate = useNavigate();
@@ -54,13 +56,21 @@ const AddPort = () => {
   // 최종 등록할 이미지 (post)
   const [resultImg, setResultImg] = useState([]);
 
+  // 파일명 길이 감지 (길이 제한)
+  const [overFileName, setOverFileName] = useState(false);
+
   // 포트폴리오 제목 저장
   const getValue = e => {
     const {name, value} = e.target;
-    setPortContent({
-      ...portContent,
-      [name]: value,
-    });
+
+    if (value.length > 50) {
+      toast.error('제목은 50자 이하로 작성해주세요');
+    } else {
+      setPortContent({
+        ...portContent,
+        [name]: value,
+      });
+    }
   };
 
   // 해시태그 입력
@@ -111,13 +121,15 @@ const AddPort = () => {
     setModalOpen(false);
   };
 
-  // 파일 첨부
+  // 파일 첨부 (버튼 스타일링을 위한 UseRef)
   const fileInput = React.useRef(null);
   const handleButtonClick = e => {
     fileInput.current.click();
   };
   const handleChange = e => {
-    if (e.target.files[0] !== undefined) {
+    if (e.target.files[0].name.length > 50) {
+      setOverFileName(true);
+    } else if (e.target.files[0] !== undefined) {
       setAttachList(attachList => [...attachList, e.target.files[0]]);
     }
   };
@@ -235,17 +247,21 @@ const AddPort = () => {
       />
       <Wrapper className="wrapper">
         <ContentDiv>
-          {/* <Label>제목</Label> */}
           <Title
+            type="text"
+            maxLength={50}
             autoComplete="off"
-            placeholder="포트폴리오 제목"
-            onBlur={getValue}
+            placeholder="포트폴리오 제목 (50자 이하)"
+            onChange={getValue}
             name="name"
+            style={{
+              padding: '1.5em 1em',
+            }}
+            autoFocus
           ></Title>
         </ContentDiv>
 
         <ContentDiv>
-          {/* <Label>본문</Label> */}
           <Editor
             portContent={portContent}
             setPortContent={setPortContent}
@@ -263,7 +279,8 @@ const AddPort = () => {
                 value={hashtag}
                 onChange={onChangeHashtag}
                 onKeyUp={onKeyUp}
-                placeholder="포켓폴리오"
+                maxLength={12}
+                placeholder="해시태그 (12자 이하)"
               />
             </InputDiv>
             <HashList>
@@ -279,9 +296,17 @@ const AddPort = () => {
             <AttachWrap>
               <Label className="attachLabel">파일첨부</Label>
               <IconDiv>
-                <Add onClick={handleButtonClick}></Add>
+                <Add
+                  onClick={() => {
+                    handleButtonClick();
+                    setOverFileName(false);
+                  }}
+                ></Add>
               </IconDiv>
             </AttachWrap>
+            {overFileName && (
+              <FeedbackText>파일명은 50자를 넘을 수 없습니다. </FeedbackText>
+            )}
             <input
               type="file"
               ref={fileInput}
@@ -292,7 +317,7 @@ const AddPort = () => {
             <ItemList>
               {attachList.map((item, idx) => (
                 <Item key={idx}>
-                  {item.name}
+                  <FileName className="name">{item.name}</FileName>
                   <IconDiv>
                     <Cancel onClick={e => cancelAttach(e)} value={item.name} />
                   </IconDiv>

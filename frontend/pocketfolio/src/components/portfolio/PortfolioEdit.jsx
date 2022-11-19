@@ -11,6 +11,7 @@ import {
   AttachWrap,
   InputDiv,
   HashInput,
+  FeedbackText,
   HashOutter,
   HashList,
   BtnDiv,
@@ -68,6 +69,9 @@ const PortfolioEdit = () => {
   const [uploadImg, setUploadImg] = useState([]);
   // 최종 등록할 이미지 (post)
   const [resultImg, setResultImg] = useState([]);
+
+  // 파일명 길이 감지 (길이 제한)
+  const [overFileName, setOverFileName] = useState(false);
 
   // 포트폴리오 제목 저장
   const getValue = e => {
@@ -156,9 +160,10 @@ const PortfolioEdit = () => {
     fileInput.current.click();
   };
   const handleChange = e => {
-    if (e.target.files[0] !== undefined) {
+    if (e.target.files[0].name.length > 50) {
+      setOverFileName(true);
+    } else if (e.target.files[0] !== undefined) {
       setAttachList(attachList => [...attachList, e.target.files[0]]);
-      setNewFile(newFile => [...newFile, e.target.files[0]]);
     }
   };
 
@@ -315,17 +320,19 @@ const PortfolioEdit = () => {
       />
       <Wrapper className="wrapper">
         <ContentDiv>
-          <Label>제목</Label>
           <Title
+            maxLength={50}
             autoComplete="off"
             placeholder={portContent.name}
             onChange={getValue}
             name="name"
+            style={{
+              padding: '1.5em 1em',
+            }}
           ></Title>
         </ContentDiv>
 
         <ContentDiv>
-          <Label>본문</Label>
           <Editor
             portContent={portContent}
             setPortContent={setPortContent}
@@ -343,7 +350,8 @@ const PortfolioEdit = () => {
                 value={hashtag}
                 onChange={onChangeHashtag}
                 onKeyUp={onKeyUp}
-                placeholder=" # 포켓폴리오"
+                maxLength={12}
+                placeholder="해시태그 (12자 이하)"
               />
             </InputDiv>
             <HashList>
@@ -359,9 +367,17 @@ const PortfolioEdit = () => {
             <AttachWrap>
               <Label className="attachLabel">파일첨부</Label>
               <IconDiv>
-                <Add onClick={handleButtonClick}></Add>
+                <Add
+                  onClick={() => {
+                    handleButtonClick();
+                    setOverFileName(false);
+                  }}
+                ></Add>
               </IconDiv>
             </AttachWrap>
+            {overFileName && (
+              <FeedbackText>파일명은 50자를 넘을 수 없습니다. </FeedbackText>
+            )}
             <input
               type="file"
               ref={fileInput}
