@@ -5,22 +5,30 @@ import {RiHeart3Line, RiHeart3Fill, RiEyeLine} from 'react-icons/ri';
 
 // Card 모양
 export const PortCard = styled.div`
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  overflow-x: auto;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  align-items: center;
+  height: 100%;
   scroll-behavior: smooth;
-  padding: 0 5%;
+  padding: 0 10%;
+
+  @media screen and (max-width: 1200px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @media screen and (max-width: 900px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media screen and (max-width: 600px) {
+    grid-template-columns: repeat(1, 1fr);
+  }
 `;
 
 // 각 아이템
 export const PortItem = styled.div`
   margin: 10px;
   padding: 10px;
-  width: 20%;
-  height: 20%;
-  min-width: 280px;
-  max-height: 340px;
   transition: 0.5s ease;
   border-radius: 16px;
   box-shadow: 0px 2px 5px 1px rgba(0, 0, 0, 0.25);
@@ -31,8 +39,6 @@ export const PortItem = styled.div`
 export const PortImgDiv = styled.div`
   display: flex;
   justify-content: center;
-  height: 70%;
-  min-height: 250px;
   border-radius: 8px;
 
   &:hover {
@@ -54,7 +60,7 @@ export const HoverDiv = styled.div`
   justify-content: center;
   padding: 10px;
   height: 32%;
-  min-width: 260px;
+  /* min-width: 260px; */
   opacity: 0;
   cursor: pointer;
   z-index: 9;
@@ -126,11 +132,13 @@ export const PortUserName = styled.div`
 export const LikeShowDiv = styled.div`
   display: flex;
   align-items: center;
+  padding: 5px;
 `;
 
 export const LikeIcon = styled(RiHeart3Fill)`
   width: 100%;
   height: 100%;
+  padding-right: 5px;
 `;
 
 export const DislikeIcon = styled(RiHeart3Line)`
@@ -141,6 +149,7 @@ export const DislikeIcon = styled(RiHeart3Line)`
 export const ShowIcon = styled(RiEyeLine)`
   width: 100%;
   height: 100%;
+  padding-right: 5px;
 `;
 
 export const Item3 = styled.div`

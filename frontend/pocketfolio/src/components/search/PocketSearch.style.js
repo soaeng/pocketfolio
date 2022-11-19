@@ -5,20 +5,29 @@ import {RiHeart3Line, RiHeart3Fill, RiEyeLine} from 'react-icons/ri';
 
 // Card 모양
 export const PocketCard = styled.div`
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  overflow-x: auto;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  align-items: center;
+  height: 100%;
   scroll-behavior: smooth;
-  padding: 0 5%;
+  padding: 0 10%;
+
+  @media screen and (max-width: 1200px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @media screen and (max-width: 900px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media screen and (max-width: 600px) {
+    grid-template-columns: repeat(1, 1fr);
+  }
 `;
 
 export const PocketItem = styled.div`
-  margin: 10px;
+  margin: 20px 10px;
   padding: 10px;
-  width: 20%;
-  height: 20%;
-  min-width: 280px;
   border-radius: 16px;
   box-shadow: 0px 2px 5px 1px rgba(0, 0, 0, 0.25);
   flex: none;
@@ -75,6 +84,7 @@ export const PocketUserInfoContainer = styled.div`
 
 export const PocketName = styled.div`
   padding-left:10px;
+  max-width: 130px;
 `
 
 export const PocketUserDiv = styled.div`
@@ -97,11 +107,13 @@ export const ShowIcon = styled(RiEyeLine)`
   width: 100%;
   height: 100%;
   cursor: default;
+  padding-right: 5px;
 `;
 
 export const LikeShowDiv = styled.div`
   display: flex;
   align-items: stretch;
+  padding: 0 5px;
 `;
 
 export const Item3 = styled.div`
@@ -112,4 +124,5 @@ export const IconDiv = styled.div`
   height: 100%;
   width: 100%;
   cursor: pointer;
+  padding-right: 5px;
 `;

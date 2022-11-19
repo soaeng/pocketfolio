@@ -127,9 +127,9 @@ const PortSearch = ({data, handleLike, handleDisLike}) => {
                 {/* 좋아요, 클릭수 컴포넌트 */}
                 <LikeShowDiv>
                   <LikeIcon />
-                  <Item3>{like}</Item3>
+                  <Item3>{like ? like : 0}</Item3>
                   <ShowIcon />
-                  <div>{hit}</div>
+                  <div>{hit ? hit : 0}</div>
                 </LikeShowDiv>
               </PortUserInfoContainer>
             </PortItem>

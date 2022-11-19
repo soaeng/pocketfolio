@@ -130,9 +130,9 @@ const PocketSearch = ({data, handleLike, handleDisLike}) => {
                   >
                     {isLiked ? <LikeIcon /> : <DislikeIcon />}
                   </IconDiv>
-                  <Item3>{like}</Item3>
+                  <Item3>{like ? like : 0}</Item3>
                   <ShowIcon />
-                  <div>{hit}</div>
+                  <div>{hit ? hit : 0}</div>
                 </LikeShowDiv>
               </PocketUserInfoContainer>
             </PocketItem>
