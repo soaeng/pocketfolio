@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 import {
-  RiHashtag,
   RiFileAddLine,
   RiAddCircleLine,
   RiCloseLine,
@@ -88,9 +87,7 @@ export const Title = styled.input`
   :focus {
     outline: 0.5px solid #fcb4b4;
   }
-  ::placeholder {
-    /* padding: 1em; */
-  }
+
 `;
 
 export const InputDiv = styled.div`
@@ -99,7 +96,6 @@ export const InputDiv = styled.div`
   justify-content: space-between;
   width: 60%;
   min-width: 130px;
-  /* outline: solid; */
 `;
 
 export const HashInput = styled.input`
@@ -197,13 +193,6 @@ export const BottomBox = styled.div`
   display: flex;
   flex-direction: column;
   width: 33.3%;
-  /* outline: solid; */
-  /* &.hashWrap {
-    width: 30%;
-  }
-  &.attachWrap {
-    width: 30%;
-  } */
 `;
 
 export const AttachWrap = styled.div`
@@ -222,6 +211,7 @@ export const IconDiv = styled.div`
 `;
 
 export const ItemList = styled.div`
+  /* margin-top: 1rem; */
   height: 5rem;
   width: 90%;
   overflow-y: auto;
@@ -242,8 +232,9 @@ export const ItemList = styled.div`
 `;
 
 export const Item = styled.div`
+  position: relative;
   display: flex;
-  margin: 0.5rem 0 0.5rem 0.2rem;
+  margin: 1rem 0 0.5rem 0.15rem;
   width: 10rem;
   padding: 0.5rem;
   font-size: 0.85rem;
@@ -274,6 +265,8 @@ export const FileName = styled.p`
 `;
 
 export const Cancel = styled(RiCloseLine)`
+  position: absolute;
+  right: 1%;
   cursor: pointer;
   color: #b0a992;
   &:hover {
@@ -286,7 +279,6 @@ export const Cancel = styled(RiCloseLine)`
 `;
 
 export const Add = styled(RiAddCircleLine)`
-  /* font-size: 18px; */
   padding-left: 1rem;
   color: #fa8f8d;
   transition: all 0.3s;

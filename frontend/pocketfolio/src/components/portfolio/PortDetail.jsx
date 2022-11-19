@@ -70,25 +70,23 @@ const PortDetail = () => {
   };
 
   const [showFiles, setShowFiles] = useState(false);
-  console.log(location.state);
   return (
     <Background>
-      {location.state && (
-        <Toaster
-          position="top-center"
-          containerStyle={{
-            position: 'absolute',
-          }}
-          toastOptions={{
-            duration: 3000,
-            style: {
-              background: '#fff',
-              color: '#333333',
-              fontSize: '0.85rem',
-            },
-          }}
-        />
-      )}
+      <Toaster
+        position="top-center"
+        containerStyle={{
+          position: 'absolute',
+        }}
+        toastOptions={{
+          duration: 3000,
+          style: {
+            background: '#fff',
+            color: '#333333',
+            fontSize: '0.85rem',
+          },
+        }}
+      />
+
       <Nav></Nav>
       <Container>
         <Content>
@@ -120,7 +118,7 @@ const PortDetail = () => {
                 {showFiles && (
                   <FileList>
                     {portDetail.urls.map((url, idx) => (
-                      <FileItem>
+                      <FileItem key={idx}>
                         <FileName className="name">{url.name}</FileName>
                         <DownBox href={url.url}>
                           <DownIcon />

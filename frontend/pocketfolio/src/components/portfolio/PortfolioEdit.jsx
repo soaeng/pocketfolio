@@ -19,6 +19,7 @@ import {
   IconDiv,
   ItemList,
   Item,
+  FileName,
   Cancel,
   Add,
 } from './AddPort.style';
@@ -37,11 +38,11 @@ const PortfolioEdit = () => {
 
   // 저장 모달 오픈 변수
   const [modalOpen, setModalOpen] = useState(false);
-  // 첨부 파일 리스트
+  // 첨부 파일 리스트 (이름 표기용)
   const [attachList, setAttachList] = useState([]);
-  // 기존 파일 url
+  // 기존 파일 url (post)
   const [existFile, setExistFile] = useState([]);
-  // 새로 추가한 파일
+  // 새로 추가한 파일 (post)
   const [newFile, setNewFile] = useState([]);
 
   // 포트폴리오 제목, 내용 변수
@@ -164,6 +165,7 @@ const PortfolioEdit = () => {
       setOverFileName(true);
     } else if (e.target.files[0] !== undefined) {
       setAttachList(attachList => [...attachList, e.target.files[0]]);
+      setNewFile(newFile => [...newFile, e.target.files[0]]);
     }
   };
 
@@ -301,6 +303,10 @@ const PortfolioEdit = () => {
       });
   };
 
+  // 1234
+  console.log(existFile,'기존파일')
+  console.log(newFile, '새로추가한 파일')
+  console.log(attachList, '첨부파일 리스트')
   return (
     <Background>
       <Nav></Nav>
@@ -388,7 +394,7 @@ const PortfolioEdit = () => {
             <ItemList>
               {attachList.map((item, idx) => (
                 <Item key={idx}>
-                  {item.name}
+                  <FileName className="name">{item.name}</FileName>
                   <IconDiv>
                     <Cancel onClick={e => cancelAttach(e)} value={item.name} />
                   </IconDiv>
