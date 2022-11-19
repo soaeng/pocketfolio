@@ -39,7 +39,6 @@ export const Box = styled.div`
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  cursor: pointer;
 `;
 
 export const ContentTitle = styled.h3`
