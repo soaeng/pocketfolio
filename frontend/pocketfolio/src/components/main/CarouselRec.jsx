@@ -110,7 +110,7 @@ const CarouselRec = ({rec, idx}) => {
                   src={
                     item.thumbnail
                       ? item.thumbnail
-                      : process.env.PUBLIC_URL + '/assets/images/room_01.png'
+                      : process.env.PUBLIC_URL + '/assets/images/room_01.PNG'
                   }
                   onError={e => {
                     e.target.src =

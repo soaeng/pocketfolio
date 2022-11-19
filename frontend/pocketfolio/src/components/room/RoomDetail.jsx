@@ -51,7 +51,7 @@ const RoomDetail = ({closeDetail, data}) => {
                   src={
                     room.thumbnail
                       ? room.thumbnail
-                      : process.env.PUBLIC_URL + '/assets/images/room_01.png'
+                      : process.env.PUBLIC_URL + '/assets/images/room_01.PNG'
                   }
                   onError={e => {
                     e.target.src =

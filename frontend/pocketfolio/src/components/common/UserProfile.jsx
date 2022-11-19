@@ -83,7 +83,7 @@ const UserProfile = (props) => {
 
   // 이미지 오류인 경우 기본 이미지 보이게
   const onErrorImg = (e) => {
-    e.target.src = '/assets/images/room_01.png'
+    e.target.src = '/assets/images/room_01.PNG'
   }
 
   return (
@@ -138,7 +138,7 @@ const UserProfile = (props) => {
                   <RoomInfoDiv onClick={e => roomClickHandler(roomSeq)}>
                     <RoomInfoImg
                       onError={onErrorImg}
-                      src={thumbnail ? thumbnail : '/assets/images/room_01.png'}/>
+                      src={thumbnail ? thumbnail : '/assets/images/room_01.PNG'}/>
                   </RoomInfoDiv>
                 </RoomBox>
               </>
