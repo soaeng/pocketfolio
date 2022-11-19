@@ -6,6 +6,7 @@ import io.jsonwebtoken.impl.DefaultClaims;
 import io.jsonwebtoken.impl.DefaultJws;
 
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.time.ZonedDateTime;
 import java.util.Date;
@@ -14,12 +15,11 @@ import java.util.Date;
 @Log4j2
 public class JWTUtil {
 
-    private String secretKey = "catsAndDogs101"; // test
+    @Value("${jwt.secret}")
+    private String secretKey;
 
-    //1month
-//    private long expire = 60; // minutes
-    private long expire = 60 * 24 * 20; // 개발용
-    private long refreshExpire = expire * 24 * 7;
+    private long expire = 60 * 24 * 2;
+    private long refreshExpire = expire * 15;
 
     public String generateAccessToken(String userSeqStr) throws Exception {
         return generateToken(userSeqStr, "accessToken", expire);
