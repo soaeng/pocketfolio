@@ -20,7 +20,7 @@ const Card = props => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [isOpen, setIsOpen] = useState(false);
-  const {isDelete, pocketData, reLander, setReLander} = props;
+  const {isDelete, setIsDelete, pocketData, reLander, setReLander} = props;
   const openModal = () => {
     setIsOpen(true);
   };
@@ -34,25 +34,12 @@ const Card = props => {
       if (res.payload) {
         setReLander(!reLander);
         toast.success('포켓을 삭제 하였습니다.')
+        setIsDelete(false)
       }
     });
   };
   return (
     <Wrapper>
-      <Toaster
-        position="top-center"
-        containerStyle={{
-          position: 'absolute',
-        }}
-        toastOptions={{
-          duration: 3000,
-          style: {
-            background: '#fff',
-            color: '#333333',
-            fontSize: '0.85rem',
-          },
-        }}
-      />
       <Item>
         <IconDiv className={isDelete ? 'delete' : ''} onClick={openModal}>
           <DeleteIcon></DeleteIcon>

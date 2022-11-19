@@ -97,6 +97,7 @@ const Portfolio = () => {
         position="top-center"
         containerStyle={{
           position: 'absolute',
+          top: '2.5rem',
         }}
         toastOptions={{
           duration: 3000,
@@ -108,6 +109,7 @@ const Portfolio = () => {
         }}
       />
       <Container>
+
         <CardWrapper className="myroomwrapper">
           <HeaderDiv>
             <Text className="myrooms">포켓들</Text>
@@ -130,11 +132,12 @@ const Portfolio = () => {
           <CardList className="roomlists">
             {pocketList.length > 0
               ? pocketList.map((item, idx) => (
-                  <Card key={idx} pocketData={item} isDelete={isDelete} reLander={reLander} setReLander={setReLander}></Card>
+                  <Card key={idx} pocketData={item} isDelete={isDelete} setIsDelete={setIsDelete} reLander={reLander} setReLander={setReLander}></Card>
                 ))
               : null}
           </CardList>
         </CardWrapper>
+
         <CardWrapper>
           <HeaderDiv>
             <Text className="portfolios">포트폴리오들</Text>

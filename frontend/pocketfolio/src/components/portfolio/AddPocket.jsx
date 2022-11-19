@@ -52,7 +52,8 @@ const AddPocket = props => {
   // 실제 컴포넌트가 사라지는 시점을 지연시키기 위한 값
   const [visible, setVisible] = useState(open);
 
-  // 룸 카테고리 불러오기
+  const [viewToast, setViewToast] = useState(false);
+  // 랜더링 시 룸 카테고리 불러오기
   useEffect(() => {
     dispatch(getRoomCategory()).then(res => {
       setCategoryList(res.payload);
@@ -81,9 +82,9 @@ const AddPocket = props => {
 
   // 데이터 제출
   const createPocket = () => {
-    
     if (pocketName.length === 0 || pocketName.length > 20) {
-      toast.error('제목은 1~20자 사이로 지어주세요');
+      // setViewToast(true);
+      toast.error('포켓 이름은 1~20자 사이로 지어주세요');
     } else {
       const form = new FormData();
       const pocket = JSON.stringify({
@@ -103,23 +104,8 @@ const AddPocket = props => {
       });
     }
   };
-
   return (
     <Overlay>
-      <Toaster
-        position="top-center"
-        containerStyle={{
-          position: 'absolute',
-        }}
-        toastOptions={{
-          duration: 2000,
-          style: {
-            background: '#fff',
-            color: '#333333',
-            fontSize: '0.85rem',
-          },
-        }}
-      />
       <ModalWrap className={open ? 'modal open' : 'modal close'}>
         <Contents>
           <header>
@@ -161,7 +147,7 @@ const AddPocket = props => {
                       item.categorySeq !== selectedCate.categorySeq && (
                         <SelectOption
                           key={idx}
-                          className={!dropdown && 'close'}
+                          className={!dropdown && 'close' }
                           onClick={() => {
                             setSelectedCate(item);
                             setDropdown(!dropdown);
@@ -189,7 +175,7 @@ const AddPocket = props => {
             </Box>
 
             <BtnDiv>
-              <StyledBtn className="save" onClick={()=>createPocket()}>
+              <StyledBtn className="save" onClick={() => createPocket()}>
                 저장
               </StyledBtn>
             </BtnDiv>

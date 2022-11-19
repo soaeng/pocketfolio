@@ -11,12 +11,12 @@ import {FaSlackHash} from 'react-icons/fa';
 export const Background = styled.div`
   display: flex;
   align-items: center;
-  width: 100vw;
+  width: 100%;
   height: 100vh;
   flex-direction: column;
 
   .ck.ck-editor__editable:not(.ck-editor__nested-editable) {
-    height: 300px;
+    height: 23rem;
     background-color: white;
     border: 0.5px solid #bababa;
     &::-webkit-scrollbar {
@@ -51,7 +51,7 @@ export const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  margin-top: 3rem;
+  margin-top: 2.5rem;
   width: 60%;
 `;
 
@@ -67,8 +67,6 @@ export const Label = styled.div`
   width: fit-content;
   display: flex;
   align-items: center;
-  &.attachLabel {
-  }
 `;
 
 export const ContentDiv = styled.div`
@@ -81,50 +79,63 @@ export const ContentDiv = styled.div`
 
 export const Title = styled.input`
   width: 100%;
+  box-sizing: border-box;
   height: 2rem;
   border: 0.5px solid #bababa;
   border-radius: 0.5rem;
-  padding: 0.3rem 0;
+  padding-left: 1em;
+
   :focus {
     outline: 0.5px solid #fcb4b4;
   }
   ::placeholder {
-    padding: 1rem;
+    /* padding: 1em; */
   }
 `;
 
 export const InputDiv = styled.div`
   display: flex;
-  align-items: center;
+  flex-direction: column;
   justify-content: space-between;
-  width: 12rem;
+  width: 60%;
+  min-width: 130px;
+  /* outline: solid; */
 `;
 
 export const HashInput = styled.input`
   width: auto;
   line-height: 2rem;
-  min-width: 8rem;
+  margin-top: 0.7rem;
   border: none;
   border-bottom: 1px solid #b9b9b9;
+`;
+
+export const FeedbackText = styled.p`
+  margin: 0;
+  font-size: 0.8rem;
+  font-weight: bold;
+  color: #ff4949;
+  padding-top: 0.3rem;
 `;
 
 export const HashList = styled.div`
   display: flex;
   width: 90%;
   flex-wrap: wrap;
-  margin-top: 1rem;
+  margin-top: 0.5rem;
 `;
 
 export const HashOutter = styled.div`
-  background: #ffeee7;
-  border-radius: 0.5rem;
-  padding: 8px 12px;
-  color: #ff6e35;
   display: flex;
   font-weight: bold;
-  font-size: 1rem;
+  font-size: 0.8rem;
   line-height: 20px;
+  padding: 8px 12px;
   margin: 5px;
+  margin-left: 0;
+  color: #ff6e35;
+  background: #ffeee7;
+  border-radius: 0.5rem;
   cursor: pointer;
 `;
 
@@ -185,10 +196,14 @@ export const HashIcon = styled(FaSlackHash)`
 export const BottomBox = styled.div`
   display: flex;
   flex-direction: column;
-  width: 20rem;
-  &.hashWrap {
+  width: 33.3%;
+  /* outline: solid; */
+  /* &.hashWrap {
     width: 30%;
   }
+  &.attachWrap {
+    width: 30%;
+  } */
 `;
 
 export const AttachWrap = styled.div`
@@ -212,7 +227,7 @@ export const ItemList = styled.div`
   overflow-y: auto;
   &::-webkit-scrollbar {
     width: 5px;
-    height: 10px;
+    height: 5px;
   }
 
   &::-webkit-scrollbar-thumb {
@@ -228,15 +243,50 @@ export const ItemList = styled.div`
 
 export const Item = styled.div`
   display: flex;
-  align-items: center;
+  margin: 0.5rem 0 0.5rem 0.2rem;
+  width: 10rem;
+  padding: 0.5rem;
+  font-size: 0.85rem;
+  background-color: white;
+  box-shadow: 0 0 2px 2px #eeeeee;
+  border-radius: 0.3rem;
+  transition: all 0.2s;
+  cursor: pointer;
+
+  &:hover {
+    box-shadow: 0 0 2px 2px #d1d1d1;
+
+    &.name {
+      height: auto;
+      word-break: break-all;
+    }
+  }
+  &:active {
+    color: #b0a992 !important;
+  }
+`;
+
+export const FileName = styled.p`
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `;
 
 export const Cancel = styled(RiCloseLine)`
   cursor: pointer;
+  color: #b0a992;
+  &:hover {
+    color: #000000 !important;
+  }
+
+  &:active {
+    color: #b0a992 !important;
+  }
 `;
 
 export const Add = styled(RiAddCircleLine)`
-  font-size: 18px;
+  /* font-size: 18px; */
   padding-left: 1rem;
   color: #fa8f8d;
   transition: all 0.3s;
