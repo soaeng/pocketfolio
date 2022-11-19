@@ -12,6 +12,7 @@ import {
   Container,
   Content,
   Header,
+  Summary,
   IconDiv,
   TitleDiv,
   Title,
@@ -42,7 +43,7 @@ const PortDetail = () => {
   const port_id = parseInt(params.port_id);
 
   // 포트폴리오 내용
-  const [portDetail, setPortDetail] = useState({});
+  const [portDetail, setPortDetail] = useState({urls: '없음'});
   // 작성일
   const [createDate, setCreateDate] = useState('');
 
@@ -58,7 +59,7 @@ const PortDetail = () => {
         alert('목록 불러오기 실패');
       });
   }, []);
-
+  
   // 수정 페이지로 이동
   const moveEdit = () => {
     navigate(`/port/edit/${portDetail.portSeq}`);
@@ -68,8 +69,9 @@ const PortDetail = () => {
   const movePortList = () => {
     navigate('/port');
   };
-
+  
   const [showFiles, setShowFiles] = useState(false);
+
   return (
     <Background>
       <Toaster
@@ -86,7 +88,6 @@ const PortDetail = () => {
           },
         }}
       />
-
       <Nav></Nav>
       <Container>
         <Content>
@@ -106,8 +107,8 @@ const PortDetail = () => {
           </Header>
 
           <ContentDiv>
-            <div dangerouslySetInnerHTML={{__html: portDetail.summary}}></div>
-            {portDetail.urls && portDetail.urls.length && (
+            <Summary dangerouslySetInnerHTML={{__html: portDetail.summary}} />
+            {portDetail.urls && portDetail.urls?.length ? (
               <FileContainer>
                 <ShowFile onClick={() => setShowFiles(!showFiles)}>
                   <IconDiv>
@@ -128,7 +129,7 @@ const PortDetail = () => {
                   </FileList>
                 )}
               </FileContainer>
-            )}
+            ): null}
           </ContentDiv>
 
           {portDetail.tags && (
