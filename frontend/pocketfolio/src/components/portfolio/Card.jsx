@@ -49,7 +49,7 @@ const Card = props => {
           <ImgDiv>
             {pocketData.thumbnail === undefined ? (
               <Thumbnail
-                src={process.env.PUBLIC_URL + '/assets/images/room_01.png'}
+                src={process.env.PUBLIC_URL + '/assets/images/room_01.PNG'}
               />
             ) : (
               <Thumbnail src={pocketData.thumbnail} />
