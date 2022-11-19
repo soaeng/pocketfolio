@@ -56,6 +56,9 @@ const AddPort = () => {
   // 최종 등록할 이미지 (post)
   const [resultImg, setResultImg] = useState([]);
 
+  // 제목 길이 감지
+  const [minTitleLeng, setMinTitleLeng] = useState(false);
+
   // 파일명 길이 감지 (길이 제한)
   const [overFileName, setOverFileName] = useState(false);
 
@@ -63,13 +66,14 @@ const AddPort = () => {
   const getValue = e => {
     const {name, value} = e.target;
 
-    if (value.length > 50) {
-      toast.error('제목은 50자 이하로 작성해주세요');
+    if (value.length === 0) {
+      setMinTitleLeng(true);
     } else {
       setPortContent({
         ...portContent,
         [name]: value,
       });
+      setMinTitleLeng(false);
     }
   };
 
@@ -192,6 +196,8 @@ const AddPort = () => {
 
   // 포트폴리오 제출
   const savePortFolio = () => {
+    if (portContent.name.length === 0) {
+    }
     const form = new FormData();
     const port = JSON.stringify({
       name: portContent.name,
@@ -259,6 +265,9 @@ const AddPort = () => {
             }}
             autoFocus
           ></Title>
+          {minTitleLeng && (
+            <FeedbackText>제목은 1~50자 사이로 입력해주세요.</FeedbackText>
+          )}
         </ContentDiv>
 
         <ContentDiv>
