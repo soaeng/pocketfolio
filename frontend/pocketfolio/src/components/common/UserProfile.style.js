@@ -20,11 +20,10 @@ export const UserProfileItem = styled.div`
   padding: 25px;
   border-radius: 16px;
   border: 3px solid #ff9392;
-  /* box-shadow: 0 2px 3px 0 rgba(34, 36, 38, 0.15); */
   z-index: 99999;
   left: 50%;
-  bottom: 8%;
-  transform: translate(-50%, 0);
+  top: 50%;
+  transform: translate(-50%, -50%);
 
   @media screen and (max-width: 35rem) {
     width: 85vw;

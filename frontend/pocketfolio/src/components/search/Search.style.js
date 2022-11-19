@@ -9,6 +9,12 @@ export const Container1 = styled.div`
   display: flex;
   justify-content: center;
   margin-top: 2%;
+
+  @media screen and (max-width: 768px) {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
 `;
 
 export const Container = styled.div`
@@ -114,16 +120,21 @@ export const DivTest = styled.div`
 `;
 
 export const Tabs = styled.div`
-  height: 100%;
-  min-width: 150px;
+  display: flex;
+  margin-left: 10px;
+
+  @media screen and (max-width: 768px) {
+    margin-top: 10px;
+    margin-left: 0;
+  }
 `;
 
-export const Tab = styled(Body3)`
+export const Tab = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 5%;
-  margin: 0 0.5%;
+  margin: 0 5px;
+  min-width: 80px;
   color: white;
   padding: 10px;
   transition: all 0.2s;
@@ -146,4 +157,9 @@ export const Tab = styled(Body3)`
   color: ${props => {
     return props.searchMode === props.name ? '#fff' : '#e75452';
   }};
+
+  @media screen and (max-width: 768px) {
+    min-width: 60px;
+    font-size: small;
+  }
 `;

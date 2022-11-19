@@ -19,6 +19,7 @@ import {
   DivTest,
   Tab,
   SelectBox,
+  Tabs,
 } from './Search.style';
 
 import PocketSearch from './PocketSearch';
@@ -280,29 +281,29 @@ const Search = () => {
           />
         </Container>
         {/* 카테고리 */}
-        {/* <Tabs> */}
-        <Tab
-          searchMode={searchMode}
-          name={'room'}
-          onClick={e => selectSearchMode(e, 'room')}
-        >
-          마이포켓
-        </Tab>
-        <Tab
-          searchMode={searchMode}
-          name={'portfolio'}
-          onClick={e => selectSearchMode(e, 'portfolio')}
-        >
-          포트폴리오
-        </Tab>
-        <Tab
-          searchMode={searchMode}
-          name={'user'}
-          onClick={e => selectSearchMode(e, 'user')}
-        >
-          유저
-        </Tab>
-        {/* </Tabs> */}
+        <Tabs>
+          <Tab
+            searchMode={searchMode}
+            name={'room'}
+            onClick={e => selectSearchMode(e, 'room')}
+          >
+            마이포켓
+          </Tab>
+          <Tab
+            searchMode={searchMode}
+            name={'portfolio'}
+            onClick={e => selectSearchMode(e, 'portfolio')}
+          >
+            포트폴리오
+          </Tab>
+          <Tab
+            searchMode={searchMode}
+            name={'user'}
+            onClick={e => selectSearchMode(e, 'user')}
+          >
+            유저
+          </Tab>
+        </Tabs>
       </Container1>
       {/* 태그 */}
       {searchMode === 'room' ? (
