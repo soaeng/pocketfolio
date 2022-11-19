@@ -33,6 +33,13 @@ export const Content = styled.div`
 export const Header = styled.div`
   border-bottom: 1px solid #b9b9b9;
 `;
+export const ContentDiv = styled.div`
+  position: relative;
+  width: 100%;
+`;
+export const Summary = styled.div`
+`;
+
 export const TitleDiv = styled.div`
   display: flex;
   align-items: center;
@@ -90,50 +97,6 @@ export const EditIcon = styled(TbEdit)`
 `;
 
 
-export const PortIcon = styled(TbList)`
-  font-size: 50px;
-  width: 70px;
-  transition: all 0.3s;
-  color: #f3a9a1;
-  &:hover {
-    font-size: 52px;
-    color: #df7d72;
-    .tooltip {
-      visibility: visible;
-    }
-  }
-  cursor: pointer;
-`;
-
-
-
-export const Attach = styled.a`
-  text-decoration: none;
-  color: black;
-  width: 5rem;
-  margin-right: 0.5rem;
-  background-color: #ffc3c3;
-  padding: 10px;
-  border-radius: 0.5rem;
-  font-family: 'NanumSquareAcr' !important;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  cursor: pointer;
-  transition: all 0.2s;
-
-  &:hover {
-    padding: 12px;
-  }
-`;
-
-
-export const ContentDiv = styled.div`
-  position: relative;
-  width: 100%;
-  /* outline: solid; */
-  /* overflow: auto; */
-`;
 export const FileContainer = styled.div`
   position: absolute;
   top: 0;

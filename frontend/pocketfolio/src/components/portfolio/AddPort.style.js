@@ -1,9 +1,5 @@
 import styled from 'styled-components';
-import {
-  RiFileAddLine,
-  RiAddCircleLine,
-  RiCloseLine,
-} from 'react-icons/ri';
+import {RiFileAddLine, RiAddCircleLine, RiCloseLine} from 'react-icons/ri';
 
 import {FaSlackHash} from 'react-icons/fa';
 
@@ -87,7 +83,6 @@ export const Title = styled.input`
   :focus {
     outline: 0.5px solid #fcb4b4;
   }
-
 `;
 
 export const InputDiv = styled.div`
@@ -260,6 +255,7 @@ export const Item = styled.div`
 export const FileName = styled.p`
   margin: 0;
   overflow: hidden;
+  padding-right: 0.4rem;
   text-overflow: ellipsis;
   white-space: nowrap;
 `;
