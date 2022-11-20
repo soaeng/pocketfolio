@@ -262,7 +262,7 @@ const PortfolioEdit = () => {
     if (portContent.name.length === 0) {
       setMinTitleLeng(true);
       closeModal();
-      
+
     } else {
       // 썸네일이 변경 되었을 때,
       if (isChangeThumb) {
