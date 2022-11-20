@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import {Body1, H2, H3} from '../../styles/styles.style';
+import {H2} from '../../styles/styles.style';
 import {
   RiArrowDownSFill,
   RiArrowUpSFill,
@@ -9,9 +9,6 @@ import {
 } from 'react-icons/ri';
 
 export const Overlay = styled.div`
-  .modal.close {
-    /* animation-name: fade-out; */
-  }
   .modal.close > section {
     animation-name: slide;
   }

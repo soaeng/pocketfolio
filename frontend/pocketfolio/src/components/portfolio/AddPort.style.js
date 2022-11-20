@@ -218,7 +218,6 @@ export const IconDiv = styled.div`
 `;
 
 export const ItemList = styled.div`
-  /* margin-top: 1rem; */
   height: 5rem;
   width: 90%;
   overflow-y: auto;

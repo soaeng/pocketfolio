@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import {TbTrash, TbTrashX} from 'react-icons/tb';
 import {
   RiFileAddFill,
   RiFolderAddFill,
@@ -98,9 +97,6 @@ export const IconDiv = styled.button`
   justify-content: center;
   width: 2.5rem;
   height: 2.5rem;
-  /* background-color: #ff9392; */
-  /* box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.3),
-    0px 1px 3px 1px rgba(0, 0, 0, 0.15); */
   border: 0;
   border-radius: 50%;
   background-color: white;
@@ -115,12 +111,6 @@ export const IconDiv = styled.button`
 
   :active {
     background-color: #c7c7c7;
-  }
-
-  &.addPortIcon {
-  }
-
-  &.addPocketIcon {
   }
 `;
 
@@ -154,7 +144,6 @@ export const Table = styled.table`
   width: 100%;
   border-collapse: collapse;
   border-radius: 1rem 1rem 0 0;
-  /* border: 1px solid; */
 `;
 
 export const Th = styled.th`
@@ -171,7 +160,6 @@ export const Th = styled.th`
     border-radius: 0 10px 0 0;
     font-size: 2px;
     color: #e75452;
-    /* visibility: hidden; */
   }
 `;
 
@@ -186,10 +174,6 @@ export const Td = styled.td`
   &.odd {
     background-color: #fbfbfb;
   }
-
-  &.delIcon {
-  }
-  /* border: 1px solid; */
 `;
 
 export const Tr = styled.tr`

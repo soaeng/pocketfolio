@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import {RiHeart3Fill, RiEyeLine} from 'react-icons/ri';
 import {HiMinusCircle} from 'react-icons/hi';
 
 export const Wrapper = styled.div`
@@ -23,18 +22,11 @@ export const PortDiv = styled.div``;
 
 export const ImgDiv = styled.div`
   display: flex;
-
   justify-content: center;
   height: 11rem;
   width: 10rem;
-
   padding: 10px;
   overflow: hidden;
-
-  /* 2안 */
-  /* border-radius: 1rem;
-  background-color: #fff0f0;
-  box-shadow: 0px 2px 5px 1px rgba(0, 0, 0, 0.25); */
 `;
 
 export const Thumbnail = styled.img`
@@ -45,7 +37,6 @@ export const Thumbnail = styled.img`
   border-radius: 0.5rem;
   transition: all 0.2s;
   object-fit: cover;
-
   :hover {
     background-color: #e5e5e5;
   }
@@ -55,7 +46,6 @@ export const TitleDiv = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-
   font-family: bold;
 `;
 
@@ -65,36 +55,6 @@ export const Title = styled.p`
   margin: 0;
   font-family: 'NanumSquareAcr' !important;
 `;
-
-export const LikeDiv = styled.div`
-  display: flex;
-  justify-content: center;
-  width: 50%;
-  justify-content: space-around;
-  margin: 1rem auto;
-`;
-
-export const LikeContent = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  width: 30%;
-`;
-
-export const Img = styled.img`
-  &.deleteBtn {
-    margin: 1rem 1rem 0 0;
-    width: 1.5rem;
-    cursor: pointer;
-  }
-
-  &.hearteye {
-    height: 1.3rem;
-    width: 1.3rem;
-  }
-`;
-
-export const Count = styled.span``;
 
 export const IconDiv = styled.div`
   visibility: hidden;
@@ -112,9 +72,6 @@ export const IconDiv = styled.div`
     display: flex;
   }
 `;
-
-export const Heart = styled(RiHeart3Fill)``;
-export const Eye = styled(RiEyeLine)``;
 export const DeleteIcon = styled(HiMinusCircle)`
   font-size: 2.5rem;
   color: #ff3434;

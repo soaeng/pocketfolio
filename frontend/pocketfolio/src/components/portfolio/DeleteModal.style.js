@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import {H3, Body1} from '../../styles/styles.style';
+import {H3} from '../../styles/styles.style';
 
 export const Overlay = styled.div`
   position: fixed;
@@ -23,7 +23,6 @@ export const ModalWrap = styled.div`
   left: 50%;
   z-index: 100;
   transform: translate(-50%, -50%);
-  /* 애니메이션 */
 `;
 
 export const Contents = styled.div`
@@ -40,8 +39,6 @@ export const TextDiv = styled.div`
   padding-bottom: 0.7rem;
 `;
 export const Text = styled(H3)`
-  /* margin: 0;
-  padding-top: 2.5rem; */
 `;
 
 export const BtnDiv = styled.div`
