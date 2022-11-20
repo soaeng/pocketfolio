@@ -109,16 +109,17 @@ const Portfolio = () => {
         }}
       />
       <Container>
-
         <CardWrapper className="myroomwrapper">
           <HeaderDiv>
             <Text className="myrooms">포켓 목록</Text>
             <BtnDiv>
               <IconDiv className="addPocketIcon">
-                <AddPocketIcon onClick={()=>setOpenPockMod(true)}></AddPocketIcon>
+                <AddPocketIcon
+                  onClick={() => setOpenPockMod(true)}
+                ></AddPocketIcon>
                 <AddPocket
                   open={openPockMod}
-                  close={()=>setOpenPockMod(false)}
+                  close={() => setOpenPockMod(false)}
                   reLander={reLander}
                   setReLander={setReLander}
                   // save={createPocket}
@@ -132,7 +133,14 @@ const Portfolio = () => {
           <CardList className="roomlists">
             {pocketList.length > 0
               ? pocketList.map((item, idx) => (
-                  <Card key={idx} pocketData={item} isDelete={isDelete} setIsDelete={setIsDelete} reLander={reLander} setReLander={setReLander}></Card>
+                  <Card
+                    key={idx}
+                    pocketData={item}
+                    isDelete={isDelete}
+                    setIsDelete={setIsDelete}
+                    reLander={reLander}
+                    setReLander={setReLander}
+                  ></Card>
                 ))
               : null}
           </CardList>

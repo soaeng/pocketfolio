@@ -46,8 +46,6 @@ export const Summary = styled.div`
   .image-style-align-right {
     float: right;
   }
-
-
 `;
 
 export const TitleDiv = styled.div`
