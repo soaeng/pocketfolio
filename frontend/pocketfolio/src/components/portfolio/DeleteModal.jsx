@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {
   Overlay,
   ModalWrap,
@@ -8,7 +8,7 @@ import {
   BtnDiv,
   StyledBtn,
 } from './DeleteModal.style';
-import {H3, Body1} from '../../styles/styles.style';
+import {Body1} from '../../styles/styles.style';
 
 const DeleteModal = props => {
   const {onClose, text, seq, deleteFunc} = props;

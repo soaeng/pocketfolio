@@ -14,7 +14,7 @@ import {
 } from './Card.style';
 import DeleteModal from './DeleteModal';
 import {delRoom} from '../../store/roomSlice';
-import toast, {Toaster} from 'react-hot-toast';
+import toast from 'react-hot-toast';
 
 const Card = props => {
   const navigate = useNavigate();
@@ -28,13 +28,14 @@ const Card = props => {
     navigate(`/room/${pocketData.roomSeq}`);
   };
 
+  // 포켓 삭제
   const deletePocket = seq => {
     console.log(seq);
     dispatch(delRoom(seq)).then(res => {
       if (res.payload) {
         setReLander(!reLander);
-        toast.success('포켓을 삭제 하였습니다.')
-        setIsDelete(false)
+        toast.success('포켓을 삭제 하였습니다.');
+        setIsDelete(false);
       }
     });
   };

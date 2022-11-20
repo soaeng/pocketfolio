@@ -83,7 +83,6 @@ const AddPocket = props => {
   // 데이터 제출
   const createPocket = () => {
     if (pocketName.length === 0 || pocketName.length > 20) {
-      // setViewToast(true);
       toast.error('포켓 이름은 1~20자 사이로 지어주세요');
     } else {
       const form = new FormData();
@@ -147,7 +146,7 @@ const AddPocket = props => {
                       item.categorySeq !== selectedCate.categorySeq && (
                         <SelectOption
                           key={idx}
-                          className={!dropdown && 'close' }
+                          className={!dropdown && 'close'}
                           onClick={() => {
                             setSelectedCate(item);
                             setDropdown(!dropdown);

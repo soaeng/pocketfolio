@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import {H2, Body1} from '../../styles/styles.style';
-import {TbEdit, TbList, TbFiles} from 'react-icons/tb';
+import {H2} from '../../styles/styles.style';
+import {TbEdit} from 'react-icons/tb';
 import {
   RiFileDownloadLine,
   RiDownloadLine,
@@ -17,7 +17,6 @@ export const Container = styled.div`
   justify-content: center;
   margin: 2rem auto;
   width: 80vw;
-  /* outline: solid; */
 `;
 
 export const Content = styled.div`
@@ -27,7 +26,6 @@ export const Content = styled.div`
   border-radius: 10px;
   outline: 4px solid #facbcb;
   margin-bottom: 3rem;
-  /* min-height: 50rem; */
 `;
 
 export const Header = styled.div`
@@ -38,13 +36,33 @@ export const ContentDiv = styled.div`
   width: 100%;
 `;
 export const Summary = styled.div`
-  width: 100%;
-  img {
+  figure img {
+    display: block;
+    margin: 0.9em auto;
+    min-width: 50px;
+    text-align: center;
     max-width: 100%;
+    min-width: 100%;
   }
-
+  .image_resized {
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .image-style-block-align-left {
+    margin-right: auto;
+    margin-left: 0;
+  }
+  .image-style-block-align-right {
+    margin-left: auto;
+    margin-right: 0;
+  }
+  .image-style-align-left {
+    float: left;
+    margin-right: 1.5rem;
+  }
   .image-style-align-right {
     float: right;
+    margin-left: 1.5rem;
   }
 `;
 
@@ -68,7 +86,6 @@ export const HeaderBottom = styled.div`
 
 export const WriteDate = styled.p`
   margin: 0;
-  /* width: 100%; */
   display: flex;
   justify-content: flex-end;
   padding-bottom: 0.5rem;
