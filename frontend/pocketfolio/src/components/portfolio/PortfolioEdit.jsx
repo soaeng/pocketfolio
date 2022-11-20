@@ -71,16 +71,23 @@ const PortfolioEdit = () => {
   // 최종 등록할 이미지 (post)
   const [resultImg, setResultImg] = useState([]);
 
+  // 제목 길이 감지
+  const [minTitleLeng, setMinTitleLeng] = useState(false);
   // 파일명 길이 감지 (길이 제한)
   const [overFileName, setOverFileName] = useState(false);
 
   // 포트폴리오 제목 저장
   const getValue = e => {
     const {name, value} = e.target;
-    setPortContent({
-      ...portContent,
-      [name]: value,
-    });
+    if (value.length === 0) {
+      setMinTitleLeng(true);
+    } else {
+      setPortContent({
+        ...portContent,
+        [name]: value,
+      });
+      setMinTitleLeng(false);
+    }
   };
 
   // 랜더링 시 기존 포트폴리오 상세 내용 get
@@ -252,61 +259,67 @@ const PortfolioEdit = () => {
   const savePortFolio = () => {
     const form = new FormData();
 
-    // 썸네일이 변경 되었을 때,
-    if (isChangeThumb) {
-      const port = JSON.stringify({
-        name: portContent.name,
-        summary: portContent.summary,
-        tags: hashArr,
-      });
-      form.append('portfolio', new Blob([port], {type: 'application/json'}));
-      form.append('thumbnail', thumbNail);
-      // 썸네일 변경 없을 때,
+    if (portContent.name.length === 0) {
+      setMinTitleLeng(true);
+      closeModal();
+      
     } else {
-      const port = JSON.stringify({
-        name: portContent.name,
-        summary: portContent.summary,
-        tags: hashArr,
-        thumbnail: thumbData.url,
-        thumbnailName: thumbData.name,
-      });
-      form.append('portfolio', new Blob([port], {type: 'application/json'}));
-    }
-
-    const uploadImage = JSON.stringify(uploadImg);
-    const resultImage = JSON.stringify(resultImg);
-    const existfile = JSON.stringify(existFile);
-
-    form.append(
-      'uploadImg',
-      new Blob([uploadImage], {type: 'application/json'}),
-    );
-    form.append(
-      'resultImg',
-      new Blob([resultImage], {type: 'application/json'}),
-    );
-
-    form.append('urls', new Blob([existfile], {type: 'application/json'}));
-
-    let files = newFile;
-    if (files.length > 0) {
-      for (let i = 0; i < files.length; i++) {
-        form.append('files', files[i]);
+      // 썸네일이 변경 되었을 때,
+      if (isChangeThumb) {
+        const port = JSON.stringify({
+          name: portContent.name,
+          summary: portContent.summary,
+          tags: hashArr,
+        });
+        form.append('portfolio', new Blob([port], {type: 'application/json'}));
+        form.append('thumbnail', thumbNail);
+        // 썸네일 변경 없을 때,
+      } else {
+        const port = JSON.stringify({
+          name: portContent.name,
+          summary: portContent.summary,
+          tags: hashArr,
+          thumbnail: thumbData.url,
+          thumbnailName: thumbData.name,
+        });
+        form.append('portfolio', new Blob([port], {type: 'application/json'}));
       }
+
+      const uploadImage = JSON.stringify(uploadImg);
+      const resultImage = JSON.stringify(resultImg);
+      const existfile = JSON.stringify(existFile);
+
+      form.append(
+        'uploadImg',
+        new Blob([uploadImage], {type: 'application/json'}),
+      );
+      form.append(
+        'resultImg',
+        new Blob([resultImage], {type: 'application/json'}),
+      );
+
+      form.append('urls', new Blob([existfile], {type: 'application/json'}));
+
+      let files = newFile;
+      if (files.length > 0) {
+        for (let i = 0; i < files.length; i++) {
+          form.append('files', files[i]);
+        }
+      }
+      compareImgList();
+      dispatch(modifiedPort({form, port_id}))
+        .unwrap()
+        .then(res => {
+          closeModal();
+          navigate(`/port/${port_id}`);
+        });
     }
-    compareImgList();
-    dispatch(modifiedPort({form, port_id}))
-      .unwrap()
-      .then(res => {
-        closeModal();
-        navigate(`/port/${port_id}`);
-      });
   };
 
   // 1234
-  console.log(existFile,'기존파일')
-  console.log(newFile, '새로추가한 파일')
-  console.log(attachList, '첨부파일 리스트')
+  console.log(existFile, '기존파일');
+  console.log(newFile, '새로추가한 파일');
+  console.log(attachList, '첨부파일 리스트');
   return (
     <Background>
       <Nav></Nav>
@@ -336,6 +349,9 @@ const PortfolioEdit = () => {
               padding: '1.5em 1em',
             }}
           ></Title>
+          {minTitleLeng && (
+            <FeedbackText>제목은 1~50자 사이로 입력해주세요.</FeedbackText>
+          )}
         </ContentDiv>
 
         <ContentDiv>

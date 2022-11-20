@@ -56,11 +56,14 @@ const AddPort = () => {
   // 최종 등록할 이미지 (post)
   const [resultImg, setResultImg] = useState([]);
 
-  // 제목 길이 감지
+  // 제목 길이 유효성 검사
   const [minTitleLeng, setMinTitleLeng] = useState(false);
 
-  // 파일명 길이 감지 (길이 제한)
+  // 파일명 길이 유효성 검사
   const [overFileName, setOverFileName] = useState(false);
+
+  // 해시태그 유효성(공백, 특수문자) 검사
+  const [correctHash, setCorrectHash] = useState(false);
 
   // 포트폴리오 제목 저장
   const getValue = e => {
@@ -76,16 +79,24 @@ const AddPort = () => {
       setMinTitleLeng(false);
     }
   };
-
   // 해시태그 입력
   const onChangeHashtag = e => {
+    const hashInput = e.target.value;
+    // 특수문자, 공백 정규식
+    const special = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/gi;
+    const space = /\s/g;
+    if (special.test(hashInput) || space.test(hashInput)) {
+      setCorrectHash(true);
+    } else {
+      setCorrectHash(false);
+    }
     setHashtag(e.target.value);
   };
 
   // 해시태그 입력창에서 엔터 눌렀을 때,
   const onKeyUp = e => {
     const hashInput = e.target.value;
-
+    console.log();
     // 해시태그 배열에 추가 후 입력 창 초기화
     // 빈문자, 공백, 특수문자 입력 불가
     if (e.keyCode === 13 && hashInput.trim() !== '') {
@@ -94,12 +105,10 @@ const AddPort = () => {
       const space = /\s/g;
 
       if (special.test(hashInput) || space.test(hashInput)) {
-        toast.error('공백 및 특수문자 입력 불가', {
-          position: 'bottom-left',
-          duration: 2000,
-        });
+        setCorrectHash(true);
       } else {
         setHashArr(hashArr => [...hashArr, hashtag]);
+        setCorrectHash(false);
         setHashtag('');
       }
     }
@@ -194,63 +203,53 @@ const AddPort = () => {
     }
   };
 
+  console.log(portContent.name.length);
   // 포트폴리오 제출
   const savePortFolio = () => {
     if (portContent.name.length === 0) {
-    }
-    const form = new FormData();
-    const port = JSON.stringify({
-      name: portContent.name,
-      summary: portContent.summary,
-      tags: hashArr,
-    });
-
-    const uploadImage = JSON.stringify(uploadImg);
-
-    const resultImage = JSON.stringify(resultImg);
-
-    form.append(
-      'uploadImg',
-      new Blob([uploadImage], {type: 'application/json'}),
-    );
-    form.append('portfolio', new Blob([port], {type: 'application/json'}));
-    form.append(
-      'resultImg',
-      new Blob([resultImage], {type: 'application/json'}),
-    );
-
-    let files = attachList;
-    for (let i = 0; i < files.length; i++) {
-      form.append('files', files[i]);
-    }
-    form.append('thumbnail', thumbNail);
-    compareImgList();
-
-    dispatch(registPortfolio(form))
-      .unwrap()
-      .then(res => {
-        closeModal();
-        navigate(`/port`);
+      setMinTitleLeng(true);
+      closeModal();
+    } else {
+      const form = new FormData();
+      const port = JSON.stringify({
+        name: portContent.name,
+        summary: portContent.summary,
+        tags: hashArr,
       });
+
+      const uploadImage = JSON.stringify(uploadImg);
+
+      const resultImage = JSON.stringify(resultImg);
+
+      form.append(
+        'uploadImg',
+        new Blob([uploadImage], {type: 'application/json'}),
+      );
+      form.append('portfolio', new Blob([port], {type: 'application/json'}));
+      form.append(
+        'resultImg',
+        new Blob([resultImage], {type: 'application/json'}),
+      );
+
+      let files = attachList;
+      for (let i = 0; i < files.length; i++) {
+        form.append('files', files[i]);
+      }
+      form.append('thumbnail', thumbNail);
+      compareImgList();
+
+      dispatch(registPortfolio(form))
+        .unwrap()
+        .then(res => {
+          closeModal();
+          navigate(`/port`);
+        });
+    }
   };
 
   return (
     <Background>
       <Nav></Nav>
-      <Toaster
-        position="top-center"
-        containerStyle={{
-          position: 'absolute',
-        }}
-        toastOptions={{
-          duration: 3000,
-          style: {
-            background: '#fff',
-            color: '#333333',
-            fontSize: '0.85rem',
-          },
-        }}
-      />
       <Wrapper className="wrapper">
         <ContentDiv>
           <Title
@@ -266,7 +265,7 @@ const AddPort = () => {
             autoFocus
           ></Title>
           {minTitleLeng && (
-            <FeedbackText>제목은 1~50자 사이로 입력해주세요.</FeedbackText>
+            <FeedbackText>제목을 1~50자 사이로 입력해주세요.</FeedbackText>
           )}
         </ContentDiv>
 
@@ -292,6 +291,9 @@ const AddPort = () => {
                 placeholder="해시태그 (12자 이하)"
               />
             </InputDiv>
+            {correctHash && (
+              <FeedbackText>공백, 특수문자 입력 불가</FeedbackText>
+            )}
             <HashList>
               {hashArr.map((item, idx) => (
                 <HashOutter key={idx} value={item} onClick={deleteHash}>

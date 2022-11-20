@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import {H3, Body1} from '../../styles/styles.style';
 
 export const Overlay = styled.div`
   position: fixed;
@@ -28,15 +29,26 @@ export const ModalWrap = styled.div`
 export const Contents = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  justify-content: flex-end;
   align-items: center;
   height: 100%;
 `;
 
+export const TextDiv = styled.div`
+  display: flex;
+  align-items: center;
+  padding-bottom: 0.7rem;
+`
+export const Text = styled(H3)`
+  /* margin: 0;
+  padding-top: 2.5rem; */
+`;
+
 export const BtnDiv = styled.div`
   display: flex;
-
+  align-items: center;
   justify-content: space-evenly;
+  /* padding-top: 3rem; */
   width: 40%;
   height: 30%;
 `;
