@@ -61,11 +61,13 @@ public class SearchServiceImpl implements SearchService {
         if (categorySeqBinary == null || categorySeqBinary < 0 || categorySeqBinary >= CATEGORY_BINARY_MAX) {
             isAllCategory = true;
         } else {
-            char[] categoryBinary = Long.toBinaryString(categorySeqBinary).toCharArray();
-            for (int i = categoryBinary.length - 1; i >= 0; i--) {
-                if (categoryBinary[i] == '1') {
-                    categories.add(Long.valueOf(i + 1));
+            int i = 1;
+            while (categorySeqBinary > 0L) {
+                if (categorySeqBinary % 2 == 1) {
+                    categories.add(Long.valueOf(i));
                 }
+                categorySeqBinary /= 2;
+                i++;
             }
         }
 
