@@ -114,13 +114,17 @@ const Main = () => {
   async function loadData() {
     const res = await dispatch(getMain());
 
-    if (!res.error) {
+    if (res.type === 'getMain/fulfilled') {
       setMainRoom(res.payload.mainRoom);
-      setColor(themeColor[res.payload.mainRoom.theme]);
+      setColor(
+        res.payload.mainRoom
+          ? themeColor[res.payload.mainRoom?.theme]
+          : '#cbb6f4',
+      );
       setCategoryRec(res.payload.categoryRec);
       setPortfolios(res.payload.portfolios);
 
-      if (res.payload.portfolios.length > 0) {
+      if (res.payload.portfolios?.length > 0) {
         setPortCnt(res.payload.portfolios.length - 1);
       }
     }
