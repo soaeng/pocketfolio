@@ -4,7 +4,7 @@ import {useBounds} from '@react-three/drei';
 import Item from './Item';
 
 const Items = props => {
-  const [selectedMesh, setSelectedMesh] = useState(false);
+  const [selectedMesh, setSelectedMesh] = useState(state => false);
   const cntRef = props.cntRef;
   const boundaryRef = props.boundaryRef;
   const edit = props.edit;
