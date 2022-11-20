@@ -1,34 +1,48 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {
   Overlay,
   ModalWrap,
   Contents,
+  TextDiv,
+  Text,
   BtnDiv,
   StyledBtn,
 } from './DeleteModal.style';
-import {H3, Body1} from '../../styles/styles.style';
+import {Body1} from '../../styles/styles.style';
 
-const DeleteModal = ({onClose}) => {
+const DeleteModal = props => {
+  const {onClose, text, seq, deleteFunc} = props;
+
   const handleClose = () => {
     onClose();
   };
 
-  const nothing = () => {};
   return (
     <Overlay>
-      <ModalWrap onClick={nothing}>
+      <ModalWrap>
         <Contents>
-          <H3>이 포트폴리오를 지우시겠습니까?</H3>
+          <TextDiv>
+            <Text>이 {text} 지우시겠습니까?</Text>
+          </TextDiv>
           <BtnDiv>
-            <StyledBtn className="cancel" onClick={handleClose}>
-              <Body1>
-              취소
-                </Body1>
+            <StyledBtn
+              className="cancel"
+              onClick={event => {
+                event.stopPropagation();
+                handleClose();
+              }}
+            >
+              <Body1>취소</Body1>
             </StyledBtn>
-            <StyledBtn className="delete" onClick={handleClose}>
-              <Body1>
-              삭제
-                </Body1>
+            <StyledBtn
+              className="delete"
+              onClick={event => {
+                event.stopPropagation();
+                deleteFunc(seq);
+                handleClose();
+              }}
+            >
+              <Body1>삭제</Body1>
             </StyledBtn>
           </BtnDiv>
         </Contents>

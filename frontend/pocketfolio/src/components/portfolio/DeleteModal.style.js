@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import {H3} from '../../styles/styles.style';
 
 export const Overlay = styled.div`
   position: fixed;
@@ -9,7 +10,7 @@ export const Overlay = styled.div`
   left: 0;
   right: 0;
   background: rgba(0, 0, 0, 0.2);
-  z-index: 3;
+  z-index: 9999;
 `;
 
 export const ModalWrap = styled.div`
@@ -20,64 +21,62 @@ export const ModalWrap = styled.div`
   position: absolute;
   top: 50%;
   left: 50%;
+  z-index: 100;
   transform: translate(-50%, -50%);
 `;
 
 export const Contents = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  justify-content: flex-end;
   align-items: center;
   height: 100%;
-  h1 {
-    font-size: 30px;
-    font-weight: 600;
-    margin: 0;
-    color: #be2018;
-  }
+`;
 
-  .buttonDiv {
-    display: flex;
-    justify-content: space-around;
-    width: 30%;
-
-    .close {
-      &:hover {
-        letter-spacing: 2px;
-        transform: scale(1);
-        background-color: #be2018;
-        cursor: pointer;
-      }
-    }
-  }
+export const TextDiv = styled.div`
+  display: flex;
+  align-items: center;
+  padding-bottom: 0.7rem;
+`;
+export const Text = styled(H3)`
 `;
 
 export const BtnDiv = styled.div`
   display: flex;
-  margin: auto;
+  align-items: center;
   justify-content: space-evenly;
+  padding-bottom: 1rem;
   width: 40%;
+  height: 30%;
 `;
 
 export const StyledBtn = styled.button`
+  p {
+    margin: 0;
+  }
   &.cancel {
-    width: 6rem;
-    height: 2.8rem;
-    background-color: rgba(255, 255, 255, 0.08);
+    width: 5.5rem;
+    height: 2.5rem;
+    background-color: white;
     box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.3),
       0px 1px 3px 1px rgba(0, 0, 0, 0.15);
     border: 0;
     border-radius: 100px;
-    color: #2c2365;
+    color: #e75452;
     font-weight: 1000;
     font-size: 20px;
+    margin-right: 0.5rem;
     cursor: pointer;
+
+    &:hover {
+      background-color: #f6f1f1;
+    }
   }
-  
+
   &.delete {
-    width: 6rem;
-    height: 2.8rem;
-    background-color: #2C2365;
+    width: 5.5rem;
+    height: 2.5rem;
+    background-color: #e75452;
     box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.3),
       0px 1px 3px 1px rgba(0, 0, 0, 0.15);
     border: 0;
@@ -86,5 +85,9 @@ export const StyledBtn = styled.button`
     font-weight: 1000;
     font-size: 20px;
     cursor: pointer;
+
+    &:hover {
+      background-color: #fb706d;
+    }
   }
 `;

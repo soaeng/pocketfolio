@@ -27,11 +27,11 @@ const H1 = styled.h1`
 
 const H2 = styled.h2`
   // xl(4k, ≥2100px)
-  font-size: 6rem;
+  font-size: 3rem;
 
   // lg(FHD <2100px)
   @media screen and (max-width: 2100px) {
-    font-size: 4rem;
+    font-size: 2.7rem;
   }
 
   // md(HD, <1500px)
@@ -75,9 +75,9 @@ const H3 = styled.h3`
   }
 `;
 
-const Body1 = styled.body`
+const Body1 = styled.p`
   // xl(4k, ≥2100px)
-  font-size: 3rem;
+  font-size: 1.7rem;
 
   // lg(FHD <2100px)
   @media screen and (max-width: 2100px) {
@@ -111,17 +111,17 @@ const Body2 = styled.p`
 
   // md(HD, <1500px)
   @media screen and (max-width: 1500px) {
-    font-size: 0.75rem;
+    font-size: 0.9rem;
   }
 
   // sm(태블릿, <900px)
   @media screen and (max-width: 900px) {
-    font-size: 0.5rem;
+    font-size: 0.8rem;
   }
 
   // xs(모바일, <600px)
   @media screen and (max-width: 600px) {
-    font-size: 0.25rem;
+    font-size: 0.5rem;
   }
 `;
 
