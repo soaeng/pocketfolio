@@ -48,7 +48,7 @@ export const BtnDiv = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-evenly;
-  /* padding-top: 3rem; */
+  padding-bottom: 1rem;
   width: 40%;
   height: 30%;
 `;

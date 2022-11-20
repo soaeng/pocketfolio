@@ -316,10 +316,7 @@ const PortfolioEdit = () => {
     }
   };
 
-  // 1234
-  console.log(existFile, '기존파일');
-  console.log(newFile, '새로추가한 파일');
-  console.log(attachList, '첨부파일 리스트');
+
   return (
     <Background>
       <Nav></Nav>
