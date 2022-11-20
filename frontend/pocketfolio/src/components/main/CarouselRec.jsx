@@ -83,7 +83,7 @@ const CarouselRec = ({rec, idx}) => {
 
   return (
     <Container>
-      <Title>{`${icon[idx]} "${rec.name}"에서 가장 인기있는 포켓 ${icon[idx]}`}</Title>
+      <Title>{`${icon[idx]} "${rec.name}"에서 가장 인기있는 포켓`}</Title>
 
       <CarouselContainer>
         {currentCnt !== 0 && (

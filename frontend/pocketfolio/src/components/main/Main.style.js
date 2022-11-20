@@ -82,13 +82,21 @@ export const PortItem = styled.li`
   padding: 1rem;
   font-size: 1.2rem;
 
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: flex-start;
+
   &:hover {
     background-color: ${props => props.color};
     border-radius: 1rem;
   }
 `;
 
-export const Num = styled.span`
+
+export const Num = styled.p`
+  margin: 0;
   margin-right: 1rem;
   font-size: 2rem;
   font-weight: bold;
@@ -96,8 +104,11 @@ export const Num = styled.span`
 `;
 
 export const Name = styled.p`
-  display: inline;
+  font-size: 1rem;
   margin: 0;
+  width: calc(100% - 3.2rem);
+  word-break: break-all;
+  word-wrap: break-word;
 `;
 
 export const SearchContainer = styled.div`
