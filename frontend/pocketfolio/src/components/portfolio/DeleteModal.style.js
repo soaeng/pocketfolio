@@ -38,7 +38,7 @@ export const TextDiv = styled.div`
   display: flex;
   align-items: center;
   padding-bottom: 0.7rem;
-`
+`;
 export const Text = styled(H3)`
   /* margin: 0;
   padding-top: 2.5rem; */

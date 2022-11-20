@@ -38,13 +38,33 @@ export const ContentDiv = styled.div`
   width: 100%;
 `;
 export const Summary = styled.div`
-  width: 100%;
-  img {
+  figure img {
+    display: block;
+    margin: 0.9em auto;
+    min-width: 50px;
+    text-align: center;
     max-width: 100%;
+    min-width: 100%;
   }
-
+  .image_resized {
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .image-style-block-align-left {
+    margin-right: auto;
+    margin-left: 0;
+  }
+  .image-style-block-align-right {
+    margin-left: auto;
+    margin-right: 0;
+  }
+  .image-style-align-left {
+    float: left;
+    margin-right: 1.5rem;
+  }
   .image-style-align-right {
     float: right;
+    margin-left: 1.5rem;
   }
 `;
 

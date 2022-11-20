@@ -65,7 +65,6 @@ export const CardList = styled.div`
     grid-template-columns: repeat(4, 1fr);
     align-items: center;
     height: 100%;
-    
   }
 
   &.portlists {
@@ -123,8 +122,6 @@ export const IconDiv = styled.button`
 
   &.addPocketIcon {
   }
-
-
 `;
 
 export const AddPortIcon = styled(RiFileAddFill)`

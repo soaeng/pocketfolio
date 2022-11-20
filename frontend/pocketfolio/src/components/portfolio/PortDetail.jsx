@@ -105,12 +105,10 @@ const PortDetail = () => {
           </Header>
 
           <ContentDiv>
-            <oembed url="https://youtu.be/tEm9EyEPMYM"></oembed>
             <Summary
               className="summary"
               dangerouslySetInnerHTML={{__html: portDetail.summary}}
             />
-            {/* <div>{ReactHtmlParser(portDetail.summary)}</div> */}
 
             {portDetail.urls && portDetail.urls?.length ? (
               <FileContainer>

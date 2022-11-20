@@ -147,7 +147,7 @@ const AddPocket = props => {
                       item.categorySeq !== selectedCate.categorySeq && (
                         <SelectOption
                           key={idx}
-                          className={!dropdown && 'close' }
+                          className={!dropdown && 'close'}
                           onClick={() => {
                             setSelectedCate(item);
                             setDropdown(!dropdown);
