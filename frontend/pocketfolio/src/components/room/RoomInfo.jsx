@@ -25,6 +25,7 @@ import {roomDislike, roomLike} from '../../store/roomSlice';
 import {unfollowFunc, followFunc} from '../../store/oauthSlice';
 import HitDetail from './HitDetail';
 import InfoEdit from './InfoEdit';
+import {useEffect} from 'react';
 
 // 마이룸 상단 방정보
 const RoomInfo = ({data, sidebar, edit, handleReload}) => {
@@ -102,6 +103,15 @@ const RoomInfo = ({data, sidebar, edit, handleReload}) => {
   const closeInfoEdit = () => {
     setInfoEdit(false);
   };
+
+  useEffect(() => {
+    setDetail(false);
+    setHitDetail(false);
+    setLike(data && data.like);
+    setLikeCount(data && data.likeCount);
+    setFollow(data && data.follow);
+    setInfoEdit(false);
+  }, [data]);
 
   return edit ? null : (
     <Container className={sidebar ? 'sidebar' : null}>
