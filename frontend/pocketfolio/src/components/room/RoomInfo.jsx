@@ -41,7 +41,7 @@ const RoomInfo = ({data, sidebar, edit, handleReload}) => {
 
   // 팔로우, 언팔로우
   async function handleFollow() {
-    if (user) {
+    if (user && user.userSeq !== data.room.userSeq) {
       if (follow) {
         const {payload} = await dispatch(unfollowFunc(data.room.userSeq));
         if (payload) {
@@ -58,7 +58,7 @@ const RoomInfo = ({data, sidebar, edit, handleReload}) => {
 
   // 좋아요, 좋아요 취소
   async function handleLike() {
-    if (user) {
+    if (user && user.userSeq !== data.room.userSeq) {
       if (like) {
         const {payload} = await dispatch(roomDislike(data.room.roomSeq));
         if (payload) {
