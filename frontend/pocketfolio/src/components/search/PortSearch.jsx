@@ -22,6 +22,7 @@ import {
   Item3,
   ShowIcon,
   IconDiv,
+  Shadow,
 } from './PortSearch.style';
 
 import UserProfile from '../common/UserProfile';
@@ -104,6 +105,7 @@ const PortSearch = ({data, handleLike, handleDisLike}) => {
                   <PortSearchButton onClick={e => portClickHandler(portSeq)}>
                     포트폴리오 보기
                   </PortSearchButton>
+                  <Shadow className="shadow" />
                 </HoverDiv>
               </PortImgDiv>
               {/* 프로필 컴포넌트 */}
@@ -121,7 +123,7 @@ const PortSearch = ({data, handleLike, handleDisLike}) => {
                     />
                   </PortUserImgContainer>
                   {/* 이름 */}
-                  <PortUserName>{name.length >= 10 ? name.slice(0, 10) : name}</PortUserName>
+                  <PortUserName>{name.length >= 12 ? name.slice(0, 12) : name}</PortUserName>
                 </PortUserDiv>
                 {roomSeq === userModal && <UserProfile userInfo={userInfo} closeUserModal={closeUserModal}/>}
                 {/* 좋아요, 클릭수 컴포넌트 */}
