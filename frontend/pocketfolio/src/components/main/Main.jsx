@@ -21,7 +21,6 @@ import CarouselRec from './CarouselRec';
 import {useDispatch, useSelector} from 'react-redux';
 import {getMain} from '../../store/roomSlice';
 import {useInterval} from '../../hook/hook';
-import {getMyInfo} from '../../store/oauthSlice';
 
 const Main = () => {
   const navigate = useNavigate();
@@ -131,7 +130,6 @@ const Main = () => {
   }
 
   useEffect(() => {
-    dispatch(getMyInfo());
     loadData();
     if (!user) {
       setColor('#cbb6f4');
