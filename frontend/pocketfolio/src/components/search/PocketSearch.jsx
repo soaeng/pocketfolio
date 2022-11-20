@@ -125,11 +125,11 @@ const PocketSearch = ({data, handleLike, handleDisLike}) => {
                 {roomSeq === userModal && <UserProfile userInfo={userInfo} closeUserModal={closeUserModal}/>}
                 {/* 좋아요, 클릭 컴포넌트 */}
                 <LikeShowDiv>
-                  <IconDiv
+                  {!user ? <IconDiv><LikeIcon/></IconDiv> : user && user.userSeq !== it.userSeq && (<IconDiv
                     onClick={e => handleLikeDislike(e, roomSeq, isLiked)}
                   >
                     {isLiked ? <LikeIcon /> : <DislikeIcon />}
-                  </IconDiv>
+                  </IconDiv>)}
                   <Item3>{like ? like : 0}</Item3>
                   <ShowIcon />
                   <div>{hit ? hit : 0}</div>
