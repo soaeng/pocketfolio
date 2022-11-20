@@ -5,7 +5,6 @@ export const Container = styled.div`
   width: 100%;
   height: calc(100% - 1.5rem);
   color: #333333;
-
   overflow-y: auto;
 
   &::-webkit-scrollbar {
@@ -140,7 +139,7 @@ export const FileItem = styled.div`
     }
   }
 
-  &+& {
+  & + & {
     margin-top: 0.3rem;
   }
 `;
@@ -151,8 +150,6 @@ export const FileName = styled.div`
   overflow: hidden;
   margin: 0;
   margin-right: 2px;
-
-
 `;
 
 export const DownBox = styled.a`
@@ -179,7 +176,7 @@ export const Tags = styled.div`
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-`
+`;
 
 export const Tag = styled.p`
   background-color: #ffe4de;
@@ -188,8 +185,7 @@ export const Tag = styled.p`
   border-radius: 0.3rem;
   font-size: 0.85rem;
 
-  &+& {
+  & + & {
     margin-left: 0.5rem;
   }
-
-`
+`;
