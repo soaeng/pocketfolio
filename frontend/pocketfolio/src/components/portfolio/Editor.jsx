@@ -41,6 +41,7 @@ export default function MyEditor(props) {
     };
   }
 
+  console.log('실제 담기는 값', portContent)
   return (
     <div className="Editor">
       <CKEditor
@@ -55,7 +56,8 @@ export default function MyEditor(props) {
             );
         }}
         config={{
-          extraPlugins: [uploadPlugin],
+          removePlugins : ["MediaEmbed"],
+          extraPlugins: [uploadPlugin, ],
           fontSize: {
             options: [
               14,
@@ -78,6 +80,7 @@ export default function MyEditor(props) {
         }}
         onChange={(event, editor) => {
           const data = editor.getData();
+          console.log(data)
           setPortContent({
             ...portContent,
             summary: data,

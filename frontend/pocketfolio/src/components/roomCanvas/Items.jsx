@@ -4,7 +4,7 @@ import {useBounds} from '@react-three/drei';
 import Item from './Item';
 
 const Items = props => {
-  const [selectedMesh, setSelectedMesh] = useState(state => state);
+  const [selectedMesh, setSelectedMesh] = useState(false);
   const cntRef = props.cntRef;
   const boundaryRef = props.boundaryRef;
   const edit = props.edit;
@@ -23,7 +23,7 @@ const Items = props => {
   useEffect(() => {
     setSelectedMesh('');
     api.refresh(boundaryRef.current).clip().fit();
-  }, [edit, api]);
+  }, [edit]);
 
   useEffect(() => {
     setSelectedMesh('');
@@ -33,7 +33,7 @@ const Items = props => {
   useFrame((state, dt) => {
     if (selectedMesh) {
       if (!edit) {
-        cntRef.current.enabled = false;
+        // cntRef.current.enabled = false;
         // cntRef.current.setAzimuthalAngle(selectedMesh.rotation._y);
         // cntRef.current.setPolarAngle(Math.PI / 2);
         api.refresh(selectedMesh).clip().fit();

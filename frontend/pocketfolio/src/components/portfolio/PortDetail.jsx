@@ -4,7 +4,6 @@ import {useDispatch} from 'react-redux';
 import {useNavigate, useLocation} from 'react-router-dom';
 import {getportDetail} from '../../store/portSlice';
 import toast, {Toaster} from 'react-hot-toast';
-
 import Nav from '../common/Nav';
 
 import {
@@ -37,7 +36,6 @@ import {
 const PortDetail = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const location = useLocation();
   // portSeq
   const params = useParams();
   const port_id = parseInt(params.port_id);
@@ -71,7 +69,7 @@ const PortDetail = () => {
   };
 
   const [showFiles, setShowFiles] = useState(false);
-
+  console.log(portDetail);
   return (
     <Background>
       <Toaster
@@ -107,7 +105,12 @@ const PortDetail = () => {
           </Header>
 
           <ContentDiv>
-            <Summary dangerouslySetInnerHTML={{__html: portDetail.summary}} />
+            <oembed url="https://youtu.be/tEm9EyEPMYM"></oembed>
+            <Summary
+              className="summary"
+              dangerouslySetInnerHTML={{__html: portDetail.summary}}
+            />
+            {/* <div>{ReactHtmlParser(portDetail.summary)}</div> */}
 
             {portDetail.urls && portDetail.urls?.length ? (
               <FileContainer>

@@ -38,6 +38,14 @@ export const ContentDiv = styled.div`
   width: 100%;
 `;
 export const Summary = styled.div`
+  width: 100%;
+  img {
+    max-width: 100%;
+  }
+
+  .image-style-align-right {
+    float: right;
+  }
 `;
 
 export const TitleDiv = styled.div`
@@ -95,7 +103,6 @@ export const EditIcon = styled(TbEdit)`
     color: #df7d72;
   }
 `;
-
 
 export const FileContainer = styled.div`
   position: absolute;

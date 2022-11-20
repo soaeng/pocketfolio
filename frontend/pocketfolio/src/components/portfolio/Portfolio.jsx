@@ -112,7 +112,7 @@ const Portfolio = () => {
 
         <CardWrapper className="myroomwrapper">
           <HeaderDiv>
-            <Text className="myrooms">포켓들</Text>
+            <Text className="myrooms">포켓 목록</Text>
             <BtnDiv>
               <IconDiv className="addPocketIcon">
                 <AddPocketIcon onClick={()=>setOpenPockMod(true)}></AddPocketIcon>
@@ -140,7 +140,7 @@ const Portfolio = () => {
 
         <CardWrapper>
           <HeaderDiv>
-            <Text className="portfolios">포트폴리오들</Text>
+            <Text className="portfolios">포트폴리오 목록</Text>
             <BtnDiv>
               <IconDiv className="addPortIcon" onClick={movePortCreate}>
                 <AddPortIcon />

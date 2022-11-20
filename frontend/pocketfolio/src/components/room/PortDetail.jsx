@@ -72,7 +72,6 @@ const PortDetail = ({nowPort, roomDto}) => {
           </Div>
         </Header>
 
-
         <ContentDiv>
           {data?.summary && (
             <Content dangerouslySetInnerHTML={{__html: data.summary}} />
@@ -101,7 +100,6 @@ const PortDetail = ({nowPort, roomDto}) => {
             </FileContainer>
           )}
         </ContentDiv>
-
 
         {data.tags && (
           <Tags>

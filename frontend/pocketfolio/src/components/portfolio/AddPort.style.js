@@ -9,7 +9,19 @@ export const Background = styled.div`
   width: 100%;
   height: 100vh;
   flex-direction: column;
+ 
+  .ck-content .image.image_resized {
+    display: block;
+    box-sizing: border-box;
+  }
 
+  .ck-content .image.image_resized img {
+    width: 100%;
+  }
+
+  .ck-content .image.image_resized > figcaption {
+    display: block;
+  }
   .ck.ck-editor__editable:not(.ck-editor__nested-editable) {
     height: 23rem;
     background-color: white;
