@@ -3,6 +3,8 @@ import {
   Overlay,
   ModalWrap,
   Contents,
+  TextDiv,
+  Text,
   BtnDiv,
   StyledBtn,
 } from './DeleteModal.style';
@@ -15,13 +17,13 @@ const DeleteModal = props => {
     onClose();
   };
 
-  
-
   return (
     <Overlay>
       <ModalWrap>
         <Contents>
-          <H3>이 {text} 지우시겠습니까?</H3>
+          <TextDiv>
+            <Text>이 {text} 지우시겠습니까?</Text>
+          </TextDiv>
           <BtnDiv>
             <StyledBtn
               className="cancel"
@@ -37,7 +39,7 @@ const DeleteModal = props => {
               onClick={event => {
                 event.stopPropagation();
                 deleteFunc(seq);
-                handleClose()
+                handleClose();
               }}
             >
               <Body1>삭제</Body1>
