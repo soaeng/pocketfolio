@@ -30,6 +30,7 @@ import {useNavigate} from 'react-router-dom';
 import Nav from '../common/Nav';
 import {updateProfile, signOut} from '../../store/oauthSlice';
 import toast, {Toaster} from 'react-hot-toast';
+import userEvent from '@testing-library/user-event';
 
 const Profile = () => {
   const dispatch = useDispatch();
@@ -114,7 +115,24 @@ const Profile = () => {
     });
   }
 
+  function reset() {
+    if (user && user.birth) {
+      const year = user.birth.year;
+      const month =
+        user.birth.month < 10 ? `0${user.birth.month}` : user.birth.month;
+      const day = user.birth.day < 10 ? `0${user.birth.day}` : user.birth.day;
+
+      setBirth(`${year}-${month}-${day}`);
+    }
+  }
+
   useEffect(() => {
+    setName(user && user.name ? user.name : null);
+    setProfilePic(null);
+    setPicChanged(false);
+    setPreview(user && user.profilePic);
+    setBlogUrl(user && user.blogUrl);
+    setDescribe(user && user.describe ? user.describe : '');
     if (user && user.birth) {
       const year = user.birth.year;
       const month =
@@ -219,7 +237,7 @@ const Profile = () => {
         <BtnContainer>
           <SignOutText onClick={toggleModal}>회원탈퇴</SignOutText>
           <Btnbox>
-            <Btn type="reset" className="cancel">
+            <Btn type="reset" className="cancel" onClick={reset}>
               취소
             </Btn>
             <Btn type="submit" className="save">
