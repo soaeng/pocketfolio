@@ -42,6 +42,7 @@ const CarouselRec = ({rec, idx}) => {
   ];
 
   const slideRef = useRef();
+  const totalRef = useRef();
   const [totalCnt, setTotalCnt] = useState(0);
   const [currentCnt, setCurrentCnt] = useState(0);
 
@@ -65,27 +66,40 @@ const CarouselRec = ({rec, idx}) => {
 
   // 전체 아이템 개수 가져오기
   useEffect(() => {
-    setTotalCnt(rec.recommend.length - 1);
 
-    if (slideRef.current.scrollWidth >= slideRef.current.clientWidth) {
+    if (
+      currentCnt === 0 &&
+      slideRef.current.scrollWidth <= totalRef.current.clientWidth
+    ) {
       setTotalCnt(0);
       setCurrentCnt(0);
+    } else {
+      setTotalCnt(rec.recommend.length - 1);
     }
-  }, [rec, slideRef]);
+  }, [rec, slideRef.current?.scrollWidth, totalRef]);
 
   useEffect(() => {
     const item = document.querySelector('.item');
     slideRef.current.style.transition = 'all 0.5s ease-in-out';
-    slideRef.current.style.transform = `translateX(-${
-      currentCnt * item.offsetWidth
-    }px)`;
+
+
+    if (
+      totalRef.current.clientWidth + currentCnt * item.offsetWidth <=
+      slideRef.current.scrollWidth + item.offsetWidth
+    ) {
+      slideRef.current.style.transform = `translateX(-${
+        currentCnt * item.offsetWidth
+      }px)`;
+    } else {
+      setCurrentCnt(0);
+    }
   }, [currentCnt]);
 
   return (
     <Container>
       <Title>{`${icon[idx]} "${rec.name}"에서 가장 인기있는 포켓`}</Title>
 
-      <CarouselContainer>
+      <CarouselContainer ref={totalRef}>
         {currentCnt !== 0 && (
           <PrevDiv className="navigation" onClick={PrevSlide}>
             <PrevIcon />
