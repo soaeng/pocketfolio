@@ -9,6 +9,12 @@ export const Container1 = styled.div`
   display: flex;
   justify-content: center;
   margin-top: 2%;
+
+  @media screen and (max-width: 768px) {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
 `;
 
 export const Container = styled.div`
@@ -82,11 +88,16 @@ export const TopButtonIcon = styled(CiCircleChevUp)`
   height: 100%;
 `;
 
+export const SelectBox = styled.div`
+  padding: 10px 10.5% 0 10.5%;
+`
+
 export const Select = styled.select`
   padding: 5px;
   border-radius: 8px;
   border: 2px solid lightcoral;
   font-size: 16px;
+  width: 100px;
 `;
 
 export const SelectOption = styled.option`
@@ -96,7 +107,10 @@ export const SelectOption = styled.option`
 export const FilterDiv = styled.div`
   display: flex;
   justify-content: flex-end;
-  margin-right: 125px;
+  align-content: center;
+  flex-direction: column;
+  align-items: flex-end;
+  flex-wrap: wrap;
 `;
 
 export const DivTest = styled.div`
@@ -106,16 +120,21 @@ export const DivTest = styled.div`
 `;
 
 export const Tabs = styled.div`
-  height: 100%;
-  min-width: 150px;
+  display: flex;
+  margin-left: 10px;
+
+  @media screen and (max-width: 768px) {
+    margin-top: 10px;
+    margin-left: 0;
+  }
 `;
 
-export const Tab = styled(Body3)`
+export const Tab = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 5%;
-  margin: 0 0.5%;
+  margin: 0 5px;
+  min-width: 80px;
   color: white;
   padding: 10px;
   transition: all 0.2s;
@@ -138,4 +157,9 @@ export const Tab = styled(Body3)`
   color: ${props => {
     return props.searchMode === props.name ? '#fff' : '#e75452';
   }};
+
+  @media screen and (max-width: 768px) {
+    min-width: 60px;
+    font-size: small;
+  }
 `;

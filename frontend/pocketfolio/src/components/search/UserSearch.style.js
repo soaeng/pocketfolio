@@ -7,24 +7,30 @@ import {
 
 // Card 모양
 export const UserCard = styled.div`
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  overflow-x: auto;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  align-items: center;
+  height: 100%;
   scroll-behavior: smooth;
-  padding: 3% 5%;
+  padding: 3% 10%;
+
+  @media screen and (max-width: 1200px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @media screen and (max-width: 900px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media screen and (max-width: 600px) {
+    grid-template-columns: repeat(1, 1fr);
+  }
 `;
 
 export const UserItem = styled.div`
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  margin: 10px;
+  margin: 20px 10px;
   padding: 10px;
-  width: 20%;
-  height: 20%;
-  min-width: 280px;
-  min-height: 320px;
+  min-height: 310px;
   border-radius: 16px;
   box-shadow: 0px 2px 5px 1px rgba(0, 0, 0, 0.25);
 `;
@@ -40,6 +46,7 @@ export const UserContainer = styled.div`
 export const UserImgContainer = styled.div`
   display: flex;
   justify-content: center;
+  padding: 2%;
   transition: all 0.2s;
   cursor: pointer;
 
@@ -50,8 +57,8 @@ export const UserImgContainer = styled.div`
 
 // 프로필 사진
 export const UserImg = styled.img`
-  width: 200px;
-  height: 200px;
+  width: 180px;
+  height: 180px;
   object-fit: cover;
   border-radius: 50%;
 `;
@@ -70,7 +77,11 @@ export const UserNameDiv = styled.div`
   font-weight: bold;
 `
 
-export const UserDescDiv = styled.div``
+export const UserDescDiv = styled.div`
+  width:230px;
+  text-overflow: ellipsis;
+  overflow:hidden;
+`
 
 export const FollowDiv = styled.div`
   display: flex;

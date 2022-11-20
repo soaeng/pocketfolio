@@ -17,8 +17,9 @@ import {
   SelectOption,
   FilterDiv,
   DivTest,
-  Tabs,
   Tab,
+  SelectBox,
+  Tabs,
 } from './Search.style';
 
 import PocketSearch from './PocketSearch';
@@ -54,17 +55,19 @@ const Filter = props => {
   };
 
   return (
-    <Select onChange={handleChange}>
-      {props.options.map(option => (
-        <SelectOption
-          value={option.value}
-          defaultValue={props.defaultValue === option.value}
-          key={option.value}
-        >
-          {option.name}
-        </SelectOption>
-      ))}
-    </Select>
+    <SelectBox>
+      <Select onChange={handleChange}>
+        {props.options.map(option => (
+          <SelectOption
+            value={option.value}
+            defaultValue={props.defaultValue === option.value}
+            key={option.value}
+          >
+            {option.name}
+          </SelectOption>
+        ))}
+      </Select>
+    </SelectBox>
   );
 };
 
@@ -278,29 +281,29 @@ const Search = () => {
           />
         </Container>
         {/* 카테고리 */}
-        {/* <Tabs> */}
-        <Tab
-          searchMode={searchMode}
-          name={'room'}
-          onClick={e => selectSearchMode(e, 'room')}
-        >
-          마이포켓
-        </Tab>
-        <Tab
-          searchMode={searchMode}
-          name={'portfolio'}
-          onClick={e => selectSearchMode(e, 'portfolio')}
-        >
-          포트폴리오
-        </Tab>
-        <Tab
-          searchMode={searchMode}
-          name={'user'}
-          onClick={e => selectSearchMode(e, 'user')}
-        >
-          유저
-        </Tab>
-        {/* </Tabs> */}
+        <Tabs>
+          <Tab
+            searchMode={searchMode}
+            name={'room'}
+            onClick={e => selectSearchMode(e, 'room')}
+          >
+            마이포켓
+          </Tab>
+          <Tab
+            searchMode={searchMode}
+            name={'portfolio'}
+            onClick={e => selectSearchMode(e, 'portfolio')}
+          >
+            포트폴리오
+          </Tab>
+          <Tab
+            searchMode={searchMode}
+            name={'user'}
+            onClick={e => selectSearchMode(e, 'user')}
+          >
+            유저
+          </Tab>
+        </Tabs>
       </Container1>
       {/* 태그 */}
       {searchMode === 'room' ? (
@@ -360,14 +363,14 @@ const Search = () => {
         {searchMode === 'room' && data ? (
           <>
             {/* 필터 */}
-            <FilterDiv>
-              <Filter options={filterOptions} setSort={setSort} />
-            </FilterDiv>
-            <PocketSearch
-              data={data}
-              handleLike={handleLike}
-              handleDisLike={handleDisLike}
-            />
+              <FilterDiv>
+                <Filter options={filterOptions} setSort={setSort} />
+                <PocketSearch
+                  data={data}
+                  handleLike={handleLike}
+                  handleDisLike={handleDisLike}
+                />
+              </FilterDiv>
           </>
         ) : null}
         {/* 포트폴리오 검색 */}
@@ -375,12 +378,12 @@ const Search = () => {
           <>
             <FilterDiv>
               <Filter options={filterOptions} setSort={setSort} />
+              <PortSearch               
+                data={data}
+                handleLike={handleLike}
+                handleDisLike={handleDisLike}
+              />
             </FilterDiv>
-            <PortSearch               
-              data={data}
-              handleLike={handleLike}
-              handleDisLike={handleDisLike}
-            />
           </>
         ) : null}
         {/* 유저 검색 */}
