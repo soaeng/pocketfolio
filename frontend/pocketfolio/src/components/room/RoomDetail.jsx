@@ -39,7 +39,7 @@ const RoomDetail = ({closeDetail, data}) => {
       )}
       <Introduction>{data.owner.describe}</Introduction>
 
-      {data.owner.rooms.length > 0 && (
+      {data?.owner?.rooms?.length > 0 && (
         <ExtraContainer>
           {data.owner.rooms.map((room, idx) => (
             <ExtraItem
