@@ -45,9 +45,7 @@ public class MainController {
 
         try {
             long userSeq = (Long) request.getAttribute("userSeq");
-            if (userSeq > 0) {
-                // 로그인 한 상태면
-                // 대표룸, 전체 포트폴리오 목록, 검색, 좋아요 랜덤 포켓, 팔로우 랜덤 포켓, 카테고리별 추천
+            if (userSeq > 0) { // 로그인 한 상태면
                 // 대표룸
                 response.put("mainRoom", roomService.findMainRoom(userSeq));
                 // 전체 포트폴리오 목록

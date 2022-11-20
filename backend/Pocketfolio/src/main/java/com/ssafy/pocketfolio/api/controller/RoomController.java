@@ -64,28 +64,6 @@ public class RoomController {
         return new ResponseEntity<>(response, status);
     }
 
-//        @Operation(summary = "마이룸 전체 목록 조회", description = "마이룸 전체 목록 조회", responses = {
-//            @ApiResponse(responseCode = "200", description = "마이룸 목록 조회 성공", content = @Content(schema = @Schema(implementation = RoomListRes.class))),
-//            @ApiResponse(responseCode = "403", description = "사용 불가능 토큰", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
-//            @ApiResponse(responseCode = "500", description = "서버 에러", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
-//    })
-//    @GetMapping
-//    public ResponseEntity<Map<String, Object>> findRoomAll(HttpServletRequest request) {
-//        log.debug("[GET] Controller - findRoomList");
-//        HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
-//        Map<String, Object> response = new HashMap<>();
-//
-//        try{
-//            long userSeq = (Long) request.getAttribute("userSeq");
-//
-//            response = roomService.findRoomAll(userSeq);
-//            status = HttpStatus.OK;
-//        } catch (Exception e) {
-//            log.error(e.getMessage());
-//        }
-//
-//        return new ResponseEntity<>(response, status);
-//    }
     @Operation(summary = "마이룸 조회", description = "마이룸 조회", responses = {
             @ApiResponse(responseCode = "200", description = "마이룸 조회 성공", content = @Content(schema = @Schema(implementation = RoomDto.class))),
             @ApiResponse(responseCode = "403", description = "사용 불가능 토큰", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
@@ -171,9 +149,6 @@ public class RoomController {
                 log.error("사용 불가능 토큰");
                 status = HttpStatus.FORBIDDEN;
             }
-//        } catch (AlreadyHasPortfolioException e) {
-//            log.error(e.getMessage());
-//            status = HttpStatus.CONFLICT;
         } catch (IllegalArgumentException e) {
             log.error(e.getMessage());
             status = HttpStatus.NOT_FOUND;
