@@ -27,7 +27,7 @@ export const PortCard = styled.div`
 
 // 각 아이템
 export const PortItem = styled.div`
-  margin: 10px;
+  margin: 20px 10px;
   padding: 10px;
   transition: 0.5s ease;
   border-radius: 16px;
@@ -40,10 +40,6 @@ export const PortImgDiv = styled.div`
   display: flex;
   justify-content: center;
   border-radius: 8px;
-
-  &:hover {
-    background-color: lightgray;
-  }
 `;
 
 export const PortThumbnail = styled.img`
@@ -58,16 +54,33 @@ export const HoverDiv = styled.div`
   flex-direction: column;
   position: absolute;
   justify-content: center;
+  width: 230px;
+  height: 230px;
   padding: 10px;
-  height: 32%;
-  /* min-width: 260px; */
   opacity: 0;
+  border-radius: 8px;
   cursor: pointer;
   z-index: 9;
 
   &:hover {
     opacity: 1;
   }
+
+  &:hover .shadow {
+    visibility: visible;
+  }
+`;
+
+export const Shadow = styled.div`
+  visibility: hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  border-radius: 8px;
+  background-color: #ffb9ae41;
 `;
 
 // 호버시 보이는 버튼
@@ -80,6 +93,7 @@ export const PortSearchButton = styled.button`
   color: #fff;
   font-size: 18px;
   height: 20%;
+  z-index: 2;
   cursor: pointer;
 
   &:hover {
@@ -126,6 +140,7 @@ export const PortUserImg = styled.img`
 
 export const PortUserName = styled.div`
   padding-left: 10px;
+  max-width: 100px;
 `
 
 // 좋아요 클릭수 컴포넌트
