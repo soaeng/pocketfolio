@@ -20,7 +20,7 @@ export const Container = styled.div`
 
 export const Name = styled.p`
   margin: 0;
-  width: calc(100% - 4rem);
+  width: calc(100% - 5rem);
   word-break: break-all;
   word-wrap: break-word;
 `;
