@@ -20,6 +20,9 @@ export const Container = styled.div`
 
 export const Name = styled.p`
   margin: 0;
+  width: calc(100% - 4rem);
+  word-break: break-all;
+  word-wrap: break-word;
 `;
 
 export const Btn = styled.button`

@@ -33,6 +33,13 @@ export const Box = styled.div`
 
 export const ContentTitle = styled.h3`
   margin: 0.7rem 0;
+  word-break: break-all;
+  word-wrap: break-word;
+`;
+
+export const Warning = styled.p`
+  margin: 0.7rem 0;
+  color: #ff6a6a;
 `;
 
 export const ContentBox = styled.div`
@@ -43,4 +50,4 @@ export const ContentBox = styled.div`
   &.full {
     width: 100%;
   }
-`
+`;
