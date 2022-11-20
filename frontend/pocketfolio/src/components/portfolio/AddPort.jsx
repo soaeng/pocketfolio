@@ -28,7 +28,6 @@ import Nav from '../common/Nav';
 import Editor from './Editor';
 import {Body1} from '../../styles/styles.style';
 import SaveModal from './SaveModal';
-import toast, {Toaster} from 'react-hot-toast';
 import {registPortfolio} from '../../store/portSlice';
 
 const AddPort = () => {
@@ -377,14 +376,6 @@ const AddPort = () => {
         close={closeModal}
         save={savePortFolio}
       ></SaveModal>
-      {/* 포트폴리오 로우 데이터 */}
-      {/* <div>
-        {portContent.summary}
-        {ReactHtmlParser(portContent.summary)}
-      </div> */}
-
-      {/* 유저에게 보여져야 할 포트폴리오 */}
-      {/* <Viewer content={portContent.summary} /> */}
     </Background>
   );
 };

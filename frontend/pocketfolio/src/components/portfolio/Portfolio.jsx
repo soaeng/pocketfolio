@@ -4,7 +4,6 @@ import {useNavigate} from 'react-router-dom';
 import {
   Container,
   Background,
-  Header,
   HeaderDiv,
   CardWrapper,
   Text,
@@ -25,7 +24,6 @@ import {
 import Card from './Card';
 import AddPocket from './AddPocket';
 import {getMyPocket} from '../../store/portSlice';
-import {createRoom} from '../../store/roomSlice';
 import {useDispatch} from 'react-redux';
 import DeleteModal from './DeleteModal';
 import {deletePort} from '../../store/portSlice';
