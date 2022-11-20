@@ -30,6 +30,7 @@ export const UserCard = styled.div`
 export const UserItem = styled.div`
   margin: 20px 10px;
   padding: 10px;
+  min-width: 250px;
   min-height: 310px;
   border-radius: 16px;
   box-shadow: 0px 2px 5px 1px rgba(0, 0, 0, 0.25);

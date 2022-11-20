@@ -117,6 +117,7 @@ export const DivTest = styled.div`
   display: flex;
   flex-wrap: wrap;
   flex-direction: column;
+  align-content: center;
 `;
 
 export const Tabs = styled.div`
