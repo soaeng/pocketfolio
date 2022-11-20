@@ -72,38 +72,36 @@ const PortDetail = ({nowPort, roomDto}) => {
           </Div>
         </Header>
 
-        {data.urls ||
-          data.urls?.length ||
-          (data.summary && (
-            <ContentDiv>
-              {data.summary && (
-                <Content dangerouslySetInnerHTML={{__html: data.summary}} />
-              )}
 
-              {data.urls && data.urls?.length && (
-                <FileContainer>
-                  <ShowFile onClick={() => setShowFiles(!showFiles)}>
-                    <IconDiv>
-                      <FileIcon />
-                    </IconDiv>
-                    <Text>첨부파일</Text>
-                  </ShowFile>
-                  {showFiles && (
-                    <FileList>
-                      {data.urls.map((url, idx) => (
-                        <FileItem key={idx}>
-                          <FileName className="name">{url.name}</FileName>
-                          <DownBox href={url.url}>
-                            <DownIcon />
-                          </DownBox>
-                        </FileItem>
-                      ))}
-                    </FileList>
-                  )}
-                </FileContainer>
+        <ContentDiv>
+          {data?.summary && (
+            <Content dangerouslySetInnerHTML={{__html: data.summary}} />
+          )}
+
+          {data.urls && data.urls?.length !== 0 && (
+            <FileContainer>
+              <ShowFile onClick={() => setShowFiles(!showFiles)}>
+                <IconDiv>
+                  <FileIcon />
+                </IconDiv>
+                <Text>첨부파일</Text>
+              </ShowFile>
+              {showFiles && (
+                <FileList>
+                  {data.urls.map((url, idx) => (
+                    <FileItem key={idx}>
+                      <FileName className="name">{url.name}</FileName>
+                      <DownBox href={url.url}>
+                        <DownIcon />
+                      </DownBox>
+                    </FileItem>
+                  ))}
+                </FileList>
               )}
-            </ContentDiv>
-          ))}
+            </FileContainer>
+          )}
+        </ContentDiv>
+
 
         {data.tags && (
           <Tags>
