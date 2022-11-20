@@ -116,6 +116,13 @@ const Profile = () => {
   }
 
   function reset() {
+    setName(user && user.name ? user.name : null);
+    setProfilePic(null);
+    setPicChanged(false);
+    setPreview(user && user.profilePic);
+    setBlogUrl(user && user.blogUrl);
+    setDescribe(user && user.describe ? user.describe : '');
+
     if (user && user.birth) {
       const year = user.birth.year;
       const month =
@@ -127,20 +134,7 @@ const Profile = () => {
   }
 
   useEffect(() => {
-    setName(user && user.name ? user.name : null);
-    setProfilePic(null);
-    setPicChanged(false);
-    setPreview(user && user.profilePic);
-    setBlogUrl(user && user.blogUrl);
-    setDescribe(user && user.describe ? user.describe : '');
-    if (user && user.birth) {
-      const year = user.birth.year;
-      const month =
-        user.birth.month < 10 ? `0${user.birth.month}` : user.birth.month;
-      const day = user.birth.day < 10 ? `0${user.birth.day}` : user.birth.day;
-
-      setBirth(`${year}-${month}-${day}`);
-    }
+    reset();
   }, [user]);
 
   return (
