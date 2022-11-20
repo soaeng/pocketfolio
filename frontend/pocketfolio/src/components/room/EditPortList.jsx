@@ -37,7 +37,6 @@ const EditPortList = ({arranges, nowIdx, connectPort, disconnectPort}) => {
 
   useEffect(() => {
     setIsConnected(arranges[nowIdx].portSeq ? true : false);
-    console.log(nowIdx);
   }, [nowIdx, arranges]);
 
   return (
