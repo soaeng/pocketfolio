@@ -117,11 +117,11 @@ const PortSearch = ({data, handleLike, handleDisLike}) => {
                   {/* 프로필 사진 */}
                   <PortUserImgContainer>
                     <PortUserImg
-                      src={userProfilePic ? userProfilePic : '/assets/images/room.png'}
+                      src={userProfilePic ? userProfilePic : '/assets/images/user.png'}
                     />
                   </PortUserImgContainer>
                   {/* 이름 */}
-                  <PortUserName>{name}</PortUserName>
+                  <PortUserName>{name.length >= 10 ? name.slice(0, 10) : name}</PortUserName>
                 </PortUserDiv>
                 {roomSeq === userModal && <UserProfile userInfo={userInfo} closeUserModal={closeUserModal}/>}
                 {/* 좋아요, 클릭수 컴포넌트 */}
