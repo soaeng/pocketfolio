@@ -73,14 +73,14 @@ const PortDetail = ({nowPort, roomDto}) => {
         </Header>
 
         {data.urls ||
-          data.urls.length ||
+          data.urls?.length ||
           (data.summary && (
             <ContentDiv>
               {data.summary && (
                 <Content dangerouslySetInnerHTML={{__html: data.summary}} />
               )}
 
-              {data.urls && data.urls.length && (
+              {data.urls && data.urls?.length && (
                 <FileContainer>
                   <ShowFile onClick={() => setShowFiles(!showFiles)}>
                     <IconDiv>
