@@ -94,13 +94,21 @@ const Main = () => {
 
     portRef.current.style.transition = 'all 3s ease-in-out';
 
-    if (nowCnt) {
-      portRef.current.style.transform = `translateY(-${h}px)`;
+    if (
+      nowCnt < portCnt &&
+      portRef.current.clientHeight + h < portRef.current.scrollHeight
+    ) {
+      move(h + port?.clientHeight);
     } else {
       portRef.current.style.transform = `none`;
       setH(0);
+      setNowCnt(0);
     }
   }, 3000);
+
+  const move = height => {
+    portRef.current.style.transform = `translateY(-${height}px)`;
+  };
 
   // 데이터 불러오기
   async function loadData() {
@@ -108,17 +116,12 @@ const Main = () => {
 
     if (!res.error) {
       setMainRoom(res.payload.mainRoom);
+      setColor(themeColor[res.payload.mainRoom.theme]);
       setCategoryRec(res.payload.categoryRec);
       setPortfolios(res.payload.portfolios);
 
       if (res.payload.portfolios.length > 0) {
         setPortCnt(res.payload.portfolios.length - 1);
-      }
-
-      if (res.payload.mainRoom) {
-        setColor(themeColor[res.payload.mainRoom.theme]);
-      } else {
-        setColor('#cbb6f4');
       }
     }
   }
@@ -126,7 +129,10 @@ const Main = () => {
   useEffect(() => {
     dispatch(getMyInfo());
     loadData();
-  }, []);
+    if (!user) {
+      setColor('#cbb6f4');
+    }
+  }, [user]);
 
   return (
     <Container>
