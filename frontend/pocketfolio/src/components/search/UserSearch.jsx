@@ -71,13 +71,14 @@ const User = ({userSeq, name, profilePic, describe, followerTotal, followingTota
     <UserItem>
       {/* 팔로우 버튼 */}
       {/* 팔로우 | 로그인한 상태이고, 방 주인이 아닌 경우 가능 */}
-      {user && user.userSeq !== userSeq && (
+      {!user ? <Icon></Icon> : null}
+      {user && user.userSeq !== userSeq ? (
         <Icon>
           <IconDiv className="follow" onClick={e => handleFollow(userSeq, follow)}>
             {follow||hasFollowed ? <AlreadyFollowIcon /> : <FollowIcon />}
           </IconDiv>
         </Icon>
-      )}
+      ) : <Icon><IconDiv/></Icon>}
       <UserContainer>
         {/* 사용자 프로필 사진 */}
         <UserImgContainer                   
