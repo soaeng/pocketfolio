@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import {RiHeart3Fill, RiEyeLine} from 'react-icons/ri';
-import {HiMinusCircle} from 'react-icons/hi'
+import {HiMinusCircle} from 'react-icons/hi';
 
 export const Wrapper = styled.div`
   display: flex;
@@ -19,9 +19,7 @@ export const Item = styled.div`
   box-shadow: 0px 2px 5px 1px rgba(0, 0, 0, 0.25);
 `;
 
-export const PortDiv = styled.div`
-  
-`
+export const PortDiv = styled.div``;
 
 export const ImgDiv = styled.div`
   display: flex;
@@ -29,7 +27,7 @@ export const ImgDiv = styled.div`
   justify-content: center;
   height: 11rem;
   width: 10rem;
-  
+
   padding: 10px;
   overflow: hidden;
 
@@ -40,15 +38,15 @@ export const ImgDiv = styled.div`
 `;
 
 export const Thumbnail = styled.img`
-  width:100%;
-  height:100%;
+  width: 100%;
+  height: 100%;
   cursor: pointer;
   background-color: #fef9ff;
-  border-radius: 0.5rem ;
+  border-radius: 0.5rem;
   transition: all 0.2s;
   object-fit: cover;
 
-  :hover{
+  :hover {
     background-color: #e5e5e5;
   }
 `;
@@ -66,7 +64,6 @@ export const Title = styled.p`
   padding: 10px;
   margin: 0;
   font-family: 'NanumSquareAcr' !important;
-  
 `;
 
 export const LikeDiv = styled.div`

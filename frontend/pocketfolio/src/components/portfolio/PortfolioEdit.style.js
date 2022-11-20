@@ -7,8 +7,6 @@ export const Background = styled.div`
   height: 100vh;
   flex-direction: column;
 
-
-
   &.ck-content blockquote {
     overflow: hidden;
     padding-right: 14em;

@@ -33,8 +33,8 @@ const Card = props => {
     dispatch(delRoom(seq)).then(res => {
       if (res.payload) {
         setReLander(!reLander);
-        toast.success('포켓을 삭제 하였습니다.')
-        setIsDelete(false)
+        toast.success('포켓을 삭제 하였습니다.');
+        setIsDelete(false);
       }
     });
   };

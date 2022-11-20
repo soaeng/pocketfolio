@@ -1,10 +1,10 @@
 // import {useState} from 'react';
 // import {useDispatch} from 'react-redux';
 // import {
-//   Container, 
-//   TitleDiv, 
-//   Title, 
-//   IconDiv, 
+//   Container,
+//   TitleDiv,
+//   Title,
+//   IconDiv,
 //   DelIcon,
 //   Table,
 //   Tr,
@@ -26,7 +26,7 @@
 //     setIsOpen(!isOpen);
 //   };
 
-//   // 해당 포트폴리오 삭제 
+//   // 해당 포트폴리오 삭제
 //   const deletePortHandle = () => {
 //     dispatch(deletePort(item.portSeq)).then(res => {
 //       setDeletedPort(!deletedPort);
@@ -54,7 +54,6 @@
 
 //         <Table>z
 
-        
 //       <TitleDiv>
 //         <Title>{item.name}</Title>
 //       </TitleDiv>
@@ -68,7 +67,6 @@
 //       >
 //         <DelIcon></DelIcon>
 //       </IconDiv>
-
 
 //       {isOpen && (
 //         <DeleteModal

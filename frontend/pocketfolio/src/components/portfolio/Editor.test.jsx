@@ -2,7 +2,6 @@
 // import {CKEditor} from '@ckeditor/ckeditor5-react';
 // import DecoupledEditor from '@ckeditor/ckeditor5-build-decoupled-document';
 
-
 // export default function PortEdit({portContent, setPortContent}) {
 //   const [imgUrl, setImgUrl] = useState('');
 //   const [newContent, setNewContent] = useState('')
