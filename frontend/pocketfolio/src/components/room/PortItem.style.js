@@ -29,7 +29,7 @@ export const Img = styled.img`
   width: 100%;
   height: 100%;
   object-fit: cover;
-`
+`;
 
 export const ContentBox = styled.div`
   width: calc(100% - 6rem);
@@ -39,7 +39,7 @@ export const ContentBox = styled.div`
   &.full {
     width: 100%;
   }
-`
+`;
 
 export const Title = styled.h3`
   margin: 0.7rem 0;
@@ -59,8 +59,9 @@ export const Tag = styled.p`
   background-color: #ffc7bb;
   padding: 0.5rem;
   border-radius: 0.5rem;
+  margin-top: 0.5rem;
 
   & + & {
-    margin-left: 0.5rem;
+    margin-left: 0.3rem;
   }
 `;
