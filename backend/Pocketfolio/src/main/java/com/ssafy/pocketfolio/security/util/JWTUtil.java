@@ -61,7 +61,6 @@ public class JWTUtil {
             userSeq = Long.parseLong((String) claims.get("uid"));
 
         } catch (Exception e) {
-            e.printStackTrace();
             log.error(e.getMessage());
             userSeq = -1L;
         }

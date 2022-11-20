@@ -7,7 +7,6 @@ import com.ssafy.pocketfolio.api.dto.request.RoomReq;
 import com.ssafy.pocketfolio.api.dto.response.CategoryRes;
 import com.ssafy.pocketfolio.api.dto.response.PortfolioListRes;
 import com.ssafy.pocketfolio.api.dto.response.RoomListRes;
-import com.ssafy.pocketfolio.api.dto.response.UserRes;
 import com.ssafy.pocketfolio.api.service.PortfolioService;
 import com.ssafy.pocketfolio.api.service.RoomService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -21,7 +20,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.webjars.NotFoundException;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
@@ -66,7 +64,7 @@ public class RoomController {
         return new ResponseEntity<>(response, status);
     }
 
-//    @Operation(summary = "마이룸 전체 목록 조회", description = "마이룸 전체 목록 조회", responses = {
+//        @Operation(summary = "마이룸 전체 목록 조회", description = "마이룸 전체 목록 조회", responses = {
 //            @ApiResponse(responseCode = "200", description = "마이룸 목록 조회 성공", content = @Content(schema = @Schema(implementation = RoomListRes.class))),
 //            @ApiResponse(responseCode = "403", description = "사용 불가능 토큰", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
 //            @ApiResponse(responseCode = "500", description = "서버 에러", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
