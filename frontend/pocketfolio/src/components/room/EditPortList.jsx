@@ -7,6 +7,7 @@ import {
   Box,
   ContentBox,
   ContentTitle,
+  Warning,
 } from './EditPortList.style';
 import EditPortItem from './EditPortItem';
 import {useNavigate} from 'react-router-dom';
@@ -36,7 +37,6 @@ const EditPortList = ({arranges, nowIdx, connectPort, disconnectPort}) => {
 
   useEffect(() => {
     setIsConnected(arranges[nowIdx].portSeq ? true : false);
-    console.log(nowIdx);
   }, [nowIdx, arranges]);
 
   return (
@@ -60,7 +60,11 @@ const EditPortList = ({arranges, nowIdx, connectPort, disconnectPort}) => {
       {data?.length === 0 && (
         <Box onClick={moveCreatePort}>
           <ContentBox className={'full'}>
-            <ContentTitle>포트폴리오가 없습니다.</ContentTitle>
+            <ContentTitle>
+              작성된 포트폴리오가 없습니다. 포트폴리오를 작성하고 싶다면, 이
+              곳을 눌러주세요.
+            </ContentTitle>
+            <Warning>* 단, 수정된 내용은 반영되지 않습니다.</Warning>
           </ContentBox>
         </Box>
       )}

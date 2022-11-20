@@ -21,7 +21,6 @@ const EditPortItem = ({
   useEffect(() => {
     setCan(true);
     check();
-    console.log(arranges);
   }, [arranges, nowIdx, isConnected]);
 
   return isConnected ? (
