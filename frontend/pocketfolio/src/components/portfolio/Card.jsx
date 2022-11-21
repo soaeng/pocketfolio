@@ -30,7 +30,6 @@ const Card = props => {
 
   // 포켓 삭제
   const deletePocket = seq => {
-    console.log(seq);
     dispatch(delRoom(seq)).then(res => {
       if (res.payload) {
         setReLander(!reLander);
