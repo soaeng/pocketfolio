@@ -26,6 +26,7 @@ import {
 const InfoEdit = ({closeInfoEdit, data, handleReload}) => {
   const dispatch = useDispatch();
 
+  // 포켓 정보
   const [categorys, setCategorys] = useState([]);
   const [name, setName] = useState(data.room.name);
   const [category, setCategory] = useState(data.room.category);
@@ -36,11 +37,13 @@ const InfoEdit = ({closeInfoEdit, data, handleReload}) => {
 
   const [open, setOpen] = useState(false);
 
+  // 포켓 카테고리 불러오기
   async function loadCategory() {
     const {payload} = await dispatch(getRoomCategory());
     setCategorys(payload);
   }
 
+  // 변경될 정보 보내기
   async function sendData() {
     const form = new FormData();
 

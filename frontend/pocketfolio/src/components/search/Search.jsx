@@ -1,8 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {useLocation, useNavigate} from 'react-router-dom';
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch} from 'react-redux';
 import {getSearch} from '../../store/searchSlice';
-
 import Nav from '../common/Nav';
 import {
   Container,
@@ -21,7 +20,6 @@ import {
   SelectBox,
   Tabs,
 } from './Search.style';
-
 import PocketSearch from './PocketSearch';
 import PortSearch from './PortSearch';
 import UserSearch from './UserSearch';
@@ -380,8 +378,6 @@ const Search = () => {
               <Filter options={filterOptions} setSort={setSort} />
               <PortSearch               
                 data={data}
-                handleLike={handleLike}
-                handleDisLike={handleDisLike}
               />
             </FilterDiv>
           </>

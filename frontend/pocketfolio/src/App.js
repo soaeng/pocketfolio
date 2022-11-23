@@ -17,7 +17,7 @@ import PortfolioEdit from './components/portfolio/PortfolioEdit';
 
 function App() {
   console.warn = function no_console() {};
-  console.error = function () {};
+  console.error = function no_console() {};
 
   return (
     <BrowserRouter>
@@ -39,7 +39,6 @@ function App() {
         <Route path="/port/create" element={<AddPort />} />
         <Route path="/port/:port_id" element={<PortDetail />} />
         <Route path="/port/edit/:port_id" element={<PortfolioEdit />} />
-        
 
         <Route path="*" element={<OnError />} />
       </Routes>

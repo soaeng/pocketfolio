@@ -108,7 +108,7 @@ const ObjectList = ({appendArrange}) => {
             </IconBox>
           ))}
           <IconBox
-            className={page == lastPage && 'disappear'}
+            className={page === lastPage && 'disappear'}
             onClick={() => {
               setPage(page + 1);
             }}

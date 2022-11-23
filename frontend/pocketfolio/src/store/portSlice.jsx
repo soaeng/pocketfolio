@@ -105,5 +105,4 @@ const portSlice = createSlice({
   extraReducers: {},
 });
 
-// export const {} = portSlice.actions;
 export default portSlice.reducer;

@@ -9,7 +9,10 @@ import {
 } from './EditTheme.style';
 
 const EditTheme = ({nowTheme, changeTheme}) => {
+  // 테마 모달 on/off 변수
   const [open, setOpen] = useState(false);
+
+  // 테마 모달 이미지, 테마 정보
   const themeList = [
     {
       src: '/assets/images/room_01.PNG',
@@ -58,8 +61,9 @@ const EditTheme = ({nowTheme, changeTheme}) => {
       <ThemeBox className={!open && 'close'}>
         {themeList.map((theme, idx) => (
           <ImgBox
-            className={nowTheme == theme.name && 'now'}
+            className={nowTheme === theme.name && 'now'}
             onClick={() => changeTheme(theme.name)}
+            key={idx}
           >
             <Img src={process.env.PUBLIC_URL + theme.src} />
           </ImgBox>

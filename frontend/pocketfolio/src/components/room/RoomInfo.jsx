@@ -93,12 +93,7 @@ const RoomInfo = ({data, sidebar, edit, handleReload}) => {
       setHitDetail(!hitDetail);
     }
   };
-
-  const closeHit = () => {
-    setDetail(false);
-    setHitDetail(false);
-  };
-
+  
   // info Edit
   const closeInfoEdit = () => {
     setInfoEdit(false);
@@ -165,7 +160,7 @@ const RoomInfo = ({data, sidebar, edit, handleReload}) => {
       </Box>
 
       {detail && <RoomDetail closeDetail={closeDetail} data={data} />}
-      {hitDetail && <HitDetail closeHit={closeHit} data={data} />}
+      {hitDetail && <HitDetail data={data} />}
       {infoEdit && (
         <InfoEdit
           closeInfoEdit={closeInfoEdit}

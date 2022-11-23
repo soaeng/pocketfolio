@@ -30,7 +30,6 @@ import {useNavigate} from 'react-router-dom';
 import Nav from '../common/Nav';
 import {updateProfile, signOut} from '../../store/oauthSlice';
 import toast, {Toaster} from 'react-hot-toast';
-import userEvent from '@testing-library/user-event';
 
 const Profile = () => {
   const dispatch = useDispatch();
@@ -115,6 +114,7 @@ const Profile = () => {
     });
   }
 
+  // 제출취소
   function reset() {
     setName(user && user.name ? user.name : null);
     setProfilePic(null);

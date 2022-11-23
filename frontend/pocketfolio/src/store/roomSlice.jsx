@@ -188,5 +188,4 @@ const roomSlice = createSlice({
   extraReducers: {},
 });
 
-// export const {} = roomSlice.actions;
 export default roomSlice.reducer;

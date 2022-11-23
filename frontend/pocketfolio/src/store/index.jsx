@@ -11,6 +11,7 @@ import roomReducer from './roomSlice'
 import portReducer from './portSlice'
 import itemReducer from './itemSlice'
 import guestReducer from './guestSlice'
+import searchReducer from './searchSlice'
 
 
 // persist
@@ -25,6 +26,7 @@ const rootReducers = combineReducers({
   port: portReducer,
   item: itemReducer,
   guest: guestReducer,
+  search: searchReducer,
 });
 
 const persistedReducer = persistReducer(rootPersistConfig, rootReducers);

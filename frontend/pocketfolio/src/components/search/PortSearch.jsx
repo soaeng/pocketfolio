@@ -1,8 +1,7 @@
 import React, {useState, useEffect, useRef} from 'react';
 import {useNavigate} from 'react-router-dom';
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch} from 'react-redux';
 import {getUserInfo} from '../../store/oauthSlice';
-import {roomDislike, roomLike} from '../../store/roomSlice';
 
 import {
   PortCard,
@@ -17,17 +16,15 @@ import {
   PortUserImg,
   PortUserName,
   LikeIcon,
-  DislikeIcon,
   LikeShowDiv,
   Item3,
   ShowIcon,
-  IconDiv,
   Shadow,
 } from './PortSearch.style';
 
 import UserProfile from '../common/UserProfile';
 
-const PortSearch = ({data, handleLike, handleDisLike}) => {
+const PortSearch = ({data}) => {
   const [userModal, setUserModal] = useState(false); //프로필 모달 보이게 안보이게
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -88,7 +85,7 @@ const PortSearch = ({data, handleLike, handleDisLike}) => {
     <>
       <PortCard>
         {data.map(it => {
-          const {portSeq, name, roomSeq, roomName, roomThumbnail, userSeq, userName, userProfilePic, like, hit, tags} = it;
+          const {portSeq, name, roomSeq, roomThumbnail, userSeq, userProfilePic, like, hit} = it;
           return (
             <PortItem key={portSeq} ref={modalRef}>
               {/* 마이포켓 썸네일 */}

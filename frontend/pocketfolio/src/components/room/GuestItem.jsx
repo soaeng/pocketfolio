@@ -62,7 +62,6 @@ const GuestItem = ({item, removeGuest, roomDto, getData}) => {
     }
   }
 
-
   return item.isPublic === 'T' ||
     (item.isPublic === 'F' &&
       (item.userSeq === user.userSeq ||
@@ -113,7 +112,10 @@ const GuestItem = ({item, removeGuest, roomDto, getData}) => {
                 <CommentText>{comment.content}</CommentText>
               </CommentL>
 
-              <DelIconDiv className="delete" onClick={() => deleteComment(comment.commentSeq)}>
+              <DelIconDiv
+                className="delete"
+                onClick={() => deleteComment(comment.commentSeq)}
+              >
                 <DelIcon />
               </DelIconDiv>
 

@@ -55,16 +55,6 @@ export const ExtraContainer = styled.div`
   grid-template-columns: repeat(3, 1fr);
   gap: 0.5rem;
   margin-top: 1rem;
-
-  /* &::before {
-    background-color: #e75452;
-    border-radius: 0.25rem;
-    content: '';
-    display: block;
-    height: 0.25rem;
-    width: 50px;
-    margin-bottom: 0.5rem;
-  } */
 `;
 
 export const ExtraItem = styled.div`

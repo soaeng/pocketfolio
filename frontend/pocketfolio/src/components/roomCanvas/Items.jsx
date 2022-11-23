@@ -33,9 +33,6 @@ const Items = props => {
   useFrame((state, dt) => {
     if (selectedMesh) {
       if (!edit) {
-        // cntRef.current.enabled = false;
-        // cntRef.current.setAzimuthalAngle(selectedMesh.rotation._y);
-        // cntRef.current.setPolarAngle(Math.PI / 2);
         api.refresh(selectedMesh).clip().fit();
       } else {
         cntRef.current.enabled = true;

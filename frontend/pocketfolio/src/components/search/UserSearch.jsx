@@ -2,7 +2,6 @@ import React, {useState, useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {unfollowFunc, followFunc} from '../../store/oauthSlice';
 import {getUserInfo} from '../../store/oauthSlice';
-
 import {
   UserCard,
   UserItem,
@@ -15,14 +14,12 @@ import {
   AlreadyFollowIcon,
   FollowIcon,
   UserNameDiv,
-  UserDescDiv,
   FollowDiv,
   UserFollowDiv,
 } from './UserSearch.style';
-
 import UserProfile from '../common/UserProfile';
 
-const User = ({userSeq, name, profilePic, describe, followerTotal, followingTotal, hasFollowed, user}) => {
+const User = ({userSeq, name, profilePic, followerTotal, followingTotal, hasFollowed, user}) => {
   const dispatch = useDispatch();
   const [userModal, setUserModal] = useState(false); //프로필 모달 보이게 안보이게
   const [follow, setFollow] = useState('');
@@ -96,7 +93,6 @@ const User = ({userSeq, name, profilePic, describe, followerTotal, followingTota
         {/* 유저 정보 */}
         <UserInfoContainer>
           <UserNameDiv>{name}</UserNameDiv>
-          {/* <UserDescDiv>{describe}</UserDescDiv> */}
           <FollowDiv>
             <UserFollowDiv>팔로우 | {followerTotal}</UserFollowDiv>
             <UserFollowDiv>팔로잉 | {followingTotal}</UserFollowDiv>

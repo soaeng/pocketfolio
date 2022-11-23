@@ -58,10 +58,6 @@ export const Div = styled.div`
     align-items: flex-start;
   }
 
-  &.save {
-    /* justify-content: end; */
-  }
-
   &.tf {
     width: fit-content;
   }
