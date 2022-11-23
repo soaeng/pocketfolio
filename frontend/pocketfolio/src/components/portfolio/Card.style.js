@@ -11,8 +11,6 @@ export const Wrapper = styled.div`
 
 export const Item = styled.div`
   position: relative;
-
-  /* 1안 */
   border-radius: 1rem;
   background-color: #fff0f0;
   box-shadow: 0px 2px 5px 1px rgba(0, 0, 0, 0.25);
@@ -72,6 +70,7 @@ export const IconDiv = styled.div`
     display: flex;
   }
 `;
+
 export const DeleteIcon = styled(HiMinusCircle)`
   font-size: 2.5rem;
   color: #ff3434;
