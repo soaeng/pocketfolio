@@ -62,17 +62,9 @@ public class PortfolioServiceImpl implements PortfolioService {
 
         // 원래의 이미지 목록에서 변경된 내용 있는지 확인
         if (resultImg != null) {
-            if (!uploadImg.equals(resultImg)) {
-                uploadImg.removeAll(resultImg);
-                List<Image> deleteImageList = imageRepository.findAllByImageSeqIn(uploadImg);
-                for (Image image : deleteImageList) {
-                    fileHandler.deleteFile(image.getUrl(), "portfolio/image");
-                }
-                imageRepository.deleteAllByImageSeqIn(uploadImg);
-            }
+            compareUploadImage(uploadImg, resultImg);
         }
 
-        log.debug("저장된 포트폴리오 번호: " + portSeq);
         // 태그가 있다면 저장
         if (req.getTags() != null) {
             saveTags(req.getTags(), portfolio);
@@ -122,7 +114,7 @@ public class PortfolioServiceImpl implements PortfolioService {
     // 포트폴리오 수정
     @Override
     @Transactional
-    public Long updatePortfolio(long userSeq, long portSeq, PortfolioReq req, List<PortfolioUrlDto> urls, MultipartFile thumbnail, List<MultipartFile> files) throws IOException {
+    public Long updatePortfolio(long userSeq, long portSeq, PortfolioReq req, List<PortfolioUrlDto> urls, MultipartFile thumbnail, List<MultipartFile> files, List<Long> uploadImg, List<Long> resultImg) throws IOException {
         log.debug("[PATCH] Service - updatePortfolio");
         // req(json)를 String으로 보기 위해
         ObjectMapper mapper = new ObjectMapper();
@@ -160,6 +152,11 @@ public class PortfolioServiceImpl implements PortfolioService {
         }
         log.debug(thumbnailUrl + " / " + thumbnailName);
         portfolio.updatePortfolio(req.getName(), req.getSummary(), thumbnailUrl, thumbnailName);
+
+        // 원래의 이미지 목록에서 변경된 내용 있는지 확인
+        if (resultImg != null) {
+            compareUploadImage(uploadImg, resultImg);
+        }
 
         // 태그가 있다면 기존 태그 삭제 후 새로 저장
         if (req.getTags() != null) {
@@ -287,5 +284,16 @@ public class PortfolioServiceImpl implements PortfolioService {
         List<Long> latestSeq = latest.stream().map(PortfolioUrlDto::getPortUrlSeq).collect(Collectors.toList());
         originSeq.removeAll(latestSeq);
         return originSeq;
+    }
+
+    private void compareUploadImage(List<Long> uploadImg, List<Long> resultImg) {
+        if (!uploadImg.equals(resultImg)) {
+            uploadImg.removeAll(resultImg);
+            List<Image> deleteImageList = imageRepository.findAllByImageSeqIn(uploadImg);
+            for (Image image : deleteImageList) {
+                fileHandler.deleteFile(image.getUrl(), "portfolio/image");
+            }
+            imageRepository.deleteAllByImageSeqIn(uploadImg);
+        }
     }
 }
