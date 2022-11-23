@@ -15,7 +15,6 @@ import NoRoom from './NoRoom';
 // 마이룸
 const Room = () => {
   // url로 받아온 roomSeq
-
   const params = useParams();
   const roomSeq = parseInt(params.roomSeq);
   const dispatch = useDispatch();
@@ -203,90 +202,92 @@ const Room = () => {
     setCapture(false);
   };
 
-  return data ? (
-    <Container className={sidebar ? 'active' : ''}>
-      <RoomNav sidebar={sidebar} edit={edit} />
-      <RoomInfo
-        sidebar={sidebar}
-        edit={edit}
-        data={data}
-        handleReload={handleReload}
-      />
-      <CanvasWrapper className={sidebar ? 'active' : ''}>
-        {edit && <EditTheme nowTheme={nowTheme} changeTheme={changeTheme} />}
-        <RoomCanvas
+  if (data && data.room.privacy === 'O') {
+    return (
+      <Container className={sidebar ? 'active' : ''}>
+        <RoomNav sidebar={sidebar} edit={edit} />
+        <RoomInfo
+          sidebar={sidebar}
           edit={edit}
-          theme={nowTheme}
-          arranges={arranges}
-          handleArrange={handleArrange}
-          handleDel={handleDel}
-          loadConnect={loadConnect}
-          changeNowIdx={changeNowIdx}
-          openPortDetail={openPortDetail}
           data={data}
-          capture={capture}
-          offCaptrue={offCaptrue}
+          handleReload={handleReload}
+        />
+        <CanvasWrapper className={sidebar ? 'active' : ''}>
+          {edit && <EditTheme nowTheme={nowTheme} changeTheme={changeTheme} />}
+          <RoomCanvas
+            edit={edit}
+            theme={nowTheme}
+            arranges={arranges}
+            handleArrange={handleArrange}
+            handleDel={handleDel}
+            loadConnect={loadConnect}
+            changeNowIdx={changeNowIdx}
+            openPortDetail={openPortDetail}
+            data={data}
+            capture={capture}
+            offCaptrue={offCaptrue}
+            changeSidebar={changeSidebar}
+            nowPort={nowPort}
+          />
+          <Toaster
+            position="bottom-left"
+            containerStyle={{
+              position: 'absolute',
+            }}
+            toastOptions={{
+              duration: 3000,
+              style: {
+                background: '#fff',
+                color: '#333333',
+                fontSize: '0.85rem',
+              },
+            }}
+          />
+          {edit ? (
+            <EditBox>
+              <Btn
+                onClick={e => {
+                  setEdit(false);
+                  setSidebar('');
+                  saveArrange(e);
+                }}
+              >
+                저장
+              </Btn>
+              <Btn onClick={offEdit}>취소</Btn>
+            </EditBox>
+          ) : null}
+        </CanvasWrapper>
+
+        {sidebar || edit ? null : (
+          <Menu
+            roomSeq={roomSeq}
+            changeSidebar={changeSidebar}
+            copyURL={copyURL}
+            onEdit={onEdit}
+            data={data}
+          />
+        )}
+
+        <Sidebar
+          sidebar={sidebar}
           changeSidebar={changeSidebar}
+          edit={edit}
+          roomSeq={roomSeq}
+          data={data}
+          appendArrange={appendArrange}
+          arranges={arranges}
+          nowIdx={nowIdx}
+          connectPort={connectPort}
+          disconnectPort={disconnectPort}
+          openPortDetail={openPortDetail}
           nowPort={nowPort}
         />
-        <Toaster
-          position="bottom-left"
-          containerStyle={{
-            position: 'absolute',
-          }}
-          toastOptions={{
-            duration: 3000,
-            style: {
-              background: '#fff',
-              color: '#333333',
-              fontSize: '0.85rem',
-            },
-          }}
-        />
-        {edit ? (
-          <EditBox>
-            <Btn
-              onClick={e => {
-                setEdit(false);
-                setSidebar('');
-                saveArrange(e);
-              }}
-            >
-              저장
-            </Btn>
-            <Btn onClick={offEdit}>취소</Btn>
-          </EditBox>
-        ) : null}
-      </CanvasWrapper>
-
-      {sidebar || edit ? null : (
-        <Menu
-          roomSeq={roomSeq}
-          changeSidebar={changeSidebar}
-          copyURL={copyURL}
-          onEdit={onEdit}
-          data={data}
-        />
-      )}
-
-      <Sidebar
-        sidebar={sidebar}
-        changeSidebar={changeSidebar}
-        edit={edit}
-        roomSeq={roomSeq}
-        data={data}
-        appendArrange={appendArrange}
-        arranges={arranges}
-        nowIdx={nowIdx}
-        connectPort={connectPort}
-        disconnectPort={disconnectPort}
-        openPortDetail={openPortDetail}
-        nowPort={nowPort}
-      />
-    </Container>
-  ) : (
-    <NoRoom/>
-  );
+      </Container>
+    );
+  } else {
+    return <NoRoom />;
+  }
 };
 
 export default Room;

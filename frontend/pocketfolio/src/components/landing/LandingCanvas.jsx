@@ -1,7 +1,6 @@
 import {useRef} from 'react';
 import {Canvas, useFrame} from '@react-three/fiber';
-import {OrbitControls, useGLTF, useBounds, Bounds} from '@react-three/drei';
-
+import {OrbitControls, useGLTF, Bounds} from '@react-three/drei';
 import React from 'react';
 
 export const LandingCanvas = ({outerDivRef, page}) => {
@@ -50,7 +49,6 @@ export const LandingCanvas = ({outerDivRef, page}) => {
 const LandingCanvasInner = ({outerDivRef}) => {
   const landing_01 = useRef();
   const landing_02 = useRef();
-  const api = useBounds();
   const glb1 = useGLTF('assets/landing_01.glb');
   const glb2 = useGLTF('assets/landing_02.glb');
   const nodes_01 = glb1.nodes;
@@ -66,7 +64,6 @@ const LandingCanvasInner = ({outerDivRef}) => {
       landing_01.current.scale.x = page + 0.1;
       landing_01.current.visible = true;
       landing_02.current.visible = false;
-      // landing_01.current.material.opacity = page;
     } else if (page <= 1.51) {
       landing_01.current.rotation.y = (2 - page) * Math.PI * 0.2;
       landing_01.current.scale.y = -(page - 1.5) * 2;
@@ -97,13 +94,6 @@ const LandingCanvasInner = ({outerDivRef}) => {
         material={materials_02[Object.keys(materials_02)[0]]}
         rotation={[0, 0, 0]}
       />
-      {/* <mesh
-        ref={landing_02}
-        castShadow
-        geometry={nodes_02['landing_02'].geometry}
-        material={materials_02[Object.keys(materials_02)[0]]}
-        rotation={[0, 0, 0]}
-      /> */}
     </Bounds>
   );
 };

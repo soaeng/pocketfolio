@@ -1,48 +1,25 @@
 import {
   Background,
-  Container,
   Content,
   ImgDiv,
   CloseImg,
-  TextDiv,
   Text,
-  IconDiv,
-  DoorIcon,
-  HomeIcon,
-  GoMain,
-  ToolTip,
-  ToolTipText,
 } from './NoRoom.style';
-import {useNavigate} from 'react-router-dom';
-import Nav from '../common/Nav';
-import LoginCanvas from '../user/LoginCanvas';
+import RoomNav from './RoomNav';
 
 const NoRoom = () => {
-  const navigate = useNavigate();
 
   return (
     <Background className="back">
+      <RoomNav />
       <Content>
         <ImgDiv>
-          <CloseImg
-            src={process.env.PUBLIC_URL + '/assets/images/close.png'}
-          ></CloseImg>
+          <CloseImg src={process.env.PUBLIC_URL + '/assets/images/close.png'} />
         </ImgDiv>
-
-        <TextDiv>
-          <Text className="info">비공개 이거나 존재 하지 않는 방입니다.</Text>
-          <IconDiv>
-            <HomeIcon onClick={() => navigate('/main')}></HomeIcon>
-
-            <ToolTip className="tooltip">
-              <ToolTipText>메인화면</ToolTipText>
-            </ToolTip>
-          </IconDiv>
-          {/* <GoMain href={'/main'} >메인으로</GoMain> */}
-        </TextDiv>
+        <Text>비공개 이거나 존재 하지 않는 방입니다.</Text>
       </Content>
     </Background>
   );
 };
 
-export default NoRoom
+export default NoRoom;

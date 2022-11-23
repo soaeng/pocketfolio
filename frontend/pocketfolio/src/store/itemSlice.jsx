@@ -56,5 +56,4 @@ const itemSlice = createSlice({
   extraReducers: {},
 });
 
-// export const {} = itemSlice.actions;
 export default itemSlice.reducer;

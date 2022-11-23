@@ -51,6 +51,7 @@ const GuestList = ({roomSeq, roomDto}) => {
         }),
       );
 
+      // 작성 폼 초기화
       if (res) {
         setContent('');
         setIsPublic(true);
@@ -72,7 +73,7 @@ const GuestList = ({roomSeq, roomDto}) => {
   return (
     <Container>
       <Title>방명록</Title>
-      { user &&
+      {user && (
         <WriteForm
           onSubmit={e => {
             e.preventDefault();
@@ -106,9 +107,9 @@ const GuestList = ({roomSeq, roomDto}) => {
             <Btn type="submit">확인</Btn>
           </BottomBox>
         </WriteForm>
-      }
+      )}
 
-      <ScrollDiv className={ user ? "" : "full"}>
+      <ScrollDiv className={user ? '' : 'full'}>
         <ItemContainer>
           {data.map((item, idx) => (
             <GuestItem
@@ -116,8 +117,8 @@ const GuestList = ({roomSeq, roomDto}) => {
               removeGuest={removeGuest}
               key={idx}
               roomDto={roomDto}
-              getData
-            ={getData}/>
+              getData={getData}
+            />
           ))}
         </ItemContainer>
       </ScrollDiv>

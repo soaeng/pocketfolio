@@ -97,5 +97,4 @@ const guestSlice = createSlice({
   extraReducers: {},
 });
 
-// export const {} = guestSlice.actions;
 export default guestSlice.reducer;

@@ -95,9 +95,6 @@ export const TextBox = styled.pre`
   min-height: 4rem;
   font-size: 0.85rem;
   border-radius: 0.3rem;
-
-  /* display: flex;
-  align-items: center; */
 `;
 
 export const CommentList = styled.div`
@@ -193,9 +190,6 @@ export const CommentArea = styled.textarea`
       outline-color: #d8d1b1;
     }
   }
-
-  /* background-color: #f3eed9;
-  border-top: 2px solid #d8d1b1; */
 `;
 
 export const CommentBtn = styled.button`

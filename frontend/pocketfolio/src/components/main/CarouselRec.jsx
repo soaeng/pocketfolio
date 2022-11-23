@@ -58,7 +58,7 @@ const CarouselRec = ({rec, idx}) => {
   // Prev 버튼 클릭 시
   const PrevSlide = () => {
     if (currentCnt === 0) {
-      setCurrentCnt(totalCnt); // 마지막 사진으로 넘어갑니다.
+      setCurrentCnt(totalCnt);
     } else {
       setCurrentCnt(currentCnt - 1);
     }
@@ -66,7 +66,6 @@ const CarouselRec = ({rec, idx}) => {
 
   // 전체 아이템 개수 가져오기
   useEffect(() => {
-
     if (
       currentCnt === 0 &&
       slideRef.current.scrollWidth <= totalRef.current.clientWidth
@@ -81,7 +80,6 @@ const CarouselRec = ({rec, idx}) => {
   useEffect(() => {
     const item = document.querySelector('.item');
     slideRef.current.style.transition = 'all 0.5s ease-in-out';
-
 
     if (
       totalRef.current.clientWidth + currentCnt * item.offsetWidth <=

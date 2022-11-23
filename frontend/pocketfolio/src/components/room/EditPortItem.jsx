@@ -12,9 +12,10 @@ const EditPortItem = ({
 }) => {
   const [can, setCan] = useState(true);
 
+  // 포트폴리오 연결여부 체크
   const check = () => {
-    arranges.map((arrange, idx) => {
-      if (arrange.portSeq === item.portSeq) setCan(false);
+    arranges.map(arrange => {
+      return arrange.portSeq === item.portSeq && setCan(false);
     });
   };
 

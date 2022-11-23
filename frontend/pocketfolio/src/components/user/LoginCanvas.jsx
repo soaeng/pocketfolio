@@ -1,6 +1,5 @@
-import {useRef} from 'react';
-import {Canvas, useFrame} from '@react-three/fiber';
-import {OrbitControls, useGLTF, useBounds, Bounds} from '@react-three/drei';
+import {Canvas} from '@react-three/fiber';
+import {OrbitControls, useGLTF, Bounds} from '@react-three/drei';
 
 import React from 'react';
 
@@ -13,7 +12,6 @@ export const LoginCanvas = ({outerDivRef}) => {
         height: '100%',
         position: 'absolute',
         right: 0,
-        // zIndex: -2,
         transition: 'all 0.5s',
       }}
     >
@@ -40,15 +38,6 @@ export const LoginCanvas = ({outerDivRef}) => {
         enableZoom={false}
         maxPolarAngle={Math.PI / 1.9}
       />
-      {/* <mesh
-        scale={30}
-        receiveShadow
-        rotation={[-Math.PI / 2, 0, 0]}
-        position={[0, -0.06, 0]}
-        material-color={bgColor}
-      >
-        <planeGeometry />
-      </mesh> */}
       <LandingCanvasInner outerDivRef={outerDivRef} />
     </Canvas>
   );
@@ -85,13 +74,6 @@ const LandingCanvasInner = ({outerDivRef}) => {
         material={materials_03[Object.keys(materials_03)[0]]}
         rotation={[0, 0, 0]}
       />
-      {/* <mesh
-        ref={landing_02}
-        castShadow
-        geometry={nodes_02['landing_02'].geometry}
-        material={materials_02[Object.keys(materials_02)[0]]}
-        rotation={[0, 0, 0]}
-      /> */}
     </Bounds>
   );
 };

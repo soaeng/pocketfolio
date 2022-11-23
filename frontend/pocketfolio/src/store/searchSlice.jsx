@@ -1,4 +1,4 @@
-import {createAsyncThunk} from '@reduxjs/toolkit';
+import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
 import {http} from '../api/axios';
 import qs from 'qs';
 
@@ -17,3 +17,15 @@ export const getSearch = createAsyncThunk(
     }
   },
 );
+
+const initialState = {};
+
+const searchSlice = createSlice({
+  name: 'search',
+  initialState,
+  reducers: {},
+  extraReducers: {},
+});
+
+export default searchSlice.reducer;
+

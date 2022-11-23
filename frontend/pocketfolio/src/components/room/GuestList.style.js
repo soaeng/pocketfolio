@@ -26,7 +26,6 @@ export const Title = styled.h2`
 `;
 
 export const WriteForm = styled.form`
-  /* border-bottom: 2px solid #333; */
   padding: 0.5rem 0;
   width: 96%;
   margin-bottom: 1rem;
@@ -112,18 +111,18 @@ export const ScrollDiv = styled.div`
   }
 
   &::-webkit-scrollbar {
-    width: 8px; /* 세로축 스크롤바 길이 */
-    height: 15px; /* 가로축 스크롤바 길이 */
+    width: 8px;
+    height: 15px; 
   }
 
   &::-webkit-scrollbar-track {
     border-radius: 8px;
-    background-color: #eeeeee; /*스크롤 바 배경 색상*/
+    background-color: #eeeeee; 
   }
 
   &::-webkit-scrollbar-thumb {
     border-radius: 8px;
-    background-color: #c6c6c6; /*스크롤 바 색상*/
+    background-color: #c6c6c6; 
   }
 `;
 

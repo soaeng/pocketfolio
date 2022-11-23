@@ -20,7 +20,7 @@ import {getVisitors} from '../../store/roomSlice';
 import {useEffect, useState} from 'react';
 import {useNavigate} from 'react-router-dom';
 
-const HitDetail = ({closeHit, data}) => {
+const HitDetail = ({data}) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [visitors, setVisitors] = useState([]);

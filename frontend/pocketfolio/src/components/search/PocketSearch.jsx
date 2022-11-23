@@ -1,9 +1,8 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useEffect} from 'react';
 import {useNavigate} from 'react-router-dom';
 import {useDispatch, useSelector} from 'react-redux';
 import {getUserInfo} from '../../store/oauthSlice';
 import {roomDislike, roomLike} from '../../store/roomSlice';
-
 import {
   PocketCard,
   PocketItem,
@@ -30,14 +29,14 @@ const PocketSearch = ({data, handleLike, handleDisLike}) => {
   const navigate = useNavigate();
 
   // 모달 닫는 함수
-  const closeUserModal = (e) => {
+  const closeUserModal = e => {
     setUserModal(false);
   };
 
   // 이미지 오류인 경우 기본 이미지 보이게
-  const onErrorImg = (e) => {
-    e.target.src = '/assets/images/logo3.png'
-  }
+  const onErrorImg = e => {
+    e.target.src = '/assets/images/logo3.png';
+  };
 
   // 마아포켓 클릭시 이동
   const pocketClickHandler = roomSeq => {
@@ -62,7 +61,7 @@ const PocketSearch = ({data, handleLike, handleDisLike}) => {
       }
     }
   }
-  
+
   // 특정 유저정보 담을 상태
   const [userInfo, setUserInfo] = useState([]);
 
@@ -78,12 +77,10 @@ const PocketSearch = ({data, handleLike, handleDisLike}) => {
 
   return (
     <>
-      <PocketCard >
+      <PocketCard>
         {data.map(it => {
           const {
-            categoryName,
             hit,
-            name,
             roomSeq,
             thumbnail,
             userName,
@@ -122,14 +119,25 @@ const PocketSearch = ({data, handleLike, handleDisLike}) => {
                   {/* 이름 */}
                   <PocketName>{userName}</PocketName>
                 </PocketUserDiv>
-                {roomSeq === userModal && <UserProfile userInfo={userInfo} closeUserModal={closeUserModal}/>}
+                {roomSeq === userModal && (
+                  <UserProfile
+                    userInfo={userInfo}
+                    closeUserModal={closeUserModal}
+                  />
+                )}
                 {/* 좋아요, 클릭 컴포넌트 */}
                 <LikeShowDiv>
-                  {user && user.userSeq !== it.userSeq ? (<IconDiv
-                    onClick={e => handleLikeDislike(e, roomSeq, isLiked)}
-                  >
-                    {isLiked ? <LikeIcon /> : <DislikeIcon />}
-                  </IconDiv>) : <IconDiv><LikeIcon/></IconDiv>}
+                  {user && user.userSeq !== it.userSeq ? (
+                    <IconDiv
+                      onClick={e => handleLikeDislike(e, roomSeq, isLiked)}
+                    >
+                      {isLiked ? <LikeIcon /> : <DislikeIcon />}
+                    </IconDiv>
+                  ) : (
+                    <IconDiv>
+                      <LikeIcon />
+                    </IconDiv>
+                  )}
                   <Item3>{like ? like : 0}</Item3>
                   <ShowIcon />
                   <div>{hit ? hit : 0}</div>

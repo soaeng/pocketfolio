@@ -15,7 +15,6 @@ export const Container = styled.div`
 
 export const Title = styled.h3`
   font-family: 'NanumSquareExtraBold';
-  /* font-size: 1.1rem; */
   margin-top: 0;
 `;
 

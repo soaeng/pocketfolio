@@ -17,11 +17,6 @@ const RoomTheme = props => {
           <boxGeometry args={[25, 25, 25]} />
         </mesh>
       )}
-      {/* {type === 'apartment' && (
-        <mesh ref={props.boundaryRef} visible={false}>
-          <boxGeometry args={[30, 30, 30]} />
-        </mesh>
-      )} */}
       {arr.map(_name => (
         <ThemeMesh name={_name} key={_name} />
       ))}
