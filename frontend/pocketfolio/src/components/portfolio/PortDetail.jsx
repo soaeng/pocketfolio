@@ -1,9 +1,9 @@
 import {useParams} from 'react-router-dom';
 import {useEffect, useState} from 'react';
 import {useDispatch} from 'react-redux';
-import {useNavigate, useLocation} from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 import {getportDetail} from '../../store/portSlice';
-import toast, {Toaster} from 'react-hot-toast';
+import {Toaster} from 'react-hot-toast';
 import Nav from '../common/Nav';
 
 import {
