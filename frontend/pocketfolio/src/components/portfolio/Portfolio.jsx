@@ -27,7 +27,6 @@ import {getMyPocket} from '../../store/portSlice';
 import {useDispatch} from 'react-redux';
 import DeleteModal from './DeleteModal';
 import {deletePort} from '../../store/portSlice';
-import toast, {Toaster} from 'react-hot-toast';
 
 const Portfolio = () => {
   const navigate = useNavigate();
@@ -84,28 +83,12 @@ const Portfolio = () => {
     dispatch(deletePort(seq)).then(res => {
       setReLander(!reLander);
       setIsOpen(false);
-      toast.success('포트폴리오가 삭제 되었습니다.');
     });
   };
 
   return (
     <Background>
       <Nav className="nav"></Nav>
-      <Toaster
-        position="top-center"
-        containerStyle={{
-          position: 'absolute',
-          top: '2.5rem',
-        }}
-        toastOptions={{
-          duration: 3000,
-          style: {
-            background: '#fff',
-            color: '#333333',
-            fontSize: '0.85rem',
-          },
-        }}
-      />
       <Container>
         <CardWrapper className="myroomwrapper">
           <HeaderDiv>

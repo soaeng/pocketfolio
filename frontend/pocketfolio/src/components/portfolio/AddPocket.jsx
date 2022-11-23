@@ -24,7 +24,7 @@ import {
   StyledBtn,
 } from './AddPocket.style';
 import {getRoomCategory, createRoom} from '../../store/roomSlice';
-import toast, {Toaster} from 'react-hot-toast';
+import toast from 'react-hot-toast';
 
 const AddPocket = props => {
   const {open, close, reLander, setReLander} = props;
@@ -52,7 +52,6 @@ const AddPocket = props => {
   // 실제 컴포넌트가 사라지는 시점을 지연시키기 위한 값
   const [visible, setVisible] = useState(open);
 
-  const [viewToast, setViewToast] = useState(false);
   // 랜더링 시 룸 카테고리 불러오기
   useEffect(() => {
     dispatch(getRoomCategory()).then(res => {
@@ -62,6 +61,7 @@ const AddPocket = props => {
       setPrivacy(true);
       setMain(false);
       setDropdown(false);
+      setVisible(visible);
     });
   }, [open]);
 

@@ -110,6 +110,7 @@ export const BackIcon = styled(RiArrowLeftLine)`
 
   cursor: pointer;
 `;
+
 export const EditIcon = styled(TbEdit)`
   font-size: 25px;
   padding-bottom: 0.5rem;
