@@ -1,8 +1,6 @@
 // styled Component
 import styled from 'styled-components';
 
-import {AiOutlineSearch} from 'react-icons/ai';
-
 // Navbar
 export const NavContainer = styled.div`
   position: sticky;
@@ -24,7 +22,6 @@ export const NavLogoImg = styled.img`
   height: 100%;
   cursor: pointer;
 `;
-
 
 // Nav Button
 export const NavBotton = styled.button`

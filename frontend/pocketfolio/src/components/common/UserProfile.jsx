@@ -1,13 +1,8 @@
 import React, {useState, useEffect} from 'react';
-import { useNavigate } from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 import {useDispatch, useSelector} from 'react-redux';
-
 import {unfollowFunc, followFunc} from '../../store/oauthSlice';
-
-import {
-  getMyFollowing,
-} from '../../store/oauthSlice';
-
+import {getMyFollowing} from '../../store/oauthSlice';
 import {
   UserProfileItem,
   UserProfileContainer,
@@ -33,7 +28,7 @@ import {
   ProfileLine,
 } from './UserProfile.style';
 
-const UserProfile = (props) => {
+const UserProfile = props => {
   const closeUserModal = props.closeUserModal;
   const userInfo = props.userInfo;
   const user = useSelector(state => state.oauth.user);
@@ -54,15 +49,17 @@ const UserProfile = (props) => {
   }, []);
 
   useEffect(() => {
-    followingList.forEach(element => {if (element.userSeq === userInfo.userSeq) {
-      setFollow(true);
-    }});
+    followingList.forEach(element => {
+      if (element.userSeq === userInfo.userSeq) {
+        setFollow(true);
+      }
+    });
   }, [followingList]);
 
   // room 이동
   const roomClickHandler = roomSeq => {
-    navigate(`/room/${roomSeq}`)
-  }
+    navigate(`/room/${roomSeq}`);
+  };
 
   // 팔로우, 언팔로우
   async function handleFollow() {
@@ -82,9 +79,9 @@ const UserProfile = (props) => {
   }
 
   // 이미지 오류인 경우 기본 이미지 보이게
-  const onErrorImg = (e) => {
-    e.target.src = '/assets/images/room_01.PNG'
-  }
+  const onErrorImg = e => {
+    e.target.src = '/assets/images/room_01.PNG';
+  };
 
   return (
     <>
@@ -112,38 +109,52 @@ const UserProfile = (props) => {
                 {/* 팔로우 | 로그인한 상태이고, 방 주인이 아닌 경우 가능 */}
                 {user && user.userSeq !== userInfo.userSeq && (
                   <IconDiv onClick={handleFollow}>
-                    {follow|| (userInfo.rooms && userInfo.rooms[0].isFollowing) ? <AlreadyFollowIcon /> : <FollowIcon />}
+                    {follow ||
+                    (userInfo.rooms && userInfo.rooms[0].isFollowing) ? (
+                      <AlreadyFollowIcon />
+                    ) : (
+                      <FollowIcon />
+                    )}
                   </IconDiv>
                 )}
               </UserDiv>
               <FollowDiv>
-                <UserFollowDiv>팔로워 : {follow ? userInfo.followerTotal + 1 : userInfo.followerTotal}</UserFollowDiv>
-                <UserFollowDiv>팔로잉 : {userInfo.followingTotal}</UserFollowDiv>
+                <UserFollowDiv>
+                  팔로워 :{' '}
+                  {follow ? userInfo.followerTotal + 1 : userInfo.followerTotal}
+                </UserFollowDiv>
+                <UserFollowDiv>
+                  팔로잉 : {userInfo.followingTotal}
+                </UserFollowDiv>
               </FollowDiv>
               <UserProDescDiv>{userInfo.describe}</UserProDescDiv>
               <UserProDescDiv>{userInfo.email}</UserProDescDiv>
-              
             </UserProfileInfoContainer>
           </UserInfo>
           <div>
-            <ProfileLine/>
+            <ProfileLine />
           </div>
           <ScrollBox>
-          {userInfo.rooms && userInfo.rooms.map((room) => {
-            const {roomSeq, thumbnail, isFollowing, like, name, category} = room
-            return (
-              <>
-                <RoomBox>
-                  <RoomName>{name}</RoomName>
-                  <RoomInfoDiv onClick={e => roomClickHandler(roomSeq)}>
-                    <RoomInfoImg
-                      onError={onErrorImg}
-                      src={thumbnail ? thumbnail : '/assets/images/room_01.PNG'}/>
-                  </RoomInfoDiv>
-                </RoomBox>
-              </>
-            )
-          })}</ScrollBox>
+            {userInfo.rooms &&
+              userInfo.rooms.map(room => {
+                const {roomSeq, thumbnail, name} = room;
+                return (
+                  <>
+                    <RoomBox>
+                      <RoomName>{name}</RoomName>
+                      <RoomInfoDiv onClick={e => roomClickHandler(roomSeq)}>
+                        <RoomInfoImg
+                          onError={onErrorImg}
+                          src={
+                            thumbnail ? thumbnail : '/assets/images/room_01.PNG'
+                          }
+                        />
+                      </RoomInfoDiv>
+                    </RoomBox>
+                  </>
+                );
+              })}
+          </ScrollBox>
         </UserProfileContainer>
       </UserProfileItem>
     </>

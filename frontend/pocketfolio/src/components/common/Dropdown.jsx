@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {useNavigate} from 'react-router-dom';
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch} from 'react-redux';
+import {deleteAllToken} from '../../api/jwt';
 import {
   logout,
   getMyFollowing,
@@ -8,7 +9,6 @@ import {
   unfollowNumFunc,
   followFunc,
 } from '../../store/oauthSlice';
-import {deleteAllToken} from '../../api/jwt';
 import {
   Dropdown,
   DropdownList,
@@ -75,7 +75,7 @@ const DropDown = ({user}) => {
         }
       }),
     );
-    const {payload} = await dispatch(unfollowNumFunc(followSeq));
+    await dispatch(unfollowNumFunc(followSeq));
   };
 
   // 마이포켓 이동
@@ -155,7 +155,7 @@ const DropDown = ({user}) => {
     if (dropDownState === 2) {
       if (followList.length !== 0) {
         return followList.map(list => {
-          const {followSeq, name, profilePic, userSeq} = list;
+          const {followSeq, name, profilePic} = list;
           return (
             <>
               <FollowListBox>
