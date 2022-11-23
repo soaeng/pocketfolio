@@ -9,7 +9,6 @@ export const getMyPort = createAsyncThunk(
       const res = await http.get(`portfolios`);
       if (res.status === 200) return res.data;
     } catch (err) {
-      console.log('포트폴리오 목록 조회 실패');
       return rejectWithValue(err.response);
     }
   },
@@ -23,7 +22,6 @@ export const getportDetail = createAsyncThunk(
       const res = await http.get(`portfolios/${portSeq}`);
       return res.data;
     } catch (err) {
-      console.log('포트폴리오 상세 조회 실패');
       return rejectWithValue(err.response);
     }
   },
@@ -37,7 +35,6 @@ export const registPortfolio = createAsyncThunk(
       const res = await postAxios.post('portfolios', data);
       return res
     } catch (err) {
-      console.log('포트폴리오 등록 실패', err);
       return rejectWithValue(err.response);
     }
   },
@@ -50,9 +47,7 @@ export const modifiedPort = createAsyncThunk(
     try {
       const res = await postAxios.patch(`portfolios/${data.port_id}`, data.form);
       return res
-      // console.log('포트폴리오 수정 성공',res)
     } catch (err) {
-      console.log('포트폴리오 수정 실패', err);
       return rejectWithValue(err.response);
     }
   },
@@ -62,7 +57,6 @@ export const modifiedPort = createAsyncThunk(
 export const deletePort = createAsyncThunk(
   'deletePort',
   async (portSeq, {rejectWithValue}) => {
-    console.log(portSeq)
     try {
       const res = await http.delete(`portfolios/${portSeq}`)
       return res

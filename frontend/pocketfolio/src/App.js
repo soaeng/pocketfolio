@@ -15,6 +15,9 @@ import PortDetail from './components/portfolio/PortDetail';
 import PortfolioEdit from './components/portfolio/PortfolioEdit';
 
 function App() {
+  console.warn = function no_console() {};
+  console.error = function () {};
+
   return (
     <BrowserRouter>
       <Routes>
