@@ -2,6 +2,7 @@ import {Route, Routes, BrowserRouter} from 'react-router-dom';
 import './App.css';
 
 // pages
+import OnError from './components/common/OnError';
 import Landing from './components/landing/Landing';
 import Main from './components/main/Main';
 import Search from './components/search/Search';
@@ -38,6 +39,9 @@ function App() {
         <Route path="/port/create" element={<AddPort />} />
         <Route path="/port/:port_id" element={<PortDetail />} />
         <Route path="/port/edit/:port_id" element={<PortfolioEdit />} />
+        
+
+        <Route path="*" element={<OnError />} />
       </Routes>
     </BrowserRouter>
   );
