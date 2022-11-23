@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import {useNavigate} from 'react-router-dom';
 import {
   Container,
@@ -6,17 +6,17 @@ import {
   LogoImg,
   NavBotton,
   LoginDiv,
+  UserName,
 } from './RoomNav.style';
 import Avatar from '../common/Avatar';
+import {useSelector} from 'react-redux';
 
 // 마이룸 네브바
 const RoomNav = ({sidebar, edit}) => {
   const navigate = useNavigate();
 
-  // 로그인 표시 => 수정 필요
-  const [loginFlag, setLoginFlag] = useState(() =>
-    sessionStorage.getItem('Id'),
-  );
+  // 로그인 유저정보 가져오기
+  const user = useSelector(state => state.oauth.user);
 
   // main page로 이동
   const logoClickHandler = () => {
@@ -35,16 +35,18 @@ const RoomNav = ({sidebar, edit}) => {
 
   return (
     <Container className={sidebar ? 'side' : null}>
+      {/* 로고 */}
       <LogoContainer onClick={logoClickHandler}>
         <LogoImg src={process.env.PUBLIC_URL + '/assets/images/logo4.png'} />
       </LogoContainer>
-      {edit ? null : loginFlag === null ? (
-        <NavBotton onClick={loginClickHandler}>로그인/회원가입</NavBotton>
-      ) : (
+
+      {edit ? null : user ? (
         <LoginDiv>
-          <NavBotton onClick={roomClickHandler}>마이룸</NavBotton>
-          <Avatar />
+          <UserName onClick={roomClickHandler}>{user.name}님</UserName>
+          <Avatar user={user} />
         </LoginDiv>
+      ) : (
+        <NavBotton onClick={loginClickHandler}>로그인/회원가입</NavBotton>
       )}
     </Container>
   );

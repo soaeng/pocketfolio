@@ -11,7 +11,6 @@ export const getGuestList = createAsyncThunk(
       const res = await http.get(`guests/${roomSeq}`);
       if (res.status === 200) return res.data;
     } catch (error) {
-      console.log('방명록 조회 에러', error);
       return rejectWithValue(error);
     }
   },
@@ -25,7 +24,6 @@ export const postGuest = createAsyncThunk(
       const res = await http.post(`guests/${data.roomSeq}`, data.data);
       if (res.status === 201) return res.data;
     } catch (error) {
-      console.log('방명록 작성 에러', error);
       return rejectWithValue(error);
     }
   },
@@ -39,7 +37,39 @@ export const delGuest = createAsyncThunk(
       const res = await http.delete(`guests/${bookSeq}`);
       if (res.status === 200) return true;
     } catch (error) {
-      console.log('방명록 삭제 에러', error);
+      return rejectWithValue(error);
+    }
+  },
+);
+
+// 방명록 댓글 등록
+export const postComment = createAsyncThunk(
+  'postComment',
+  async (data, {rejectWithValue}) => {
+    try {
+      const res = await http.post(
+        `guests/comment/${data.roomSeq}/${data.guestbookSeq}`,
+        {
+          content: data.content,
+          isPublic: data.isPublic,
+        },
+      );
+      
+      if (res.status === 201) return true;
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  },
+);
+
+// 방명록 댓글 삭제
+export const delComment = createAsyncThunk(
+  'delComment',
+  async (commentSeq, {rejectWithValue}) => {
+    try {
+      const res = await http.delete(`guests/comment/${commentSeq}`);
+      if (res.status === 200) return res.data;
+    } catch (error) {
       return rejectWithValue(error);
     }
   },
@@ -53,7 +83,6 @@ export const getRandom = createAsyncThunk(
       const res = await http.get(`rooms/random/${roomSeq}`);
       if (res.status === 200) return res.data;
     } catch (error) {
-      console.log('파도타기 에러', error);
       return rejectWithValue(error);
     }
   },
@@ -68,5 +97,4 @@ const guestSlice = createSlice({
   extraReducers: {},
 });
 
-// export const {} = guestSlice.actions;
 export default guestSlice.reducer;

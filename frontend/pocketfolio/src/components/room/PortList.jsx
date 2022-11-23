@@ -1,18 +1,21 @@
 import PortItem from './PortItem';
-import {Container, Title, BtnBox, IconBox, AddIcon} from './PortList.style';
+import {Container, Title, Box, ContentTitle} from './PortList.style';
+import {ContentBox} from './PortItem.style';
 
-const PortList = ({roomSeq}) => {
+const PortList = ({data, openPortDetail}) => {
   return (
     <Container>
       <Title>포트폴리오 목록</Title>
-      <BtnBox>
-        <IconBox>
-          <AddIcon />
-        </IconBox>
-      </BtnBox>
-      <PortItem />
-      <PortItem />
-      <PortItem />
+      {data.map((item, idx) => (
+        <PortItem item={item} key={idx} openPortDetail={openPortDetail} />
+      ))}
+      {data?.length === 0 && (
+        <Box>
+          <ContentBox className={'full'}>
+            <ContentTitle>포트폴리오가 없습니다.</ContentTitle>
+          </ContentBox>
+        </Box>
+      )}
     </Container>
   );
 };

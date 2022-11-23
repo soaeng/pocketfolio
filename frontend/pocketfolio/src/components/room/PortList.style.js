@@ -4,32 +4,43 @@ import {RiPlayListAddFill} from 'react-icons/ri';
 export const Container = styled.div`
   width: 100%;
   color: #333;
-`;
 
-export const Title = styled.h1``;
-
-export const BtnBox = styled.div`
-  width: 100%;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: end;
-  margin-bottom: 0.5rem;
+  justify-content: center;
 `;
 
-export const IconBox = styled.div`
-  font-size: 1.5rem;
-  border-radius: 50%;
-  padding: 0.2rem 0.4rem;
-  transition: all 0.2s;
+export const Title = styled.h2`
+  margin-bottom: 2rem;
+
+  &::before {
+    background-color: #e75452;
+    border-radius: 0.25rem;
+    content: '';
+    display: block;
+    height: 0.25rem;
+    width: 50px;
+    margin-bottom: 1.25rem;
+  }
+`;
+
+export const Box = styled.div`
+  width: calc(100% - 2rem);
+  background-color: #fff4f1;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  color: #333333;
 
   & + & {
-    margin-left: 5px;
+    margin-top: 1rem;
   }
 
-  &:hover {
-    background-color: #ddd;
-  }
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
 `;
 
-export const AddIcon = styled(RiPlayListAddFill)`
+export const ContentTitle = styled.h3`
+  margin: 0.7rem 0;
 `;

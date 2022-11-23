@@ -1,66 +1,73 @@
 import {React, useState} from 'react';
 import {useNavigate} from 'react-router-dom';
+import {useDispatch} from 'react-redux';
 import {
   Wrapper,
   Item,
+  PortDiv,
   ImgDiv,
   TitleDiv,
   Title,
-  LikeDiv,
-  LikeContent,
   Thumbnail,
-  Count,
-  Button,
-  Heart,
-  Eye,
+  IconDiv,
+  DeleteIcon,
 } from './Card.style';
 import DeleteModal from './DeleteModal';
+import {delRoom} from '../../store/roomSlice';
+import toast from 'react-hot-toast';
 
-const Card = ({isDelete}) => {
-  const [isOpen, setIsOpen] = useState(false);
+const Card = props => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [isOpen, setIsOpen] = useState(false);
+  const {isDelete, setIsDelete, pocketData, reLander, setReLander} = props;
   const openModal = () => {
     setIsOpen(true);
   };
   const moveMyRoom = () => {
-    navigate('/room/1');
+    navigate(`/room/${pocketData.roomSeq}`);
   };
 
+  // 포켓 삭제
+  const deletePocket = seq => {
+    dispatch(delRoom(seq)).then(res => {
+      if (res.payload) {
+        setReLander(!reLander);
+        toast.success('포켓을 삭제 하였습니다.');
+        setIsDelete(false);
+      }
+    });
+  };
   return (
     <Wrapper>
       <Item>
-        <Button
-          className={isDelete ? 'delete' : ''}
-          onClick={openModal}
-          src={process.env.PUBLIC_URL + '/assets/images/minus.png'}
-        ></Button>
+        <IconDiv className={isDelete ? 'delete' : ''} onClick={openModal}>
+          <DeleteIcon></DeleteIcon>
+        </IconDiv>
 
-        <div onClick={moveMyRoom}>
+        <PortDiv onClick={moveMyRoom}>
           <ImgDiv>
-            <Thumbnail
-              src={process.env.PUBLIC_URL + '/assets/images/room.png'}
-            />
+            {pocketData.thumbnail === undefined ? (
+              <Thumbnail
+                src={process.env.PUBLIC_URL + '/assets/images/room_01.PNG'}
+              />
+            ) : (
+              <Thumbnail src={pocketData.thumbnail} />
+            )}
           </ImgDiv>
           <TitleDiv>
-            <Title>아이링크</Title>
+            <Title>{pocketData.name}</Title>
           </TitleDiv>
-          <LikeDiv>
-            <LikeContent>
-              <Heart />
-              <Count>20</Count>
-            </LikeContent>
-            <LikeContent>
-              <Eye />
-              <Count>13</Count>
-            </LikeContent>
-          </LikeDiv>
-        </div>
+        </PortDiv>
       </Item>
       {isOpen && (
         <DeleteModal
           onClose={() => {
             setIsOpen(false);
           }}
+          text={'포켓을'}
+          seq={pocketData.roomSeq}
+          deleteFunc={deletePocket}
         />
       )}
     </Wrapper>

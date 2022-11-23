@@ -1,158 +1,216 @@
-import React, {useEffect, useRef, useReducer} from 'react';
+import {useEffect, useState, useRef} from 'react';
 import {useNavigate} from 'react-router-dom';
-
-import Nav from '../common/Nav';
 import {
   Container,
-  Slider,
-  Content,
-  CarouselNav,
-  CarouselNavButton,
-  CarouselNavButtonNone,
-  RoomButton,
-  Item,
-  Test,
-  Items,
-  ImageContainer,
-  ColorBox,
-  ContentItem,
-  Title,
-  Text,
-  RecCarouselContainer,
+  InnerContainer,
+  TopContainer,
+  CanvasWrapper,
+  PortContainer,
+  PortList,
+  PortItem,
+  Num,
+  Name,
+  SearchContainer,
+  SearchInput,
+  SearchIcon,
+  SearchDiv,
 } from './Main.style';
-import RecCarousel from './RecCarousel';
-import {getMyInfo} from '../../store/oauthSlice';
+import MainCanvas from './MainCanvas';
+import Nav from '../common/Nav';
+import CarouselRec from './CarouselRec';
+import {useDispatch, useSelector} from 'react-redux';
+import {getMain} from '../../store/roomSlice';
+import {useInterval} from '../../hook/hook';
 
-const pageSlider = [
-  {
-    title1: '설치가 필요없는',
-    title2: '포트폴리오 툴',
-    text1: '언제 어디서나 손쉽게 꾸밀 수 있는',
-    text2: '3D 포트폴리오를 만들어보세요',
-    buttonText: '바로 시작하기',
-  },
-  {
-    title1: '설치가 필요없는2',
-    title2: '포트폴리오 툴2',
-    text1: '언제 어디서나 손쉽게 꾸밀 수 있는2',
-    text2: '3D 포트폴리오를 만들어보세요2',
-    buttonText: '바로 시작하기',
-  },
-];
-
-// Main 페이지
-function Main() {
+const Main = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const color1 = {
-    backgroundColor: '#b94d4d',
-  };
-  const color2 = {
-    backgroundColor: '#10468e',
+  const portRef = useRef();
+  const [h, setH] = useState(0);
+  const user = useSelector(state => state.oauth.user);
+
+  const themeColor = {
+    room_01: '#fff4f1',
+    room_02: '#eaf3d9',
+    room_03: '#f3e9d9',
+    room_04: '#ffe4de',
+    room_05: '#dfffc8',
+    island: '#cee7ff',
+    apartment_01: '#fef0dd',
+    apartment_02: '#fbebcd',
+    apartment_03: '#d8e6fd',
   };
 
-  let _style = {
-    backgroundColor: '#b94d4d',
+  const [mainRoom, setMainRoom] = useState(null);
+  const [categoryRec, setCategoryRec] = useState(null);
+  const [portfolios, setPortfolios] = useState(null);
+  const [nowCnt, setNowCnt] = useState(0);
+  const [portCnt, setPortCnt] = useState(0);
+  const [color, setColor] = useState('');
+
+  // 검색어
+  const [word, setWord] = useState('');
+
+  // 입력창 변화 감지
+  const onChange = e => {
+    setWord(e.target.value);
   };
 
-  // 5초마다 화면 전환을 위한 것
-  const carousel = useRef(null);
-  const reducer = (state, action) => {
-    _style = action === 1 ? color1 : color2;
-    carousel.current.scrollTo({
-      top: 0,
-      left: carousel.current.offsetWidth * (action - 1),
-      behavior: 'smooth',
+  // 검색어 창 입력
+  const onSubmit = async e => {
+    e.preventDefault();
+    navigate('/search', {
+      state: {
+        search: word,
+        sort: 1,
+        category: 2047,
+        size: 20,
+        page: 1,
+      },
     });
-    return action;
+    setWord(''); //submit 후 창 비우기
   };
-  const [slideIndex, scrollCarousel] = useReducer(reducer, 1);
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      if (slideIndex === pageSlider.length) {
-        scrollCarousel(1);
-      } else scrollCarousel(slideIndex + 1);
-    }, 5000);
-    return () => {
-      clearTimeout(timer);
-    };
-  }, [slideIndex]);
 
-  // 바로 시작 버튼 이동
-  const buttonClickHandler = () => {
-    navigate('/port');
+  // 검색어 창 엔터시 입력
+  const keyDownHandler = event => {
+    if (event.key === 'Enter') {
+      setWord(word);
+      onSubmit(event);
+    }
   };
+
+  // 움직이기
+  useInterval(() => {
+    if (0 <= nowCnt && nowCnt < portCnt) {
+      setNowCnt(nowCnt + 1);
+    } else {
+      setNowCnt(0);
+    }
+
+    const port = document.querySelector(`.port${nowCnt}`);
+    setH(h + port?.clientHeight);
+
+    portRef.current.style.transition = 'all 3s ease-in-out';
+
+    if (
+      nowCnt < portCnt &&
+      portRef.current.clientHeight + h < portRef.current.scrollHeight
+    ) {
+      move(h + port?.clientHeight);
+    } else {
+      portRef.current.style.transform = `none`;
+      setH(0);
+      setNowCnt(0);
+    }
+  }, 3000);
+
+  const move = height => {
+    portRef.current.style.transform = `translateY(-${height}px)`;
+  };
+
+  // 데이터 불러오기
+  async function loadData() {
+    const res = await dispatch(getMain());
+
+    if (res.type === 'getMain/fulfilled') {
+      setMainRoom(res.payload.mainRoom);
+      setColor(
+        res.payload.mainRoom
+          ? themeColor[res.payload.mainRoom?.theme]
+          : '#cbb6f4',
+      );
+      setCategoryRec(res.payload.categoryRec);
+      setPortfolios(res.payload.portfolios);
+
+      if (res.payload.portfolios?.length > 0) {
+        setPortCnt(res.payload.portfolios.length - 1);
+      }
+    }
+  }
+
+  useEffect(() => {
+    loadData();
+    if (!user) {
+      setColor('#cbb6f4');
+    }
+  }, [user]);
+
+  useEffect(() => {
+    console.log(`
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⣿⣶⣄⣀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⢀⣴⣿⣿⣿⣿⣿⣿⣿⣿⣿⣶⣦⣄⣀⡀⣠⣾⡇⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⣴⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⠀⠀⠀⠀
+⠀⠀⠀⠀⢀⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠿⠿⢿⣿⣿⡇⠀⠀⠀⠀
+⠀⣶⣿⣦⣜⣿⣿⣿⡟⠻⣿⣿⣿⣿⣿⣿⣿⡿⢿⡏⣴⣺⣦⣙⣿⣷⣄⠀⠀⠀
+⠀⣯⡇⣻⣿⣿⣿⣿⣷⣾⣿⣬⣥⣭⣽⣿⣿⣧⣼⡇⣯⣇⣹⣿⣿⣿⣿⣧⠀⠀
+⠀⠹⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠸⣿⣿⣿⣿⣿⣿⣿⣷⠀
+     ____  ____  ____  ____  ____ 
+    ||S ||||S ||||A ||||F ||||Y ||
+    ||__||||__||||__||||__||||__||
+    |/__|||/__|||/__|||/__|||/__||
+    
+잠시.....만요.....🐌.......지나.....가겠.......읍니다......🐌잠시.....만요.....🐌........지나.....가겠......읍니다............🐌잠시...만요.......🐌......지나.....가겠.......읍니다......🐌잠시.....만요.....🐌......지나.....가겠......읍니다...🐌잠시.....만요.....🐌......
+    `);
+  }, []);
 
   return (
-    <>
-      {/* Navbar */}
+    <Container>
       <Nav />
+      <InnerContainer>
+        <TopContainer>
+          <CanvasWrapper
+            color={color}
+            user={mainRoom ? true : false}
+            onClick={() =>
+              mainRoom.roomSeq && navigate(`/room/${mainRoom.roomSeq}`)
+            }
+          >
+            <MainCanvas mainRoom={mainRoom} color={color} />
+          </CanvasWrapper>
 
-      {/* Main Carousel */}
-      <Container>
-        <ColorBox style={_style} />
-        <Content ref={carousel}>
-          {pageSlider.map((sl, index) => {
-            const {title1, title2, text1, text2, buttonText} = sl;
-            return (
-              <Item>
-                <Items>
-                  <ContentItem>
-                    <Title>{title1}</Title>
-                    <Title>{title2}</Title>
-                    <Text>{text1}</Text>
-                    <Text>{text2}</Text>
-                    <RoomButton onClick={buttonClickHandler}>
-                      {buttonText}
-                    </RoomButton>
-                  </ContentItem>
-                  <div>
-                    <ImageContainer src="./assets/images/logo2.png" />
-                  </div>
-                </Items>
-              </Item>
-            );
-          })}
-          <CarouselNav>
-            {slideIndex === 1 ? (
-              <CarouselNavButton
-                onClick={() => {
-                  scrollCarousel(1);
-                }}
-              />
-            ) : (
-              <CarouselNavButtonNone
-                onClick={() => {
-                  scrollCarousel(1);
-                }}
-              />
-            )}
-            {slideIndex === 2 ? (
-              <CarouselNavButton
-                onClick={() => {
-                  scrollCarousel(2);
-                }}
-              />
-            ) : (
-              <CarouselNavButtonNone
-                onClick={() => {
-                  scrollCarousel(2);
-                }}
-              />
-            )}
-          </CarouselNav>
-        </Content>
-      </Container>
-      {/* 추천 Carousel */}
-      <RecCarouselContainer>
-        <RecCarousel />
-      </RecCarouselContainer>
-      {/* 추천 Carousel */}
-      <RecCarouselContainer>
-        <RecCarousel />
-      </RecCarouselContainer>
-    </>
+          <PortContainer color={color} user={mainRoom ? true : false}>
+            <PortList ref={portRef}>
+              {portfolios &&
+                portfolios.map((port, idx) => (
+                  <PortItem
+                    key={idx}
+                    className={`port${idx}`}
+                    color={color}
+                    onClick={() => navigate(`/port/${port.portSeq}`)}
+                  >
+                    <Num color={color}>
+                      {idx + 1 < 10 ? `0${idx + 1}` : `${idx + 1}`}
+                    </Num>
+                    <Name>{port.name}</Name>
+                  </PortItem>
+                ))}
+            </PortList>
+          </PortContainer>
+        </TopContainer>
+
+        <SearchDiv>
+          <SearchContainer>
+            <SearchIcon />
+            <SearchInput
+              placeholder="검색어를 입력해주세요"
+              onKeyDown={keyDownHandler}
+              onChange={onChange}
+              value={word}
+            />
+          </SearchContainer>
+        </SearchDiv>
+
+        {categoryRec &&
+          categoryRec.map(
+            (rec, idx) =>
+              rec.recommend.length > 0 && (
+                <CarouselRec key={idx} rec={rec} idx={idx} />
+              ),
+          )}
+      </InnerContainer>
+    </Container>
   );
-}
+};
 
 export default Main;

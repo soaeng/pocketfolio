@@ -5,6 +5,7 @@ import {
   Container,
   SideContainer,
   CloseBox,
+  BackIcon,
   CloseIcon,
   ToggleBox,
   ToggleIconBox,
@@ -13,26 +14,55 @@ import {
   ToggleOpenIcon1,
   ToggleOpenIcon2,
 } from './Sidebar.style';
+import EditPortList from './EditPortList';
+import PortDetail from './PortDetail';
 
-const Sidebar = ({sidebar, changeSidebar, edit, roomSeq}) => {
+const Sidebar = ({
+  sidebar,
+  changeSidebar,
+  edit,
+  roomSeq,
+  data,
+  appendArrange,
+  arranges,
+  nowIdx,
+  connectPort,
+  disconnectPort,
+  openPortDetail,
+  nowPort,
+}) => {
   const controlSide = () => {
     if (sidebar === 'port') return changeSidebar('');
     if (sidebar === 'guest') return changeSidebar('');
     if (sidebar === 'edit') return changeSidebar('');
+    if (sidebar === 'portDetail') return changeSidebar('port');
     if (!sidebar) return changeSidebar('edit');
   };
 
   return (
     <Container>
       <SideContainer className={sidebar ? 'open' : null}>
-        {edit ? null : (
+        {!edit && (
           <CloseBox onClick={controlSide}>
-            <CloseIcon />
+            {sidebar !== 'portDetail' ? <CloseIcon /> : <BackIcon />}
           </CloseBox>
         )}
-        {sidebar === 'port' ? <PortList /> : null}
-        {sidebar === 'guest' ? <GuestList roomSeq={roomSeq} /> : null}
-        {sidebar === 'edit' ? <ObjectList /> : null}
+        {!edit && sidebar === 'port' && (
+          <PortList data={data.portfolios} openPortDetail={openPortDetail} />
+        )}
+        {!edit && sidebar === 'portDetail' && (
+          <PortDetail nowPort={nowPort} roomDto={data} />
+        )}
+        {edit && sidebar === 'port' && (
+          <EditPortList
+            arranges={arranges}
+            nowIdx={nowIdx}
+            connectPort={connectPort}
+            disconnectPort={disconnectPort}
+          />
+        )}
+        {sidebar === 'guest' && <GuestList roomSeq={roomSeq} roomDto={data} />}
+        {sidebar === 'edit' && <ObjectList appendArrange={appendArrange} />}
       </SideContainer>
       {edit ? (
         <ToggleBox onClick={controlSide}>

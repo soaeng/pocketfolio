@@ -11,8 +11,21 @@ export const Container = styled.div`
   justify-content: center;
 `;
 
+export const Title = styled.h2`
+  margin-bottom: 1rem;
+
+  &::before {
+    background-color: #e75452;
+    border-radius: 0.25rem;
+    content: '';
+    display: block;
+    height: 0.25rem;
+    width: 50px;
+    margin-bottom: 1.25rem;
+  }
+`;
+
 export const WriteForm = styled.form`
-  /* border-bottom: 2px solid #333; */
   padding: 0.5rem 0;
   width: 96%;
   margin-bottom: 1rem;
@@ -93,19 +106,23 @@ export const ScrollDiv = styled.div`
   height: 70%;
   overflow: auto;
 
+  &.full {
+    height: 92%;
+  }
+
   &::-webkit-scrollbar {
-    width: 8px; /* 세로축 스크롤바 길이 */
-    height: 15px; /* 가로축 스크롤바 길이 */
+    width: 8px;
+    height: 15px; 
   }
 
   &::-webkit-scrollbar-track {
     border-radius: 8px;
-    background-color: #eeeeee; /*스크롤 바 배경 색상*/
+    background-color: #eeeeee; 
   }
 
   &::-webkit-scrollbar-thumb {
     border-radius: 8px;
-    background-color: #c6c6c6; /*스크롤 바 색상*/
+    background-color: #c6c6c6; 
   }
 `;
 

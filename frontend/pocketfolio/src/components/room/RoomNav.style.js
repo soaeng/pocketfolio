@@ -26,7 +26,7 @@ export const Container = styled.div`
     &.side {
       width: calc(100vw - 1rem);
       transition: all 0.25s ease;
-    } 
+    }
   }
 `;
 
@@ -36,7 +36,7 @@ export const LogoContainer = styled.div`
   top: 1.5rem;
   height: 90%;
   cursor: pointer;
-`
+`;
 export const LogoImg = styled.img`
   width: 100%;
   height: 100%;
@@ -67,4 +67,8 @@ export const NavBotton = styled.button`
 export const LoginDiv = styled.div`
   display: flex;
   align-items: center;
+`;
+
+export const UserName = styled.p`
+  padding-right: 10px;
 `;

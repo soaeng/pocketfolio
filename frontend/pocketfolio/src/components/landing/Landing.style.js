@@ -5,6 +5,7 @@ export const Frame = styled.div`
   width: 100vw;
   height: 100vh;
   display: flex;
+  z-index: -1;
 `;
 
 export const Content1 = styled.div`
@@ -32,9 +33,6 @@ export const Outer = styled.div`
   width: 100vw;
   height: 100vh;
   overflow-y: auto;
-  background: url('./assets/images/landing_bg.png');
-  background-size: cover;
-  background-position: center;
   &::-webkit-scrollbar {
     display: none;
   }
@@ -107,7 +105,7 @@ export const Dots = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 20%;
+  height: 25%;
   top: 50%;
   right: 5%;
   transform: translate(0, -50%);

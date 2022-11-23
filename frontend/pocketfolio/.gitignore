@@ -23,6 +23,5 @@ yarn-debug.log*
 yarn-error.log*
 
 #  확장자
-*.glb
 *.fbx
 *.gltf

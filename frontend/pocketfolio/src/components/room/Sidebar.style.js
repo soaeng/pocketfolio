@@ -5,6 +5,7 @@ import {
   RiArrowLeftSLine,
   RiArrowDownSLine,
   RiArrowUpSLine,
+  RiArrowLeftLine,
 } from 'react-icons/ri';
 
 export const Container = styled.div`
@@ -12,7 +13,7 @@ export const Container = styled.div`
 `;
 
 export const SideContainer = styled.div`
-  width: 38rem;
+  width: 36rem;
   height: calc(100vh - 4rem);
   padding: 2rem;
   background-color: #ffffff;
@@ -31,7 +32,7 @@ export const SideContainer = styled.div`
   @media screen and (max-width: 1200px) {
     width: calc(100vw - 3rem);
     padding: 1.5rem;
-    background-color: #eee;
+    background-color: #ffffff;
     display: none;
 
     transition: all 0.3s;
@@ -48,6 +49,7 @@ export const CloseBox = styled.div`
 `;
 
 export const CloseIcon = styled(RiCloseFill)``;
+export const BackIcon = styled(RiArrowLeftLine)``;
 
 export const ToggleBox = styled.div`
   position: absolute;
@@ -58,7 +60,8 @@ export const ToggleBox = styled.div`
   height: 6rem;
 
   border-radius: 2rem 0 0 2rem;
-  background-color: #bdbdbd;
+  background-color: #e75452;
+  color: white;
 
   display: flex;
   align-items: center;
@@ -74,12 +77,20 @@ export const ToggleBox = styled.div`
 
     border-radius: 2rem 2rem 0 0;
   }
+
+  &:hover {
+    background-color: #d5403d;
+
+    & > * {
+      scale: 1.1;
+    }
+  }
 `;
 
 export const ToggleIconBox = styled.div`
   font-size: 1.6rem;
   width: fit-content;
-  height: fit-content;
+  aspect-ratio: 1 / 1;
 `;
 
 export const ToggleCloseIcon1 = styled(RiArrowRightSLine)`

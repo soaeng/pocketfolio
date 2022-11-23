@@ -1,87 +1,68 @@
 import styled from 'styled-components';
-import {RiHeart3Fill, RiEyeLine} from 'react-icons/ri';
+import {HiMinusCircle} from 'react-icons/hi';
 
 export const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   cursor: pointer;
+  padding: 1rem;
 `;
 
 export const Item = styled.div`
   position: relative;
-  height: 15rem;
-  width: 12rem;
-  margin-right: 1rem;
-  border-radius: 1.5rem;
-  background-color: white;
+
+  /* 1안 */
+  border-radius: 1rem;
+  background-color: #fff0f0;
+  box-shadow: 0px 2px 5px 1px rgba(0, 0, 0, 0.25);
 `;
+
+export const PortDiv = styled.div``;
 
 export const ImgDiv = styled.div`
   display: flex;
   justify-content: center;
-  height: 70%;
-  border-radius: 1.5rem 1.5rem 0 0;
+  height: 11rem;
+  width: 10rem;
+  padding: 10px;
+  overflow: hidden;
 `;
 
 export const Thumbnail = styled.img`
-  height: 90%;
-  width: 90%;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  background-color: #fef9ff;
+  border-radius: 0.5rem;
+  transition: all 0.2s;
+  object-fit: cover;
+  :hover {
+    background-color: #e5e5e5;
+  }
 `;
 
 export const TitleDiv = styled.div`
   display: flex;
   align-items: center;
-  height: 3rem;
-  font-family: bold;
-  border-bottom: 0.3px solid rgba(0, 0, 0, 0.3);
-`;
-
-export const Title = styled.div`
-  font-size: 15px;
-  margin-left: 1rem;
-`;
-
-export const LikeDiv = styled.div`
-  display: flex;
   justify-content: center;
-  width: 70%;
-  justify-content: space-around;
-  padding-top: 0.5rem;
-  margin: auto;
+  font-family: bold;
 `;
 
-export const LikeContent = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  width: 40%;
+export const Title = styled.p`
+  font-size: 15px;
+  padding: 10px;
+  margin: 0;
+  font-family: 'NanumSquareAcr' !important;
 `;
 
-export const Img = styled.img`
-  &.deleteBtn {
-    margin: 1rem 1rem 0 0;
-    width: 1.5rem;
-    cursor: pointer;
-  }
-
-  &.hearteye {
-    height: 1.3rem;
-    width: 1.3rem;
-  }
-`;
-
-export const Count = styled.span``;
-
-export const Button = styled.img`
-  /* visibility: hidden; */
+export const IconDiv = styled.div`
+  visibility: hidden;
   opacity: 0;
   position: absolute;
-  left: 10.7rem;
+  left: 10rem;
   top: -1rem;
-  width: 35px;
-  height: 35px;
-  transition: all ease-in-out 0.3s;
+  transition: all ease-in-out 0.1s;
 
   &.delete {
     visibility: visible;
@@ -91,10 +72,7 @@ export const Button = styled.img`
     display: flex;
   }
 `;
-
-export const Heart = styled(RiHeart3Fill)`
-
-`
-export const Eye = styled(RiEyeLine)`
-
-`
+export const DeleteIcon = styled(HiMinusCircle)`
+  font-size: 2.5rem;
+  color: #ff3434;
+`;

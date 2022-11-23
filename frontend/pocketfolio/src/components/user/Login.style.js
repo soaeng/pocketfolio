@@ -5,23 +5,13 @@ export const Container = styled.div`
   height: 100vh;
   position: relative;
   color: #333333;
-  background-color: yellowgreen;
 
-  
   @media screen and (max-width: 1024px) {
     display: flex;
     align-items: center;
     justify-content: center;
   }
 `;
-
-export const CanvasWrapper = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-`
 
 export const LoginContainer = styled.div`
   position: absolute;
@@ -49,7 +39,7 @@ export const LoginContainer = styled.div`
 
 export const LogoDiv = styled.div`
   height: 16%;
-  margin-bottom: 1rem;
+  margin-bottom: 2rem;
 `;
 
 export const LogoImg = styled.img`
@@ -61,7 +51,7 @@ export const LoginDiv = styled.div`
   width: calc(82% - 2rem);
   min-width: 256px;
   height: 2.5rem;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
   padding: 0.6rem 1rem;
   border-radius: 1rem;
   display: flex;
@@ -83,39 +73,12 @@ export const LoginDiv = styled.div`
       background-color: #e1e1e1;
     }
   }
-
-  &.facebook {
-    background-color: #3b5998;
-    color: #ffffff;
-
-    &:hover {
-      background-color: #344f88;
-      color: #e1e1e1;
-    }
-  }
-
-  &.github {
-    background-color: #000000;
-    color: #ffffff;
-
-    &:hover {
-      color: #e1e1e1;
-    }
-  }
 `;
 
 export const LoginIconDiv = styled.div`
   height: 94%;
   aspect-ratio: 1 / 1;
   margin-right: 1rem;
-
-  &.github {
-    background-color: white;
-
-    &:hover {
-      background-color: #e1e1e1;
-    }
-  }
 `;
 
 export const LoginIcon = styled.img`

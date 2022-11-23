@@ -142,7 +142,6 @@ export const StyledBtn = styled.button`
 
     &:hover {
       background-color: #f6f1f1;
-      
     }
   }
 
@@ -161,7 +160,6 @@ export const StyledBtn = styled.button`
 
     &:hover {
       background-color: #fb706d;
-      
     }
   }
 `;

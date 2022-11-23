@@ -1,5 +1,19 @@
 import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
-import {http} from '../api/axios';
+import {http, postAxios} from '../api/axios';
+
+// 메인페이지 데이터 조회
+export const getMain = createAsyncThunk(
+  'getMain',
+  async (data, {rejectWithValue}) => {
+    try {
+      const res = await http.get(`main`);
+      if (res.status === 200) return res.data;
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  },
+);
+
 
 // 마이룸 목록 조회
 export const getRoomList = createAsyncThunk(
@@ -10,35 +24,19 @@ export const getRoomList = createAsyncThunk(
 
       if (res.status === 200) return res.data;
     } catch (error) {
-      console.log('마이룸 목록 조회에러', error);
       return rejectWithValue(error);
     }
   },
 );
 
 // 마이룸 생성
-/**
-  {
-    "room": {
-      "name": "string",
-      "theme": 0,
-      "isMain": "string",
-      "privacy": "string",
-      "created": "2022-11-09T13:34:30.302Z",
-      "updated": "2022-11-09T13:34:30.302Z"
-    },
-    "thumbnail": "string"
-  }
- */
 export const createRoom = createAsyncThunk(
   'createRoom',
   async (data, {rejectWithValue}) => {
     try {
-      const res = await http.post(`rooms`, data);
-
-      if (res.status === 201) return res.data;
+      const res = await postAxios.post(`rooms`, data);
+      if (res.status === 201) return res;
     } catch (error) {
-      console.log('마이룸 생성에러', error);
       return rejectWithValue(error);
     }
   },
@@ -47,13 +45,11 @@ export const createRoom = createAsyncThunk(
 // 마이룸 조회
 export const getRoomInfo = createAsyncThunk(
   'getRoomInfo',
-  async (room_id, {rejectWithValue}) => {
+  async (roomSeq, {rejectWithValue}) => {
     try {
-      const res = await http.get(`rooms/${room_id}`);
-
+      const res = await http.get(`rooms/${roomSeq}`);
       if (res.status === 200) return res.data;
     } catch (error) {
-      console.log('마이룸조회에러', error);
       return rejectWithValue(error);
     }
   },
@@ -68,35 +64,22 @@ export const delRoom = createAsyncThunk(
 
       if (res.status === 200) return res.data;
     } catch (error) {
-      console.log('마이룸삭제에러', error);
       return rejectWithValue(error);
     }
   },
 );
 
 // 마이룸 수정
-/**
-  {  
-    "room": {
-      "name": "string",
-      "theme": 0,
-      "isMain": "string",
-      "privacy": "string",
-      "created": "2022-11-09T13:36:26.614Z",
-      "updated": "2022-11-09T13:36:26.614Z"
-    },
-    "thumbnail": "string"
-  }
- */
 export const updateRoom = createAsyncThunk(
   'updateRoom',
   async (data, {rejectWithValue}) => {
     try {
-      const res = await http.patch(`rooms/info/${data.room_id}`, data);
-
-      if (res.status === 201) return res.data;
+      const res = await postAxios.patch(
+        `rooms/info/${data.roomSeq}`,
+        data.data,
+      );
+      if (res.status === 201) return true;
     } catch (error) {
-      console.log('마이룸 수정 에러', error);
       return rejectWithValue(error);
     }
   },
@@ -111,7 +94,6 @@ export const getRoomBest = createAsyncThunk(
 
       if (res.status === 201) return res.data;
     } catch (error) {
-      console.log('마이룸 좋아요 순 목록 조회 에러', error);
       return rejectWithValue(error);
     }
   },
@@ -126,7 +108,6 @@ export const getRoomLike = createAsyncThunk(
 
       if (res.status === 200) return res.data;
     } catch (error) {
-      console.log('마이룸 좋아요 목록 조회 에러', error);
       return rejectWithValue(error);
     }
   },
@@ -135,13 +116,11 @@ export const getRoomLike = createAsyncThunk(
 // 마이룸 좋아요
 export const roomLike = createAsyncThunk(
   'roomLike',
-  async (room_id, {rejectWithValue}) => {
+  async (roomSeq, {rejectWithValue}) => {
     try {
-      const res = await http.post(`rooms/like/${room_id}`);
-
-      if (res.status === 201) return res.data;
+      const res = await http.post(`rooms/like/${roomSeq}`);
+      if (res.status === 201) return true;
     } catch (error) {
-      console.log('마이룸 좋아요 에러', error);
       return rejectWithValue(error);
     }
   },
@@ -150,19 +129,55 @@ export const roomLike = createAsyncThunk(
 // 마이룸 좋아요 취소
 export const roomDislike = createAsyncThunk(
   'roomDislike',
-  async (room_id, {rejectWithValue}) => {
+  async (roomSeq, {rejectWithValue}) => {
     try {
-      const res = await http.delete(`rooms/like/${room_id}`);
-
+      const res = await http.delete(`rooms/like/${roomSeq}`);
       if (res.status === 200) return res.data;
     } catch (error) {
-      console.log('마이룸 좋아요 취소 에러', error);
       return rejectWithValue(error);
     }
   },
 );
 
+// 최근 방문자 목록 조회
+export const getVisitors = createAsyncThunk(
+  'getVisitors',
+  async (roomSeq, {rejectWithValue}) => {
+    try {
+      const res = await http.get(`rooms/guests/${roomSeq}`);
+      if (res.status === 200) return res.data;
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  },
+);
 
+// 배치 수정
+export const updateArranges = createAsyncThunk(
+  'updateArranges',
+  async (data, {rejectWithValue}) => {
+    try {
+      const res = await http.patch(`rooms/${data.roomSeq}`, data.body);
+
+      if (res.status === 201) return true;
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  },
+);
+
+// 룸 카테고리 조회
+export const getRoomCategory = createAsyncThunk(
+  'getRoomCategory',
+  async (data, {rejectWithValue}) => {
+    try {
+      const res = await http.get('rooms/category');
+      if (res.status === 200) return res.data;
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  },
+);
 
 const initialState = {};
 
@@ -173,5 +188,4 @@ const roomSlice = createSlice({
   extraReducers: {},
 });
 
-// export const {} = roomSlice.actions;
 export default roomSlice.reducer;

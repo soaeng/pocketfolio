@@ -1,11 +1,11 @@
 import styled from 'styled-components';
-import {Body2, Body3, Body4} from '../../styles/styles.style';
 import {
   RiUserFollowFill,
   RiUserAddLine,
   RiHeart3Line,
   RiHeart3Fill,
   RiEyeLine,
+  RiPencilFill,
 } from 'react-icons/ri';
 
 export const Container = styled.div`
@@ -16,8 +16,8 @@ export const Container = styled.div`
   width: 33rem;
   padding: 0.6rem 1rem;
   border-radius: 20px;
-  border: 1px solid #333333;
   background: rgb(255, 255, 255, 0.85);
+  box-shadow: 0 0 2px 2px #eeeeee;
   color: #333333;
   cursor: default;
 
@@ -25,9 +25,9 @@ export const Container = styled.div`
   flex-direction: column;
 
   @media screen and (max-width: 1000px) {
-    width: 80%;
-    top: 4rem;
-    left: 8%;
+    width: 75%;
+    top: 5rem;
+    left: 10%;
   }
 
   &.sidebar {
@@ -63,11 +63,13 @@ export const RoomImgBox = styled.div`
   height: 2rem;
   border-radius: 50%;
   margin-right: 0.5rem;
+  overflow: hidden;
 `;
 
 export const RoomImg = styled.img`
   width: 100%;
   height: 100%;
+  object-fit: cover;
 `;
 
 export const NameCategoryDiv = styled.div`
@@ -78,12 +80,13 @@ export const NameCategoryDiv = styled.div`
   justify-content: center;
 `;
 
-export const RoomName = styled(Body2)`
+export const RoomName = styled.h4`
   margin: 0;
 `;
 
-export const RoomCategory = styled(Body4)`
+export const RoomCategory = styled.p`
   margin: 0;
+  font-size: 0.85rem;
 `;
 
 export const LikeShowFollowContainer = styled.div`
@@ -99,9 +102,22 @@ export const IconDiv = styled.div`
   &.follow {
     margin-right: 0.7rem;
   }
+
+  &.edit {
+    margin-right: 0.7rem;
+  }
+
+  &:hover {
+    color: black;
+  }
 `;
 
 export const FollowIcon = styled(RiUserAddLine)`
+  width: 100%;
+  height: 100%;
+`;
+
+export const EditIcon = styled(RiPencilFill)`
   width: 100%;
   height: 100%;
 `;
@@ -136,7 +152,8 @@ export const ShowIcon = styled(RiEyeLine)`
   cursor: default;
 `;
 
-export const ShowState = styled(Body3)`
+export const ShowState = styled.p`
   margin: 0;
+  margin-left: 0.2rem;
   padding-bottom: 0.1rem;
 `;

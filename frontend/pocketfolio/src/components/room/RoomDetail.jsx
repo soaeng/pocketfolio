@@ -1,41 +1,81 @@
+import {useNavigate} from 'react-router-dom';
 import {
   Container,
-  UpArrowDiv,
-  UpIcon,
-  BirthLinkDiv,
+  UserName,
+  LinkDiv,
   IconDiv,
-  BirthIcon,
-  BirthLinkTxt,
+  Link,
   Introduction,
   LinkIcon,
+  LinkText,
+  ExtraContainer,
+  ExtraItem,
+  ImgBox,
+  Img,
+  LikeHitBox,
+  LikeHitIconDiv,
+  HitIcon,
+  LikeIcon,
+  HitLikeCount,
+  ExtraName,
 } from './RoomDetail.style';
 
 // 마이룸 상세정보
-const RoomDetail = ({closeDetail}) => {
+const RoomDetail = ({closeDetail, data}) => {
+  const navigate = useNavigate();
 
   return (
-    <Container>
-      <UpArrowDiv>
-        <IconDiv onClick={closeDetail}>
-          <UpIcon/>
-        </IconDiv>
-      </UpArrowDiv>
+    <Container onClick={closeDetail}>
+      <UserName>{data.owner.name}</UserName>
+      {data.owner.blogUrl && (
+        <LinkDiv>
+          <IconDiv>
+            <LinkIcon />
+          </IconDiv>
+          <Link href={data.owner.blogUrl} target="_blank">
+            <LinkText>{data.owner.blogUrl}</LinkText>
+          </Link>
+        </LinkDiv>
+      )}
+      <Introduction>{data.owner.describe}</Introduction>
 
-      <BirthLinkDiv>
-        <IconDiv>
-          <BirthIcon />
-        </IconDiv>
-        <BirthLinkTxt>1999.03.02</BirthLinkTxt>
-      </BirthLinkDiv>
+      {data?.owner?.rooms?.length > 0 && (
+        <ExtraContainer>
+          {data.owner.rooms.map((room, idx) => (
+            <ExtraItem
+              onClick={() => navigate(`/room/${room.roomSeq}`)}
+              key={idx}
+            >
+              <ImgBox>
+                <Img
+                  src={
+                    room.thumbnail
+                      ? room.thumbnail
+                      : process.env.PUBLIC_URL + '/assets/images/room_01.PNG'
+                  }
+                  onError={e => {
+                    e.target.src =
+                      process.env.PUBLIC_URL + '/assets/images/logo3.png';
+                  }}
+                />
 
-      <BirthLinkDiv>
-        <IconDiv>
-          <LinkIcon />
-        </IconDiv>
-        <BirthLinkTxt>https://k7e101.p.ssafy.io</BirthLinkTxt>
-      </BirthLinkDiv>
+                <LikeHitBox>
+                  <LikeHitIconDiv>
+                    <LikeIcon />
+                  </LikeHitIconDiv>
+                  <HitLikeCount>{room.like}</HitLikeCount>
 
-      <Introduction>안녕하세요. 저는 마이룸의 주인 개발자입니다.</Introduction>
+                  <LikeHitIconDiv>
+                    <HitIcon />
+                  </LikeHitIconDiv>
+                  <HitLikeCount>{room.hit}</HitLikeCount>
+                </LikeHitBox>
+              </ImgBox>
+              <ExtraName>{room.name}</ExtraName>
+            </ExtraItem>
+          ))}
+        </ExtraContainer>
+      )}
     </Container>
   );
 };

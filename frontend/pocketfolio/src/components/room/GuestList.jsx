@@ -5,6 +5,7 @@ import {getGuestList, postGuest, delGuest} from '../../store/guestSlice';
 import GuestItem from './GuestItem';
 import {
   Container,
+  Title,
   ImgTextDiv,
   WriteForm,
   TextArea,
@@ -20,7 +21,7 @@ import {
   ItemContainer,
 } from './GuestList.style';
 
-const GuestList = ({roomSeq}) => {
+const GuestList = ({roomSeq, roomDto}) => {
   const dispatch = useDispatch();
 
   const user = useSelector(state => state.oauth.user);
@@ -50,6 +51,7 @@ const GuestList = ({roomSeq}) => {
         }),
       );
 
+      // 작성 폼 초기화
       if (res) {
         setContent('');
         setIsPublic(true);
@@ -70,44 +72,53 @@ const GuestList = ({roomSeq}) => {
 
   return (
     <Container>
-      <WriteForm
-        onSubmit={e => {
-          e.preventDefault();
-          writeGuest();
-        }}
-      >
-        <ImgTextDiv>
-          <ImgBox>
-            <Img
-              src={
-                user.profilePic
-                  ? user.profilePic
-                  : process.env.PUBLIC_URL + '/assets/images/logo3.png'
-              }
+      <Title>방명록</Title>
+      {user && (
+        <WriteForm
+          onSubmit={e => {
+            e.preventDefault();
+            writeGuest();
+          }}
+        >
+          <ImgTextDiv>
+            <ImgBox>
+              <Img
+                src={
+                  user.profilePic
+                    ? user.profilePic
+                    : process.env.PUBLIC_URL + '/assets/images/logo3.png'
+                }
+              />
+            </ImgBox>
+            <TextArea
+              placeholder="방명록을 작성해주세요"
+              value={content}
+              onChange={e => {
+                setContent(e.target.value);
+              }}
             />
-          </ImgBox>
-          <TextArea
-            placeholder="방명록을 작성해주세요"
-            value={content}
-            onChange={e => {
-              setContent(e.target.value);
-            }}
-          />
-        </ImgTextDiv>
+          </ImgTextDiv>
 
-        <BottomBox>
-          <LockIconDiv onClick={() => setIsPublic(!isPublic)}>
-            {isPublic ? <UnlockIcon /> : <LockIcon />}
-            <LockText>{isPublic ? '공개글' : '비밀글'}</LockText>
-          </LockIconDiv>
-          <Btn type="submit">확인</Btn>
-        </BottomBox>
-      </WriteForm>
+          <BottomBox>
+            <LockIconDiv onClick={() => setIsPublic(!isPublic)}>
+              {isPublic ? <UnlockIcon /> : <LockIcon />}
+              <LockText>{isPublic ? '공개글' : '비밀글'}</LockText>
+            </LockIconDiv>
+            <Btn type="submit">확인</Btn>
+          </BottomBox>
+        </WriteForm>
+      )}
 
-      <ScrollDiv>
+      <ScrollDiv className={user ? '' : 'full'}>
         <ItemContainer>
           {data.map((item, idx) => (
-            <GuestItem item={item} removeGuest={removeGuest} key={idx} />
+            <GuestItem
+              item={item}
+              removeGuest={removeGuest}
+              key={idx}
+              roomDto={roomDto}
+              getData={getData}
+            />
           ))}
         </ItemContainer>
       </ScrollDiv>

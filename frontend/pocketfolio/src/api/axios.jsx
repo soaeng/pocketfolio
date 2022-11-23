@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {getToken} from './jwt';
+import {deleteAllToken, getRefreshToken, getToken, saveToken} from './jwt';
 
 const http = axios.create({
   baseURL: 'https://k7e101.p.ssafy.io/api/',
@@ -30,7 +30,35 @@ http.interceptors.request.use(function (config) {
 http.interceptors.response.use(
   res => res,
   async error => {
-    console.log(error);
+    const {
+      config,
+      response: {status},
+    } = error;
+
+    const originalRequest = config;
+
+    if (status === 403) {
+      const refreshToken = getRefreshToken();
+      try {
+        const {data} = await axios({
+          method: 'get',
+          url: `users/refresh`,
+          data: {refreshToken},
+        });
+
+        const newAccessToken = data;
+
+        originalRequest.headers = {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + newAccessToken,
+        };
+        saveToken(newAccessToken);
+        return await axios(originalRequest);
+      } catch (err) {
+        deleteAllToken();
+      }
+    }
+    return Promise.reject(error);
   },
 );
 
