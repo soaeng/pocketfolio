@@ -38,8 +38,7 @@ export const TextDiv = styled.div`
   align-items: center;
   padding-bottom: 0.7rem;
 `;
-export const Text = styled(H3)`
-`;
+export const Text = styled(H3)``;
 
 export const BtnDiv = styled.div`
   display: flex;

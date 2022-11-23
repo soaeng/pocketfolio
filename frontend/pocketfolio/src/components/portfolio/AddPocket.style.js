@@ -83,15 +83,6 @@ export const ModalWrap = styled.div`
   cursor: default;
 `;
 
-export const Contents = styled.section`
-  background-color: #fff;
-  border-radius: 0.5rem;
-  animation-duration: 0.25s;
-  animation-timing-function: ease-out;
-  animation-name: slideUp;
-  animation-fill-mode: forwards;
-`;
-
 export const Body = styled.div`
   display: flex;
   justify-content: center;
@@ -115,6 +106,15 @@ export const Body = styled.div`
     background-color: #ffffff;
     border-radius: 2rem;
   }
+`;
+
+export const Contents = styled.section`
+  background-color: #fff;
+  border-radius: 0.5rem;
+  animation-duration: 0.25s;
+  animation-timing-function: ease-out;
+  animation-name: slideUp;
+  animation-fill-mode: forwards;
 `;
 
 export const Box = styled.div`

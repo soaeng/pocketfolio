@@ -23,6 +23,7 @@ const SaveModal = props => {
       setTimeout(() => setAnimate(false), 250);
     }
     setAnimate(open);
+    setVisible(visible);
   }, [visible, open]);
 
   if (!animate && !visible) return null;
