@@ -9,7 +9,6 @@ export const getMain = createAsyncThunk(
       const res = await http.get(`main`);
       if (res.status === 200) return res.data;
     } catch (error) {
-      console.log('마이룸 목록 조회에러', error);
       return rejectWithValue(error);
     }
   },
@@ -25,7 +24,6 @@ export const getRoomList = createAsyncThunk(
 
       if (res.status === 200) return res.data;
     } catch (error) {
-      console.log('마이룸 목록 조회에러', error);
       return rejectWithValue(error);
     }
   },
@@ -39,7 +37,6 @@ export const createRoom = createAsyncThunk(
       const res = await postAxios.post(`rooms`, data);
       if (res.status === 201) return res;
     } catch (error) {
-      console.log('마이룸 생성에러', error);
       return rejectWithValue(error);
     }
   },
@@ -53,7 +50,6 @@ export const getRoomInfo = createAsyncThunk(
       const res = await http.get(`rooms/${roomSeq}`);
       if (res.status === 200) return res.data;
     } catch (error) {
-      console.log('마이룸조회에러', error);
       return rejectWithValue(error);
     }
   },
@@ -68,7 +64,6 @@ export const delRoom = createAsyncThunk(
 
       if (res.status === 200) return res.data;
     } catch (error) {
-      console.log('마이룸삭제에러', error);
       return rejectWithValue(error);
     }
   },
@@ -85,7 +80,6 @@ export const updateRoom = createAsyncThunk(
       );
       if (res.status === 201) return true;
     } catch (error) {
-      console.log('마이룸 수정 에러', error);
       return rejectWithValue(error);
     }
   },
@@ -100,7 +94,6 @@ export const getRoomBest = createAsyncThunk(
 
       if (res.status === 201) return res.data;
     } catch (error) {
-      console.log('마이룸 좋아요 순 목록 조회 에러', error);
       return rejectWithValue(error);
     }
   },
@@ -115,7 +108,6 @@ export const getRoomLike = createAsyncThunk(
 
       if (res.status === 200) return res.data;
     } catch (error) {
-      console.log('마이룸 좋아요 목록 조회 에러', error);
       return rejectWithValue(error);
     }
   },
@@ -129,7 +121,6 @@ export const roomLike = createAsyncThunk(
       const res = await http.post(`rooms/like/${roomSeq}`);
       if (res.status === 201) return true;
     } catch (error) {
-      console.log('마이룸 좋아요 에러', error);
       return rejectWithValue(error);
     }
   },
@@ -141,10 +132,8 @@ export const roomDislike = createAsyncThunk(
   async (roomSeq, {rejectWithValue}) => {
     try {
       const res = await http.delete(`rooms/like/${roomSeq}`);
-      console.log(res);
       if (res.status === 200) return res.data;
     } catch (error) {
-      console.log('마이룸 좋아요 취소 에러', error);
       return rejectWithValue(error);
     }
   },
@@ -158,7 +147,6 @@ export const getVisitors = createAsyncThunk(
       const res = await http.get(`rooms/guests/${roomSeq}`);
       if (res.status === 200) return res.data;
     } catch (error) {
-      console.log('최근 방문자 목록 조회 에러', error);
       return rejectWithValue(error);
     }
   },
@@ -173,7 +161,6 @@ export const updateArranges = createAsyncThunk(
 
       if (res.status === 201) return true;
     } catch (error) {
-      console.log('배치 수정 에러', error);
       return rejectWithValue(error);
     }
   },
@@ -187,7 +174,6 @@ export const getRoomCategory = createAsyncThunk(
       const res = await http.get('rooms/category');
       if (res.status === 200) return res.data;
     } catch (error) {
-      console.log('룸 카테고리 불러오기 실패', error);
       return rejectWithValue(error);
     }
   },

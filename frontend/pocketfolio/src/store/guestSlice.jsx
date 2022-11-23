@@ -11,7 +11,6 @@ export const getGuestList = createAsyncThunk(
       const res = await http.get(`guests/${roomSeq}`);
       if (res.status === 200) return res.data;
     } catch (error) {
-      console.log('방명록 조회 에러', error);
       return rejectWithValue(error);
     }
   },
@@ -25,7 +24,6 @@ export const postGuest = createAsyncThunk(
       const res = await http.post(`guests/${data.roomSeq}`, data.data);
       if (res.status === 201) return res.data;
     } catch (error) {
-      console.log('방명록 작성 에러', error);
       return rejectWithValue(error);
     }
   },
@@ -39,7 +37,6 @@ export const delGuest = createAsyncThunk(
       const res = await http.delete(`guests/${bookSeq}`);
       if (res.status === 200) return true;
     } catch (error) {
-      console.log('방명록 삭제 에러', error);
       return rejectWithValue(error);
     }
   },
@@ -60,7 +57,6 @@ export const postComment = createAsyncThunk(
       
       if (res.status === 201) return true;
     } catch (error) {
-      console.log('방명록 댓글 등록 에러', error);
       return rejectWithValue(error);
     }
   },
@@ -74,7 +70,6 @@ export const delComment = createAsyncThunk(
       const res = await http.delete(`guests/comment/${commentSeq}`);
       if (res.status === 200) return res.data;
     } catch (error) {
-      console.log('방명록 댓글 삭제 에러', error);
       return rejectWithValue(error);
     }
   },
@@ -88,7 +83,6 @@ export const getRandom = createAsyncThunk(
       const res = await http.get(`rooms/random/${roomSeq}`);
       if (res.status === 200) return res.data;
     } catch (error) {
-      console.log('파도타기 에러', error);
       return rejectWithValue(error);
     }
   },

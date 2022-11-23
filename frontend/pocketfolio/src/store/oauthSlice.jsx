@@ -13,7 +13,6 @@ export const getMyInfo = createAsyncThunk(
         if (res.status === 200) return res.data;
       } else return null;
     } catch (error) {
-      console.log('유저정보에러', error);
       return rejectWithValue(error);
     }
   },
@@ -27,7 +26,6 @@ export const getUserInfo = createAsyncThunk(
       const res = await http.get(`users/profile/${userSeq}`);
       if (res.status === 200) return res.data;
     } catch (error) {
-      console.log('특정유저정보조회 에러', error);
       return rejectWithValue(error);
     }
   },
@@ -42,7 +40,6 @@ export const updateProfile = createAsyncThunk(
 
       if (res.status === 201) return res;
     } catch (error) {
-      console.log('회원정보수정 에러', error);
       return rejectWithValue(error);
     }
   },
@@ -56,7 +53,6 @@ export const signOut = createAsyncThunk(
       const res = await http.delete('users');
       if (res.status === 200) return true;
     } catch (error) {
-      console.log('회원탈퇴에러', error);
       return rejectWithValue(error);
     }
   },
@@ -70,7 +66,6 @@ export const followFunc = createAsyncThunk(
       const res = await http.post(`follows/${userSeq}`);
       if (res.status === 201) return res.data;
     } catch (error) {
-      console.log('팔로우 에러', error);
       return rejectWithValue(error);
     }
   },
@@ -84,7 +79,6 @@ export const unfollowFunc = createAsyncThunk(
       const res = await http.delete(`follows/user/${userSeq}`);
       if (res.status === 200) return true;
     } catch (error) {
-      console.log('팔로우 취소 에러', error);
       return rejectWithValue(error);
     }
   },
@@ -98,7 +92,6 @@ export const unfollowNumFunc = createAsyncThunk(
       const res = await http.delete(`follows/${followSeq}`);
       if (res.status === 200) return true;
     } catch (error) {
-      console.log('팔로우 취소 에러', error);
       return rejectWithValue(error);
     }
   },
@@ -112,7 +105,6 @@ export const getMyFollower = createAsyncThunk(
       const res = await http.get(`follows/follower`);
       if (res.status === 200) return res.data;
     } catch (error) {
-      console.log('내 팔로워 리스트 조회 에러', error);
       return rejectWithValue(error);
     }
   },
@@ -126,7 +118,6 @@ export const getMyFollowing = createAsyncThunk(
       const res = await http.get(`follows/following`);
       if (res.status === 200) return res.data;
     } catch (error) {
-      console.log('내 팔로잉 리스트 조회 에러', error);
       return rejectWithValue(error);
     }
   },
@@ -140,7 +131,6 @@ export const getUserFollower = createAsyncThunk(
       const res = await http.get(`follows/follower/${userSeq}`);
       if (res.status === 200) return true;
     } catch (error) {
-      console.log('특정유저의 팔로워 리스트 조회 에러', error);
       return rejectWithValue(error);
     }
   },
@@ -154,7 +144,6 @@ export const getUserFollowing = createAsyncThunk(
       const res = await http.get(`follows/following/${userSeq}`);
       if (res.status === 200) return true;
     } catch (error) {
-      console.log('특정 유저의 팔로잉 리스트 조회 에러', error);
       return rejectWithValue(error);
     }
   },
@@ -168,7 +157,6 @@ export const getFollowNum = createAsyncThunk(
       const res = await http.get(`follows/seq/${userSeq}`);
       if (res.status === 200) return true;
     } catch (error) {
-      console.log('팔로우 번호 조회 에러', error);
       return rejectWithValue(error);
     }
   },

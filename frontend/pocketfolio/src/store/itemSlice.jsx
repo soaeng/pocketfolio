@@ -14,7 +14,6 @@ export const getItemList = createAsyncThunk(
       const res = await http.get('items', {params});
       if (res.status === 200) return res.data;
     } catch (error) {
-      console.log('오브젝트 리스트 조회 에러', error);
       return rejectWithValue(error);
     }
   },
@@ -28,7 +27,6 @@ export const getItem = createAsyncThunk(
       const res = await http.get(`items/${itemSeq}`);
       if (res.status === 200) return res;
     } catch (error) {
-      console.log('오브젝트 상세 조회 에러', error);
       return rejectWithValue(error);
     }
   },
@@ -42,7 +40,6 @@ export const getItemCategory = createAsyncThunk(
       const res = await http.get(`items/category`);
       if (res.status === 200) return res.data;
     } catch (error) {
-      console.log('오브젝트 카테고리 리스트 조회 에러', error);
       return rejectWithValue(error);
     }
   },

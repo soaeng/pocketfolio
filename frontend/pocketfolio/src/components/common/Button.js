@@ -10,9 +10,11 @@ export const Button = styled(Body1)`
   font-family: sans-serif;
   transition: all 0.4s;
   font-weight: bold;
+
   &:focus {
     outline: none;
   }
+
   &:hover {
     color: #5d52a4;
     cursor: pointer;

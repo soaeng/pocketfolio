@@ -13,7 +13,6 @@ export const getSearch = createAsyncThunk(
       const res = await http.get(`search/${params.searchMode}`, params);
       if (res.status === 200) return res.data;
     } catch (error) {
-      console.log('검색 조회에러', error);
       return rejectWithValue(error);
     }
   },
