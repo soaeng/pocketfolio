@@ -38,7 +38,7 @@
 
 ### 2. 로그인 
 
-![로그인](README.assets/로그인-1668964758361-15.gif)
+![로그인](README.assets/로그인.gif)
 
 ### 3. 메인 
 
@@ -73,21 +73,21 @@
 
 - 포켓 이름 수정이 가능하며, 유저의 포켓 목록, 방문자 리스트 조회 가능
 
-![포켓 상세보기,수정,방문자, 삭제](README.assets/포켓 상세보기,수정,방문자, 삭제.gif)
+![포켓 상세보기,수정,방문자, 삭제](README.assets/포켓상세보기,수정,방문자,삭제.gif)
 
 ### 9. 포켓 테마 및 오브젝트 관리
 
 - 테마 변경 또는 오브젝트 추가, 회전, 이동, 삭제 가능
 - 포트폴리오와 연결하여 전시 가능
 
-![포켓 수정](README.assets/포켓 수정.gif)
+![포켓 수정](README.assets/포켓수정.gif)
 
 ### 10. 오브젝트와 포트폴리오 연결
 
 - 상호 연결된 오브젝트 및 포트폴리오 클릭 시,
   해당 오브젝트로 시점 전환 후 포트폴리오 상세 조회 가능
 
-![포켓 포폴클릭시 확대](README.assets/포켓 포폴클릭시 확대.gif)
+![포켓 포폴클릭시 확대](README.assets/포켓포폴클릭시확대.gif)
 
 ### 11. 방명록 작성
 
@@ -142,8 +142,9 @@ nginx:1.23.2
 
 ### Frontend
 
-```json
+```
 # React
+
 @ckeditor/ckeditor5-build-decoupled-document: 35.3.0
 @ckeditor/ckeditor5-react: 5.0.2
 @react-three/drei: 9.40.0
@@ -167,7 +168,7 @@ three: 0.145.0
 
 ## 05. 서비스 아키텍처
 
-![서비스 아키텍처](README.assets/서비스 아키텍처.png)
+![서비스 아키텍처](README.assets/서비스아키텍처.png)
 
 ## 06. 협업 툴
 
