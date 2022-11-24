@@ -42,7 +42,7 @@ http.interceptors.response.use(
       try {
         const {data} = await axios({
           method: 'get',
-          url: `users/refresh`,
+          url: `https://k7e101.p.ssafy.io/api/users/refresh`,
           data: {refreshToken},
         });
 

@@ -45,7 +45,9 @@ const UserProfile = props => {
   };
 
   useEffect(() => {
-    getFollowing();
+    if (user) {
+      getFollowing();
+    }
   }, []);
 
   useEffect(() => {
